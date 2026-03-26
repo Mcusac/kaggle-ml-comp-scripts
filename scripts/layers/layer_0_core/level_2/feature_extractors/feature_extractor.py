@@ -4,8 +4,8 @@ from typing import Tuple
 
 import numpy as np
 
-from level_0 import get_logger, get_torch
-from level_1 import BaseFeatureExtractor
+from layers.layer_0_core.level_0 import get_logger, get_torch
+from layers.layer_0_core.level_1 import BaseFeatureExtractor
 
 torch = get_torch()
 DataLoader = torch.utils.data.DataLoader

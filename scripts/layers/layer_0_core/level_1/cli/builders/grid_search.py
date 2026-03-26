@@ -4,7 +4,7 @@ Command builder for grid search execution.
 
 from typing import Optional
 
-from level_0 import BaseCommandBuilder
+from layers.layer_0_core.level_0 import BaseCommandBuilder
 
 
 class GridSearchCommandBuilder(BaseCommandBuilder):

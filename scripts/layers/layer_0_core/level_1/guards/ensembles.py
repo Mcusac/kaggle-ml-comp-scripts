@@ -4,7 +4,7 @@ import numpy as np
 
 from typing import List, Optional, Tuple
 
-from level_0 import validate_predictions_list, validate_same_shape
+from layers.layer_0_core.level_0 import validate_predictions_list, validate_same_shape
 
 
 def validate_predictions_for_ensemble(

@@ -5,7 +5,7 @@ import numpy as np
 from scipy.optimize import minimize_scalar
 from typing import Tuple
 
-from level_0 import get_logger
+from layers.layer_0_core.level_0 import get_logger
 from level_3 import (
     calculate_f1,
     calculate_precision,

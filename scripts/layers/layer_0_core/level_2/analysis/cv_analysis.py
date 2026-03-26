@@ -4,8 +4,8 @@ import math
 
 from typing import List, Tuple, Dict, Any, Optional
 
-from level_0 import get_logger
-from level_1 import calculate_fold_statistics, generate_cv_test_gap_warnings
+from layers.layer_0_core.level_0 import get_logger
+from layers.layer_0_core.level_1 import calculate_fold_statistics, generate_cv_test_gap_warnings
 
 logger = get_logger(__name__)
 

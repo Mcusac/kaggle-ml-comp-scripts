@@ -10,7 +10,7 @@ import time
 from typing import Dict, Optional, Callable
 from collections import deque
 
-from level_1 import ProgressConfig
+from layers.layer_0_core.level_1 import ProgressConfig
 
 
 class ProgressMetrics:

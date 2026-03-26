@@ -1,6 +1,6 @@
 """Noise addition augmentations. Callers pass params (e.g. from contest transform_defaults)."""
 
-from level_0 import get_logger, get_torch
+from layers.layer_0_core.level_0 import get_logger, get_torch
 
 torch = get_torch()
 _NNModule = torch.nn.Module if torch is not None else object

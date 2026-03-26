@@ -12,14 +12,14 @@ import numpy as np
 
 from collections import Counter
 
-from level_0 import (
+from layers.layer_0_core.level_0 import (
     AA_ALPHABET,
     TOP_DIPEPTIDES,
     TOP_TRIPEPTIDES,
     HANDCRAFTED_FEATURE_DIM,
     extract_kmer_frequencies,
 )
-from level_1 import (
+from layers.layer_0_core.level_1 import (
     calculate_physicochemical_properties,
     calculate_ctd_features,
 )

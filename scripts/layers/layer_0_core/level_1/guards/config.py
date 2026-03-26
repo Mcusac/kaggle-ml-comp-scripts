@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from level_0 import ConfigValidationError, get_config_value, get_torch
+from layers.layer_0_core.level_0 import ConfigValidationError, get_config_value, get_torch
 
 
 def validate_config_section_exists(

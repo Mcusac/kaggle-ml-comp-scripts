@@ -3,7 +3,7 @@
 from dataclasses import dataclass, field
 from typing import List, Optional, Tuple
 
-from level_0 import (
+from layers.layer_0_core.level_0 import (
     CompositeConfig,
     EvaluationSchema,
     PathConfig,

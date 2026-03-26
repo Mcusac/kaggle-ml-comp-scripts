@@ -3,8 +3,8 @@
 from typing import Dict, Any
 from pathlib import Path
 
-from level_0 import ensure_dir, get_logger
-from level_1 import validate_config_section_exists, get_device, BasePipeline
+from layers.layer_0_core.level_0 import ensure_dir, get_logger
+from layers.layer_0_core.level_1 import validate_config_section_exists, get_device, BasePipeline
 from level_2 import create_optimizer, create_scheduler, create_loss_function
 from level_4 import create_vision_model, save_pickle, create_dataloaders
 from level_5 import VisionTrainer

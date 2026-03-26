@@ -9,7 +9,7 @@ from sklearn.model_selection import StratifiedKFold, StratifiedGroupKFold
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 
-from level_0 import get_logger
+from layers.layer_0_core.level_0 import get_logger
 
 logger = get_logger(__name__)
 

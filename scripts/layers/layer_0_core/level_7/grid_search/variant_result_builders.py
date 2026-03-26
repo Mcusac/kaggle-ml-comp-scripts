@@ -2,7 +2,7 @@
 
 from typing import Dict, Any, Optional, List
 
-from level_0 import create_result_dict, create_error_result_dict
+from layers.layer_0_core.level_0 import create_result_dict, create_error_result_dict
 from level_6 import create_variant_specific_data
 
 

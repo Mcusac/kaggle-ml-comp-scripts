@@ -7,8 +7,8 @@ from pathlib import Path
 
 from sklearn.model_selection import KFold, StratifiedKFold
 
-from level_0 import get_logger
-from level_1 import BasePipeline
+from layers.layer_0_core.level_0 import get_logger
+from layers.layer_0_core.level_1 import BasePipeline
 from level_4 import EvaluatePipeline
 from level_6 import PredictPipeline
 from level_8 import TrainPipeline

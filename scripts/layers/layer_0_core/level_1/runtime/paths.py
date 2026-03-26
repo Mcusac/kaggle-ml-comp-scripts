@@ -9,7 +9,7 @@ import os
 from pathlib import Path
 from typing import Dict, Union, Optional
 
-from level_0 import is_kaggle, EnvironmentConfigError
+from layers.layer_0_core.level_0 import is_kaggle, EnvironmentConfigError
 
 def get_environment_type() -> str:
     """

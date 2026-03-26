@@ -6,8 +6,8 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 from tqdm import tqdm
 
-from level_0 import ensure_dir, get_logger, get_torch, extract_batch_data
-from level_1 import train_one_epoch, load_model_checkpoint, forward_with_amp
+from layers.layer_0_core.level_0 import ensure_dir, get_logger, get_torch, extract_batch_data
+from layers.layer_0_core.level_1 import train_one_epoch, load_model_checkpoint, forward_with_amp
 from level_4 import calculate_metrics
 
 logger = get_logger(__name__)

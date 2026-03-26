@@ -5,7 +5,7 @@ from typing import Iterable, List, Union
 
 from PIL import Image
 
-from level_1 import load_batch
+from layers.layer_0_core.level_1 import load_batch
 from level_4 import load_image
 
 

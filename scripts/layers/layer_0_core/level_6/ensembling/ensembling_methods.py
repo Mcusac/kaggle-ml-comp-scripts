@@ -17,8 +17,8 @@ import numpy as np
 
 from typing import Dict, List, Optional
 
-from level_0 import get_logger, EnsemblingMethod, calculate_percentile_weights
-from level_1 import validate_predictions_for_ensemble
+from layers.layer_0_core.level_0 import get_logger, EnsemblingMethod, calculate_percentile_weights
+from layers.layer_0_core.level_1 import validate_predictions_for_ensemble
 from level_2 import simple_average, model_rank_weights
 from level_5 import combine_with_fallback
 

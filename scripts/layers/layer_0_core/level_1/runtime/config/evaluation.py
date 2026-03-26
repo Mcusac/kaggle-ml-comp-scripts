@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from typing import List, Optional, Literal
 
-from level_0 import RuntimeConfig
+from layers.layer_0_core.level_0 import RuntimeConfig
 
 
 @dataclass

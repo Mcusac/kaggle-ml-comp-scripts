@@ -4,7 +4,7 @@ import numpy as np
 
 from typing import Tuple
 
-from level_0 import get_torch
+from layers.layer_0_core.level_0 import get_torch
 from level_2 import FeatureExtractor
 
 torch = get_torch()

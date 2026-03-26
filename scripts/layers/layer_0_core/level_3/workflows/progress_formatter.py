@@ -10,7 +10,7 @@ Responsibilities:
 
 from typing import Dict, Any, Optional
 
-from level_1 import ProgressConfig, ProgressVerbosity
+from layers.layer_0_core.level_1 import ProgressConfig, ProgressVerbosity
 from level_2 import ProgressMetrics
 
 

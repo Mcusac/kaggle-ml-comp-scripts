@@ -3,8 +3,8 @@
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-from level_0 import ensure_dir, get_logger, get_torch
-from level_1 import get_device, setup_mixed_precision
+from layers.layer_0_core.level_0 import ensure_dir, get_logger, get_torch
+from layers.layer_0_core.level_1 import get_device, setup_mixed_precision
 from level_2 import (
     extract_config_settings, 
     get_training_config_value,

@@ -2,7 +2,7 @@
 
 from typing import Optional, Any
 
-from level_0 import get_fold_checkpoint_path, get_logger
+from layers.layer_0_core.level_0 import get_fold_checkpoint_path, get_logger
 from level_2 import find_best_fold_from_scores
 
 logger = get_logger(__name__)

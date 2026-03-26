@@ -6,8 +6,8 @@ from PIL import Image
 from pathlib import Path
 from typing import Any, Callable, List, Optional, Tuple, Union
 
-from level_0 import get_logger, get_torch, split_image, load_image_rgb
-from level_1 import (
+from layers.layer_0_core.level_0 import get_logger, get_torch, split_image, load_image_rgb
+from layers.layer_0_core.level_1 import (
     BaseFeatureExtractor,
     get_siglip_image_classes,
     generate_feature_filename,

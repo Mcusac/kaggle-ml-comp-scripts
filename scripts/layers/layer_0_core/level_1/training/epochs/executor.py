@@ -6,7 +6,7 @@ Framework layer: callback-based epoch execution.
 
 from typing import Any, Callable, Optional
 
-from level_0 import get_torch
+from layers.layer_0_core.level_0 import get_torch
 
 torch = get_torch()
 DataLoader = torch.utils.data.DataLoader if torch is not None else None

@@ -4,7 +4,7 @@ import argparse
 
 from typing import AbstractSet, Optional, Sequence
 
-from level_0 import (
+from layers.layer_0_core.level_0 import (
     add_common_arguments,
     add_model_type_argument,
     add_model_path_argument,

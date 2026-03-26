@@ -8,7 +8,7 @@ import pandas as pd
 from pathlib import Path
 from typing import Union, List
 
-from level_0 import DataValidationError
+from layers.layer_0_core.level_0 import DataValidationError
 from level_2 import validate_dataframe, validate_column_values
 
 def validate_file_exists(

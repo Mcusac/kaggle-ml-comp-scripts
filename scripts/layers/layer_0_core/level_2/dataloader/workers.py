@@ -2,7 +2,7 @@
 
 from typing import Callable
 
-from level_1 import set_seed
+from layers.layer_0_core.level_1 import set_seed
 
 
 def create_worker_init_fn(seed: int) -> Callable[[int], None]:

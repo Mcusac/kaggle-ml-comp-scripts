@@ -15,8 +15,8 @@ from sklearn.metrics import (
     r2_score as sklearn_r2_score,
 )
 
-from level_0 import get_logger, Metric
-from level_1 import register_metric
+from layers.layer_0_core.level_0 import get_logger, Metric
+from layers.layer_0_core.level_1 import register_metric
 from level_2 import validate_paired_arrays
 
 logger = get_logger(__name__)

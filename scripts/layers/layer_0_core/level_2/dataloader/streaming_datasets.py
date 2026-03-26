@@ -4,7 +4,7 @@ import pandas as pd
 
 from typing import Callable, List, Union
 
-from level_1 import StreamingDataset, StreamingSplitDataset
+from layers.layer_0_core.level_1 import StreamingDataset, StreamingSplitDataset
 
 
 def create_streaming_dataset_for_test(

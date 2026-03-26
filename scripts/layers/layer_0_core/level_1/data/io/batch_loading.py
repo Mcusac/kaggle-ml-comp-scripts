@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Callable, Iterable, List, Protocol, TypeVar, Union
 from tqdm import tqdm
 
-from level_0 import get_logger
+from layers.layer_0_core.level_0 import get_logger
 
 logger = get_logger(__name__)
 T = TypeVar("T")

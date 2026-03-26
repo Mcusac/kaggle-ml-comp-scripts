@@ -4,7 +4,7 @@ from typing import Tuple
 import numpy as np
 from PIL import Image
 
-from level_0 import get_torch
+from layers.layer_0_core.level_0 import get_torch
 from level_3 import SigLIPExtractor
 
 torch = get_torch()

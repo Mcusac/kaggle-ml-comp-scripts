@@ -3,7 +3,7 @@
 from abc import ABC, abstractmethod
 from typing import Tuple, Union
 
-from level_0 import get_torch
+from layers.layer_0_core.level_0 import get_torch
 
 torch = get_torch()
 _NNModule = torch.nn.Module if torch is not None else object

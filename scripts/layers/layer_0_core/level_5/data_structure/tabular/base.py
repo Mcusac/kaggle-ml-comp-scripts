@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from typing import Dict, Any
 import numpy as np
 
-from level_0 import get_logger, ensure_file_dir
+from layers.layer_0_core.level_0 import get_logger, ensure_file_dir
 from level_4 import save_pickle, load_pickle
 
 logger = get_logger(__name__)

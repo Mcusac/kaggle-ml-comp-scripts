@@ -2,8 +2,8 @@
 
 from typing import List
 
-from level_0 import is_kaggle
-from level_1 import resolve_environment_path
+from layers.layer_0_core.level_0 import is_kaggle
+from layers.layer_0_core.level_1 import resolve_environment_path
 
 from level_2 import _log_pipeline_completion
 

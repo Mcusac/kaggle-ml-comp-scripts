@@ -7,8 +7,8 @@ Injects runtime dependencies for clean separation of concerns.
 
 from typing import Optional, Any, Dict
 
-from level_0 import get_logger
-from level_1 import ProgressConfig, get_device_info
+from layers.layer_0_core.level_0 import get_logger
+from layers.layer_0_core.level_1 import ProgressConfig, get_device_info
 from level_2 import ProgressMetrics, ProgressBarManager
 from level_3 import ProgressFormatter
 
