@@ -1,0 +1,157 @@
+---
+alwaysApply: true
+---
+---
+description: "Standards for __init__.py files and public API exports across all packages, levels, and nested sub-packages"
+alwaysApply: true
+---
+
+# `__init__.py` and Export Standards
+
+## Critical: `__all__` Only in `__init__.py`
+**Never define `__all__` in any file except `__init__.py`.** Leaf modules (e.g. `handlers.py`, `base.py`, `contest_abstractions.py`) must never have `__all__`. The package `__init__.py` is the sole public API contract. If you add `__all__` to a non-`__init__.py` file, remove it.
+
+## Core Philosophy
+Every `__init__.py` at every level of nesting serves as the explicit public API contract for its package.
+Nothing is considered public unless it is imported and listed in `__all__`.
+Consumers should never need to reach past any `__init__.py` to access public members.
+This rule applies uniformly at every layer: levels, sub-packages, and nested sub-packages.
+
+## The Universal Pattern
+The same export pattern applies at every layer of nesting. Each layer:
+1. Begins with a module-level docstring describing its purpose
+2. Imports everything below it (whether modules or nested sub-packages)
+3. Re-exports all public symbols via `from .x import *`
+4. Defines `__all__` by composing from everything below it
+
+This means the pattern is recursive. A sub-package with nested children looks and behaves
+the same way a level does with its sub-packages.
+
+---
+
+## Layer 1 — Leaf Modules (non-`__init__.py` files)
+Leaf modules (e.g. `handlers.py`, `base.py`, `contest_abstractions.py`) **never define `__all__`**. The package `__init__.py` is the sole public API contract. What the `__init__.py` explicitly imports and lists in its own `__all__` is public. Everything else in the leaf module is private by convention. Consumers must never import directly from leaf modules.
+
+- Leaf modules: no `__all__`. Ever.
+- Internal helpers and private implementation details must NOT appear in any `__all__`
+- If a symbol is not in the package `__all__`, it is private by contract
+
+---
+
+## Layer 2 — Nested Sub-Packages (sub-package containing other sub-packages)
+When a sub-package contains further nested sub-packages, it acts as a mid-level aggregator.
+It follows the same composition pattern as a level `__init__.py`.
+
+### Example: `sub_package_1/` contains `sub_package_1a/` and `sub_package_1b/`
+```python
+"""Brief description of sub_package_1's purpose and scope."""
+from . import sub_package_1a, sub_package_1b
+from .sub_package_1a import *
+from .sub_package_1b import *
+
+__all__ = (
+    sub_package_1a.__all__
+    + sub_package_1b.__all__
+)
+```
+
+- Both `from . import sub_package_1a` AND `from .sub_package_1a import *` are required:
+  - `from . import sub_package_1a` makes it accessible as a named attribute
+  - `from .sub_package_1a import *` promotes its public symbols upward
+- `__all__` is assembled by concatenating children's `__all__` lists — never written by hand at this layer
+- In aggregation expressions, always coerce children with `list(child.__all__)` to avoid list/tuple concat runtime errors
+- Never append tuple literals to an `__all__` concat chain (e.g. `+ ("X",)`) — use a list literal (e.g. `+ ["X"]`)
+
+---
+
+## Layer 3 — Top-Level Sub-Packages (sub-package containing only modules)
+When a sub-package contains only leaf modules (no further nesting), it imports and
+exposes those modules explicitly.
+```python
+"""Brief description of what this sub-package does."""
+from .module_a import SomeClass, some_function
+from .module_b import AnotherClass
+
+__all__ = [
+    "SomeClass",
+    "some_function",
+    "AnotherClass",
+]
+```
+
+---
+
+## Layer 4 — Level `__init__.py`
+The top of a given level aggregates all of its direct sub-packages using the same composition pattern.
+```python
+"""Level N: <description of this level's role and scope>."""
+from . import sub_a, sub_b, sub_c
+from .sub_a import *
+from .sub_b import *
+from .sub_c import *
+
+__all__ = (
+    list(sub_a.__all__)
+    + list(sub_b.__all__)
+    + list(sub_c.__all__)
+)
+```
+
+---
+
+## Applying the Pattern — Decision Tree
+
+When writing or reviewing any `__init__.py`, ask:
+
+1. **Does this package contain only `.py` modules?**
+   → Import each symbol explicitly. Write `__all__` as a flat list.
+
+2. **Does this package contain nested sub-packages (with or without modules)?**
+   → Import each child with `from . import child` and `from .child import *`.
+   → Compose `__all__` by concatenating children's `__all__` lists.
+
+3. **Does this package contain a mix of modules and nested sub-packages?**
+   → Handle each type by its own rule above and combine both in `__all__`:
+```python
+"""Mixed package with both modules and nested sub-packages."""
+from . import nested_sub_a, nested_sub_b
+from .nested_sub_a import *
+from .nested_sub_b import *
+from .some_module import SomeClass, some_function
+
+__all__ = (
+    list(nested_sub_a.__all__)
+    + list(nested_sub_b.__all__)
+    + [
+        "SomeClass",
+        "some_function",
+    ]
+)
+```
+
+---
+
+## No Re-Export Modules
+- Do not create intermediate modules solely to re-export symbols from elsewhere
+- Re-export from the package `__init__.py` instead
+- Example: instead of `base.py` that only does `from level_0.config import X`, add the import and `__all__` entry to the package `__init__.py`
+
+---
+
+## Naming Conflicts
+- Package and sub-package names must never shadow Python standard library module names
+- Common conflicts to avoid: `logging`, `types`, `collections`, `io`, `re`, `os`, `math`, `time`, `socket`
+- If a conflict exists, rename the package to something more specific (e.g. `loggers`, `error_types`)
+- Aliasing (`from . import logging as loggers`) is a last resort, not a preference
+
+---
+
+## Flags
+Use these consistently so violations are easy to find:
+- `# FLAG: __all__ in non-__init__.py — remove it; public API belongs only in __init__.py`
+- `# FLAG: missing __all__ — public API is undefined`
+- `# FLAG: symbol missing from __all__ — is this intentionally private?`
+- `# FLAG: __all__ written by hand at aggregation layer — should compose from children`
+- `# FLAG: consumer reaching past __init__.py — public API contract violated`
+- `# FLAG: naming conflict with stdlib module — rename package`
+- `# FLAG: nested sub-package not re-exported — invisible to parent`

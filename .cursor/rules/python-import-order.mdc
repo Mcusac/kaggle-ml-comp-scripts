@@ -1,0 +1,49 @@
+---
+description: Python top-of-file import grouping and blank lines for kaggle-ml-comp-scripts
+globs:
+  - input/kaggle-ml-comp-scripts/scripts/**/*.py
+alwaysApply: false
+---
+
+# Python import order (top of file)
+
+Group imports in this order. Put **one blank line** between groups. Within each group, prefer **alphabetical order by module path**, then by imported names.
+
+1. **`import` statements only** — standard library and third-party (e.g. `import os`, `import numpy as np`).
+
+2. **`from … import …` for stdlib and third-party** — e.g. `from typing import Any`, `from pathlib import Path`.
+
+3. **General level packages (`level_0` … `level_10`)** — e.g. `from level_4 import save_json`.
+
+4. **`layers.layer_1_competition.infra`** — competition infra (`layers.layer_1_competition.infra.level_0`, …, `level_4`), e.g. `from layers.layer_1_competition.infra.level_0 import is_kaggle_input`.
+
+5. **`layers.layer_1_competition.contests`** — import from **`…<contest>.level_K` package** (public `__init__`), not from `…level_K.some_module` when symbols are re-exported at `level_K`. Example: `from layers.layer_1_competition.contests.level_csiro.level_2 import load_regression_variant_from_metadata`.
+
+## Examples
+
+```python
+import json
+import numpy as np
+
+from pathlib import Path
+from typing import Any
+
+from level_2 import run_training
+from level_4 import save_json
+
+from layers.layer_1_competition.infra.level_0 import is_kaggle_input
+
+from layers.layer_1_competition.contests.level_csiro.level_1 import (
+    csiro_modeling,
+    resolve_model_paths_from_config,
+)
+from layers.layer_1_competition.contests.level_csiro.level_2 import (
+    load_regression_variant_from_metadata,
+)
+```
+
+## Notes
+
+- Do not interleave groups (e.g. do not place a `level_4` import between two third-party `from` imports).
+- If a group has no imports, skip that group entirely (no blank line placeholder for an empty group).
+- Follow `python-import-surfaces.mdc` for **what** may be imported (public APIs, contest `level_K` barrels, etc.); this rule only governs **ordering and spacing**.

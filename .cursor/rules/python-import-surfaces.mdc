@@ -1,0 +1,64 @@
+---
+description: Where to import from — level_0–10, competition infra, and contests package public APIs
+globs:
+  - input/kaggle-ml-comp-scripts/scripts/**/*.py
+alwaysApply: false
+---
+
+# Python import surfaces (what to import from)
+
+**Filesystem:** general code lives under `scripts/layers/layer_0_core/`; competition code under `scripts/layers/layer_1_competition/` (`infra/`, `contests/`). After `path_bootstrap.prepend_framework_paths()`, top-level `level_N` resolves to the general stack; `layers.layer_1_competition.*` resolves via `scripts/` on `sys.path`.
+
+Top-of-file **ordering and blank lines**: `python-import-order.mdc`. This file defines **which module paths and symbols** are allowed.
+
+## General packages (`level_0` … `level_10`)
+
+### `__init__.py` — aggregation only
+- Use `from .module import X` or `from . import subpkg` to re-export; define `__all__`.
+- NEVER business logic in `__init__.py`.
+- NEVER `from level_N.subpkg.module import X` inside an `__init__.py`.
+
+### Logic files (not `__init__.py`)
+- Use **`from level_N import symbol` only** — each level’s public top-level API.
+- NEVER **`from level_N.subpackage.module import symbol`** (deep path).
+- NEVER relative imports (`from .` / `from ..`) in logic files (relatives **only** in `__init__.py`).
+- A file under `level_N/` that needs `from level_N import ...` belongs in **`level_(N+1)` or higher**.
+- Required minimum level: **1 + highest** `N` among all `from level_N import` lines.
+
+### Dependency
+- `level_N` may import only from `level_0` … `level_(N-1)` (no upward or lateral `level_N`).
+
+## Competition infra (`layers.layer_1_competition.infra.level_N`)
+
+- Prefer **`from layers.layer_1_competition.infra.level_0 import …`** (and siblings `level_1` … `level_4`) for anything listed on that package’s `__init__.py` / `__all__`.
+- Submodule imports (e.g. **`from layers.layer_1_competition.infra.level_0.registry import register_contest`**) are fine when the symbol is **not** re-exported at the package root — see `contest-package-registration.mdc` for `registration.py` patterns.
+- Avoid **`from layers.layer_1_competition.infra.level_0.some_module import …`** when the same name is already re-exported from the **`level_0`** package root.
+- **Within `infra/`**, `__init__.py` files may use relative imports per `init-exports.mdc`; logic files follow project rules for that tree.
+
+## Contests (`layers.layer_1_competition.contests.<contest>`)
+
+- Prefer symbols re-exported from each contest **`level_K` package** (`__init__.py` / `__all__`). Import **`from layers.layer_1_competition.contests.<contest>.level_K import ...`**, not `...level_K.some_module import ...`, when the symbol is already aggregated at `level_K`.
+- **Combine** imports from the same `level_K` into **one** `from ...level_K import (...)` (or one line); do not split across multiple lines that only differ by submodule name.
+- **Within the same contest**: a file under `...<contest>.level_K` may import from **lower** contest levels only (`level_0` … `level_(K-1)` under that `<contest>`), not from the same or higher `level_K` of that contest.
+- Do not treat another contest’s tree (`...contests.other_contest...`) as a default import target unless the codebase explicitly requires it.
+- **Circular imports:** if going through `…level_K`’s `__init__.py` would create a cycle, import the **specific submodule** under `level_K` instead (full path to `…level_K.<module>`), localized — see `architecture.mdc` (“Package imports across contest tiers”).
+
+### Example (CSIRO)
+
+```python
+# ✅ GOOD — one package surface, symbols from level_1 __all__
+from layers.layer_1_competition.contests.level_csiro.level_1 import (
+    csiro_modeling,
+    resolve_model_paths_from_config,
+)
+
+# ❌ BAD — bypasses level_1 aggregation with extra submodule lines
+from layers.layer_1_competition.contests.level_csiro.level_1.model_selection import (
+    resolve_model_paths_from_config,
+)
+from layers.layer_1_competition.contests.level_csiro.level_1.modeling_shim import (
+    csiro_modeling,
+)
+```
+
+Contest `__init__.py` / registration patterns: `contest-package-registration.mdc`.

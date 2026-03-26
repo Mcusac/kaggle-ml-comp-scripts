@@ -1,0 +1,44 @@
+name: Code Health Check
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run weekly on Monday
+    - cron: '0 0 * * 1'
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt || true
+    
+    - name: Run health check
+      run: |
+        python scripts/dev/scripts/check_health.py --root input/kaggle-ml-comp-scripts --json > health_report.json
+
+    - name: CSIRO contest tier imports
+      working-directory: scripts
+      run: python dev/scan_csiro_level_violations.py
+    
+    - name: Upload health report
+      uses: actions/upload-artifact@v3
+      with:
+        name: health-report
+        path: health_report.json
+    
+    - name: Check thresholds
+      run: |
+        python scripts/dev/scripts/check_health_thresholds.py --report health_report.json || exit 1

@@ -1,0 +1,38 @@
+{
+    "efficientnet_b0": {
+        "name": "efficientnet_b0",
+        "type": "timm",
+        "pretrained": true,
+        "default_size": 224
+    },
+    "efficientnet_b3": {
+        "name": "efficientnet_b3",
+        "type": "timm",
+        "pretrained": true,
+        "default_size": 300
+    },
+    "resnet50": {
+        "name": "resnet50",
+        "type": "timm",
+        "pretrained": true,
+        "default_size": 224
+    },
+    "dinov2-base": {
+        "name": "facebook/dinov2-base",
+        "type": "dinov2",
+        "pretrained": true,
+        "default_size": 518
+    },
+    "dinov2-large": {
+        "name": "facebook/dinov2-large",
+        "type": "dinov2",
+        "pretrained": true,
+        "default_size": 518
+    },
+    "siglip-so400m-patch14-384": {
+        "name": "google/siglip-so400m-patch14-384",
+        "type": "siglip",
+        "pretrained": true,
+        "default_size": 384
+    }
+}

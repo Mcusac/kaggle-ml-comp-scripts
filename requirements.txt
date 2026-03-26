@@ -1,0 +1,42 @@
+# Core dependencies
+numpy>=1.21.0
+pandas>=1.3.0
+scikit-learn>=1.0.0
+scipy>=1.10.0
+
+# Deep learning
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Computer vision
+timm>=0.9.0
+albumentations>=1.3.0
+opencv-python>=4.5.0
+Pillow>=10.0.0
+
+# Transformers (for DINOv2 models)
+transformers>=4.30.0
+
+# Gradient boosting
+lightgbm>=4.0.0
+xgboost>=2.0.0
+catboost>=1.0.0
+
+# Tabular/Bioinformatics
+biopython>=1.81.0  # For sequence processing (CAFA)
+obonet>=1.3.0  # For GO ontology parsing (CAFA)
+networkx>=3.0  # For graph operations (CAFA)
+
+# Data & I/O
+pyyaml>=6.0
+h5py>=3.6.0
+
+# Progress & logging
+tqdm>=4.65.0
+
+# System utilities
+psutil>=5.8.0
+
+# Notebook support
+ipywidgets>=7.6.0
+jupyter>=1.0.0

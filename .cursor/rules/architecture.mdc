@@ -1,0 +1,65 @@
+---
+alwaysApply: true
+---
+
+---
+description: "Enforces level_N package dependency rules and structural organization standards"
+alwaysApply: true
+---
+
+# Package Architecture
+
+## Dependency Levels
+- The project is split into `level_0` through `level_N` packages representing strict dependency tiers
+- `level_N` may ONLY import from packages where the level number is strictly less than N
+- Importing from the same level or any higher level is strictly forbidden
+- If you are about to import from an equal or higher level, stop and flag it instead
+- A file's level is determined solely by what it imports — nothing else. Conceptual grouping, responsibility, or "where it feels right" are never reasons to change a file's level.
+
+## Minimum Level Placement
+- Place each module at the **lowest** level that satisfies its imports.
+- Formula: level = 1 + max(level of any imported framework package). Use level_0 when there are no framework imports.
+- Examples: stdlib-only → level_0; imports only level_0 → level_1; imports level_0 and level_1 → level_2.
+- Do not place a module in level_N if it only imports from level_M where M < N−1.
+
+## Dependency Philosophy
+- Higher level packages must maximize reuse of lower level packages
+- If logic already exists at a lower level, use it — do not rewrite it at a higher level
+- Duplicated logic that belongs at a lower level is a violation; flag it with `# VIOLATION: belongs in level_N`
+
+## Organization Within a Level
+- Each level is further divided into sub-packages organized strictly by focus and purpose. This conceptual organization is entirely within-level and has no bearing on level placement. Do not use organizational or SRP reasoning to justify moving a file to a different level — only dependency changes justify that.
+- A file or function in the wrong sub-package must be flagged for a move, not left in place
+- When in doubt about placement, ask before placing
+
+## Refactoring Pass Order
+Never mix concerns across passes. Complete one before starting the next:
+1. Structure and naming
+2. Dependency violations
+3. DRY and SOLID violations
+4. Docstrings and type hints
+
+## Layers layout (on disk vs imports)
+
+- **General stack:** `scripts/layers/layer_0_core/level_N/` — import as top-level `level_N` after `path_bootstrap.prepend_framework_paths()`.
+- **Competition infra (on disk):** `scripts/layers/layer_1_competition/infra/level_0` … `infra/level_4`. Import as **`layers.layer_1_competition.infra.level_N`**. There is **no** `scripts/level_C/` junction tree and no `level_C*` Python package for infra.
+- **Contest trees:** `scripts/layers/layer_1_competition/contests/<contest>/` (each with its own `level_0` … `level_K`). Import as **`layers.layer_1_competition.contests.<contest>.level_K`**.
+
+`scripts/path_bootstrap.py` prepends `layer_0_core` and `scripts/` on `sys.path` only (no filesystem links under `scripts/`).
+
+## Import style (contest code under `contests/`)
+
+Consolidated examples and numeric-level rules: `python-import-surfaces.mdc` (ordering: `python-import-order.mdc`).
+
+### Package imports across contest tiers
+- In **any** module under `layer_1_competition/contests/<contest>/`, when pulling symbols from a **lower** contest tier `level_K`, prefer `from layers.layer_1_competition.contests.<contest>.level_K import name` whenever `name` is re-exported from that tier’s `__init__.py` (e.g. `from layers.layer_1_competition.contests.level_csiro.level_0 import calc_metric`, not `from ...level_0.metrics import calc_metric`).
+- Do **not** drill into `...level_K.<module>` for symbols that already exist on the `level_K` package — that duplicates the stable entrypoint and scatters imports.
+- Group imports by package: one block per `layers.layer_1_competition.contests.<contest>.level_K` so related symbols stay together and layering stays obvious.
+- **Exception:** if importing via the `level_K` package would create a circular import through that package’s `__init__.py`, import the **specific submodule** under `level_K` instead (full path to `...level_K.<module>`), and keep the cycle-breaking import localized.
+
+### No same-level relative imports between siblings
+- Avoid `from .sibling_module import …` when the importer and sibling live in the same package directory (e.g. multiple `variant_selection_*.py` under the same `level_N`). That pattern usually means the dependency graph is unclear or the file is at the wrong level.
+- Prefer a **fully qualified** import that names the owning package and module (e.g. `from layers.layer_1_competition.contests.level_csiro.level_2.variant_selection_internal import …`), or **move** the module to the lowest level consistent with what it imports so cross-level dependencies read correctly.
+
+### Import spelling does not change layer obligations
+- Using a long absolute import path does **not** satisfy the tier rule: if module A under `contests/<contest>/level_N` needs symbols from another module under the **same** `level_N`, that is still a same-level dependency. **Move** the dependent module to `level_{N+1}` (or merge into one module) so imports only flow upward numerically.

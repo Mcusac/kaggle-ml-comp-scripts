@@ -1,0 +1,35 @@
+---
+description: Layer 2 devtools — imports, infra boundary, ranks, tests under level_1_impl
+globs: scripts/layers/layer_2_devtools/**/*.py
+---
+
+# Devtools import and placement
+
+## Package layout
+
+- **`layers.layer_2_devtools.level_0_infra`**: infrastructure tiers
+  - **`level_0`**: atomic building blocks (path, parse, scan, format primitives, contracts, …).
+  - **`level_1`**: composed helpers (section formatters, rollup skeleton, threshold checker vs. report dict, hyperparameter analysis).
+  - **`level_2`**: console reporter (`ConsoleReporter`) built from `level_0` + `level_1`.
+- **`layers.layer_2_devtools.level_1_impl`**: workflows and public API modules (`level_0.composed`, `level_1.api_*`, CLI scripts under `level_2`).
+
+## Package exports (logic vs `__init__.py`)
+
+- **Logic modules** (non-`__init__.py`): prefer symbols from the owning package root when re-exported, e.g. `from layers.layer_2_devtools.level_0_infra.level_0.format import FormattingHelpers`.
+- **`__init__.py`**: use **relative** imports to assemble the public surface; callers use the package path.
+
+## Dependency checker (no ad-hoc composition exceptions)
+
+- **Buckets and ranks** (low → high): `infra_level_0` (0) < `infra_level_1` (1) < `infra_level_2` (2) < `impl_level_0` (3) < `impl_level_1` (4) < `scripts_dev` (5).
+- **Cross-bucket**: violation **upward** if `rank(target) > rank(source)`.
+- **Same bucket**: peer imports are allowed (no separate `same_level` carve-outs).
+- **Infra → `layers.*`**: only `layers.layer_0_core` and `layers.layer_2_devtools.level_0_infra` are allowed; any other `layers.*` target is **illegal_external**.
+- **Other `layers.*`**: existing rule still flags disallowed external layers (outside `layer_2_devtools` and `layer_0_core`) for in-scope sources.
+
+## Tests
+
+- Devtools tests live under **`layers/layer_2_devtools/level_1_impl/tests`**. They are **not** included in the dependency scan (so arbitrary imports for fixtures/smoke tests do not pollute the production graph).
+
+## Naming
+
+- Canonical import roots are **`level_0_infra`** and **`level_1_impl`** — not `infra` / `impl`.

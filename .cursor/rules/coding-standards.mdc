@@ -1,0 +1,33 @@
+---
+alwaysApply: true
+---
+---
+description: "Coding standards, naming conventions, and unimplemented code rules for all packages"
+alwaysApply: true
+---
+
+# Coding Standards
+
+## Principles
+- Follow DRY, SOLID, KISS, and YAGNI at all times
+- Every module, class, and function must have a single, clearly defined responsibility
+- Do not build for hypothetical future needs — only what is required now
+
+## Naming
+- All packages, sub-packages, files, classes, and functions must be named to reflect actual purpose and behavior
+- Names based on implementation detail, history, or accident must be flagged for renaming
+- A name should answer the question: "what does this do?" not "how does it do it?"
+
+## Unimplemented Code
+- Never leave unimplemented code unmarked or silently passing
+- Mark all unimplemented code explicitly:
+  `# TODO: NOT IMPLEMENTED — wire later`
+- Stub functions must raise `NotImplementedError` rather than passing silently
+
+## Flagging Conventions
+Use these inline flags consistently so they are easy to search:
+- `# TODO: NOT IMPLEMENTED — wire later`
+- `# VIOLATION: dependency — imports from level_N (too high)`
+- `# VIOLATION: DRY — logic duplicated from level_N/<module>`
+- `# CANDIDATE: move to level_N/<module>`
+- `# FLAG: naming — does not reflect actual purpose`
