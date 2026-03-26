@@ -43,6 +43,10 @@ data/
 *.h5
 *.hdf5
 
+# Keep source package data modules tracked (this is code, not dataset content)
+!scripts/layers/layer_0_core/level_1/data/
+!scripts/layers/layer_0_core/level_1/data/**
+
 # Models
 models/
 *.pth
