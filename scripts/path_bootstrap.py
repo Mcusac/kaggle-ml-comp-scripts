@@ -33,13 +33,30 @@ def prepend_framework_paths(*, ensure_level_c: bool = True) -> None:
 
 
 def resolve_notebook_scripts_path(scripts_package: str = "kaggle-ml-comp-scripts") -> str:
-    """Resolve ``.../scripts`` for a Kaggle input dataset (stdlib only; no imports from ``layers``)."""
+    """Resolve ``.../scripts`` for Kaggle/local layouts (stdlib only)."""
     is_kaggle = os.environ.get("KAGGLE_KERNEL_RUN_TYPE", "") != ""
+
+    candidates = []
     if is_kaggle:
-        return f"/kaggle/input/{scripts_package}/scripts"
-    cand = f"../input/{scripts_package}/scripts"
-    alt = f"../{scripts_package}/scripts"
-    return cand if os.path.isdir(cand) else alt
+        candidates.extend(
+            [
+                f"/kaggle/input/datasets/mcusac/{scripts_package}/scripts",
+                f"/kaggle/input/{scripts_package}/scripts",
+            ]
+        )
+
+    candidates.extend(
+        [
+            f"../input/{scripts_package}/scripts",
+            f"../{scripts_package}/scripts",
+        ]
+    )
+
+    for candidate in candidates:
+        if os.path.isdir(candidate):
+            return candidate
+
+    return candidates[0] if candidates else f"../input/{scripts_package}/scripts"
 
 
 def bootstrap_notebook_environment(
