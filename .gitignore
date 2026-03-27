@@ -54,6 +54,10 @@ models/
 *.pkl
 *.pickle
 
+# Keep source package model modules tracked (this is code, not artifacts)
+!scripts/layers/layer_0_core/level_2/models/
+!scripts/layers/layer_0_core/level_2/models/**
+
 # Keep source package vision model modules tracked (this is code, not artifacts)
 !scripts/layers/layer_0_core/level_1/data/domain/vision/models/
 !scripts/layers/layer_0_core/level_1/data/domain/vision/models/**
