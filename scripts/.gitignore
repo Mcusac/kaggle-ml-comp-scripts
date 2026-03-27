@@ -1,0 +1,16 @@
+# `scripts/` is intended to be code (or code-adjacent docs).
+# The root `.gitignore` contains broad directory-name ignores like `models/` and `data/`
+# to avoid committing artifacts. Those rules should not hide code packages under `scripts/layers/**`.
+
+# Keep any code packages named `models` tracked under layers
+!layers/**/models/
+!layers/**/models/**
+
+# Keep any code packages named `data` tracked under layers
+!layers/**/data/
+!layers/**/data/**
+
+# Keep cache as code when it lives under layers (runtime caches elsewhere remain ignored by root rules)
+!layers/**/cache/
+!layers/**/cache/**
+
