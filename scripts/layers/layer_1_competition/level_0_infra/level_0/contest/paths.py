@@ -90,10 +90,16 @@ class ContestPaths(ABC):
         Data root for this contest: Kaggle input, local mimic (input/), or local_data_path.
 
         - On Kaggle: /kaggle/input/<kaggle_dataset_name>
+        - On Kaggle (competition mount): /kaggle/input/competitions/<kaggle_competition_name>
         - Local mimic (repo with input/): <project_root>/input/<kaggle_dataset_name>
         - Else: Path(local_data_path) resolved against cwd
         """
         if is_kaggle():
+            comp_name = (self.kaggle_competition_name or "").strip()
+            if comp_name:
+                comp_root = Path("/kaggle/input/competitions") / comp_name
+                if comp_root.exists():
+                    return comp_root
             return Path(self.kaggle_input_path)
         mimic = _find_mimic_data_root(self.kaggle_dataset_name, __file__)
         if mimic is not None:
