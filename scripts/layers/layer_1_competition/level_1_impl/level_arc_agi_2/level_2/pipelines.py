@@ -7,6 +7,13 @@ from typing import Any, Optional
 
 from layers.layer_0_core.level_0 import ensure_dir, get_logger
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import ARC26Paths, ARC26PostProcessor
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
+    RunContext,
+    copy_artifact_into_run,
+    finalize_run_failure,
+    finalize_run_success,
+    update_run_metadata,
+)
 
 logger = get_logger(__name__)
 
@@ -26,7 +33,12 @@ def _build_blank_grid_like(input_grid: list[list[int]]) -> list[list[int]]:
     return [[0 for _ in row] for row in input_grid]
 
 
-def run_train_pipeline(data_root: str, train_mode: str, models: list[str]) -> Path:
+def run_train_pipeline(
+    data_root: str,
+    train_mode: str,
+    models: list[str],
+    run_ctx: Optional[RunContext] = None,
+) -> Path:
     """Persist deterministic starter metadata for train stage."""
     root = Path(data_root)
     if not root.exists():
@@ -44,6 +56,20 @@ def run_train_pipeline(data_root: str, train_mode: str, models: list[str]) -> Pa
     }
     _save_json(metadata, metadata_path)
     logger.info("Wrote ARC training metadata: %s", metadata_path)
+    if run_ctx is not None:
+        try:
+            update_run_metadata(
+                run_ctx,
+                {
+                    "config": {"train": {"train_mode": str(train_mode), "models": [str(m) for m in models]}},
+                    "inputs": {"data_root": str(root)},
+                    "artifacts": {"train_metadata_json_src": str(metadata_path)},
+                },
+            )
+            copy_artifact_into_run(run_ctx, src=metadata_path, dest_name="train_metadata.json")
+            finalize_run_success(run_ctx)
+        except Exception as e:
+            finalize_run_failure(run_ctx, e)
     return metadata_path
 
 
@@ -52,6 +78,7 @@ def run_tune_pipeline(
     model_name: str,
     search_type: str = "quick",
     max_targets: int = 0,
+    run_ctx: Optional[RunContext] = None,
 ) -> Path:
     """Persist deterministic starter tuning artifact."""
     root = Path(data_root)
@@ -69,6 +96,26 @@ def run_tune_pipeline(
     }
     _save_json(result, tune_path)
     logger.info("Wrote ARC tuning metadata: %s", tune_path)
+    if run_ctx is not None:
+        try:
+            update_run_metadata(
+                run_ctx,
+                {
+                    "config": {
+                        "tune": {
+                            "model_name": str(model_name),
+                            "search_type": str(search_type),
+                            "max_targets": int(max_targets),
+                        }
+                    },
+                    "inputs": {"data_root": str(root)},
+                    "artifacts": {"best_config_json_src": str(tune_path)},
+                },
+            )
+            copy_artifact_into_run(run_ctx, src=tune_path, dest_name="best_config.json")
+            finalize_run_success(run_ctx)
+        except Exception as e:
+            finalize_run_failure(run_ctx, e)
     return tune_path
 
 
@@ -77,6 +124,7 @@ def run_submission_pipeline(
     strategy: str,
     output_json: Optional[str] = None,
     max_targets: int = 0,
+    run_ctx: Optional[RunContext] = None,
 ) -> Path:
     """Create a valid ARC submission.json baseline."""
     root = Path(data_root)
@@ -115,5 +163,19 @@ def run_submission_pipeline(
     out_path = Path(output_json) if output_json else ARC26Paths().submission_output_path()
     _save_json(submission, out_path)
     logger.info("Wrote ARC submission (%s strategy): %s", strategy, out_path)
+    if run_ctx is not None:
+        try:
+            update_run_metadata(
+                run_ctx,
+                {
+                    "config": {"submit": {"strategy": str(strategy), "max_targets": int(max_targets)}},
+                    "inputs": {"data_root": str(root)},
+                    "artifacts": {"submission_json_src": str(out_path)},
+                },
+            )
+            copy_artifact_into_run(run_ctx, src=out_path, dest_name="submission.json")
+            finalize_run_success(run_ctx)
+        except Exception as e:
+            finalize_run_failure(run_ctx, e)
     return out_path
 

@@ -1,14 +1,13 @@
-"""ARC level_2 handlers."""
+"""ARC level_2 pipelines."""
 
-from .handlers import (
-    FRAMEWORK_SUBPARSER_NAMES_TO_SKIP,
-    extend_subparsers,
-    get_handlers,
+from .pipelines import (
+    run_submission_pipeline,
+    run_train_pipeline,
+    run_tune_pipeline,
 )
 
 __all__ = [
-    "FRAMEWORK_SUBPARSER_NAMES_TO_SKIP",
-    "extend_subparsers",
-    "get_handlers",
+    "run_submission_pipeline",
+    "run_train_pipeline",
+    "run_tune_pipeline",
 ]
-

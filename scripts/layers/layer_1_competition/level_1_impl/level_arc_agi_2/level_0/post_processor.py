@@ -1,9 +1,9 @@
 """ARC submission post-processing helpers."""
 
+import numpy as np
+
 from copy import deepcopy
 from typing import Any
-
-import numpy as np
 
 from layers.layer_1_competition.level_0_infra.level_0 import ContestPostProcessor
 
