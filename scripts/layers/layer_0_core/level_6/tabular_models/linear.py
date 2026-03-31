@@ -3,8 +3,8 @@
 import numpy as np
 
 from layers.layer_0_core.level_0 import get_logger
-from level_2 import get_logistic_regression, get_ridge_classifier
-from level_5 import BaseTabularModel
+from layers.layer_0_core.level_2 import get_logistic_regression, get_ridge_classifier
+from layers.layer_0_core.level_5 import BaseTabularModel
 
 logger = get_logger(__name__)
 

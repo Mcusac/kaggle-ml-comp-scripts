@@ -1,14 +1,8 @@
-"""ARC level_2 handlers."""
+"""ARC level_3: model trainer registry."""
 
-from .handlers import (
-    FRAMEWORK_SUBPARSER_NAMES_TO_SKIP,
-    extend_subparsers,
-    get_handlers,
-)
+from .trainer_registry import get_trainer, list_available_models
 
 __all__ = [
-    "FRAMEWORK_SUBPARSER_NAMES_TO_SKIP",
-    "extend_subparsers",
-    "get_handlers",
+    "get_trainer",
+    "list_available_models",
 ]
-

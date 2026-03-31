@@ -1,11 +1,13 @@
 """Base head for vision models (classification/regression)."""
 
-from typing import Optional
+from typing import Any, Optional
 
 from layers.layer_0_core.level_0 import get_torch
 
 torch = get_torch()
 _NNModule = torch.nn.Module if torch is not None else object
+ModuleT = torch.nn.Module if torch is not None else Any
+TensorT = torch.Tensor if torch is not None else Any
 
 
 class BaseHead(_NNModule):
@@ -40,8 +42,10 @@ class BaseHead(_NNModule):
                 torch.nn.Linear(hidden_size, out_features),
             )
 
-    def _get_activation(self, activation: str) -> torch.nn.Module:
+    def _get_activation(self, activation: str) -> ModuleT:
         """Return activation module by name."""
+        if torch is None:
+            raise RuntimeError("PyTorch is required to build vision heads.")
         activation = activation.lower()
         if activation == "relu":
             return torch.nn.ReLU(inplace=True)
@@ -51,7 +55,9 @@ class BaseHead(_NNModule):
             return torch.nn.SiLU(inplace=True)
         raise ValueError(f"Unknown activation: {activation}")
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
+    def forward(self, x: TensorT) -> TensorT:
+        if torch is None:
+            raise RuntimeError("PyTorch is required to run vision heads.")
         return self.head(x)
 
 

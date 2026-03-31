@@ -3,6 +3,7 @@
 from .orchestration import (
     get_trainer,
     list_available_models,
+    run_train_and_submit_pipeline_result,
     submit_pipeline,
     tune_pipeline,
 )
@@ -10,6 +11,7 @@ from .orchestration import (
 __all__ = [
     "get_trainer",
     "list_available_models",
+    "run_train_and_submit_pipeline_result",
     "submit_pipeline",
     "tune_pipeline",
 ]

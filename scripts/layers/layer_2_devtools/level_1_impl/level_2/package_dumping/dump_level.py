@@ -5,17 +5,16 @@ Usage: python dump_level.py level_0
 (from dev/scripts/package_dumping, with cwd such that package_dumps/ is writable)
 """
 
-from __future__ import annotations
-
 import argparse
 import sys
+
 from pathlib import Path
 
 _SCRIPTS = Path(__file__).resolve().parent.parent.parent.parent
 if str(_SCRIPTS) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS))
 
-from layers.layer_2_devtools.level_1_impl.level_1.api_maintenance import (
+from layers.layer_2_devtools.level_1_impl.level_1 import (
     run_dump_level_preset_cli_api,
 )
 

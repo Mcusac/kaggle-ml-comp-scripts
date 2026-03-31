@@ -53,6 +53,7 @@ def get_framework_subparser_skips(contest_name: str) -> FrozenSet[str]:
     Subcommand names the framework should not register so the contest handlers
     module can own those parsers (same public CLI names, no argparse conflict).
     """
+    _try_import_contest_registration(contest_name)
     try:
         mod = get_cli_handlers_module(contest_name)
     except ValueError:
@@ -215,6 +216,7 @@ def load_contest_handlers(contest_name: str, subparsers: argparse._SubParsersAct
     """
     contest_handlers: Dict[str, Any] = {}
     try:
+        _try_import_contest_registration(contest_name)
         mod = get_cli_handlers_module(contest_name)
         ext = getattr(mod, 'extend_subparsers', None)
         get_h = getattr(mod, 'get_handlers', None)

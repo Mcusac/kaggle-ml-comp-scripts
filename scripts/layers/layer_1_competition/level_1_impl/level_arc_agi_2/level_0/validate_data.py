@@ -1,18 +1,12 @@
 """ARC JSON contract validation."""
 
-import json
-
 from pathlib import Path
 from typing import Any
 
 from layers.layer_0_core.level_0 import get_logger
+from layers.layer_0_core.level_4 import load_json
 
 logger = get_logger(__name__)
-
-
-def _load_json(path: Path) -> Any:
-    with path.open("r", encoding="utf-8") as f:
-        return json.load(f)
 
 
 def _is_valid_grid(grid: Any) -> bool:
@@ -137,16 +131,16 @@ def validate_arc_inputs(data_root: str, max_targets: int = 0) -> None:
         if not p.exists():
             raise FileNotFoundError(f"Missing required ARC file: {p}")
 
-    train_data = _load_json(train_challenges)
-    eval_data = _load_json(eval_challenges)
-    test_data = _load_json(test_challenges)
+    train_data = load_json(train_challenges)
+    eval_data = load_json(eval_challenges)
+    test_data = load_json(test_challenges)
 
     _validate_challenges(train_data, max_targets=max_targets)
     _validate_challenges(eval_data, max_targets=max_targets)
     _validate_challenges(test_data, max_targets=max_targets)
 
     if sample_submission.exists():
-        sample_data = _load_json(sample_submission)
+        sample_data = load_json(sample_submission)
         _validate_submission_contract(test_data, sample_data)
 
     logger.info("ARC inputs validated")

@@ -5,7 +5,7 @@ from typing import Any, Dict, List, Union
 
 from layers.layer_0_core.level_0 import extract_results_list, get_logger, merge_focused_ranges_into_base_grid
 from layers.layer_0_core.level_1 import get_transformer_hyperparameter_grid
-from level_4 import load_json
+from layers.layer_0_core.level_4 import load_json
 
 logger = get_logger(__name__)
 

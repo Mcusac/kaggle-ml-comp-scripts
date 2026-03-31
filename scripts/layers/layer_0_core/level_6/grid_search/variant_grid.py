@@ -5,7 +5,7 @@ from typing import Dict, List, Any, Optional, Tuple, Union
 
 from layers.layer_0_core.level_0 import DATASET_TYPE_SPLIT, get_logger
 from layers.layer_0_core.level_1 import get_transformer_hyperparameter_grid
-from level_5 import find_metadata_dir
+from layers.layer_0_core.level_5 import find_metadata_dir
 
 logger = get_logger(__name__)
 

@@ -27,6 +27,7 @@ from layers.layer_1_competition.level_1_impl.level_rna3d.level_0 import (
     RNA3DPaths,
     RNA3DPostProcessor,
 )
+from layers.layer_1_competition.level_0_infra.paths import contest_submission_path
 
 logger = get_logger(__name__)
 
@@ -373,7 +374,7 @@ def format_predictions_to_submission_csv(
     if output_csv:
         out_path = Path(output_csv)
     else:
-        out_path = RNA3DPaths().get_output_dir() / "submission.csv"
+        out_path = contest_submission_path(RNA3DPaths(), "submission.csv")
     ensure_dir(out_path.parent)
     df.to_csv(out_path, index=False)
 

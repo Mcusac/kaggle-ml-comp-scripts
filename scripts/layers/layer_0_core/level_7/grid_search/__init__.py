@@ -1,6 +1,6 @@
 """Grid search: hyperparameter base, variant builders, execution; results/cleanup from level_6."""
 
-from level_6 import (
+from layers.layer_0_core.level_6 import (
     auto_detect_grid_search_results,
     calculate_focused_grid_size,
     get_completed_count,

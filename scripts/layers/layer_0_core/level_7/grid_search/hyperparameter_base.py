@@ -5,7 +5,7 @@ from typing import Dict, List, Any, Tuple
 from itertools import product
 
 from layers.layer_0_core.level_0 import get_logger
-from level_6 import GridSearchBase
+from layers.layer_0_core.level_6 import GridSearchBase
 
 logger = get_logger(__name__)
 

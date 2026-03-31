@@ -21,10 +21,8 @@ def list_contests_with_notebook_commands() -> List[str]:
 def get_notebook_commands_module(contest: str) -> ModuleType:
     """Import and return the ``notebook_commands`` module for ``contest``.
 
-    If the contest is not yet in the dispatch map, imports
-    ``layers.layer_1_competition.level_1_impl.level_{contest}.registration`` once
-    (convention: package ``level_cafa``, ``level_csiro``, ``level_rna3d``) so
-    notebook flows load only that contest's registration side effects.
+    This module intentionally does not import contest implementations. Callers must
+    import the contest's ``registration`` module first to populate this dispatch map.
 
     Args:
         contest: Registry contest name (e.g. ``rna3d``, ``csiro``).
@@ -36,18 +34,11 @@ def get_notebook_commands_module(contest: str) -> ModuleType:
     key = (contest or "").strip().lower()
     mod_path = _NOTEBOOK_COMMAND_MODULES.get(key)
     if mod_path is None:
-        try:
-            importlib.import_module(
-                f"layers.layer_1_competition.level_1_impl.level_{key}.registration"
-            )
-        except ModuleNotFoundError:
-            pass
-        mod_path = _NOTEBOOK_COMMAND_MODULES.get(key)
-    if mod_path is None:
         available = ", ".join(list_contests_with_notebook_commands()) or "(none)"
         raise ValueError(
             f"No notebook_commands registered for contest {contest!r}. "
-            f"Available: {available}"
+            f"Available: {available}. "
+            f"Import `layers.layer_1_competition.level_1_impl.level_{key}.registration` first."
         )
     return importlib.import_module(mod_path)
 

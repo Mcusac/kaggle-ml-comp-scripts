@@ -1,7 +1,7 @@
 """Common CLI argument helpers for contest subparsers."""
 
 import argparse
-from typing import Any, Dict
+from typing import Any, Dict, List, Optional
 
 from ..paths import get_data_root_path
 
@@ -42,3 +42,32 @@ def resolve_data_root_from_args(args: Any) -> str:
     ``args.data_root`` is unset.
     """
     return getattr(args, "data_root", None) or get_data_root_path()
+
+
+def parse_models_csv(raw: Optional[str], *, default: Optional[List[str]] = None) -> List[str]:
+    """
+    Parse comma-separated model names from a CLI flag.
+
+    Behavior is intentionally minimal and stable:
+    - Empty/whitespace input returns ``default`` (or ``["baseline_approx"]`` when unset).
+    - Otherwise, splits by comma and strips whitespace, dropping empty pieces.
+    """
+    if not raw or not str(raw).strip():
+        return list(default) if default is not None else ["baseline_approx"]
+    return [piece.strip() for piece in str(raw).split(",") if piece.strip()]
+
+
+def parse_optional_float_list(raw: Optional[str]) -> Optional[List[float]]:
+    """
+    Parse comma-separated floats from a CLI flag.
+
+    Returns None when the input is empty/whitespace; otherwise returns a list of floats.
+    """
+    if not raw or not str(raw).strip():
+        return None
+    return [float(x.strip()) for x in str(raw).split(",") if x.strip()]
+
+
+def parse_weights_csv(raw: Optional[str]) -> Optional[List[float]]:
+    """Semantic alias for `parse_optional_float_list` for ensemble/stacking weights."""
+    return parse_optional_float_list(raw)

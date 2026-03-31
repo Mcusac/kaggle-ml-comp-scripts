@@ -1,13 +1,9 @@
-"""ARC level_2 pipelines."""
+"""ARC level_2: training + inference utilities (no orchestration)."""
 
-from .pipelines import (
-    run_submission_pipeline,
-    run_train_pipeline,
-    run_tune_pipeline,
-)
+from .inference import predict_grid_from_checkpoint
+from .train import run_grid_cnn_training
 
 __all__ = [
-    "run_submission_pipeline",
-    "run_train_pipeline",
-    "run_tune_pipeline",
+    "predict_grid_from_checkpoint",
+    "run_grid_cnn_training",
 ]

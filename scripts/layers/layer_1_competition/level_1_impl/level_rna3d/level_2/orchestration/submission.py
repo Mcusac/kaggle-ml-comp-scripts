@@ -1,6 +1,5 @@
 """RNA3D submission pipeline: single, ensemble, and stacking strategies."""
 
-import json
 import numpy as np
 import pandas as pd
 
@@ -20,6 +19,9 @@ from layers.layer_1_competition.level_1_impl.level_rna3d.level_1 import (
     format_predictions_to_submission_csv,
     run_baseline_approx_predictions,
 )
+from layers.layer_1_competition.level_0_infra.level_1.contest import ValidateFirstRunner
+from layers.layer_1_competition.level_0_infra.artifacts import load_best_config_json
+from layers.layer_1_competition.level_0_infra.submission import validate_strategy_models
 
 logger = get_logger(__name__)
 
@@ -43,10 +45,7 @@ def _load_model_config(model_name: str, model_dir: Optional[str] = None) -> Base
     if model_dir:
         config_path = Path(model_dir) / "best_config.json"
         if config_path.exists():
-            with config_path.open() as f:
-                cfg_dict = json.load(f)
-            cfg_dict.pop("_tune_score", None)
-            cfg_dict.pop("_tune_search_type", None)
+            cfg_dict = load_best_config_json(config_path)
             return BaselineApproxConfig(**cfg_dict)
 
     return BaselineApproxConfig()
@@ -84,6 +83,8 @@ def submit_pipeline(
     model_configs: Optional[Dict[str, BaselineApproxConfig]] = None,
     ensemble_weights: Optional[List[float]] = None,
     use_validation_for_stacking: bool = True,
+    *,
+    validate_first: bool = True,
 ) -> Path:
     """Build a submission CSV using ``strategy`` and ``models``.
 
@@ -104,117 +105,119 @@ def submit_pipeline(
     if not root.exists():
         raise FileNotFoundError(f"data_root does not exist: {root}")
 
-    validate_rna3d_inputs(data_root=data_root, max_targets=0)
+    def _run() -> Path:
+        test_sequences_path = root / "test_sequences.csv"
+        if not test_sequences_path.exists():
+            raise FileNotFoundError(f"Missing required file: {test_sequences_path}")
 
-    test_sequences_path = root / "test_sequences.csv"
-    if not test_sequences_path.exists():
-        raise FileNotFoundError(f"Missing required file: {test_sequences_path}")
+        test_seqs = pd.read_csv(test_sequences_path, usecols=["target_id", "sequence"])
+        if max_targets and max_targets > 0:
+            test_seqs = test_seqs.head(int(max_targets))
 
-    test_seqs = pd.read_csv(test_sequences_path, usecols=["target_id", "sequence"])
-    if max_targets and max_targets > 0:
-        test_seqs = test_seqs.head(int(max_targets))
+        if model_configs is None:
+            resolved_configs: Dict[str, BaselineApproxConfig] = {}
+        else:
+            resolved_configs = model_configs
 
-    if model_configs is None:
-        model_configs = {}
+        logger.info("Submission strategy: %s", strategy)
+        logger.info("  Models: %s", models)
+        validate_strategy_models(strategy, models)
 
-    logger.info("Submission strategy: %s", strategy)
-    logger.info("  Models: %s", models)
-
-    if strategy == "single":
-        if len(models) != 1:
-            raise ValueError(f"Strategy 'single' requires exactly 1 model, got {len(models)}")
-
-        model_name = models[0]
-        config = model_configs.get(model_name) or _load_model_config(model_name)
-        predictions = _predict_baseline_approx(
-            data_root=data_root,
-            config=config,
-            test_sequences=test_seqs,
-        )
-
-    elif strategy == "ensemble":
-        if len(models) < 2:
-            raise ValueError(f"Strategy 'ensemble' requires at least 2 models, got {len(models)}")
-
-        predictions_list = []
-        for model_name in models:
-            config = model_configs.get(model_name) or _load_model_config(model_name)
-            preds = _predict_baseline_approx(
+        if strategy == "single":
+            model_name = models[0]
+            config = resolved_configs.get(model_name) or _load_model_config(model_name)
+            predictions = _predict_baseline_approx(
                 data_root=data_root,
                 config=config,
                 test_sequences=test_seqs,
             )
-            predictions_list.append(preds)
 
-        predictions = combine_predictions_weighted_average(
-            predictions_list=predictions_list,
-            weights=ensemble_weights,
-        )
+        elif strategy == "ensemble":
+            predictions_list = []
+            for model_name in models:
+                config = resolved_configs.get(model_name) or _load_model_config(model_name)
+                preds = _predict_baseline_approx(
+                    data_root=data_root,
+                    config=config,
+                    test_sequences=test_seqs,
+                )
+                predictions_list.append(preds)
 
-    elif strategy == "stacking":
-        if len(models) < 2:
-            raise ValueError(f"Strategy 'stacking' requires at least 2 models, got {len(models)}")
-
-        predictions_list = []
-        for model_name in models:
-            config = model_configs.get(model_name) or _load_model_config(model_name)
-            preds = _predict_baseline_approx(
-                data_root=data_root,
-                config=config,
-                test_sequences=test_seqs,
+            predictions = combine_predictions_weighted_average(
+                predictions_list=predictions_list,
+                weights=ensemble_weights,
             )
-            predictions_list.append(preds)
 
-        if use_validation_for_stacking:
-            validation_labels_path = root / "validation_labels.csv"
-            if validation_labels_path.exists():
-                validation_labels = pd.read_csv(validation_labels_path)
-                validation_seqs_path = root / "validation_sequences.csv"
-                if validation_seqs_path.exists():
-                    validation_seqs = pd.read_csv(
-                        validation_seqs_path, usecols=["target_id", "sequence"]
-                    )
-                    val_predictions_list = []
-                    for model_name in models:
-                        config = model_configs.get(model_name) or _load_model_config(model_name)
-                        val_preds = _predict_baseline_approx(
-                            data_root=data_root,
-                            config=config,
-                            test_sequences=validation_seqs,
+        elif strategy == "stacking":
+            predictions_list = []
+            for model_name in models:
+                config = resolved_configs.get(model_name) or _load_model_config(model_name)
+                preds = _predict_baseline_approx(
+                    data_root=data_root,
+                    config=config,
+                    test_sequences=test_seqs,
+                )
+                predictions_list.append(preds)
+
+            if use_validation_for_stacking:
+                validation_labels_path = root / "validation_labels.csv"
+                if validation_labels_path.exists():
+                    validation_labels = pd.read_csv(validation_labels_path)
+                    validation_seqs_path = root / "validation_sequences.csv"
+                    if validation_seqs_path.exists():
+                        validation_seqs = pd.read_csv(
+                            validation_seqs_path, usecols=["target_id", "sequence"]
                         )
-                        val_predictions_list.append(val_preds)
+                        val_predictions_list = []
+                        for model_name in models:
+                            config = resolved_configs.get(model_name) or _load_model_config(model_name)
+                            val_preds = _predict_baseline_approx(
+                                data_root=data_root,
+                                config=config,
+                                test_sequences=validation_seqs,
+                            )
+                            val_predictions_list.append(val_preds)
 
-                    stacking_weights = _fit_stacking_weights(
-                        predictions_list=val_predictions_list,
-                        validation_labels=validation_labels,
-                    )
+                        stacking_weights = _fit_stacking_weights(
+                            predictions_list=val_predictions_list,
+                            validation_labels=validation_labels,
+                        )
+                    else:
+                        stacking_weights = None
                 else:
                     stacking_weights = None
             else:
                 stacking_weights = None
-        else:
-            stacking_weights = None
 
-        predictions = combine_predictions_weighted_average(
-            predictions_list=predictions_list,
-            weights=stacking_weights,
+            predictions = combine_predictions_weighted_average(
+                predictions_list=predictions_list,
+                weights=stacking_weights,
+            )
+
+        else:
+            raise ValueError(f"Unknown strategy: {strategy}")
+
+        if predictions:
+            first_pred = next(iter(predictions.values()))
+            n_structures = first_pred.shape[1]
+        else:
+            n_structures = 5
+
+        out_path = format_predictions_to_submission_csv(
+            predictions=predictions,
+            sequences_df=test_seqs,
+            n_structures=n_structures,
+            output_csv=output_csv,
         )
 
-    else:
-        raise ValueError(f"Unknown strategy: {strategy}")
+        logger.info("Wrote submission: %s", out_path)
+        return out_path
 
-    if predictions:
-        first_pred = next(iter(predictions.values()))
-        n_structures = first_pred.shape[1]
-    else:
-        n_structures = 5
-
-    out_path = format_predictions_to_submission_csv(
-        predictions=predictions,
-        sequences_df=test_seqs,
-        n_structures=n_structures,
-        output_csv=output_csv,
-    )
-
-    logger.info("Wrote submission: %s", out_path)
-    return out_path
+    if validate_first:
+        return ValidateFirstRunner(
+            validate_fn=validate_rna3d_inputs,
+            run_fn=_run,
+            data_root=data_root,
+            max_targets=0,
+        ).run()
+    return _run()

@@ -4,7 +4,6 @@ All run-tracking logic is intentionally implemented inside the ARC contest packa
 to allow fast iteration before any cross-contest abstractions are introduced.
 """
 
-import json
 import os
 import platform
 import shutil
@@ -18,7 +17,14 @@ from typing import Any, Optional
 
 from layers.layer_0_core.level_0 import ensure_dir, get_logger, is_kaggle
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import ARC26Paths
+from layers.layer_1_competition.level_0_infra.level_0 import (
+    ensure_run_dir, 
+    read_json, 
+    write_json,
+    ContestRunPathsProtocol,
+    contest_run_dir, 
+    contest_runs_root,
+    )
 
 logger = get_logger(__name__)
 
@@ -38,27 +44,22 @@ def generate_run_id(stage: str, seed: int) -> str:
     return f"{ts}_{_safe_stage_slug(stage)}_seed{int(seed)}"
 
 
-def default_runs_root() -> Path:
+def default_runs_root(paths: Optional[ContestRunPathsProtocol] = None) -> Path:
     """Return `/kaggle/working/arc_agi_2/runs` (or local output mirror)."""
-    return ARC26Paths().get_output_dir() / "arc_agi_2" / "runs"
+    base_paths = paths if paths is not None else ARC26Paths()
+    return contest_runs_root(base_paths, "arc_agi_2")
 
 
-def resolve_run_dir(run_id: str, run_dir: Optional[str] = None) -> Path:
+def resolve_run_dir(
+    run_id: str,
+    run_dir: Optional[str] = None,
+    paths: Optional[ContestRunPathsProtocol] = None,
+) -> Path:
     """Resolve run directory from explicit path or `(runs_root / run_id)`."""
     if run_dir and str(run_dir).strip():
         return Path(str(run_dir)).expanduser().resolve()
-    return (default_runs_root() / str(run_id)).resolve()
-
-
-def _read_json(path: Path) -> Any:
-    with path.open("r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-def _write_json(path: Path, data: Any) -> None:
-    ensure_dir(path.parent)
-    with path.open("w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+    base_paths = paths if paths is not None else ARC26Paths()
+    return contest_run_dir(base_paths, "arc_agi_2", str(run_id))
 
 
 def _merge_dict(dst: dict[str, Any], patch: dict[str, Any]) -> dict[str, Any]:
@@ -119,15 +120,17 @@ def init_run_context(
     run_id: Optional[str] = None,
     run_dir: Optional[str] = None,
     argv: Optional[list[str]] = None,
+    paths: Optional[ContestRunPathsProtocol] = None,
 ) -> RunContext:
-    """Create run folder and write initial `run_metadata.json` (status=running)."""
+    """Create run folder and write initial `run_metadata.json` (status=running).
+
+    ``paths`` optionally overrides output base for run folders (defaults to ``ARC26Paths()``).
+    """
     sid = run_id.strip() if run_id else ""
     if not sid:
         sid = generate_run_id(stage=stage, seed=seed)
-    resolved_dir = resolve_run_dir(run_id=sid, run_dir=run_dir)
-    ensure_dir(resolved_dir)
-    ensure_dir(resolved_dir / "artifacts")
-    ensure_dir(resolved_dir / "logs")
+    resolved_dir = resolve_run_dir(run_id=sid, run_dir=run_dir, paths=paths)
+    ensure_run_dir(resolved_dir, subdirs=("artifacts", "logs"))
 
     started_utc = _utc_now_iso()
     start_time = time.time()
@@ -194,7 +197,7 @@ def init_run_context(
     else:
         payload["runtime"]["device"] = os.environ.get("KAGGLE_ACCELERATOR_TYPE") or "cpu"
 
-    _write_json(ctx.manifest_path, payload)
+    write_json(ctx.manifest_path, payload)
     ctx.commands_path.write_text(payload["commands"]["raw"] + "\n", encoding="utf-8")
     logger.info("Initialized ARC run folder: %s", ctx.run_dir)
     return ctx
@@ -202,9 +205,9 @@ def init_run_context(
 
 def update_run_metadata(run: RunContext, patch: dict[str, Any]) -> None:
     """Merge a patch into `run_metadata.json`."""
-    current = _read_json(run.manifest_path) if run.manifest_path.exists() else {}
+    current = read_json(run.manifest_path) if run.manifest_path.exists() else {}
     merged = _merge_dict(current, patch)
-    _write_json(run.manifest_path, merged)
+    write_json(run.manifest_path, merged)
 
 
 def finalize_run_success(run: RunContext) -> None:

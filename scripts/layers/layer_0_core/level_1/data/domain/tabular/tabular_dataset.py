@@ -2,12 +2,13 @@
 
 import numpy as np
 
-from typing import Optional, Tuple
+from typing import Any, Optional, Tuple
 
 from layers.layer_0_core.level_0 import get_torch
 
 torch = get_torch()
 _Dataset = torch.utils.data.Dataset if torch is not None else object
+TensorT = torch.Tensor if torch is not None else Any
 
 
 class TabularDataset(_Dataset):
@@ -27,7 +28,7 @@ class TabularDataset(_Dataset):
     def __len__(self) -> int:
         return len(self.X)
 
-    def __getitem__(self, idx: int) -> Tuple[torch.Tensor, Optional[torch.Tensor]]:
+    def __getitem__(self, idx: int) -> Tuple[TensorT, Optional[TensorT]]:
         if self.y is not None:
             return self.X[idx], self.y[idx]
         return self.X[idx], None

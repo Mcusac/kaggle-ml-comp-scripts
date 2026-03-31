@@ -14,7 +14,7 @@ from layers.layer_0_core.level_0 import (
     create_error_result_dict,
 )
 from layers.layer_0_core.level_1 import cleanup_gpu_memory
-from level_6 import create_variant_specific_data
+from layers.layer_0_core.level_6 import create_variant_specific_data
 
 logger = get_logger(__name__)
 

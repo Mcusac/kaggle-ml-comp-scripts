@@ -9,9 +9,9 @@ from sklearn.model_selection import KFold, StratifiedKFold
 
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_1 import BasePipeline
-from level_4 import EvaluatePipeline
-from level_6 import PredictPipeline
-from level_8 import TrainPipeline
+from layers.layer_0_core.level_4 import EvaluatePipeline
+from layers.layer_0_core.level_6 import PredictPipeline
+from layers.layer_0_core.level_8 import TrainPipeline
 
 logger = get_logger(__name__)
 

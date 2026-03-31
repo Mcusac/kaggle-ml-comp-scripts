@@ -1,7 +1,6 @@
 """Feature extraction trainer for two-stage training. Uses level_0–level_3 and level_5 (save_regression_model)."""
 
 import re
-
 import numpy as np
 
 from pathlib import Path
@@ -14,8 +13,7 @@ from layers.layer_0_core.level_3 import create_regression_model
 from layers.layer_0_core.level_5 import save_regression_model
 
 from layers.layer_1_competition.level_0_infra.level_1 import create_feature_extraction_model
-
-from layers.layer_1_competition.level_0_infra.level_2.feature_extraction.helpers import (
+from layers.layer_1_competition.level_0_infra.level_2 import (
     FeatureExtractionConfigHelper,
     FeatureExtractionHelper,
 )

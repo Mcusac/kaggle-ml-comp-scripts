@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Tuple, Optional, Dict, Any
 
 from layers.layer_0_core.level_0 import get_logger, DataLoadError, DataProcessingError, DataValidationError, ensure_dir
-from level_3 import validate_path_is_file
+from layers.layer_0_core.level_3 import validate_path_is_file
 
 logger = get_logger(__name__)
 

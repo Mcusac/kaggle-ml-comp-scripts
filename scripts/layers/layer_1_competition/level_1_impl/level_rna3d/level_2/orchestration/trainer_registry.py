@@ -1,16 +1,20 @@
 """Maps RNA3D model names to trainer callables."""
 
-import pickle
 import pandas as pd
 
 from pathlib import Path
-from typing import Callable, Dict, Optional
+from typing import Callable, Optional
 
 from layers.layer_0_core.level_0 import get_logger
+from layers.layer_1_competition.level_0_infra.artifacts import save_pickle_artifact
+from layers.layer_1_competition.level_0_infra.registry import NamedRegistry
 
 from layers.layer_1_competition.level_1_impl.level_rna3d.level_1 import build_templates, group_labels_to_coords
 
 logger = get_logger(__name__)
+
+TrainerFn = Callable[[str, str], None]
+REGISTRY = NamedRegistry[TrainerFn](registry_name="RNA3DTrainerRegistry", key_label="Model")
 
 
 def _train_baseline_approx(data_root: str, output_dir: str) -> None:
@@ -34,30 +38,25 @@ def _train_baseline_approx(data_root: str, output_dir: str) -> None:
     out_path.mkdir(parents=True, exist_ok=True)
     artifact_path = out_path / "baseline_approx_template_bank.pkl"
 
-    with artifact_path.open("wb") as f:
-        pickle.dump(
-            {
-                "templates": templates,
-                "train_seqs": train_seqs.to_dict("records"),
-            },
-            f,
-            protocol=pickle.HIGHEST_PROTOCOL,
-        )
+    save_pickle_artifact(
+        {
+            "templates": templates,
+            "train_seqs": train_seqs.to_dict("records"),
+        },
+        artifact_path,
+    )
 
     logger.info(f"Saved baseline_approx template bank: {artifact_path}")
     logger.info(f"  Templates: {len(templates)}")
 
-
-_MODEL_TRAINERS: Dict[str, Callable[[str, str], None]] = {
-    "baseline_approx": _train_baseline_approx,
-}
+REGISTRY.set("baseline_approx", _train_baseline_approx)
 
 
-def get_trainer(model_name: str) -> Optional[Callable[[str, str], None]]:
+def get_trainer(model_name: str) -> Optional[TrainerFn]:
     """Return the trainer callable for ``model_name``, or ``None`` if unknown."""
-    return _MODEL_TRAINERS.get(model_name)
+    return REGISTRY.get(model_name)
 
 
 def list_available_models() -> list[str]:
     """Return registered model names in sorted order."""
-    return sorted(_MODEL_TRAINERS.keys())
+    return REGISTRY.list_keys()

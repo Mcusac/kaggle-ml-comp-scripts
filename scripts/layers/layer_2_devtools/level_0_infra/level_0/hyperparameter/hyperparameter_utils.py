@@ -9,10 +9,8 @@ from collections import defaultdict
 from pathlib import Path
 
 from layers.layer_0_core.level_0 import get_logger
-from layers.layer_0_core.level_4 import load_json
-from layers.layer_0_core.level_4 import find_metadata_dir, get_writable_metadata_dir
-
-from layers.layer_1_competition.level_1_impl.level_csiro.level_1 import load_gridsearch_metadata
+from layers.layer_0_core.level_4 import load_json, find_metadata_dir, get_writable_metadata_dir
+from layers.layer_0_core.level_5 import merge_json_from_input_and_working, merge_list_by_key_working_replaces
 
 logger = get_logger(__name__)
 
@@ -52,6 +50,49 @@ MODEL_HYPERPARAMETERS = {
     'xgb': XGBOOST_HYPERPARAMETERS,
     'ridge': RIDGE_HYPERPARAMETERS
 }
+
+
+def load_gridsearch_metadata(
+    regression_model_type: str,
+    metadata_dir: Optional[Path] = None,
+) -> List[Dict[str, Any]]:
+    """
+    Load regression grid search metadata for a model type, merging input+working when available.
+
+    This intentionally does not depend on any contest implementation modules.
+    """
+    input_dir = find_metadata_dir()
+    working_dir = get_writable_metadata_dir()
+
+    if metadata_dir is not None:
+        working_dir = Path(metadata_dir)
+
+    input_file = input_dir / regression_model_type / "gridsearch_metadata.json" if input_dir else None
+    working_file = Path(working_dir) / regression_model_type / "gridsearch_metadata.json"
+
+    merge_fn = lambda inp, wrk: merge_list_by_key_working_replaces(
+        inp,
+        wrk,
+        key_fn=lambda r: (r.get("variant_id"), r.get("feature_filename")),
+    )
+    results = merge_json_from_input_and_working(
+        input_file,
+        working_file,
+        merge_fn,
+        expected_type=list,
+        file_type="Regression gridsearch metadata JSON",
+    )
+    if not results:
+        checked = [str(working_file)]
+        if input_file is not None:
+            checked.insert(0, str(input_file))
+        files_str = "\n  ".join(checked)
+        raise FileNotFoundError(
+            "Grid search metadata not found in either location.\n"
+            f"  Checked:\n  {files_str}\n"
+            "Please run regression grid search first."
+        )
+    return results
 
 
 def get_hyperparameters_for_model(model_type: str) -> List[str]:

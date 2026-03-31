@@ -1,6 +1,5 @@
 """RNA3D hyperparameter tuning using validation TM-score."""
 
-import json
 import numpy as np
 import pandas as pd
 
@@ -16,6 +15,8 @@ from layers.layer_1_competition.level_1_impl.level_rna3d.level_1 import (
     evaluate_predictions_tm,
     run_baseline_approx_predictions,
 )
+from layers.layer_1_competition.level_0_infra.artifacts import write_json
+from layers.layer_1_competition.level_0_infra.level_0 import contest_models_dir
 
 logger = get_logger(__name__)
 
@@ -153,12 +154,11 @@ def tune_pipeline(
     best_dict["_tune_search_type"] = search_type
 
     paths = RNA3DPaths()
-    output_dir = paths.get_output_dir() / "models" / "rna3d" / model_name
+    output_dir = contest_models_dir(paths, "rna3d") / model_name
     ensure_dir(output_dir)
     config_path = output_dir / "best_config.json"
 
-    with config_path.open("w", encoding="utf-8") as f:
-        json.dump(best_dict, f, indent=2, ensure_ascii=False)
+    write_json(config_path, best_dict, indent=2, ensure_ascii=False)
 
     logger.info("Saved best config: %s", config_path)
 

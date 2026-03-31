@@ -9,29 +9,27 @@ from layers.layer_1_competition.level_1_impl.level_rna3d.level_0.validate_data i
 )
 from layers.layer_1_competition.level_1_impl.level_rna3d.level_2 import (
     submit_pipeline,
+    run_train_and_submit_pipeline_result,
     tune_pipeline,
 )
 from layers.layer_1_competition.level_1_impl.level_rna3d.level_3 import train_pipeline
 from layers.layer_1_competition.level_0_infra.level_1.contest import (
     add_common_contest_args,
+    add_ensemble_weights_arg,
+    add_max_targets_arg,
+    add_models_arg,
+    add_output_csv_arg,
+    add_strategy_arg,
+    add_train_mode_arg,
+    add_validation_stacking_toggle,
+    parse_models_csv,
+    parse_optional_float_list,
     resolve_data_root_from_args,
 )
 
 # Framework `setup_framework_subparsers` omits these names when contest is rna3d so this
 # module can register contest-specific train/submit parsers without argparse conflicts.
 FRAMEWORK_SUBPARSER_NAMES_TO_SKIP = frozenset({"train", "submit"})
-
-
-def _parse_models_csv(raw: Optional[str]) -> List[str]:
-    if not raw or not str(raw).strip():
-        return ["baseline_approx"]
-    return [p.strip() for p in str(raw).split(",") if p.strip()]
-
-
-def _parse_optional_float_list(raw: Optional[str]) -> Optional[List[float]]:
-    if not raw or not str(raw).strip():
-        return None
-    return [float(x.strip()) for x in str(raw).split(",") if x.strip()]
 
 
 def extend_subparsers(subparsers: Any) -> None:
@@ -41,17 +39,15 @@ def extend_subparsers(subparsers: Any) -> None:
         help="Train RNA3D models (contest-specific; replaces framework train when contest is rna3d)",
     )
     add_common_contest_args(tr)
-    tr.add_argument(
-        "--train-mode",
-        type=str,
+    add_train_mode_arg(
+        tr,
         default="end_to_end",
-        help="Training pipeline label (e.g. end_to_end, multi_part)",
+        help_text="Training pipeline label (e.g. end_to_end, multi_part)",
     )
-    tr.add_argument(
-        "--models",
-        type=str,
+    add_models_arg(
+        tr,
         default="baseline_approx",
-        help="Comma-separated model names (e.g. baseline_approx)",
+        help_text="Comma-separated model names (e.g. baseline_approx)",
     )
 
     tu = subparsers.add_parser("tune", help="Tune RNA3D model hyperparameters")
@@ -76,48 +72,60 @@ def extend_subparsers(subparsers: Any) -> None:
         help="Generate RNA3D submission CSV (contest-specific; replaces framework submit)",
     )
     add_common_contest_args(su)
-    su.add_argument(
-        "--strategy",
-        choices=["single", "ensemble", "stacking", "stacking_ensemble"],
+    add_strategy_arg(
+        su,
+        choices=("single", "ensemble", "stacking", "stacking_ensemble"),
         default="single",
-        help="Submission strategy",
+        help_text="Submission strategy",
     )
-    su.add_argument(
-        "--models",
-        type=str,
+    add_models_arg(
+        su,
         default="baseline_approx",
-        help="Comma-separated model names",
+        help_text="Comma-separated model names",
     )
-    su.add_argument("--output-csv", type=str, help="Optional output CSV path")
-    su.add_argument(
-        "--max-targets",
-        type=int,
+    add_output_csv_arg(su, help_text="Optional output CSV path")
+    add_max_targets_arg(
+        su,
         default=0,
-        help="If >0, only predict for the first N test targets",
+        help_text="If >0, only predict for the first N test targets",
     )
-    su.add_argument(
-        "--ensemble-weights",
-        type=str,
-        help="Comma-separated weights for ensemble/stacking",
+    add_ensemble_weights_arg(
+        su,
+        help_text="Comma-separated weights for ensemble/stacking",
     )
-    su.set_defaults(use_validation_for_stacking=True)
-    su.add_argument(
-        "--no-validation-stacking",
-        dest="use_validation_for_stacking",
-        action="store_false",
-        help="Do not fit stacking weights from validation when applicable",
+    add_validation_stacking_toggle(
+        su,
+        default=True,
+        help_text="Do not fit stacking weights from validation when applicable",
     )
+
+    ts = subparsers.add_parser(
+        "train_and_submit",
+        help="Validate -> train -> submit (PipelineResult composite)",
+    )
+    add_common_contest_args(ts)
+    add_train_mode_arg(ts, default="end_to_end", help_text=None)
+    add_models_arg(ts, default="baseline_approx", help_text=None)
+    add_strategy_arg(
+        ts,
+        choices=("single", "ensemble", "stacking", "stacking_ensemble"),
+        default="single",
+        help_text=None,
+    )
+    add_output_csv_arg(ts, help_text=None)
+    add_max_targets_arg(ts, default=0, help_text=None)
+    add_ensemble_weights_arg(ts, help_text=None)
+    add_validation_stacking_toggle(ts, default=True, help_text=None)
 
     vd = subparsers.add_parser(
         "validate_data",
         help="Validate RNA3D CSV inputs under --data-root",
     )
     add_common_contest_args(vd)
-    vd.add_argument(
-        "--max-targets",
-        type=int,
+    add_max_targets_arg(
+        vd,
         default=0,
-        help="If >0, only validate the first N test targets in depth",
+        help_text="If >0, only validate the first N test targets in depth",
     )
 
 
@@ -131,7 +139,7 @@ def train(args: argparse.Namespace) -> None:
     train_pipeline(
         data_root=resolve_data_root_from_args(args),
         train_mode=getattr(args, "train_mode", "end_to_end"),
-        models=_parse_models_csv(getattr(args, "models", None)),
+        models=parse_models_csv(getattr(args, "models", None)),
     )
 
 
@@ -148,11 +156,25 @@ def submit(args: argparse.Namespace) -> None:
     submit_pipeline(
         data_root=resolve_data_root_from_args(args),
         strategy=args.strategy,
-        models=_parse_models_csv(getattr(args, "models", None)),
+        models=parse_models_csv(getattr(args, "models", None)),
         output_csv=getattr(args, "output_csv", None),
         max_targets=int(getattr(args, "max_targets", 0) or 0),
-        ensemble_weights=_parse_optional_float_list(getattr(args, "ensemble_weights", None)),
+        ensemble_weights=parse_optional_float_list(getattr(args, "ensemble_weights", None)),
         use_validation_for_stacking=bool(getattr(args, "use_validation_for_stacking", True)),
+    )
+
+
+def train_and_submit(args: argparse.Namespace) -> None:
+    run_train_and_submit_pipeline_result(
+        data_root=resolve_data_root_from_args(args),
+        train_mode=getattr(args, "train_mode", "end_to_end"),
+        models=parse_models_csv(getattr(args, "models", None)),
+        strategy=str(getattr(args, "strategy", "single")),
+        output_csv=getattr(args, "output_csv", None),
+        max_targets=int(getattr(args, "max_targets", 0) or 0),
+        ensemble_weights=parse_optional_float_list(getattr(args, "ensemble_weights", None)),
+        use_validation_for_stacking=bool(getattr(args, "use_validation_for_stacking", True)),
+        validate_first=True,
     )
 
 
@@ -162,4 +184,5 @@ def get_handlers() -> Dict[str, Callable]:
         "train": train,
         "tune": tune,
         "submit": submit,
+        "train_and_submit": train_and_submit,
     }

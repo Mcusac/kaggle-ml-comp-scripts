@@ -1,9 +1,12 @@
 """Noise addition augmentations. Callers pass params (e.g. from contest transform_defaults)."""
 
+from typing import Any
+
 from layers.layer_0_core.level_0 import get_logger, get_torch
 
 torch = get_torch()
 _NNModule = torch.nn.Module if torch is not None else object
+TensorT = torch.Tensor if torch is not None else Any
 logger = get_logger(__name__)
 
 
@@ -21,7 +24,9 @@ class AddGaussianNoise(_NNModule):
         self.std = std
         self.p = p
 
-    def forward(self, tensor: torch.Tensor) -> torch.Tensor:
+    def forward(self, tensor: TensorT) -> TensorT:
+        if torch is None:
+            raise RuntimeError("PyTorch is required for AddGaussianNoise.")
         if self.p < 1.0 and torch.rand(1, device=tensor.device).item() >= self.p:
             return tensor
         noise = torch.randn_like(tensor) * self.std + self.mean

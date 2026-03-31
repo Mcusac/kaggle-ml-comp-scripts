@@ -3,8 +3,8 @@
 import numpy as np
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
-from level_2 import validate_paired_arrays
-from level_3 import (
+from layers.layer_0_core.level_2 import validate_paired_arrays
+from layers.layer_0_core.level_3 import (
     calculate_r2_per_target,
     prepare_weighted_arrays,
     calculate_weighted_r2_from_arrays,
