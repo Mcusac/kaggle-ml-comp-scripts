@@ -4,13 +4,18 @@
 
 ## Purpose
 
-Orchestrates model export for submission. Delegates to `layers.layer_1_competition.level_0_infra.level_1.export.export_handlers` for auto-detect, best-variant-file, just-trained-model, and results-file scenarios.
+Orchestrates model export for submission. `export_handlers` is the stable compatibility surface, now split internally into focused modules:
+- `metadata_builders` (metadata assembly and score extraction)
+- `source_handlers` (source-file/model-dir resolution flows)
 
 ## Contents
 
 | Module | Description |
 |--------|-------------|
 | `export_model_pipeline` | export_model_pipeline function |
+| `export_handlers` | Compatibility exports for existing imports |
+| `metadata_builders` | Metadata-building helpers for regression/end-to-end models |
+| `source_handlers` | Handler flows for best-variant/results/auto-detect sources |
 
 ## Public API
 

@@ -17,14 +17,12 @@ from typing import Any, Optional
 
 from layers.layer_0_core.level_0 import ensure_dir, get_logger, is_kaggle
 
-from layers.layer_1_competition.level_0_infra.level_0 import (
-    ensure_run_dir, 
-    read_json, 
-    write_json,
-    ContestRunPathsProtocol,
-    contest_run_dir, 
-    contest_runs_root,
-    )
+from layers.layer_1_competition.level_0_infra.level_0.artifacts import ensure_run_dir, read_json, write_json
+from layers.layer_1_competition.level_0_infra.level_0 import ContestRunPathsProtocol
+from layers.layer_1_competition.level_0_infra.level_1.paths import contest_run_dir, contest_runs_root
+
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import ARC26Paths
+
 
 logger = get_logger(__name__)
 

@@ -2,18 +2,18 @@
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 from typing import Any
 
-from layers.layer_0_core.level_0 import ensure_dir
+from layers.layer_1_competition.level_0_infra.level_0.artifacts.json_artifacts import (
+    read_json as _read_json,
+    write_json as _write_json,
+)
 
 
 def read_json(path: str | Path) -> Any:
     """Read JSON from `path` and return the parsed object."""
-    p = Path(path)
-    with p.open("r", encoding="utf-8") as f:
-        return json.load(f)
+    return _read_json(path)
 
 
 def write_json(
@@ -24,8 +24,5 @@ def write_json(
     ensure_ascii: bool = False,
 ) -> None:
     """Write `data` as JSON to `path`, creating parent directories."""
-    p = Path(path)
-    ensure_dir(p.parent)
-    with p.open("w", encoding="utf-8") as f:
-        json.dump(data, f, indent=int(indent), ensure_ascii=bool(ensure_ascii))
+    _write_json(path, data, indent=indent, ensure_ascii=ensure_ascii)
 

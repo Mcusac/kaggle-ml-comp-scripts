@@ -1,6 +1,6 @@
 ---
 description: Layer 2 devtools — imports, infra boundary, ranks, tests under level_1_impl
-globs: scripts/layers/layer_2_devtools/**/*.py
+globs: input/kaggle-ml-comp-scripts/scripts/layers/layer_2_devtools/**/*.py
 ---
 
 # Devtools import and placement

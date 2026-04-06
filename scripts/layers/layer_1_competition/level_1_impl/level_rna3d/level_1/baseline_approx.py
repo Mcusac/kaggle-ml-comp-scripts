@@ -27,7 +27,7 @@ from layers.layer_1_competition.level_1_impl.level_rna3d.level_0 import (
     RNA3DPaths,
     RNA3DPostProcessor,
 )
-from layers.layer_1_competition.level_0_infra.paths import contest_submission_path
+from layers.layer_1_competition.level_0_infra.level_1.paths import contest_submission_path
 
 logger = get_logger(__name__)
 

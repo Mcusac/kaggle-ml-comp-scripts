@@ -13,7 +13,10 @@ from sklearn.model_selection import train_test_split
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_1 import create_kfold_splits, get_fold_data
 
-from ..registry import ContestRegistry, get_contest
+from layers.layer_1_competition.level_0_infra.level_1.registry import (
+    ContestRegistry,
+    get_contest,
+)
 
 logger = get_logger(__name__)
 

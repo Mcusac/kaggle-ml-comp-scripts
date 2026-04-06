@@ -10,7 +10,7 @@ from layers.layer_0_core.level_4 import load_json
 from layers.layer_0_core.level_5 import find_trained_model_path
 
 from layers.layer_1_competition.level_0_infra.level_0 import load_feature_filename_from_gridsearch
-from layers.layer_1_competition.level_0_infra.submission import create_regression_submission
+from layers.layer_1_competition.level_0_infra.level_3.submission import create_regression_submission
 
 from layers.layer_1_competition.level_1_impl.level_csiro.level_1 import (
     apply_combo_to_config,

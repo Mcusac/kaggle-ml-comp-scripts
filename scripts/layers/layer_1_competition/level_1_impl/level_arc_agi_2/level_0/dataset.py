@@ -5,8 +5,7 @@ from typing import Any
 from torch.utils.data import Dataset
 
 from layers.layer_0_core.level_0 import get_logger, get_torch
-
-from layers.layer_1_competition.level_0_infra.level_0 import read_json
+from layers.layer_1_competition.level_0_infra.level_0.artifacts import read_json
 
 torch = get_torch()
 logger = get_logger(__name__)

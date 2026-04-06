@@ -74,6 +74,30 @@ def build_submit_command(
     run_dir: Optional[str] = None,
     log_file: Optional[str] = None,
     tuned_config_path: Optional[str] = None,
+    llm_execution_mode: str = "surrogate",
+    llm_num_augmentations: int = 8,
+    llm_beam_width: int = 12,
+    llm_max_candidates: int = 6,
+    llm_max_neg_log_score: float = 120.0,
+    llm_seed: int = 0,
+    llm_consistency_weight: float = 1.0,
+    llm_model_weight: float = 1.0,
+    llm_enable_neural_backend: bool = False,
+    llm_model_path: Optional[str] = None,
+    llm_lora_path: Optional[str] = None,
+    llm_max_runtime_sec: float = 0.0,
+    llm_task_runtime_sec: float = 0.0,
+    llm_decode_runtime_sec: float = 0.0,
+    llm_adapt_steps: int = 0,
+    llm_adapt_batch_size: int = 1,
+    llm_adapt_gradient_accumulation_steps: int = 1,
+    llm_adapt_disabled: bool = False,
+    llm_augmentation_likelihood_weight: float = 1.0,
+    llm_runtime_attention_mode: str = "auto",
+    llm_runtime_disable_compile: bool = False,
+    llm_runtime_allocator_expandable_segments: bool = True,
+    llm_runtime_allocator_max_split_size_mb: int = 0,
+    llm_prefer_cnn_attempt1: bool = False,
 ) -> List[str]:
     model_names = models or ["baseline_approx"]
     cmd = build_run_py_base_command(_CONTEST, "submit", data_root)
@@ -94,6 +118,50 @@ def build_submit_command(
         cmd.extend(["--log-file", str(log_file)])
     if tuned_config_path:
         cmd.extend(["--tuned-config", str(tuned_config_path)])
+    if str(strategy).strip().lower() == "llm_tta_dfs":
+        cmd.extend(["--llm-execution-mode", str(llm_execution_mode or "surrogate")])
+        cmd.extend(["--llm-num-augmentations", str(int(llm_num_augmentations or 8))])
+        cmd.extend(["--llm-beam-width", str(int(llm_beam_width or 12))])
+        cmd.extend(["--llm-max-candidates", str(int(llm_max_candidates or 6))])
+        cmd.extend(["--llm-max-neg-log-score", str(float(llm_max_neg_log_score or 120.0))])
+        cmd.extend(["--llm-seed", str(int(llm_seed or 0))])
+        cmd.extend(["--llm-consistency-weight", str(float(llm_consistency_weight))])
+        cmd.extend(["--llm-model-weight", str(float(llm_model_weight))])
+        cmd.extend(["--llm-augmentation-likelihood-weight", str(float(llm_augmentation_likelihood_weight))])
+        if llm_enable_neural_backend:
+            cmd.append("--llm-enable-neural-backend")
+        if llm_model_path:
+            cmd.extend(["--llm-model-path", str(llm_model_path)])
+        if llm_lora_path:
+            cmd.extend(["--llm-lora-path", str(llm_lora_path)])
+        if float(llm_max_runtime_sec or 0.0) > 0.0:
+            cmd.extend(["--llm-max-runtime-sec", str(float(llm_max_runtime_sec))])
+        if float(llm_task_runtime_sec or 0.0) > 0.0:
+            cmd.extend(["--llm-task-runtime-sec", str(float(llm_task_runtime_sec))])
+        if float(llm_decode_runtime_sec or 0.0) > 0.0:
+            cmd.extend(["--llm-decode-runtime-sec", str(float(llm_decode_runtime_sec))])
+        if int(llm_adapt_steps or 0) > 0:
+            cmd.extend(["--llm-adapt-steps", str(int(llm_adapt_steps))])
+        cmd.extend(["--llm-adapt-batch-size", str(int(llm_adapt_batch_size or 1))])
+        cmd.extend(
+            [
+                "--llm-adapt-gradient-accumulation-steps",
+                str(int(llm_adapt_gradient_accumulation_steps or 1)),
+            ]
+        )
+        if llm_adapt_disabled:
+            cmd.append("--llm-adapt-disabled")
+        cmd.extend(["--llm-runtime-attention-mode", str(llm_runtime_attention_mode or "auto")])
+        if llm_runtime_disable_compile:
+            cmd.append("--llm-runtime-disable-compile")
+        if llm_runtime_allocator_expandable_segments:
+            cmd.append("--llm-runtime-allocator-expandable-segments")
+        if int(llm_runtime_allocator_max_split_size_mb or 0) > 0:
+            cmd.extend(
+                ["--llm-runtime-allocator-max-split-size-mb", str(int(llm_runtime_allocator_max_split_size_mb))]
+            )
+        if llm_prefer_cnn_attempt1:
+            cmd.append("--llm-prefer-cnn-attempt1")
     return cmd
 
 
@@ -109,6 +177,30 @@ def build_train_and_submit_command(
     run_id: Optional[str] = None,
     run_dir: Optional[str] = None,
     log_file: Optional[str] = None,
+    llm_execution_mode: str = "surrogate",
+    llm_num_augmentations: int = 8,
+    llm_beam_width: int = 12,
+    llm_max_candidates: int = 6,
+    llm_max_neg_log_score: float = 120.0,
+    llm_seed: int = 0,
+    llm_consistency_weight: float = 1.0,
+    llm_model_weight: float = 1.0,
+    llm_enable_neural_backend: bool = False,
+    llm_model_path: Optional[str] = None,
+    llm_lora_path: Optional[str] = None,
+    llm_max_runtime_sec: float = 0.0,
+    llm_task_runtime_sec: float = 0.0,
+    llm_decode_runtime_sec: float = 0.0,
+    llm_adapt_steps: int = 0,
+    llm_adapt_batch_size: int = 1,
+    llm_adapt_gradient_accumulation_steps: int = 1,
+    llm_adapt_disabled: bool = False,
+    llm_augmentation_likelihood_weight: float = 1.0,
+    llm_runtime_attention_mode: str = "auto",
+    llm_runtime_disable_compile: bool = False,
+    llm_runtime_allocator_expandable_segments: bool = True,
+    llm_runtime_allocator_max_split_size_mb: int = 0,
+    llm_prefer_cnn_attempt1: bool = False,
 ) -> List[str]:
     model_names = models or ["baseline_approx"]
     cmd = build_run_py_base_command(_CONTEST, "train_and_submit", data_root)
@@ -128,6 +220,50 @@ def build_train_and_submit_command(
         cmd.extend(["--run-dir", str(run_dir)])
     if log_file:
         cmd.extend(["--log-file", str(log_file)])
+    if str(strategy).strip().lower() == "llm_tta_dfs":
+        cmd.extend(["--llm-execution-mode", str(llm_execution_mode or "surrogate")])
+        cmd.extend(["--llm-num-augmentations", str(int(llm_num_augmentations or 8))])
+        cmd.extend(["--llm-beam-width", str(int(llm_beam_width or 12))])
+        cmd.extend(["--llm-max-candidates", str(int(llm_max_candidates or 6))])
+        cmd.extend(["--llm-max-neg-log-score", str(float(llm_max_neg_log_score or 120.0))])
+        cmd.extend(["--llm-seed", str(int(llm_seed or 0))])
+        cmd.extend(["--llm-consistency-weight", str(float(llm_consistency_weight))])
+        cmd.extend(["--llm-model-weight", str(float(llm_model_weight))])
+        cmd.extend(["--llm-augmentation-likelihood-weight", str(float(llm_augmentation_likelihood_weight))])
+        if llm_enable_neural_backend:
+            cmd.append("--llm-enable-neural-backend")
+        if llm_model_path:
+            cmd.extend(["--llm-model-path", str(llm_model_path)])
+        if llm_lora_path:
+            cmd.extend(["--llm-lora-path", str(llm_lora_path)])
+        if float(llm_max_runtime_sec or 0.0) > 0.0:
+            cmd.extend(["--llm-max-runtime-sec", str(float(llm_max_runtime_sec))])
+        if float(llm_task_runtime_sec or 0.0) > 0.0:
+            cmd.extend(["--llm-task-runtime-sec", str(float(llm_task_runtime_sec))])
+        if float(llm_decode_runtime_sec or 0.0) > 0.0:
+            cmd.extend(["--llm-decode-runtime-sec", str(float(llm_decode_runtime_sec))])
+        if int(llm_adapt_steps or 0) > 0:
+            cmd.extend(["--llm-adapt-steps", str(int(llm_adapt_steps))])
+        cmd.extend(["--llm-adapt-batch-size", str(int(llm_adapt_batch_size or 1))])
+        cmd.extend(
+            [
+                "--llm-adapt-gradient-accumulation-steps",
+                str(int(llm_adapt_gradient_accumulation_steps or 1)),
+            ]
+        )
+        if llm_adapt_disabled:
+            cmd.append("--llm-adapt-disabled")
+        cmd.extend(["--llm-runtime-attention-mode", str(llm_runtime_attention_mode or "auto")])
+        if llm_runtime_disable_compile:
+            cmd.append("--llm-runtime-disable-compile")
+        if llm_runtime_allocator_expandable_segments:
+            cmd.append("--llm-runtime-allocator-expandable-segments")
+        if int(llm_runtime_allocator_max_split_size_mb or 0) > 0:
+            cmd.extend(
+                ["--llm-runtime-allocator-max-split-size-mb", str(int(llm_runtime_allocator_max_split_size_mb))]
+            )
+        if llm_prefer_cnn_attempt1:
+            cmd.append("--llm-prefer-cnn-attempt1")
     return cmd
 
 
@@ -144,6 +280,30 @@ def build_tune_and_submit_command(
     run_id: Optional[str] = None,
     run_dir: Optional[str] = None,
     log_file: Optional[str] = None,
+    llm_execution_mode: str = "surrogate",
+    llm_num_augmentations: int = 8,
+    llm_beam_width: int = 12,
+    llm_max_candidates: int = 6,
+    llm_max_neg_log_score: float = 120.0,
+    llm_seed: int = 0,
+    llm_consistency_weight: float = 1.0,
+    llm_model_weight: float = 1.0,
+    llm_enable_neural_backend: bool = False,
+    llm_model_path: Optional[str] = None,
+    llm_lora_path: Optional[str] = None,
+    llm_max_runtime_sec: float = 0.0,
+    llm_task_runtime_sec: float = 0.0,
+    llm_decode_runtime_sec: float = 0.0,
+    llm_adapt_steps: int = 0,
+    llm_adapt_batch_size: int = 1,
+    llm_adapt_gradient_accumulation_steps: int = 1,
+    llm_adapt_disabled: bool = False,
+    llm_augmentation_likelihood_weight: float = 1.0,
+    llm_runtime_attention_mode: str = "auto",
+    llm_runtime_disable_compile: bool = False,
+    llm_runtime_allocator_expandable_segments: bool = True,
+    llm_runtime_allocator_max_split_size_mb: int = 0,
+    llm_prefer_cnn_attempt1: bool = False,
 ) -> List[str]:
     model_names = models or ["baseline_approx"]
     cmd = build_run_py_base_command(_CONTEST, "tune_and_submit", data_root)
@@ -163,5 +323,49 @@ def build_tune_and_submit_command(
         cmd.extend(["--run-dir", str(run_dir)])
     if log_file:
         cmd.extend(["--log-file", str(log_file)])
+    if str(strategy).strip().lower() == "llm_tta_dfs":
+        cmd.extend(["--llm-execution-mode", str(llm_execution_mode or "surrogate")])
+        cmd.extend(["--llm-num-augmentations", str(int(llm_num_augmentations or 8))])
+        cmd.extend(["--llm-beam-width", str(int(llm_beam_width or 12))])
+        cmd.extend(["--llm-max-candidates", str(int(llm_max_candidates or 6))])
+        cmd.extend(["--llm-max-neg-log-score", str(float(llm_max_neg_log_score or 120.0))])
+        cmd.extend(["--llm-seed", str(int(llm_seed or 0))])
+        cmd.extend(["--llm-consistency-weight", str(float(llm_consistency_weight))])
+        cmd.extend(["--llm-model-weight", str(float(llm_model_weight))])
+        cmd.extend(["--llm-augmentation-likelihood-weight", str(float(llm_augmentation_likelihood_weight))])
+        if llm_enable_neural_backend:
+            cmd.append("--llm-enable-neural-backend")
+        if llm_model_path:
+            cmd.extend(["--llm-model-path", str(llm_model_path)])
+        if llm_lora_path:
+            cmd.extend(["--llm-lora-path", str(llm_lora_path)])
+        if float(llm_max_runtime_sec or 0.0) > 0.0:
+            cmd.extend(["--llm-max-runtime-sec", str(float(llm_max_runtime_sec))])
+        if float(llm_task_runtime_sec or 0.0) > 0.0:
+            cmd.extend(["--llm-task-runtime-sec", str(float(llm_task_runtime_sec))])
+        if float(llm_decode_runtime_sec or 0.0) > 0.0:
+            cmd.extend(["--llm-decode-runtime-sec", str(float(llm_decode_runtime_sec))])
+        if int(llm_adapt_steps or 0) > 0:
+            cmd.extend(["--llm-adapt-steps", str(int(llm_adapt_steps))])
+        cmd.extend(["--llm-adapt-batch-size", str(int(llm_adapt_batch_size or 1))])
+        cmd.extend(
+            [
+                "--llm-adapt-gradient-accumulation-steps",
+                str(int(llm_adapt_gradient_accumulation_steps or 1)),
+            ]
+        )
+        if llm_adapt_disabled:
+            cmd.append("--llm-adapt-disabled")
+        cmd.extend(["--llm-runtime-attention-mode", str(llm_runtime_attention_mode or "auto")])
+        if llm_runtime_disable_compile:
+            cmd.append("--llm-runtime-disable-compile")
+        if llm_runtime_allocator_expandable_segments:
+            cmd.append("--llm-runtime-allocator-expandable-segments")
+        if int(llm_runtime_allocator_max_split_size_mb or 0) > 0:
+            cmd.extend(
+                ["--llm-runtime-allocator-max-split-size-mb", str(int(llm_runtime_allocator_max_split_size_mb))]
+            )
+        if llm_prefer_cnn_attempt1:
+            cmd.append("--llm-prefer-cnn-attempt1")
     return cmd
 

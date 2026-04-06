@@ -6,7 +6,7 @@ from layers.layer_0_core.level_0 import get_config_value, get_logger
 from layers.layer_0_core.level_5 import BaseModelTrainer
 
 from layers.layer_1_competition.level_0_infra.level_0 import get_feature_extraction_mode
-from layers.layer_1_competition.level_0_infra.level_2 import FeatureExtractionTrainer
+from layers.layer_1_competition.level_0_infra.level_3.trainer import FeatureExtractionTrainer
 
 logger = get_logger(__name__)
 

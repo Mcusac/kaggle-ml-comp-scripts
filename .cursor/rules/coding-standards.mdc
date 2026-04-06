@@ -4,6 +4,8 @@ alwaysApply: true
 ---
 description: "Coding standards, naming conventions, and unimplemented code rules for all packages"
 alwaysApply: true
+globs:
+  - input/kaggle-ml-comp-scripts/scripts/**/*.py
 ---
 
 # Coding Standards

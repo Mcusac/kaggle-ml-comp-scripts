@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 
 _SCRIPT_DIR = Path(__file__).resolve().parent
-_SCRIPTS_ROOT = _SCRIPT_DIR.parent.parent
+_SCRIPTS_ROOT = _SCRIPT_DIR.parents[3]
 if str(_SCRIPTS_ROOT) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_ROOT))
 

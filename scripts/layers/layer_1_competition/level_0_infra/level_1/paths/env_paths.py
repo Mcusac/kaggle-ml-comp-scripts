@@ -12,7 +12,10 @@ from typing import Optional
 
 from layers.layer_0_core.level_1 import get_environment_root, resolve_environment_path
 
-from ..registry import ContestRegistry, get_contest
+from layers.layer_1_competition.level_0_infra.level_1.registry import (
+    ContestRegistry,
+    get_contest,
+)
 
 
 def get_run_py_path() -> str:

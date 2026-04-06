@@ -1,7 +1,7 @@
-"""ARC heuristic scoring: per-cell accuracy on training and evaluation corpora.
+"""ARC scoring utilities for heuristics and neural checkpoints.
 
-Scores and ranks heuristics by mean per-cell accuracy so the tuning phase
-can select the best-performing one before submission.
+Scores and ranks heuristics by corpus-level scores so the tuning phase
+can select strong candidates before submission.
 
 Intra-package dependencies (fully qualified per architecture rules):
   layers...level_arc_agi_2.level_1.heuristics  — predict_attempts_for_heuristic
@@ -86,6 +86,11 @@ def _cell_match_counts(
     return total, correct
 
 
+def score_grid_exact_match(pred: list[list[int]], truth: list[list[int]]) -> bool:
+    """Return True only when both grids match exactly."""
+    return pred == truth
+
+
 # ---------------------------------------------------------------------------
 # Public scoring API
 # ---------------------------------------------------------------------------
@@ -144,6 +149,59 @@ def score_heuristic_on_training_challenges(
     if total_cells == 0:
         return 0.0
     return correct_cells / float(total_cells)
+
+
+def score_heuristic_exact_match_on_training(
+    data_root: str,
+    heuristic: str,
+    *,
+    max_tasks: int = 0,
+    max_pairs_per_task: int = 0,
+) -> float:
+    """Fraction of training pairs where attempt_1 is an exact grid match."""
+    root = Path(data_root)
+    train_ch_path = _find_existing(
+        root,
+        [
+            "arc-agi_training_challenges.json",
+            "arc-agi_training-challenges.json",
+        ],
+    )
+    if not train_ch_path.is_file():
+        return 0.0
+    challenges = _load_json_path(train_ch_path)
+    if not isinstance(challenges, dict):
+        return 0.0
+
+    task_ids = list(challenges.keys())
+    if max_tasks and int(max_tasks) > 0:
+        task_ids = task_ids[: int(max_tasks)]
+
+    total_pairs = 0
+    exact_matches = 0
+    for task_id in task_ids:
+        task = challenges[task_id]
+        train_pairs = task.get("train", [])
+        if not isinstance(train_pairs, list) or not train_pairs:
+            continue
+        bounds = (
+            len(train_pairs)
+            if max_pairs_per_task <= 0
+            else min(len(train_pairs), int(max_pairs_per_task))
+        )
+        for idx in range(bounds):
+            pair = train_pairs[idx]
+            inp = pair.get("input")
+            truth = pair.get("output")
+            if not isinstance(inp, list) or not isinstance(truth, list):
+                continue
+            a1, _ = predict_attempts_for_heuristic(inp, heuristic)
+            total_pairs += 1
+            if score_grid_exact_match(a1, truth):
+                exact_matches += 1
+    if total_pairs == 0:
+        return 0.0
+    return exact_matches / float(total_pairs)
 
 
 def score_heuristic_on_evaluation(

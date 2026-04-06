@@ -19,8 +19,10 @@ from layers.layer_0_core.level_7 import create_ensembling_method
 
 from layers.layer_1_competition.level_0_infra.level_1 import get_contest
 from layers.layer_1_competition.level_0_infra.level_2 import (
-    expand_predictions_to_submission_format,
     extract_test_features_from_model,
+)
+from layers.layer_1_competition.level_0_infra.level_3.submission import (
+    expand_predictions_to_submission_format,
     save_submission,
 )
 
@@ -178,7 +180,9 @@ def _find_feature_filename_from_ensembles(
     ensemble_configs: List[Dict[str, Any]],
 ) -> str:
     """Find feature filename from ensemble model metadata."""
-    from layers.layer_1_competition.level_0_infra.level_2 import find_feature_filename_from_ensemble_metadata
+    from layers.layer_1_competition.level_0_infra.level_2.feature_extraction import (
+        find_feature_filename_from_ensemble_metadata,
+    )
 
     return find_feature_filename_from_ensemble_metadata(
         ensemble_configs, metadata_key="model_paths"

@@ -247,6 +247,7 @@ def run_comprehensive_audit_emit(
         level_name = t["level_name"]
         level_path = Path(t["level_path"])
         lp_rel = t.get("level_path_relative") or str(level_path)
+        violations: list[Any] = []
 
         print(f"  [{i+1}/{len(targets)}] precheck+emit {scope}/{level_name}")
 
@@ -256,7 +257,7 @@ def run_comprehensive_audit_emit(
                 str(pk) if pk and pk not in ("general_level", "infra") else "auto"
             )
             try:
-                run_target_precheck(
+                precheck_result = run_target_precheck(
                     audit_scope=scope,
                     level_path=level_path,
                     level_name=level_name,
@@ -264,6 +265,17 @@ def run_comprehensive_audit_emit(
                     workspace_root=workspace,
                     precheck_kind=precheck_kind,
                 )
+                output_base = _build_output_base(workspace, scope, level_name, generated)
+                output_base.parent.mkdir(parents=True, exist_ok=True)
+                Path(str(output_base) + ".md").write_text(
+                    precheck_result.markdown, encoding="utf-8"
+                )
+                Path(str(output_base) + ".json").write_text(
+                    dumps_precheck_payload(precheck_result.payload), encoding="utf-8"
+                )
+                raw_violations = precheck_result.payload.get("violations", [])
+                if isinstance(raw_violations, list):
+                    violations = raw_violations
             except (OSError, TypeError, ValueError) as exc:
                 print(f"    ⚠️ precheck: {exc} (continuing)")
 
@@ -285,15 +297,15 @@ def run_comprehensive_audit_emit(
         inv_path = inv_dir / f"INVENTORY_{level_name}.md"
         inv_path.write_text(inv, encoding="utf-8")
 
-        pj = precheck_summary_json_path(workspace, scope, level_name, generated)
-        violations: list = []
-        if pj.is_file():
-            try:
-                violations = json.loads(pj.read_text(encoding="utf-8")).get(
-                    "violations", []
-                )
-            except json.JSONDecodeError:
-                violations = []
+        if not violations:
+            pj = precheck_summary_json_path(workspace, scope, level_name, generated)
+            if pj.is_file():
+                try:
+                    violations = json.loads(pj.read_text(encoding="utf-8")).get(
+                        "violations", []
+                    )
+                except json.JSONDecodeError:
+                    violations = []
         precheck_rel = (
             f".cursor/audit-results/{scope}/summaries/"
             f"precheck_{level_name}_{generated.isoformat()}.md"

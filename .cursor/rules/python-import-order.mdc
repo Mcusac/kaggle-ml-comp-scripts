@@ -15,7 +15,7 @@ Group imports in this order. Put **one blank line** between groups. Within each 
 
 3. **General level packages (`level_0` … `level_10`)** — e.g. `from level_4 import save_json`.
 
-4. **`layers.layer_1_competition.infra`** — competition infra (`layers.layer_1_competition.infra.level_0`, …, `level_4`), e.g. `from layers.layer_1_competition.infra.level_0 import is_kaggle_input`.
+4. **`layers.layer_1_competition.level_0_infra`** — competition infra (`layers.layer_1_competition.level_0_infra.level_0`, …, `level_4`), e.g. `from layers.layer_1_competition.level_0_infra.level_0 import is_kaggle_input`.
 
 5. **`layers.layer_1_competition.contests`** — import from **`…<contest>.level_K` package** (public `__init__`), not from `…level_K.some_module` when symbols are re-exported at `level_K`. Example: `from layers.layer_1_competition.contests.level_csiro.level_2 import load_regression_variant_from_metadata`.
 
@@ -31,7 +31,7 @@ from typing import Any
 from level_2 import run_training
 from level_4 import save_json
 
-from layers.layer_1_competition.infra.level_0 import is_kaggle_input
+from layers.layer_1_competition.level_0_infra.level_0 import is_kaggle_input
 
 from layers.layer_1_competition.contests.level_csiro.level_1 import (
     csiro_modeling,

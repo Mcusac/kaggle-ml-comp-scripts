@@ -4,7 +4,10 @@ import sys
 
 from typing import List, Optional
 
-from ..paths import get_data_root_path, get_run_py_path
+from layers.layer_1_competition.level_0_infra.level_1.paths import (
+    get_data_root_path,
+    get_run_py_path,
+)
 
 
 def build_run_py_base_command(

@@ -20,8 +20,8 @@ from layers.layer_1_competition.level_1_impl.level_rna3d.level_1 import (
     run_baseline_approx_predictions,
 )
 from layers.layer_1_competition.level_0_infra.level_1.contest import ValidateFirstRunner
-from layers.layer_1_competition.level_0_infra.artifacts import load_best_config_json
-from layers.layer_1_competition.level_0_infra.submission import validate_strategy_models
+from layers.layer_1_competition.level_0_infra.level_0.artifacts import load_best_config_json
+from layers.layer_1_competition.level_0_infra.level_0.submission import validate_strategy_models
 
 logger = get_logger(__name__)
 

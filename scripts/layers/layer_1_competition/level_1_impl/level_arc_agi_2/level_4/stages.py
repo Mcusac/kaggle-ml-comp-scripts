@@ -5,31 +5,41 @@ from typing import Any, Optional
 
 from layers.layer_0_core.level_0 import ensure_dir, get_logger
 
-from layers.layer_1_competition.level_0_infra.level_0 import contest_models_dir, read_json, write_json
-
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
-    ARC26Paths, 
+from layers.layer_1_competition.level_0_infra.level_0.artifacts import read_json, write_json
+from layers.layer_1_competition.level_0_infra.level_0 import contest_models_dir
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
+    ARC26Paths,
     ARC26PostProcessor,
     DEFAULT_SUBMIT_HEURISTIC,
-    load_chosen_params_from_tuned_config,
+    heuristic_order_for_train_mode,
     predict_attempts_for_heuristic,
     predict_attempts_from_chosen_params,
-    rank_heuristics_on_training,
     read_submit_max_tasks_env,
-    select_best_heuristic,
-    select_best_heuristic_on_training,
-    _heuristic_order_for_train_mode,
+)
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
     RunContext,
     copy_artifact_into_run,
     finalize_run_failure,
     finalize_run_success,
+    load_chosen_params_from_tuned_config,
+    rank_heuristics_on_training,
+    select_best_heuristic,
+    select_best_heuristic_on_training,
     update_run_metadata,
 )
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2 import (
+    LlmTtaDfsConfig,
     predict_grid_from_checkpoint,
-    predict_attempts_for_submit_strategy,
 )
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import get_trainer, list_available_models
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0.arc_stack_policy import (
+    stack_raise_if_unsupported_strategy,
+)
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import (
+    get_trainer,
+    list_available_models,
+    predict_attempts_for_submit_strategy,
+    score_neural_on_evaluation,
+)
 
 logger = get_logger(__name__)
 
@@ -118,7 +128,7 @@ def _second_attempt_grid(
 ) -> list[list[int]]:
     s = str(strategy or "").lower()
     if s == "ensemble":
-        order = _heuristic_order_for_train_mode(train_mode)
+        order = heuristic_order_for_train_mode(train_mode)
         ranked = rank_heuristics_on_training(
             data_root,
             order,
@@ -135,6 +145,63 @@ def _second_attempt_grid(
             return a2
     _, a2 = predict_attempts_from_chosen_params(input_grid, chosen_params)
     return a2
+
+
+def _build_llm_tta_config(
+    *,
+    llm_execution_mode: str = "surrogate",
+    llm_num_augmentations: int = 8,
+    llm_beam_width: int = 12,
+    llm_max_candidates: int = 6,
+    llm_max_neg_log_score: float = 120.0,
+    llm_seed: int = 0,
+    llm_consistency_weight: float = 1.0,
+    llm_model_weight: float = 1.0,
+    llm_augmentation_likelihood_weight: float = 1.0,
+    llm_enable_neural_backend: bool = False,
+    llm_model_path: Optional[str] = None,
+    llm_lora_path: Optional[str] = None,
+    llm_max_runtime_sec: float = 0.0,
+    llm_task_runtime_sec: float = 0.0,
+    llm_decode_runtime_sec: float = 0.0,
+    llm_adapt_steps: int = 0,
+    llm_adapt_batch_size: int = 1,
+    llm_adapt_gradient_accumulation_steps: int = 1,
+    llm_adapt_disabled: bool = False,
+    llm_runtime_attention_mode: str = "auto",
+    llm_runtime_disable_compile: bool = False,
+    llm_runtime_allocator_expandable_segments: bool = True,
+    llm_runtime_allocator_max_split_size_mb: int = 0,
+    llm_prefer_cnn_attempt1: bool = False,
+    llm_candidate_ranker: str = "default",
+) -> LlmTtaDfsConfig:
+    return LlmTtaDfsConfig(
+        execution_mode=str(llm_execution_mode or "surrogate"),
+        num_augmentations=int(llm_num_augmentations or 1),
+        beam_width=int(llm_beam_width or 1),
+        max_candidates=int(llm_max_candidates or 1),
+        max_neg_log_score=float(llm_max_neg_log_score or 120.0),
+        seed=int(llm_seed or 0),
+        consistency_weight=float(llm_consistency_weight),
+        model_weight=float(llm_model_weight),
+        augmentation_likelihood_weight=float(llm_augmentation_likelihood_weight),
+        enable_neural_backend=bool(llm_enable_neural_backend),
+        model_path=(str(llm_model_path).strip() if llm_model_path else None),
+        lora_path=(str(llm_lora_path).strip() if llm_lora_path else None),
+        max_runtime_sec=float(llm_max_runtime_sec or 0.0),
+        task_runtime_sec=float(llm_task_runtime_sec or 0.0),
+        decode_runtime_sec=float(llm_decode_runtime_sec or 0.0),
+        adapt_steps=int(llm_adapt_steps or 0),
+        adapt_batch_size=max(1, int(llm_adapt_batch_size or 1)),
+        adapt_gradient_accumulation_steps=max(1, int(llm_adapt_gradient_accumulation_steps or 1)),
+        adapt_disabled=bool(llm_adapt_disabled),
+        runtime_attention_mode=str(llm_runtime_attention_mode or "auto"),
+        runtime_disable_compile=bool(llm_runtime_disable_compile),
+        runtime_allocator_expandable_segments=bool(llm_runtime_allocator_expandable_segments),
+        runtime_allocator_max_split_size_mb=int(llm_runtime_allocator_max_split_size_mb or 0),
+        prefer_cnn_attempt1=bool(llm_prefer_cnn_attempt1),
+        candidate_ranker=str(llm_candidate_ranker or "default"),
+    )
 
 
 def run_train_pipeline(
@@ -218,6 +285,7 @@ def run_tune_pipeline(
     search_type: str = "quick",
     max_targets: int = 0,
     run_ctx: Optional[RunContext] = None,
+    train_metadata_json: Optional[str] = None,
 ) -> Path:
     """Select best baseline heuristic using evaluation tasks when solutions exist."""
     root = Path(data_root)
@@ -232,6 +300,24 @@ def run_tune_pipeline(
         str(search_type),
         max_targets=int(max_targets or 0),
     )
+    metadata_hint = train_metadata_json
+    if not metadata_hint:
+        candidate = contest_models_dir(ARC26Paths(), "arc_agi_2") / "train_metadata.json"
+        if candidate.is_file():
+            metadata_hint = str(candidate)
+
+    neural_eval_exact_match: float | None = None
+    entry = _get_per_model_entry(metadata_hint, str(model_name))
+    ckpt_path, cfg_path = _resolve_neural_paths_from_entry(entry)
+    if ckpt_path is not None and cfg_path is not None:
+        neural_eval_exact_match = score_neural_on_evaluation(
+            str(root),
+            str(ckpt_path),
+            str(cfg_path),
+            max_tasks=read_submit_max_tasks_env() or 0,
+            max_targets=int(max_targets or 0),
+        )
+
     result = {
         "model_name": str(model_name),
         "search_type": str(search_type),
@@ -239,6 +325,8 @@ def run_tune_pipeline(
         "chosen_params": chosen_params,
         "tune_scores": tune_scores,
     }
+    if neural_eval_exact_match is not None:
+        result["neural_eval_exact_match"] = float(neural_eval_exact_match)
     write_json(tune_path, result)
     logger.info("Wrote ARC tuning metadata: %s (chosen=%s)", tune_path, chosen_params)
     if run_ctx is not None:
@@ -277,6 +365,31 @@ def run_submission_pipeline(
     neural_checkpoint_path: Optional[str] = None,
     neural_train_config_path: Optional[str] = None,
     train_mode: str = "end_to_end",
+    llm_num_augmentations: int = 8,
+    llm_execution_mode: str = "surrogate",
+    llm_beam_width: int = 12,
+    llm_max_candidates: int = 6,
+    llm_max_neg_log_score: float = 120.0,
+    llm_seed: int = 0,
+    llm_consistency_weight: float = 1.0,
+    llm_model_weight: float = 1.0,
+    llm_augmentation_likelihood_weight: float = 1.0,
+    llm_enable_neural_backend: bool = False,
+    llm_model_path: Optional[str] = None,
+    llm_lora_path: Optional[str] = None,
+    llm_max_runtime_sec: float = 0.0,
+    llm_task_runtime_sec: float = 0.0,
+    llm_decode_runtime_sec: float = 0.0,
+    llm_adapt_steps: int = 0,
+    llm_adapt_batch_size: int = 1,
+    llm_adapt_gradient_accumulation_steps: int = 1,
+    llm_adapt_disabled: bool = False,
+    llm_runtime_attention_mode: str = "auto",
+    llm_runtime_disable_compile: bool = False,
+    llm_runtime_allocator_expandable_segments: bool = True,
+    llm_runtime_allocator_max_split_size_mb: int = 0,
+    llm_prefer_cnn_attempt1: bool = False,
+    llm_candidate_ranker: str = "default",
 ) -> Path:
     """Build submission.json using heuristics and/or neural checkpoint (primary model)."""
     root = Path(data_root)
@@ -286,12 +399,7 @@ def run_submission_pipeline(
     models_list = [str(m) for m in models] if models else ["baseline_approx"]
     primary = models_list[0]
 
-    strat = str(strategy or "").strip().lower()
-    if strat in ("stacking", "stacking_ensemble"):
-        raise ValueError(
-            f"Strategy {strategy!r} is not implemented for ARC (requires validation predictions). "
-            "Use single or ensemble."
-        )
+    stack_raise_if_unsupported_strategy(strategy)
 
     candidates = [
         root / "arc-agi_test_challenges.json",
@@ -324,6 +432,34 @@ def run_submission_pipeline(
         and ckpt_path.is_file()
         and cfg_path.is_file()
     )
+    llm_cfg = _build_llm_tta_config(
+        llm_execution_mode=llm_execution_mode,
+        llm_num_augmentations=llm_num_augmentations,
+        llm_beam_width=llm_beam_width,
+        llm_max_candidates=llm_max_candidates,
+        llm_max_neg_log_score=llm_max_neg_log_score,
+        llm_seed=llm_seed,
+        llm_consistency_weight=llm_consistency_weight,
+        llm_model_weight=llm_model_weight,
+        llm_augmentation_likelihood_weight=llm_augmentation_likelihood_weight,
+        llm_enable_neural_backend=llm_enable_neural_backend,
+        llm_model_path=llm_model_path,
+        llm_lora_path=llm_lora_path,
+        llm_max_runtime_sec=llm_max_runtime_sec,
+        llm_task_runtime_sec=llm_task_runtime_sec,
+        llm_decode_runtime_sec=llm_decode_runtime_sec,
+        llm_adapt_steps=llm_adapt_steps,
+        llm_adapt_batch_size=llm_adapt_batch_size,
+        llm_adapt_gradient_accumulation_steps=llm_adapt_gradient_accumulation_steps,
+        llm_adapt_disabled=llm_adapt_disabled,
+        llm_runtime_attention_mode=llm_runtime_attention_mode,
+        llm_runtime_disable_compile=llm_runtime_disable_compile,
+        llm_runtime_allocator_expandable_segments=llm_runtime_allocator_expandable_segments,
+        llm_runtime_allocator_max_split_size_mb=llm_runtime_allocator_max_split_size_mb,
+        llm_prefer_cnn_attempt1=llm_prefer_cnn_attempt1,
+        llm_candidate_ranker=llm_candidate_ranker,
+    )
+    strategy_telemetry: dict[str, int] = {}
 
     submission: dict[str, list[dict[str, Any]]] = {}
     for task_id, task in test_challenges.items():
@@ -337,7 +473,8 @@ def run_submission_pipeline(
                 input_grid = tests[0]["input"]
             else:
                 input_grid = pair["input"]
-            if use_neural:
+            use_strategy_path = str(strategy or "").strip().lower() == "llm_tta_dfs" and not bool(llm_cfg.prefer_cnn_attempt1)
+            if use_neural and not use_strategy_path:
                 a1 = predict_grid_from_checkpoint(input_grid, ckpt_path, cfg_path)
                 a2 = _second_attempt_grid(
                     input_grid,
@@ -348,14 +485,21 @@ def run_submission_pipeline(
                     max_pairs_per_task=int(max_targets or 0),
                 )
             else:
-                a1, a2 = predict_attempts_for_submit_strategy(
+                a1, a2, s_meta = predict_attempts_for_submit_strategy(
                     input_grid,
                     strategy=strategy,
                     chosen_params=chosen_params,
                     data_root=str(root),
                     train_mode=str(train_mode),
                     max_pairs_per_task=int(max_targets or 0),
+                    task_payload=task if isinstance(task, dict) else None,
+                    task_id=str(task_id),
+                    test_index=int(idx),
+                    llm_tta_config=llm_cfg,
+                    return_metadata=True,
                 )
+                status = str(s_meta.get("status", "unknown"))
+                strategy_telemetry[status] = strategy_telemetry.get(status, 0) + 1
             entries.append({"attempt_1": a1, "attempt_2": a2})
         submission[str(task_id)] = entries
 
@@ -375,6 +519,38 @@ def run_submission_pipeline(
                             "models": models_list,
                             "primary_model": primary,
                             "neural_infer": use_neural,
+                            "llm_tta_config": {
+                                "num_augmentations": int(llm_cfg.num_augmentations),
+                                "execution_mode": str(llm_cfg.execution_mode),
+                                "beam_width": int(llm_cfg.beam_width),
+                                "max_candidates": int(llm_cfg.max_candidates),
+                                "max_neg_log_score": float(llm_cfg.max_neg_log_score),
+                                "seed": int(llm_cfg.seed),
+                                "consistency_weight": float(llm_cfg.consistency_weight),
+                                "model_weight": float(llm_cfg.model_weight),
+                                "augmentation_likelihood_weight": float(llm_cfg.augmentation_likelihood_weight),
+                                "enable_neural_backend": bool(llm_cfg.enable_neural_backend),
+                                "model_path": llm_cfg.model_path,
+                                "lora_path": llm_cfg.lora_path,
+                                "max_runtime_sec": float(llm_cfg.max_runtime_sec),
+                                "task_runtime_sec": float(llm_cfg.task_runtime_sec),
+                                "decode_runtime_sec": float(llm_cfg.decode_runtime_sec),
+                                "adapt_steps": int(llm_cfg.adapt_steps),
+                                "adapt_batch_size": int(llm_cfg.adapt_batch_size),
+                                "adapt_gradient_accumulation_steps": int(llm_cfg.adapt_gradient_accumulation_steps),
+                                "adapt_disabled": bool(llm_cfg.adapt_disabled),
+                                "runtime_attention_mode": str(llm_cfg.runtime_attention_mode),
+                                "runtime_disable_compile": bool(llm_cfg.runtime_disable_compile),
+                                "runtime_allocator_expandable_segments": bool(
+                                    llm_cfg.runtime_allocator_expandable_segments
+                                ),
+                                "runtime_allocator_max_split_size_mb": int(
+                                    llm_cfg.runtime_allocator_max_split_size_mb
+                                ),
+                                "prefer_cnn_attempt1": bool(llm_cfg.prefer_cnn_attempt1),
+                                "candidate_ranker": str(llm_cfg.candidate_ranker),
+                            },
+                            "strategy_telemetry": dict(strategy_telemetry),
                             "tuned_config_path": str(tuned_config_path) if tuned_config_path else None,
                             "train_metadata_json": str(train_metadata_json) if train_metadata_json else None,
                         }

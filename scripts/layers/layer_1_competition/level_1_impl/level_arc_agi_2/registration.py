@@ -1,8 +1,12 @@
 """Register ARC-AGI-2 contest side effects."""
 
-from layers.layer_1_competition.level_0_infra.level_1 import (
+from layers.layer_1_competition.level_0_infra.level_0.cli_handlers_dispatch import (
     register_cli_handlers_module,
+)
+from layers.layer_1_competition.level_0_infra.level_1.notebook import (
     register_notebook_commands_module,
+)
+from layers.layer_1_competition.level_0_infra.level_1.registry import (
     register_contest,
 )
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (

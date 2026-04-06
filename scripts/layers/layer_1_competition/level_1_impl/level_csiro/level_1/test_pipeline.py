@@ -12,7 +12,7 @@ from layers.layer_0_core.level_1 import get_device, cleanup_gpu_memory
 from layers.layer_0_core.level_6 import create_test_dataloader
 
 from layers.layer_1_competition.level_0_infra.level_1 import create_feature_extraction_model
-from layers.layer_1_competition.level_0_infra.level_2 import (
+from layers.layer_1_competition.level_0_infra.level_3.submission import (
     expand_predictions_to_submission_format,
     save_submission,
 )

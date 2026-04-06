@@ -5,6 +5,8 @@ alwaysApply: true
 ---
 description: "Enforces level_N package dependency rules and structural organization standards"
 alwaysApply: true
+globs:
+  - input/kaggle-ml-comp-scripts/scripts/**/*.py
 ---
 
 # Package Architecture
@@ -42,8 +44,10 @@ Never mix concerns across passes. Complete one before starting the next:
 ## Layers layout (on disk vs imports)
 
 - **General stack:** `scripts/layers/layer_0_core/level_N/` — import as top-level `level_N` after `path_bootstrap.prepend_framework_paths()`.
-- **Competition infra (on disk):** `scripts/layers/layer_1_competition/infra/level_0` … `infra/level_4`. Import as **`layers.layer_1_competition.infra.level_N`**. There is **no** `scripts/level_C/` junction tree and no `level_C*` Python package for infra.
+- **Competition infra (on disk):** `scripts/layers/layer_1_competition/level_0_infra/level_0` … `level_0_infra/level_4`. Import as **`layers.layer_1_competition.level_0_infra.level_N`**. There is **no** `scripts/level_C/` junction tree and no `level_C*` Python package for infra.
 - **Contest trees:** `scripts/layers/layer_1_competition/contests/<contest>/` (each with its own `level_0` … `level_K`). Import as **`layers.layer_1_competition.contests.<contest>.level_K`**.
+- Do not create root alias wrapper packages under `level_0_infra` that only re-export from `level_N` packages.
+- Do not re-export ownership across infra level package roots (`level_N/__init__.py` may aggregate its own level only, not another level's package API).
 
 `scripts/path_bootstrap.py` prepends `layer_0_core` and `scripts/` on `sys.path` only (no filesystem links under `scripts/`).
 

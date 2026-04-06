@@ -1,6 +1,6 @@
-# infra/level_3/trainer — Trainer factory
+# infra/level_4/trainer — Trainer factory
 
-**On disk:** `…/level_0_infra/level_3/trainer/`. **Import:** `layers.layer_1_competition.level_0_infra.level_3`.
+**On disk:** `…/level_0_infra/level_4/trainer/`. **Import:** `layers.layer_1_competition.level_0_infra.level_4`.
 
 ## Purpose
 
@@ -21,12 +21,12 @@ Creates the appropriate trainer instance based on config mode: `FeatureExtractio
 |---|---|
 | `level_0` | `get_config_value`, `get_logger`. |
 | `level_5` | `BaseModelTrainer`. |
-| `infra level_0` | `get_feature_extraction_mode`. |
-| `infra level_2` | `FeatureExtractionTrainer`. |
+| `layers.layer_1_competition.level_0_infra.level_0` | `get_feature_extraction_mode`. |
+| `layers.layer_1_competition.level_0_infra.level_2` | `FeatureExtractionTrainer`. |
 
 ## Usage Example
 ```python
-from layers.layer_1_competition.level_0_infra.level_3 import create_trainer
+from layers.layer_1_competition.level_0_infra.level_4 import create_trainer
 
 trainer = create_trainer(
     config=config,

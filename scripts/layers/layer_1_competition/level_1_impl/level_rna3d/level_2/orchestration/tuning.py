@@ -15,7 +15,7 @@ from layers.layer_1_competition.level_1_impl.level_rna3d.level_1 import (
     evaluate_predictions_tm,
     run_baseline_approx_predictions,
 )
-from layers.layer_1_competition.level_0_infra.artifacts import write_json
+from layers.layer_1_competition.level_0_infra.level_0.artifacts import write_json
 from layers.layer_1_competition.level_0_infra.level_0 import contest_models_dir
 
 logger = get_logger(__name__)

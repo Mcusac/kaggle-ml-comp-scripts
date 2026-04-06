@@ -9,14 +9,14 @@ alwaysApply: false
 ## `registration.py`
 
 - Each contest package that must appear in `ContestRegistry` (e.g. `csiro`, `cafa`, `rna3d`) keeps **all import-time registration** in a sibling module `registration.py`.
-- That module should only: import `register_contest` from `layers.layer_1_competition.infra.level_0.registry`, import the contest’s config/schema/paths/post-processor (and optional `training_data_loader`), then call `register_contest(...)`.
+- That module should only: import `register_contest` from `layers.layer_1_competition.level_0_infra.level_0.registry`, import the contest’s config/schema/paths/post-processor (and optional `training_data_loader`), then call `register_contest(...)`.
 - CSIRO-specific setup such as `set_model_id_map` lives in `registration.py` with the contest registration, not in `__init__.py`.
 
 ## `__init__.py`
 
 - First line of side effects: `from . import registration  # noqa: F401` so importing the package registers the contest.
 - Then re-exports and `__all__` only (no `register_contest` calls in `__init__.py`).
-- **Do not** put `"registration"` in `__all__` and do not advertise `registration` as public API. It is an implementation detail; callers use `ContestRegistry`, `get_contest`, and `register_contest` from `layers.layer_1_competition.infra.level_0` when they need registry access.
+- **Do not** put `"registration"` in `__all__` and do not advertise `registration` as public API. It is an implementation detail; callers use `ContestRegistry`, `get_contest`, and `register_contest` from `layers.layer_1_competition.level_0_infra.level_0` when they need registry access.
 
 ## `__all__` when composing children
 

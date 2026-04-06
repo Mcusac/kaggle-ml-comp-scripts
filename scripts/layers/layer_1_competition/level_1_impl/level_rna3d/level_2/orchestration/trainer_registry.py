@@ -6,8 +6,8 @@ from pathlib import Path
 from typing import Callable, Optional
 
 from layers.layer_0_core.level_0 import get_logger
-from layers.layer_1_competition.level_0_infra.artifacts import save_pickle_artifact
-from layers.layer_1_competition.level_0_infra.registry import NamedRegistry
+from layers.layer_1_competition.level_0_infra.level_0.artifacts import save_pickle_artifact
+from layers.layer_1_competition.level_0_infra.level_0.registry import NamedRegistry
 
 from layers.layer_1_competition.level_1_impl.level_rna3d.level_1 import build_templates, group_labels_to_coords
 

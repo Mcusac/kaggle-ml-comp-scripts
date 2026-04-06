@@ -1,0 +1,14 @@
+---
+description: Keep __init__.py imports explicit and fail-fast
+globs:
+  - input/kaggle-ml-comp-scripts/scripts/**/__init__.py
+alwaysApply: false
+---
+
+# Fail-Fast `__init__.py` Imports
+
+- Use explicit `from . import child` and `from .child import *` patterns where aggregation is required.
+- Do not use broad `try/except` wrappers around imports in `__init__.py`.
+- Do not use dynamic import loops (`import_module`, reflection-based import fan-out) in `__init__.py`.
+- If an import is required by the package surface, let import errors fail fast instead of masking them.
+- Keep `__init__.py` focused on API exports only; no runtime fallback shims for optional deps.

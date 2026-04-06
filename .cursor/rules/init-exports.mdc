@@ -4,6 +4,8 @@ alwaysApply: true
 ---
 description: "Standards for __init__.py files and public API exports across all packages, levels, and nested sub-packages"
 alwaysApply: true
+globs:
+  - input/kaggle-ml-comp-scripts/scripts/**/__init__.py
 ---
 
 # `__init__.py` and Export Standards
@@ -16,6 +18,7 @@ Every `__init__.py` at every level of nesting serves as the explicit public API 
 Nothing is considered public unless it is imported and listed in `__all__`.
 Consumers should never need to reach past any `__init__.py` to access public members.
 This rule applies uniformly at every layer: levels, sub-packages, and nested sub-packages.
+- `__init__.py` may only aggregate modules/subpackages owned by the same package level. Do not re-export another level package root from here.
 
 ## The Universal Pattern
 The same export pattern applies at every layer of nesting. Each layer:
@@ -135,6 +138,7 @@ __all__ = (
 - Do not create intermediate modules solely to re-export symbols from elsewhere
 - Re-export from the package `__init__.py` instead
 - Example: instead of `base.py` that only does `from level_0.config import X`, add the import and `__all__` entry to the package `__init__.py`
+- Do not create root alias wrapper packages (for example `level_0_infra/submission` forwarding to `level_0_infra/level_0/submission`).
 
 ---
 
