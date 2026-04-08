@@ -1,7 +1,5 @@
 """Public API: JSON report loading and AST helpers (delegates to infra only)."""
 
-from __future__ import annotations
-
 from pathlib import Path
 from typing import Any
 

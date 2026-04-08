@@ -1,7 +1,7 @@
 """Transformer/ViT hyperparameter grid profile."""
 from typing import Any, Dict, List
 
-from layers.layer_0_core.level_0 import build_parameter_grid, resolve_varied_params
+from level_0 import build_parameter_grid, resolve_varied_params
 
 
 def _get_transformer_hyperparameter_defaults() -> Dict[str, Any]:

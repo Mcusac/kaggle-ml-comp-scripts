@@ -1,7 +1,5 @@
 """Rectangular grid equality (numeric cells), tolerating numpy-backed rows."""
 
-from __future__ import annotations
-
 from typing import Any
 
 

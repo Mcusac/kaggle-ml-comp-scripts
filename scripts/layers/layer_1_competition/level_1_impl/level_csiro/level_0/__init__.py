@@ -24,10 +24,13 @@ from .csiro_metadata import (
     get_writable_metadata_dir,
     load_combo_metadata,
 )
+from .data_schema import CSIRODataSchema
 from .export_ops import export_trained_model, handle_export_only_mode
 from .handlers_common import CSIRO_COMMANDS, add_common_args, resolve_dataset_type
 from .metrics import calc_metric
+from .model_constants import MODEL_ID_MAP
 from .model_resolution import get_model_image_size_for_extraction, resolve_feature_filename
+from .paths import CSIROPaths
 from .stacking_utils import process_single_fold_for_e2e_ensemble
 
 __all__ = [
@@ -43,6 +46,9 @@ __all__ = [
     "BiomassXGBModel",
     "CSIRO_COMMANDS",
     "CSIROConfig",
+    "CSIRODataSchema",
+    "CSIROPaths",
+    "MODEL_ID_MAP",
     "add_common_args",
     "aggregate_train_csv",
     "calc_metric",

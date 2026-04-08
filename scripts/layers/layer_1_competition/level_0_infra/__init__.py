@@ -1,12 +1,14 @@
-"""competition infrastructure tiers 0-4"""
+"""competition infrastructure tiers 0-6"""
 
-from . import level_0, level_1, level_2, level_3, level_4
+from . import level_0, level_1, level_2, level_3, level_4, level_5, level_6
 
 from .level_0 import *
 from .level_1 import *
 from .level_2 import *
 from .level_3 import *
 from .level_4 import *
+from .level_5 import *
+from .level_6 import *
 
 __all__ = (
     list(level_0.__all__)
@@ -14,4 +16,6 @@ __all__ = (
     + list(level_2.__all__)
     + list(level_3.__all__)
     + list(level_4.__all__)
+    + list(level_5.__all__)
+    + list(level_6.__all__)
 )

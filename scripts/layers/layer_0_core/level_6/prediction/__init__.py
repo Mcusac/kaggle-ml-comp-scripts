@@ -1,9 +1,9 @@
-"""Prediction pipeline and test dataloader creation."""
+"""Prediction pipeline and streaming test dataloader creation."""
 
-from .create_test_dataloader import create_test_dataloader
 from .predict_pipeline import PredictPipeline
+from .streaming_test_dataloader import create_streaming_test_dataloader
 
 __all__ = [
     "PredictPipeline",
-    "create_test_dataloader",
+    "create_streaming_test_dataloader",
 ]

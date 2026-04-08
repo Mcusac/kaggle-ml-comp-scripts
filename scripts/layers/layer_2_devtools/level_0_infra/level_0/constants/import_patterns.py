@@ -1,7 +1,5 @@
 """Atomic regex patterns for import and level-path parsing."""
 
-from __future__ import annotations
-
 import re
 
 LEVEL_DIR_RE = re.compile(r"^level_(\d+)$")

@@ -4,8 +4,8 @@ import torchvision.transforms as transforms
 
 from typing import Dict, Callable, Optional, Any
 
-from layers.layer_0_core.level_0 import noise_reduction, get_image_size_from_config
-from layers.layer_0_core.level_1 import get_resize_transform, contrast_enhancement
+from level_0 import noise_reduction, get_image_size_from_config
+from level_1 import get_resize_transform, contrast_enhancement
 
 TransformBuilder = Callable[[Any], Optional[Any]]
 

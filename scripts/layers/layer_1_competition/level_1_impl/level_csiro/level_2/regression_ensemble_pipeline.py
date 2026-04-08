@@ -10,14 +10,14 @@ from layers.layer_0_core.level_0 import validate_predictions_shape, get_logger
 from layers.layer_0_core.level_1 import get_device
 from layers.layer_0_core.level_2 import FeatureExtractor
 from layers.layer_0_core.level_5 import load_and_validate_test_data
-from layers.layer_0_core.level_6 import create_test_dataloader
-from layers.layer_0_core.level_7 import create_regression_ensemble_from_paths
+from layers.layer_0_core.level_5 import save_submission_csv
+from layers.layer_0_core.level_6 import create_streaming_test_dataloader
+from level_8 import create_regression_ensemble_from_paths
 
 from layers.layer_1_competition.level_0_infra.level_1 import get_contest
 from layers.layer_1_competition.level_0_infra.level_1 import create_feature_extraction_model
-from layers.layer_1_competition.level_0_infra.level_3.submission import (
+from layers.layer_1_competition.level_0_infra.level_5 import (
     expand_predictions_to_submission_format,
-    save_submission,
 )
 
 from layers.layer_1_competition.level_1_impl.level_csiro.level_1 import (
@@ -90,7 +90,7 @@ def regression_ensemble_pipeline(
     feat_model.to(device)
     feat_model.eval()
 
-    loader = create_test_dataloader(
+    loader = create_streaming_test_dataloader(
         test_csv_path=test_csv_path,
         data_root=data_root,
         image_path_column=data_schema.image_path_column,
@@ -117,6 +117,6 @@ def regression_ensemble_pipeline(
         data_schema=data_schema,
         post_processor=post_processor,
     )
-    out = save_submission(submission_df)
+    out = save_submission_csv(submission_df)
     logger.info(f"Regression ensemble done. Output: {out}")
     return submission_df

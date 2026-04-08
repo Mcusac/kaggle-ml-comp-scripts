@@ -9,12 +9,12 @@ from typing import Optional, Any
 
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_1 import get_device, cleanup_gpu_memory
-from layers.layer_0_core.level_6 import create_test_dataloader
+from layers.layer_0_core.level_5 import save_submission_csv
+from layers.layer_0_core.level_6 import create_streaming_test_dataloader
 
 from layers.layer_1_competition.level_0_infra.level_1 import create_feature_extraction_model
-from layers.layer_1_competition.level_0_infra.level_3.submission import (
+from layers.layer_1_competition.level_0_infra.level_5 import (
     expand_predictions_to_submission_format,
-    save_submission,
 )
 
 from layers.layer_1_competition.level_1_impl.level_csiro.level_0 import load_model_from_checkpoint
@@ -77,7 +77,7 @@ def test_pipeline(
 
     image_size = model.get_input_size() if hasattr(model, 'get_input_size') else config.default_image_size
 
-    test_loader = create_test_dataloader(
+    test_loader = create_streaming_test_dataloader(
         test_csv_path=test_csv_path,
         data_root=data_root,
         image_path_column=data_schema.image_path_column,
@@ -120,7 +120,7 @@ def test_pipeline(
     )
 
     output_path = str(paths.get_output_dir() / 'submission.csv')
-    save_submission(submission_df, output_path=output_path)
+    save_submission_csv(submission_df, output_path=output_path)
 
     logger.info(f"✅ Inference complete. Submission saved to {output_path}")
 

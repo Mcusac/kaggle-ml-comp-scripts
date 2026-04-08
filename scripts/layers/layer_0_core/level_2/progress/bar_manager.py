@@ -11,7 +11,7 @@ Responsibilities:
 from tqdm import tqdm
 from typing import Dict, Optional, Any, Union
 
-from layers.layer_0_core.level_1 import ProgressVerbosity
+from level_1 import ProgressVerbosity
 
 
 class ProgressBarManager:

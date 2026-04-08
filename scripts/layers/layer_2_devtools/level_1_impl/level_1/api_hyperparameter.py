@@ -1,7 +1,5 @@
 """Public API: hyperparameter analyze / verify CLIs."""
 
-from __future__ import annotations
-
 from pathlib import Path
 from typing import Any
 

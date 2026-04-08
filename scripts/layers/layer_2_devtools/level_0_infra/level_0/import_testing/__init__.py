@@ -1,17 +1,12 @@
 """Import testing framework (module discovery and import probes)."""
 
-from .classifier import ErrorClassifier
-from .discoverer import (
-    DiscoveryConfig,
-    ModuleDiscoverer,
-)
-from .reporter import TestReporter
-from .tester import ImportTester
+from .classifier import ErrorClassifier, ErrorInfo, ErrorType
+from .discoverer import DiscoveryConfig, ModuleDiscoverer
 
 __all__ = [
     "DiscoveryConfig",
     "ErrorClassifier",
-    "ImportTester",
+    "ErrorInfo",
+    "ErrorType",
     "ModuleDiscoverer",
-    "TestReporter",
 ]

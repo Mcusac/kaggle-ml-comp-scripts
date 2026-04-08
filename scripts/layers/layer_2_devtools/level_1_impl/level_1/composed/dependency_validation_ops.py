@@ -4,8 +4,6 @@ Lives under ``level_1_impl.level_1`` because it composes multiple ``level_0_infr
 utilities (AST import resolution, workspace discovery) into a workflow; impl sits above infra.
 """
 
-from __future__ import annotations
-
 import ast
 import json
 from dataclasses import dataclass

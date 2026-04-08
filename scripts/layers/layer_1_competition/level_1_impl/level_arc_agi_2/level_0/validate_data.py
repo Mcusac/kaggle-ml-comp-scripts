@@ -1,6 +1,7 @@
 """ARC JSON contract validation."""
 
 import json
+
 from pathlib import Path
 from typing import Any
 

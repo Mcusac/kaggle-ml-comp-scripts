@@ -7,7 +7,7 @@ list_vision_models returns []). Add the file to register vision model configs.
 
 from pathlib import Path
 
-from layers.layer_0_core.level_5 import create_json_model_registry
+from level_5 import create_json_model_registry
 
 _CONFIG_PATH = Path(__file__).parent.parent / "config" / "default_configs.json"
 _get_config, _list_models, _get_all = create_json_model_registry(_CONFIG_PATH)

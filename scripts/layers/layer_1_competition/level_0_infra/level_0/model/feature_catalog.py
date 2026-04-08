@@ -5,12 +5,7 @@ Registers biological embedding and handcrafted features.
 """
 
 from layers.layer_0_core.level_0 import get_logger
-try:
-    from layers.layer_0_core.level_1 import INDIVIDUAL_FEATURES, FEATURE_PRESETS
-except Exception:
-    # Optional dependency group (e.g., torch/torchvision) may be absent in some environments.
-    INDIVIDUAL_FEATURES = {}  # type: ignore[assignment]
-    FEATURE_PRESETS = {}  # type: ignore[assignment]
+from layers.layer_0_core.level_1 import FEATURE_PRESETS, INDIVIDUAL_FEATURES
 
 logger = get_logger(__name__)
 
@@ -23,10 +18,6 @@ def register_features() -> None:
     # ------------------------------------------------------------------
     # Individual features
     # ------------------------------------------------------------------
-
-    if not hasattr(INDIVIDUAL_FEATURES, "update") or not hasattr(FEATURE_PRESETS, "update"):
-        logger.info("Feature registries unavailable; skipping feature registration")
-        return
 
     INDIVIDUAL_FEATURES.update(
         {

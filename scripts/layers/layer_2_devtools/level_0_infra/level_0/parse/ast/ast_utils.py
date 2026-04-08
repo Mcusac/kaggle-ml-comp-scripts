@@ -1,7 +1,5 @@
 """Atomic AST parsing utilities for devtools analyzers."""
 
-from __future__ import annotations
-
 import ast
 from pathlib import Path
 

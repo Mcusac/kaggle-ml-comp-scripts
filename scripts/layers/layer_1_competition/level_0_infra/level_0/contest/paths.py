@@ -5,21 +5,7 @@ from pathlib import Path
 from typing import Optional
 
 from layers.layer_0_core.level_0 import is_kaggle
-
-
-def _find_mimic_data_root(kaggle_dataset_name: str, from_file: str) -> Optional[Path]:
-    """
-    Find data root in local mimic layout (input/ = /kaggle/input, working/ = /kaggle/working).
-    Walks up from from_file until a directory contains "input/", then returns
-    project_root / "input" / kaggle_dataset_name.
-    """
-    try:
-        for p in Path(from_file).resolve().parents:
-            if (p / "input").is_dir():
-                return p / "input" / kaggle_dataset_name
-    except Exception:
-        pass
-    return None
+from layers.layer_0_core.level_5 import find_project_input_root
 
 
 class ContestPaths(ABC):
@@ -101,9 +87,11 @@ class ContestPaths(ABC):
                 if comp_root.exists():
                     return comp_root
             return Path(self.kaggle_input_path)
-        mimic = _find_mimic_data_root(self.kaggle_dataset_name, __file__)
-        if mimic is not None:
-            return mimic
+        inp = find_project_input_root(__file__)
+        if inp is not None:
+            candidate = inp / self.kaggle_dataset_name
+            if candidate.exists():
+                return candidate
         return Path(self.local_data_path).resolve()
 
     def get_data_root(self) -> Path:

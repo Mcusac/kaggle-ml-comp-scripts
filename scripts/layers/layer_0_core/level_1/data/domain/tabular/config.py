@@ -3,7 +3,7 @@
 from dataclasses import dataclass, field
 from typing import Any, Dict, List
 
-from layers.layer_0_core.level_0 import (
+from level_0 import (
     CompositeConfig,
     EvaluationSchema,
     PathConfig,

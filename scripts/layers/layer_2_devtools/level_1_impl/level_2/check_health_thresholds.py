@@ -14,8 +14,6 @@ Usage:
   From scripts/:      python dev/scripts/check_health_thresholds.py <report.json> [--config FILE] [--strict]
 """
 
-from __future__ import annotations
-
 import argparse
 import sys
 from pathlib import Path

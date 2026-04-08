@@ -3,7 +3,8 @@
 from typing import Callable, Optional
 
 from layers.layer_0_core.level_0 import get_logger
-from layers.layer_1_competition.level_0_infra.level_0.registry import NamedRegistry
+
+from layers.layer_1_competition.level_0_infra.level_0 import NamedRegistry
 
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2 import run_grid_cnn_training
 

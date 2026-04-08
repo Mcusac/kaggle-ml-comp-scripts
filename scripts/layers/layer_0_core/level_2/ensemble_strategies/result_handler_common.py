@@ -2,13 +2,13 @@
 
 from typing import Any, List, Optional, Tuple
 
-from layers.layer_0_core.level_0 import ExecutionResult, get_logger
-from layers.layer_0_core.level_1 import validate_execution_result
+from level_0 import ExecutionResult, get_logger
+from level_1 import validate_execution_result
 
 logger = get_logger(__name__)
 
 
-def _log_pipeline_completion(
+def log_pipeline_completion(
     returncode: int,
     stdout_lines: List[str],
     log_file: str,

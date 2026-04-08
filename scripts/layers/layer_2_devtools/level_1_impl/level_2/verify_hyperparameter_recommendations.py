@@ -10,8 +10,6 @@ Usage:
   From scripts/:      python dev/scripts/verify_hyperparameter_recommendations.py --model-type lgbm --recommendations FILE [--metadata-dir PATH]
 """
 
-from __future__ import annotations
-
 import argparse
 import sys
 from pathlib import Path

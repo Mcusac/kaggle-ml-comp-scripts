@@ -7,8 +7,8 @@ domain-specific defaults.
 
 from typing import Dict, Optional, Tuple, Union, Any
 
-from layers.layer_0_core.level_0 import get_logger, get_config_value
-from layers.layer_0_core.level_1 import setup_mixed_precision
+from level_0 import get_logger, get_config_value
+from level_1 import setup_mixed_precision
 
 logger = get_logger(__name__)
 

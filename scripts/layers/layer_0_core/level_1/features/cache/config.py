@@ -7,7 +7,7 @@ set_model_id_map() at startup before any cache operations that depend on them.
 from pathlib import Path
 from typing import Any, Callable, Dict, Optional, Tuple
 
-from layers.layer_0_core.level_0 import get_logger, is_kaggle
+from level_0 import get_logger, is_kaggle
 
 logger = get_logger(__name__)
 
@@ -37,6 +37,26 @@ def set_model_id_map(model_id_map: Optional[Dict[str, str]]) -> None:
     """
     global _model_id_map
     _model_id_map = model_id_map
+
+
+def get_model_id(model_name: str) -> str:
+    """Forward-look up the model_id for a given model_name.
+
+    Raises:
+        RuntimeError: If set_model_id_map() has not been called.
+        ValueError: If model_name is not present in the registered map.
+    """
+    if _model_id_map is None:
+        raise RuntimeError(
+            "model_id_map not set. Contest layer must call set_model_id_map() at startup."
+        )
+    key = str(model_name)
+    if key not in _model_id_map:
+        available = ", ".join(sorted(_model_id_map.keys()))
+        raise ValueError(
+            f"Model name {key!r} not found in model_id_map. Available model names: {available}"
+        )
+    return _model_id_map[key]
 
 
 def get_cache_base_paths() -> Tuple[Path, Path]:

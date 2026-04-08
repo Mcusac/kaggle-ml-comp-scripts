@@ -4,7 +4,7 @@ import os
 import random
 import numpy as np
 
-from layers.layer_0_core.level_0 import get_torch
+from level_0 import get_torch
 
 
 def set_seed(seed: int, deterministic: bool = True) -> None:

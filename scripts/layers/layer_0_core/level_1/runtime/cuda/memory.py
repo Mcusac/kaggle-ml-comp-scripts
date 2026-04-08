@@ -10,7 +10,7 @@ import numpy as np
 
 from typing import Optional
 
-from layers.layer_0_core.level_0 import get_torch, is_torch_available
+from level_0 import get_torch, is_torch_available
 
 
 def get_model_memory_usage() -> Optional[float]:

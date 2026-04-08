@@ -3,8 +3,6 @@
 These helpers only add flags; they do not encode contest-specific policy.
 """
 
-from __future__ import annotations
-
 import argparse
 from typing import Iterable, Optional
 

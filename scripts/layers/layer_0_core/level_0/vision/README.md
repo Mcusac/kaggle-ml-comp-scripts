@@ -11,9 +11,11 @@ Provides image I/O, tiling, transform configuration, noise reduction, and model 
 - `image/` – Image loading (PIL, RGB) and config-driven size resolution, and image patching/tiling
 - `minimal_val_transform.py` – Minimal validation-time torchvision transform (Resize + ToTensor + Normalize)
 - `model_path.py` – HuggingFace model path detection
+- `model_type.py` – `detect_vision_model_type` for architecture heuristics
 - `noise_reduction.py` – Gaussian/median denoising
+- `transform_constants.py` – Available preprocessing, augmentation, and TTA variant name lists
 - `transform_defaults.py` – Default hyperparameter constants for augmentation pipelines
-- `transform_mode.py` – `TransformMode` enum (TRAIN / VAL / TEST)
+- `transform_mode.py` – `TransformMode` enum (TRAIN / VAL / TEST / TTA)
 
 ## Public API
 
@@ -24,14 +26,17 @@ Provides image I/O, tiling, transform configuration, noise reduction, and model 
 - `IMAGENET_MEAN`, `IMAGENET_STD` – Standard ImageNet normalisation constants
 - `build_minimal_val_transform` – Build Compose transform: Resize → ToTensor → Normalize(ImageNet)
 - `is_huggingface_model_path` – True if the path string refers to a HuggingFace Hub model
+- `detect_vision_model_type` – Classify a model string (e.g. ViT / ResNet / DINOv2 policy hook)
 - `noise_reduction` – Apply Gaussian or median noise reduction to an image array
+- `DEFAULT_PREPROCESSING_LIST`, `AVAILABLE_PREPROCESSING`, `AVAILABLE_AUGMENTATION`, `AVAILABLE_TTA_VARIANTS`, `DEFAULT_TTA_VARIANTS` – Named preprocessing/augmentation/TTA sets
 - `DEFAULT_BLUR_*`, `DEFAULT_COLOR_*`, `DEFAULT_GEOMETRIC_*`, `DEFAULT_NOISE_*`, `DEFAULT_CONTRAST_*` – Default augmentation constants
-- `TransformMode` – Enum: TRAIN, VAL, TEST
+- `TransformMode` – Enum: TRAIN, VAL, TEST, TTA
 
 ## Dependencies
 
-- stdlib: pathlib
-- numpy, PIL (Pillow), torchvision
+- stdlib: pathlib, typing
+- numpy, PIL (Pillow); OpenCV (`cv2`) for some loaders and denoising
+- torchvision (optional until `build_minimal_val_transform` runs)
 
 ## Usage Example
 

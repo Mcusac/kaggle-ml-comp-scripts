@@ -4,7 +4,7 @@ Command builder for train/export execution.
 
 from typing import Optional
 
-from layers.layer_0_core.level_0 import BaseCommandBuilder
+from level_0 import BaseCommandBuilder
 
 
 class TrainExportCommandBuilder(BaseCommandBuilder):

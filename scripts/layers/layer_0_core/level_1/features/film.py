@@ -1,9 +1,11 @@
 """FiLM (Feature-wise Linear Modulation) fusion module."""
 
-from layers.layer_0_core.level_0 import get_logger, get_torch
+from __future__ import annotations
+
+from level_0 import get_logger, get_nn_module_base_class, get_torch
 
 torch = get_torch()
-_NNModule = torch.nn.Module if torch is not None else object
+_NNModule = get_nn_module_base_class()
 logger = get_logger(__name__)
 
 
@@ -23,6 +25,8 @@ class FiLM(_NNModule):
             feat_dim: Feature dimension (input and output dimension)
         """
         super().__init__()
+        if torch is None:
+            raise RuntimeError("PyTorch is required for FiLM.")
         self.feat_dim = feat_dim
 
         # MLP that generates gamma and beta from context

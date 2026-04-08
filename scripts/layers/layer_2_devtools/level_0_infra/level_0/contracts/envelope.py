@@ -1,7 +1,5 @@
 """Shared envelope helpers for public API modules (infra-level primitive)."""
 
-from __future__ import annotations
-
 from datetime import date
 from typing import Any
 

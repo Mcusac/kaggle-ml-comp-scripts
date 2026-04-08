@@ -4,8 +4,8 @@ import numpy as np
 
 from tqdm import tqdm
 
-from layers.layer_0_core.level_0 import get_logger, get_torch
-from layers.layer_0_core.level_1 import forward_with_amp
+from level_0 import get_logger, get_torch
+from level_1 import forward_with_amp
 
 torch = get_torch()
 nn = torch.nn

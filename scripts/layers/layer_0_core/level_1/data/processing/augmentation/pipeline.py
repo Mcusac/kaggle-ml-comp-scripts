@@ -4,7 +4,7 @@ import torchvision.transforms as transforms
 
 from typing import List, Optional
 
-from layers.layer_0_core.level_0 import get_logger
+from level_0 import get_logger
 
 logger = get_logger(__name__)
 

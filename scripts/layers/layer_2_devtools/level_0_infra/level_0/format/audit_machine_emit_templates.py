@@ -1,7 +1,5 @@
 """Markdown templates for machine audit emit (inventory + audit stubs)."""
 
-from __future__ import annotations
-
 from datetime import date
 from typing import Any, cast
 

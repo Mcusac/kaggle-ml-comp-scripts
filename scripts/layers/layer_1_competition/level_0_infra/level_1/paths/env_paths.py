@@ -8,9 +8,6 @@ Contest selection via ContestRegistry and KAGGLE_COMP_CONTEST.
 import os
 
 from pathlib import Path
-from typing import Optional
-
-from layers.layer_0_core.level_1 import get_environment_root, resolve_environment_path
 
 from layers.layer_1_competition.level_0_infra.level_1.registry import (
     ContestRegistry,
@@ -59,76 +56,3 @@ def get_data_root_path() -> str:
     contest = get_contest(contest_name)
     paths_instance = contest["paths"]()
     return str(paths_instance.local_data_root)
-
-
-def get_output_path(relative_path: str = "") -> Path:
-    """
-    Get path within the output directory.
-
-    Args:
-        relative_path: Relative path from output root (default: "")
-
-    Returns:
-        Absolute path to output location:
-        - Kaggle: /kaggle/working/<relative_path>
-        - Local: output/<relative_path>
-    """
-    if relative_path:
-        return resolve_environment_path(relative_path, purpose='output')
-    return get_environment_root('output')
-
-
-def get_input_path(relative_path: str = "") -> Path:
-    """
-    Get path within the input/data directory.
-
-    Args:
-        relative_path: Relative path from data root (default: "")
-
-    Returns:
-        Absolute path to data location:
-        - Kaggle: /kaggle/input/<relative_path>
-        - Local: data/<relative_path>
-    """
-    if relative_path:
-        return resolve_environment_path(relative_path, purpose='data')
-    return get_environment_root('data')
-
-
-def get_model_path(model_name: str, version: Optional[str] = None) -> Path:
-    """
-    Get path for saving/loading models.
-    """
-    if version:
-        filename = f"{model_name}_{version}.pkl"
-    else:
-        filename = f"{model_name}.pkl"
-    return get_output_path(f"models/{filename}")
-
-
-def get_best_model_path() -> Path:
-    """
-    Get the path to the best_model export directory.
-    """
-    return get_output_path("best_model")
-
-
-def get_submission_path(filename: str = "submission.csv") -> Path:
-    """
-    Get path for submission file.
-    """
-    return get_output_path(filename)
-
-
-def get_checkpoint_path(experiment_name: str, epoch: int) -> Path:
-    """
-    Get path for model checkpoint.
-    """
-    return get_output_path(f"checkpoints/{experiment_name}/epoch_{epoch}.pkl")
-
-
-def get_log_path(log_name: str = "training.log") -> Path:
-    """
-    Get path for log file.
-    """
-    return get_output_path(f"logs/{log_name}")

@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from typing import Any, Iterable, Optional, TypeVar
 from tqdm.auto import tqdm
 
-from layers.layer_0_core.level_0 import get_logger, get_torch
+from level_0 import get_logger, get_torch
 
 torch = get_torch()
 logger = get_logger(__name__)

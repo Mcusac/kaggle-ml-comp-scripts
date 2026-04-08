@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 
-from layers.layer_0_core.level_0 import RuntimeConfig
+from level_0 import RuntimeConfig
 
 
 @dataclass

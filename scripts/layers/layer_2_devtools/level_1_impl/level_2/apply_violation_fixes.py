@@ -8,8 +8,6 @@ Default is --dry-run. Use --apply to modify files. Optionally --verify runs
 general stack scan and writes JSON after fixes.
 """
 
-from __future__ import annotations
-
 import argparse
 import sys
 from pathlib import Path

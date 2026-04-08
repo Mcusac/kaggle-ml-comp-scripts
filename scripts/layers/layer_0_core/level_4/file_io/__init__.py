@@ -9,9 +9,9 @@ Example:
     >>> df = load_csv('data.csv', required_cols=['id', 'value'])
 """
 
-from .csv import load_csv_raw, load_csv, save_csv
+from .csv import load_csv_raw, load_csv_raw_if_exists, load_csv, save_csv
 from .images import load_image_raw, load_image, save_image
-from .json import load_json_raw, load_json, save_json
+from .json import load_json_raw, load_json, load_best_config_json, save_json, save_json_atomic
 from .memmap import (
     should_use_memmap,
     create_memmap,
@@ -31,6 +31,7 @@ from .yaml import load_yaml_raw, load_yaml, save_yaml
 __all__ = [
     # CSV
     "load_csv_raw",
+    "load_csv_raw_if_exists",
     "load_csv",
     "save_csv",
     # Images
@@ -40,7 +41,9 @@ __all__ = [
     # JSON
     "load_json_raw",
     "load_json",
+    "load_best_config_json",
     "save_json",
+    "save_json_atomic",
     # Memmap
     "should_use_memmap",
     "create_memmap",

@@ -5,8 +5,6 @@ Allows relative imports within a level (forbid_relative_in_logic=False). Fails i
 CONTEST_UPWARD violations are found.
 """
 
-from __future__ import annotations
-
 import argparse
 import sys
 from pathlib import Path

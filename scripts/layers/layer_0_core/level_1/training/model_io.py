@@ -9,7 +9,7 @@ import pickle
 from pathlib import Path
 from typing import Any
 
-from layers.layer_0_core.level_0 import ensure_dir, get_torch
+from level_0 import ensure_dir, get_torch
 
 # ------------------------------------------------------------------
 # Save

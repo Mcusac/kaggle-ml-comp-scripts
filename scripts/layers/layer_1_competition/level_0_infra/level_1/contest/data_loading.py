@@ -6,13 +6,16 @@ reducing deep cross-package imports and improving package cohesion.
 
 import pandas as pd
 
-from typing import Optional, Any, Tuple
 from pathlib import Path
-from sklearn.model_selection import train_test_split
+from typing import Optional, Tuple
 
 from layers.layer_0_core.level_0 import get_logger
-from layers.layer_0_core.level_1 import create_kfold_splits, get_fold_data
+from layers.layer_0_core.level_4 import load_csv_raw, load_csv_raw_if_exists
 
+from layers.layer_1_competition.level_0_infra.level_1.contest.csv_io import (
+    load_training_csv,
+)
+from layers.layer_1_competition.level_0_infra.level_1.contest.splits import split_train_val
 from layers.layer_1_competition.level_0_infra.level_1.registry import (
     ContestRegistry,
     get_contest,
@@ -35,21 +38,13 @@ def load_contest_training_data(
     Falls back to pd.read_csv when no loader is registered.
     """
     contest_entry = ContestRegistry.get(contest_name) or {}
-    loader_fn = contest_entry.get('training_data_loader')
-    train_data = loader_fn(train_csv_path) if loader_fn else pd.read_csv(train_csv_path)
-
-    val_data = None
-    if n_folds is not None and n_folds > 1:
-        train_data = create_kfold_splits(
-            train_data, n_folds=n_folds, shuffle=True, random_state=42
-        )
-        if fold is not None:
-            val_data = get_fold_data(train_data, fold=fold, train=False)
-            train_data = get_fold_data(train_data, fold=fold, train=True)
-    elif validation_split is not None and 0 < validation_split < 1:
-        train_data, val_data = train_test_split(
-            train_data, test_size=validation_split, random_state=42
-        )
+    train_data = load_training_csv(contest_entry=contest_entry, train_csv_path=train_csv_path)
+    train_data, val_data = split_train_val(
+        train_data=train_data,
+        validation_split=validation_split,
+        n_folds=n_folds,
+        fold=fold,
+    )
 
     return train_data, val_data
 
@@ -96,52 +91,19 @@ def load_contest_data(
                 contest_name, train_csv_path, validation_split, n_folds, fold
             )
         else:  # tabular
-            train_data, val_data = _load_tabular_data(train_csv_path, validation_split)
+            train_data = load_csv_raw(train_csv_path)
+            train_data, val_data = split_train_val(
+                train_data=train_data,
+                validation_split=validation_split,
+                n_folds=None,
+                fold=None,
+            )
     else:
         logger.warning(f"Training CSV not found: {train_csv_path}")
 
     # Load test data
-    test_data = _load_test_data(test_csv_path)
+    test_data = load_csv_raw_if_exists(test_csv_path)
+    if test_data is None:
+        logger.debug(f"Test CSV not found: {test_csv_path}")
 
     return train_data, val_data, test_data
-
-
-def _load_tabular_data(  # only used in load_contest_data
-    train_csv_path: Path,
-    validation_split: Optional[float] = None
-) -> tuple[Any, Any]:
-    """
-    Load tabular training data.
-
-    Args:
-        train_csv_path: Path to training CSV
-        validation_split: Validation split ratio (0.0 to 1.0)
-
-    Returns:
-        Tuple of (train_data, val_data)
-    """
-
-    train_data = pd.read_csv(train_csv_path)
-    val_data = None
-
-    if validation_split is not None and 0 < validation_split < 1:
-        train_data, val_data = train_test_split(train_data, test_size=validation_split, random_state=42)
-
-    return train_data, val_data
-
-
-def _load_test_data(test_csv_path: Path) -> Any:  # only used in load_contest_data
-    """
-    Load test data from CSV file.
-
-    Args:
-        test_csv_path: Path to test CSV file
-
-    Returns:
-        Test DataFrame if file exists, None otherwise
-    """
-    if test_csv_path.exists():
-        return pd.read_csv(test_csv_path)
-    else:
-        logger.debug(f"Test CSV not found: {test_csv_path}")
-        return None

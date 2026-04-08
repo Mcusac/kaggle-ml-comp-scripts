@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """Validate layered dependency rules and emit deterministic report artifacts."""
 
-from __future__ import annotations
-
 import argparse
 import sys
 from datetime import date

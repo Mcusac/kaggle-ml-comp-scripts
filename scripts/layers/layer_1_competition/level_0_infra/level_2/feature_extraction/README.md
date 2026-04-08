@@ -1,51 +1,47 @@
-# infra/level_2/feature_extraction — Training and test-time feature extraction
+# infra/level_2/feature_extraction
 
-**On disk:** `…/level_0_infra/level_2/feature_extraction/`. **Import:** `layers.layer_1_competition.level_0_infra.level_2`.
+**On disk:** `…/level_0_infra/level_2/feature_extraction/`.  
+**Import:** prefer `layers.layer_1_competition.level_0_infra.level_2` (package barrel).
 
 ## Purpose
 
-Two-stage feature extraction training and test-time feature extraction for stacking and ensemble pipelines.
+Helper types and functions for feature extraction during training and inference: joint feature/target batches from a loader, test-set feature matrices for stacking, and resolving cached feature filenames from ensemble export metadata.
 
 ## Contents
 
 | Module | Description |
 |--------|-------------|
-| `helpers` | FeatureExtractionConfigHelper, FeatureExtractionHelper — config extraction and joint feature+target extraction |
-| `trainer` | FeatureExtractionTrainer — extract features, train regression model |
-| `test_extractor` | extract_test_features_from_model, find_feature_filename_from_ensemble_metadata |
+| `feature_extraction_helper.py` | `FeatureExtractionHelper` — wraps core `FeatureExtractor` for joint feature+target extraction. |
+| `test_extractor.py` | `extract_test_features_from_model`, `find_feature_filename_from_ensemble_metadata`. |
 
 ## Public API
 
-- **FeatureExtractionConfigHelper** — validate_inputs, extract_dataset_type, extract_regression_model_type, extract_feature_extraction_model_name
-- **FeatureExtractionHelper** — extract_all_features(loader) → (features, targets)
-- **FeatureExtractionTrainer** — extract_all_features, train
-- **extract_test_features_from_model** — Create model, dataloader, extract features, cleanup GPU
-- **find_feature_filename_from_ensemble_metadata** — Resolve feature_filename from ensemble model_metadata.json
+(Same symbols as `feature_extraction/__init__.py`.)
+
+- **FeatureExtractionHelper** — `extract_all_features(loader) -> (features, targets)`.
+- **extract_test_features_from_model** — End-to-end test features using infra `create_feature_extraction_model` and core dataloading.
+- **find_feature_filename_from_ensemble_metadata** — Walk ensemble `model_paths` and read `feature_filename` from `model_metadata.json`.
 
 ## Dependencies
 
-- **level_0:** get_logger, get_torch, ensure_dir (`trainer`)
-- **level_1:** split_features_by_fold (`trainer`); cleanup_gpu_memory, get_device (`test_extractor`)
-- **level_2:** FeatureExtractor
-- **level_3:** create_regression_model (`trainer`)
-- **level_5:** save_regression_model (`trainer`)
-- **level_6:** create_test_dataloader (`test_extractor`)
-- **layers.layer_1_competition.level_0_infra.level_0:** get_dataset_type, get_feature_extraction_model_name, get_regression_model_type (`helpers`)
-- **layers.layer_1_competition.level_0_infra.level_1:** create_feature_extraction_model, validate_feature_extraction_inputs
+- **`layers.layer_0_core`:** `FeatureExtractor`, `get_logger`, `get_device`, `cleanup_gpu_memory`, `create_streaming_test_dataloader`, `load_json`.
+- **`layers.layer_1_competition.level_0_infra.level_1`:** `create_feature_extraction_model`.
 
 ## Usage Example
 
 ```python
-from layers.layer_1_competition.level_0_infra.level_2.feature_extraction import (
-    FeatureExtractionTrainer,
+from layers.layer_1_competition.level_0_infra.level_2 import (
+    FeatureExtractionHelper,
     extract_test_features_from_model,
 )
 
-trainer = FeatureExtractionTrainer(config, device, metric_calculator=metric)
-history = trainer.train(train_loader, val_loader, save_dir=path)
+from layers.layer_0_core.level_2 import FeatureExtractor
 
-features = extract_test_features_from_model(
-    test_csv_path=path,
+helper = FeatureExtractionHelper(feature_extractor, dataset_type="split")
+X, y = helper.extract_all_features(train_loader)
+
+test_X = extract_test_features_from_model(
+    test_csv_path=csv_path,
     data_root=data_root,
     dataset_type="split",
     config=config,

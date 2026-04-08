@@ -1,7 +1,5 @@
 """Static checks for safe ``__all__`` aggregation (list/tuple concat hazards)."""
 
-from __future__ import annotations
-
 import ast
 from pathlib import Path
 

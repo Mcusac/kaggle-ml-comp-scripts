@@ -1,6 +1,6 @@
 # infra/level_1/grid_search — Contest grid search base and context
 
-**On disk:** `…/level_0_infra/level_1/grid_search/`. **Import:** `layers.layer_1_competition.level_0_infra.level_1` (symbols may also appear on `layers.layer_1_competition.level_0_infra.level_3` where re-exported).
+**On disk:** `…/level_0_infra/level_1/grid_search/`. **Import:** `layers.layer_1_competition.level_0_infra.level_1` (package barrel for `ContestGridSearchBase`, `build_grid_search_context`, and related symbols).
 
 ## Purpose
 
@@ -27,7 +27,10 @@ Provides contest-aware grid search infrastructure: a base class that injects con
 
 ## Usage Example
 ```python
-from layers.layer_1_competition.level_0_infra.level_3 import build_grid_search_context, ContestGridSearchBase
+from layers.layer_1_competition.level_0_infra.level_1 import (
+    ContestGridSearchBase,
+    build_grid_search_context,
+)
 
 # Context
 ctx = build_grid_search_context("csiro", metric_calculator=calc_fn)

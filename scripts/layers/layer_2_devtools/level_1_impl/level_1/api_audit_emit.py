@@ -1,7 +1,5 @@
 """Public API: comprehensive audit machine emit (manifest loop)."""
 
-from __future__ import annotations
-
 from datetime import date
 from pathlib import Path
 from typing import Any

@@ -3,6 +3,7 @@
 from .config import (
     set_feature_cache_path_provider,
     set_model_id_map,
+    get_model_id,
     get_cache_base_paths,
     get_model_name_from_model_id,
     get_metadata_dir,
@@ -13,6 +14,7 @@ __all__ = [
     # Cache configuration — must be called at startup by contest layer
     "set_feature_cache_path_provider",
     "set_model_id_map",
+    "get_model_id",
     "get_cache_base_paths",
     "get_model_name_from_model_id",
     "get_metadata_dir",

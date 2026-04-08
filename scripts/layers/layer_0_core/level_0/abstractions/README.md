@@ -1,29 +1,40 @@
 # Abstractions
 
-Protocol definitions for contest-agnostic orchestration.
+Protocol and base types for contest-agnostic orchestration.
 
 ## Purpose
 
-Protocols that define interfaces implemented by the contest layer. Orchestration uses these via dependency injection without importing contest-specific code.
+Abstract base classes, registries, and typing.Protocol definitions used for dependency injection. Higher layers implement these interfaces without `level_0` importing contest code.
 
 ## Contents
 
-- `handler_context_builder.py` – HandlerContextBuilder protocol
-- `grid_search_context.py` – GridSearchContext protocol
+- `ensembling_method.py` – `EnsemblingMethod` ABC for prediction fusion
+- `grid_search_context.py` – `GridSearchContext` protocol for grid-search pipelines
+- `handler_context_builder.py` – `HandlerContextBuilder` protocol for CLI/handler wiring
+- `metric.py` – `Metric` ABC for scoring callables
+- `model_registry.py` – `ModelRegistry` classmethods for model factory registration
+- `named_registry.py` – `NamedRegistry`, `build_unknown_key_error`
+- `pipeline_result.py` – `PipelineResult` frozen dataclass with `ok` / `fail` factories
 
 ## Public API
 
-- `HandlerContextBuilder` – Protocol for building handler context (detect_contest, get_config, get_paths, get_data_schema, load_contest_data)
-- `GridSearchContext` – Protocol for grid search pipeline context (get_paths, get_config, get_metric_calculator, get_metadata_handler, get_feature_cache_loader, get_parameter_grid_fn)
+- `EnsemblingMethod` – Combine arrays of predictions with optional weights
+- `GridSearchContext` – Paths, config, metric calculator, metadata, cache loader, parameter grid hook
+- `HandlerContextBuilder` – Detect contest, load config/paths/schema/data for a contest name
+- `Metric` – Named metric with `calculate` / `__call__` on `y_true` / `y_pred`
+- `ModelRegistry` – `register` / `create` / `is_registered` for model type strings
+- `NamedRegistry` – Generic keyed registry with `register` decorator, `get` / `require`
+- `build_unknown_key_error` – Format a consistent unknown-key message for registries
+- `PipelineResult` – Success/failure value object with stage, error, artifacts, metadata
 
 ## Dependencies
 
-stdlib only (typing, argparse).
+stdlib only (abc, argparse, dataclasses, typing).
 
 ## Usage Example
 
 ```python
-from level_0 import HandlerContextBuilder, GridSearchContext
+from level_0 import HandlerContextBuilder, ModelRegistry
 
 def run_with_context(builder: HandlerContextBuilder):
     contest = builder.detect_contest(args)

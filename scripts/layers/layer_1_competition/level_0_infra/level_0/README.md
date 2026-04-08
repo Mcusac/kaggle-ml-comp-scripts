@@ -1,51 +1,54 @@
-# infra/level_0 — Competition infra base
-
-**On disk:** `scripts/layers/layer_1_competition/level_0_infra/level_0/`.  
-**Import:** `layers.layer_1_competition.level_0_infra.level_0` (with `scripts/` on `sys.path` via `path_bootstrap`).
-
 ## Purpose
 
-Abstract base classes and shared utilities for Kaggle contest implementations: contest contract (config, paths, data schema, post-processing), CLI parser helpers, path utilities, model metadata helpers, and pipeline kwargs / training config.
+Base contracts and lightweight utilities shared by contest implementations (contest config/schema/paths/post-processing interfaces, CLI parser wiring helpers, artifact key conventions, and a few small model/path helpers).
 
-**Registry, export handlers, contest CLI/context (`build_contest_context`, `resolve_data_root_from_args`), and environment path helpers (`get_data_root_path`, …) live on `layers.layer_1_competition.level_0_infra.level_1`.**
+## Contents
 
-## Package layout
-
-| Subpackage / area | Contents |
-|-------------------|----------|
-| `abstractions/` | `ContestInputValidator`, `ContestMetric`, `ContestPipelineProtocol` |
-| `contest/` | `ContestConfig`, `ContestDataSchema`, `ContestPaths`, `ContestPostProcessor`, `ClipRangePostProcessor`, `ContestOntologySystem`, `ContestHierarchy`, `ContestPathConfig` |
-| `cli/` | `parser_helpers` — `add_grid_search_parsers`, `add_training_parsers`, `add_ensemble_parsers`, `add_submission_parsers` |
-| `features/` | `validate_feature_extraction_inputs` |
-| `model/` | `model_constants`, feature-extraction getters, `detect_model_type`, `feature_catalog`, `embeddings`, `verify_export_output` |
-| `paths/` | `is_kaggle_input`, `resolve_data_root`, `load_feature_filename_from_gridsearch` |
-| `pipeline/` | `create_pipeline_kwargs`, `create_training_config` |
+| Subpackage | What it contains |
+|-----------|-------------------|
+| `abstractions/` | Contest-facing Protocols (`ContestPipelineProtocol`, `ContestInputValidator`, `ContestMetric`) plus `PipelineResult` re-export |
+| `artifacts/` | Artifact/metadata key conventions and merge helpers for `PipelineResult` capture |
+| `cli/` | CLI parser-builder helpers (adds contest subcommands and shared flags) |
+| `contest/` | Abstract base classes defining the contest contract (config, data schema, paths, hierarchy/ontology, post-processing) |
+| `model/` | Small model/feature catalog helpers and export verification |
+| `paths/` | Small path helpers (contest output dir helpers, metadata fallbacks) |
+| `pipeline/` | Creation helpers for common pipeline kwargs / training-config dictionaries |
+| `registry/` | String-keyed registry base types (re-exported from core) |
+| `submission/` | Submission strategy validation helpers |
 
 ## Public API
 
-Union of subpackage `__all__` values on the root `__init__.py` (contest abstractions, CLI parsers, features validator, model/path/pipeline symbols). For **`get_contest`**, **`build_contest_context`**, **`resolve_data_root_from_args`**, **`get_data_root_path`**, **`get_output_path`**, export handlers, and registry types — import from **`layers.layer_1_competition.level_0_infra.level_1`**.
+Exported from `layers.layer_1_competition.level_0_infra.level_0` (root `__init__.py`):
+
+- `ContestPipelineProtocol`, `ContestInputValidator`, `ContestMetric`, `ContestRunPathsProtocol`, `PipelineResult`
+- `ArtifactKeys`, `artifacts_merge`, `metadata_merge`, `capture_*_paths`
+- `add_grid_search_parsers`, `add_training_parsers`, `add_ensemble_parsers`, `add_submission_parsers`
+- `ContestConfig`, `ContestDataSchema`, `ContestPaths`, `ContestPostProcessor`, `ClipRangePostProcessor`, `ContestOntologySystem`, `ContestHierarchy`, `ContestPathConfig`
+- `MODEL_ID_MAP`, `get_model_id`, `get_model_image_size`, `get_model_name_from_pretrained`, `get_pretrained_weights_path`, `load_embedding_data`, `load_structured_features`, `register_model_id_map`, `register_features`, `verify_export_output`
+- `contest_models_dir`, `load_feature_filename_from_gridsearch`
+- `create_pipeline_kwargs`, `create_training_config`
+- `NamedRegistry`, `build_unknown_key_error`
+- `validate_strategy_models`
 
 ## Dependencies
 
-- **General `level_0`–`level_2`:** as required by individual modules (see precheck / architecture rules for upward imports).
+- `layers.layer_0_core.level_0`: logging, runtime helpers, registry primitives, `PipelineResult`
+- `layers.layer_0_core.level_1`: model id helpers and feature registry globals
+- `layers.layer_0_core.level_5`: `find_project_input_root` (via the `level_5` public API)
 
-## Usage example
+## Usage Example
 
 ```python
 from layers.layer_1_competition.level_0_infra.level_0 import (
     ContestPaths,
-    is_kaggle_input,
+    contest_models_dir,
     get_pretrained_weights_path,
-)
-from layers.layer_1_competition.level_0_infra.level_1 import (
-    build_contest_context,
-    get_contest,
+    register_model_id_map,
 )
 
-ctx = build_contest_context("csiro")
-paths = ctx.get_paths()
-config = ctx.get_config()
-
-if is_kaggle_input("/kaggle/input/csiro-biomass"):
-    data_root = str(paths.local_data_root)
+def resolve_run_models_dir(*, paths: ContestPaths, contest_slug: str) -> str:
+    register_model_id_map()
+    models_dir = contest_models_dir(paths, contest_slug)
+    _ = get_pretrained_weights_path("resnet18")
+    return str(models_dir)
 ```

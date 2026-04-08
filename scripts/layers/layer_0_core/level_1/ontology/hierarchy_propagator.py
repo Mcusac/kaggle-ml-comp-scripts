@@ -4,7 +4,7 @@ import numpy as np
 from pathlib import Path
 from typing import Dict, List, Set, Tuple
 
-from layers.layer_0_core.level_0 import parse_obo_file
+from level_0 import parse_obo_file
 
 
 def _build_children_from_parents(

@@ -1,7 +1,5 @@
 """Composed contest-tier scan operations using level_0 primitives."""
 
-from __future__ import annotations
-
 import ast
 from pathlib import Path
 

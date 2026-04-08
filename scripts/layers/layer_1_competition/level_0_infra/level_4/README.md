@@ -1,33 +1,38 @@
-# infra/level_4 — Fold orchestration
+# infra/level_4 — Fold orchestration and trainer factory
 
 **On disk:** `scripts/layers/layer_1_competition/level_0_infra/level_4/`.  
 **Import:** `layers.layer_1_competition.level_0_infra.level_4`.
 
 ## Purpose
 
-Coordinates the full training pipeline for a single cross-validation fold:
-device selection, trainer creation, dataloader construction, training loop
-execution, and GPU memory cleanup.
+Exposes config-driven trainer construction (`create_trainer`) and coordinates the full training pipeline for a single cross-validation fold (`train_single_fold`): device selection, trainer creation, dataloader construction, training loop execution, and GPU memory cleanup.
 
 ## Contents
-| Module | Description |
-|--------|-------------|
-| `fold_orchestration/` | `train_single_fold` — orchestrates trainer + dataloaders for one CV fold and returns the best validation score. |
+
+| Sub-package / area | Description |
+|---|---|
+| `trainer/` | `create_trainer` — chooses `FeatureExtractionTrainer` vs `BaseModelTrainer` from config. |
+| `fold_orchestration/` | `train_single_fold` — one CV fold end-to-end using infra trainers and core dataloaders. |
 
 ## Public API
+
 | Name | Description |
 |---|---|
-| `train_single_fold` | Runs training for a single fold and returns the best score achieved. |
+| `create_trainer` | Builds the trainer instance implied by `config.model.feature_extraction_mode`. |
+| `train_single_fold` | Runs training for a single fold and returns the best validation score. |
 
 ## Dependencies
-| Level | Reason |
+
+| Source | Reason |
 |---|---|
-| `level_0` | `ensure_dir` for fold output directory creation; `get_logger` for logging. |
-| `level_1` | `get_device` for automatic device selection; `cleanup_gpu_memory` for post-fold cleanup. |
-| `level_3` | `create_train_dataloader` and `create_val_dataloader` for dataset-aware loader construction. |
-| `infra level_3` | `create_trainer` for config-driven trainer instantiation. |
+| `layers.layer_0_core.level_0` | `ensure_dir`, `get_logger` (fold output paths and logging). |
+| `layers.layer_0_core.level_1` | `get_device`, `cleanup_gpu_memory`. |
+| `layers.layer_0_core.level_3` | `create_train_dataloader`, `create_val_dataloader`. |
+| `layers.layer_0_core.level_5` | `BaseModelTrainer` (factory default path). |
+| `layers.layer_1_competition.level_0_infra.level_3` | `FeatureExtractionTrainer` when feature-extraction mode is enabled. |
 
 ## Usage Example
+
 ```python
 from pathlib import Path
 from layers.layer_1_competition.level_0_infra.level_4 import train_single_fold

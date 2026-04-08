@@ -1,6 +1,6 @@
 """Validate execution result and raise ExecutionError if failed."""
 
-from layers.layer_0_core.level_0 import ExecutionError, ExecutionResult
+from level_0 import ExecutionError, ExecutionResult
 
 
 def validate_execution_result(

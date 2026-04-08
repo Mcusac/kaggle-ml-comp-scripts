@@ -1,19 +1,7 @@
-"""ARC level_4: path-returning pipeline stages (train/tune/submit)."""
+"""ARC level_4: contest-local dispatch and small facades."""
 
-from .pipeline_local_eval import (
-    pipeline_run_benchmark_rankers_from_artifacts,
-    pipeline_run_score_submission,
-)
-from .stages import (
-    run_submission_pipeline,
-    run_train_pipeline,
-    run_tune_pipeline,
-)
+from .submit_strategy_dispatch import predict_attempts_for_submit_strategy
 
 __all__ = [
-    "pipeline_run_benchmark_rankers_from_artifacts",
-    "pipeline_run_score_submission",
-    "run_submission_pipeline",
-    "run_train_pipeline",
-    "run_tune_pipeline",
+    "predict_attempts_for_submit_strategy",
 ]

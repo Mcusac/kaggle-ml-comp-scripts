@@ -1,7 +1,5 @@
 """Locate ``layer_0_core`` directory ancestors."""
 
-from __future__ import annotations
-
 from pathlib import Path
 
 

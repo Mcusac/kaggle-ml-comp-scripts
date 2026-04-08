@@ -2,8 +2,6 @@
 
 from typing import Optional
 
-from layers.layer_0_core.level_0 import is_kaggle_input
-
 from layers.layer_1_competition.level_0_infra.level_0 import ContestPaths
 
 
@@ -23,4 +21,4 @@ def resolve_data_root(
     return str(paths.get_data_root())
 
 
-__all__ = ["is_kaggle_input", "resolve_data_root"]
+__all__ = ["resolve_data_root"]

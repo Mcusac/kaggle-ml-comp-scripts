@@ -1,7 +1,5 @@
 """Public API: workspace resolution, stack scans, and audit precheck."""
 
-from __future__ import annotations
-
 import json
 from datetime import date
 from pathlib import Path
@@ -21,6 +19,9 @@ from layers.layer_2_devtools.level_1_impl.level_0.composed.contest_scan_workflow
 )
 from layers.layer_2_devtools.level_1_impl.level_0.composed.general_scan_workflow_ops import (
     run_general_scan_workflow as _run_general_scan,
+)
+from layers.layer_2_devtools.level_0_infra.level_0.path.audit_paths import (
+    mirror_files_to_run_snapshot as _mirror_files_to_run_snapshot,
 )
 from layers.layer_2_devtools.level_0_infra.level_0.path.workspace import (
     resolve_workspace_root as _resolve_workspace_root,
@@ -533,6 +534,19 @@ def run_audit_precheck_cli_complete(config: dict[str, Any]) -> dict[str, Any]:
             return sj
         out_json.write_text(sj["data"]["json_text"], encoding="utf-8")
         messages.append(f"[OK] Wrote {out_json}")
+        ws = Path(result["workspace"])
+        snap_sources: list[Path] = [out_json]
+        if not json_only:
+            snap_sources.insert(0, Path(str(out_base) + ".md"))
+        copied = _mirror_files_to_run_snapshot(
+            workspace=ws,
+            audit_scope=audit_scope,
+            level_name=level_name,
+            generated=generated,
+            sources=snap_sources,
+        )
+        for p in copied:
+            messages.append(f"[OK] Run snapshot {p}")
         return _ok({"exit_code": 0, "messages": messages})
     except (OSError, TypeError, ValueError) as exc:
         return _err([str(exc)])

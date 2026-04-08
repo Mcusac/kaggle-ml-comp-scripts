@@ -3,7 +3,8 @@
 from pathlib import Path
 
 from layers.layer_0_core.level_0 import get_logger, get_torch
-from layers.layer_1_competition.level_0_infra.level_0.artifacts import read_json
+
+from layers.layer_0_core.level_4 import load_json_raw
 
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import CANVAS_SIZE, grid_to_one_hot_tensor, logits_to_grid
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import TinyGridCNN
@@ -27,7 +28,7 @@ def predict_grid_from_checkpoint(
         raise FileNotFoundError(f"Missing checkpoint: {ckpt}")
     if not cfg_p.is_file():
         raise FileNotFoundError(f"Missing train config: {cfg_p}")
-    cfg = read_json(cfg_p)
+    cfg = load_json_raw(cfg_p)
     canvas = int(cfg.get("canvas_size", CANVAS_SIZE))
     num_classes = int(cfg.get("num_classes", 10))
 

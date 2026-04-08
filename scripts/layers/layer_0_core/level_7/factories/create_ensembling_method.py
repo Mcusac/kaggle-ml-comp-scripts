@@ -1,13 +1,13 @@
 """Factory for creating ensembling methods by name."""
 
-from layers.layer_0_core.level_0 import EnsemblingMethod
-from layers.layer_0_core.level_3 import PerTargetWeightedEnsemble
-from layers.layer_0_core.level_6 import (
-    SimpleAverageEnsemble,
-    WeightedAverageEnsemble,
-    RankedAverageEnsemble,
+from level_0 import EnsemblingMethod
+from level_3 import PerTargetWeightedEnsemble
+from level_6 import (
     PercentileAverageEnsemble,
+    RankedAverageEnsemble,
+    SimpleAverageEnsemble,
     TargetSpecificEnsemble,
+    WeightedAverageEnsemble,
 )
 
 

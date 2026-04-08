@@ -4,7 +4,7 @@ Parameter space, combinatorics, result builders, and result selection for hyperp
 
 ## Purpose
 
-Constants for grid search types and search modes. Build parameter grids, calculate combinations, generate power sets, assemble variant result dicts, and select best variants from experiment results.
+Constants for grid search types and search modes. Build parameter grids, calculate combinations, generate power sets, assemble variant result dicts, extract results from payloads, and select best or top-N variants from experiment results.
 
 ## Contents
 
@@ -14,17 +14,18 @@ Constants for grid search types and search modes. Build parameter grids, calcula
 - `grid_engine.py` – `build_parameter_grid`, `merge_focused_ranges_into_base_grid`
 - `varied_params.py` – `resolve_varied_params`
 - `result_builders.py` – `create_result_dict`, `create_error_result_dict`
-- `result_selection.py` – `get_best_variant`, `get_top_n_variants`, `filter_results`
-- `pareto_frontier.py` – `get_pareto_frontier`
+- `result_selection.py` – `get_best_variant`, `get_top_n_variants`, `filter_results`, `filter_successful_results`, `worst_case_metric_sentinel`
+- `results_payload.py` – `extract_results_list`
 
 ## Public API
 
-- Constants: `GRID_SEARCH_TYPE_*`, `SEARCH_TYPE_*`, `RESULTS_FILE_GRIDSEARCH`, etc.
+- Constants: `GRID_SEARCH_TYPE_*`, `SEARCH_TYPE_*`, `DATASET_TYPE_*`, `RESULTS_FILE_GRIDSEARCH`, path templates, cleanup defaults, etc. (see `constants.py` and `grid_search/__init__.py` `__all__`)
 - `calculate_total_combinations`, `generate_param_combinations`, `generate_power_set`
 - `build_parameter_grid`, `merge_focused_ranges_into_base_grid`
 - `resolve_varied_params`
 - `create_result_dict`, `create_error_result_dict`
-- `get_best_variant`, `get_top_n_variants`, `filter_results`, `get_pareto_frontier`
+- `extract_results_list`
+- `get_best_variant`, `get_top_n_variants`, `filter_results`, `filter_successful_results`, `worst_case_metric_sentinel`
 
 ## Dependencies
 

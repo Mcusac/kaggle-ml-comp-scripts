@@ -6,17 +6,15 @@ import numpy as np
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-from layers.layer_0_core.level_0 import ensure_dir, get_logger, get_torch
+from layers.layer_0_core.level_0 import ensure_dir, get_config_value, get_logger, get_torch
 from layers.layer_0_core.level_1 import split_features_by_fold
-from layers.layer_0_core.level_2 import FeatureExtractor
+from layers.layer_0_core.level_1.guards import validate_feature_extraction_trainer_inputs
+from layers.layer_0_core.level_2 import FeatureExtractor, get_required_config_value
 from layers.layer_0_core.level_3 import create_regression_model
 from layers.layer_0_core.level_5 import save_regression_model
 
 from layers.layer_1_competition.level_0_infra.level_1 import create_feature_extraction_model
-from layers.layer_1_competition.level_0_infra.level_2 import (
-    FeatureExtractionConfigHelper,
-    FeatureExtractionHelper,
-)
+from layers.layer_1_competition.level_0_infra.level_2 import FeatureExtractionHelper
 
 logger = get_logger(__name__)
 torch = get_torch()
@@ -43,16 +41,20 @@ class FeatureExtractionTrainer:
         num_primary_targets: Optional[int] = None,
     ):
         """Initialize FeatureExtractionTrainer. metric_calculator from contest context."""
-        FeatureExtractionConfigHelper.validate_inputs(config, device)
+        validate_feature_extraction_trainer_inputs(config, device)
 
         self.config = config
         self._num_primary_targets = num_primary_targets
         self.device = device
         self._metric_calculator = metric_calculator
-        self.dataset_type = FeatureExtractionConfigHelper.extract_dataset_type(config)
+        self.dataset_type = get_config_value(config, "data.dataset_type", default="split")
         self.regression_only = regression_only
 
-        regression_model_type = FeatureExtractionConfigHelper.extract_regression_model_type(config)
+        regression_model_type = get_required_config_value(
+            config,
+            "model.regression_model_type",
+            error_msg="FeatureExtractionTrainer requires regression_model_type",
+        )
         self.feature_extractor = self._setup_feature_extractor(
             config, device, feature_extraction_model, regression_only
         )
@@ -78,7 +80,11 @@ class FeatureExtractionTrainer:
         if regression_only:
             return None
 
-        feature_extraction_model_name = FeatureExtractionConfigHelper.extract_feature_extraction_model_name(config)
+        feature_extraction_model_name = get_required_config_value(
+            config,
+            "model.feature_extraction_model_name",
+            error_msg="FeatureExtractionTrainer requires feature_extraction_model_name",
+        )
 
         if feature_extraction_model is None:
             feature_extraction_model = self._create_feature_extraction_model(

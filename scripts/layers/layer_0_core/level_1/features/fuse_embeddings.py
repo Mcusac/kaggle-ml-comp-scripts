@@ -4,7 +4,7 @@ import numpy as np
 
 from typing import List, Tuple
 
-from layers.layer_0_core.level_0 import align_embeddings, find_common_ids
+from level_0 import align_embeddings, find_common_ids
 
 
 def _align_embeddings_to_common_ids(

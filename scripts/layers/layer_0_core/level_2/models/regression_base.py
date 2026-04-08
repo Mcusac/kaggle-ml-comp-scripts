@@ -4,8 +4,8 @@ import numpy as np
 
 from sklearn.multioutput import MultiOutputRegressor
 
-from layers.layer_0_core.level_0 import get_logger
-from layers.layer_0_core.level_1 import check_array_finite
+from level_0 import get_logger
+from level_1 import check_array_finite
 
 logger = get_logger(__name__)
 

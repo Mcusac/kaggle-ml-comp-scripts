@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Callable, Optional
 
 from layers.layer_0_core.level_0 import get_logger
-from layers.layer_1_competition.level_0_infra.level_0.artifacts import save_pickle_artifact
+from layers.layer_0_core.level_4 import save_pickle
 from layers.layer_1_competition.level_0_infra.level_0.registry import NamedRegistry
 
 from layers.layer_1_competition.level_1_impl.level_rna3d.level_1 import build_templates, group_labels_to_coords
@@ -38,7 +38,7 @@ def _train_baseline_approx(data_root: str, output_dir: str) -> None:
     out_path.mkdir(parents=True, exist_ok=True)
     artifact_path = out_path / "baseline_approx_template_bank.pkl"
 
-    save_pickle_artifact(
+    save_pickle(
         {
             "templates": templates,
             "train_seqs": train_seqs.to_dict("records"),

@@ -1,8 +1,6 @@
-"""Level 10: Train-then-predict workflow."""
+"""Level 10: End-to-end hyperparameter grid search (contest-injected train pipeline)."""
 
-from .end_to_end_grid_search import EndToEndGridSearch, hyperparameter_grid_search_pipeline
+from . import end_to_end_grid_search
+from .end_to_end_grid_search import *
 
-__all__ = [
-    "EndToEndGridSearch",
-    "hyperparameter_grid_search_pipeline",
-]
+__all__ = list(end_to_end_grid_search.__all__)

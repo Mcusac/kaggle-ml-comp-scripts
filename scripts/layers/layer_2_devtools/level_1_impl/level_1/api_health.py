@@ -1,7 +1,5 @@
 """Public API: package health, summaries, threshold checks, report view lines."""
 
-from __future__ import annotations
-
 import json
 from pathlib import Path
 from typing import Any

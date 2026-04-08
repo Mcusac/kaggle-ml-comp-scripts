@@ -22,12 +22,12 @@ Loads images from disk in PIL and RGB formats, resolves image size from config o
 ## Dependencies
 
 - stdlib: pathlib
-- numpy, PIL (Pillow)
+- numpy, PIL (Pillow); OpenCV (`cv2`) when loading certain image sources in `loading.py`
 
 ## Usage Example
 
 ```python
-from level_0.vision.image import load_image_pil, split_image
+from level_0 import load_image_pil, split_image
 
 image = load_image_pil("photo.jpg")
 patches = split_image(image, patch_size=224)

@@ -5,7 +5,7 @@ import socket
 from pathlib import Path
 from typing import Optional, Tuple
 
-from layers.layer_0_core.level_0 import is_kaggle, get_logger
+from level_0 import is_kaggle, get_logger
 
 logger = get_logger(__name__)
 

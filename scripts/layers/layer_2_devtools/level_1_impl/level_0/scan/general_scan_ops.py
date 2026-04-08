@@ -1,7 +1,5 @@
 """Composed general-stack scan operations using level_0 primitives."""
 
-from __future__ import annotations
-
 import ast
 from datetime import date
 from pathlib import Path

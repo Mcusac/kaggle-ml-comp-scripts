@@ -92,12 +92,15 @@ def build_submit_command(
     llm_adapt_batch_size: int = 1,
     llm_adapt_gradient_accumulation_steps: int = 1,
     llm_adapt_disabled: bool = False,
+    llm_per_task_adaptation: bool = False,
     llm_augmentation_likelihood_weight: float = 1.0,
     llm_runtime_attention_mode: str = "auto",
     llm_runtime_disable_compile: bool = False,
     llm_runtime_allocator_expandable_segments: bool = True,
     llm_runtime_allocator_max_split_size_mb: int = 0,
     llm_prefer_cnn_attempt1: bool = False,
+    llm_infer_artifact_dir: Optional[str] = None,
+    llm_infer_artifact_run_name: str = "",
 ) -> List[str]:
     model_names = models or ["baseline_approx"]
     cmd = build_run_py_base_command(_CONTEST, "submit", data_root)
@@ -151,6 +154,8 @@ def build_submit_command(
         )
         if llm_adapt_disabled:
             cmd.append("--llm-adapt-disabled")
+        if llm_per_task_adaptation:
+            cmd.append("--llm-per-task-adaptation")
         cmd.extend(["--llm-runtime-attention-mode", str(llm_runtime_attention_mode or "auto")])
         if llm_runtime_disable_compile:
             cmd.append("--llm-runtime-disable-compile")
@@ -162,6 +167,10 @@ def build_submit_command(
             )
         if llm_prefer_cnn_attempt1:
             cmd.append("--llm-prefer-cnn-attempt1")
+        if llm_infer_artifact_dir and str(llm_infer_artifact_dir).strip():
+            cmd.extend(["--llm-infer-artifact-dir", str(llm_infer_artifact_dir).strip()])
+        if str(llm_infer_artifact_run_name or "").strip():
+            cmd.extend(["--llm-infer-artifact-run-name", str(llm_infer_artifact_run_name).strip()])
     return cmd
 
 
@@ -195,12 +204,15 @@ def build_train_and_submit_command(
     llm_adapt_batch_size: int = 1,
     llm_adapt_gradient_accumulation_steps: int = 1,
     llm_adapt_disabled: bool = False,
+    llm_per_task_adaptation: bool = False,
     llm_augmentation_likelihood_weight: float = 1.0,
     llm_runtime_attention_mode: str = "auto",
     llm_runtime_disable_compile: bool = False,
     llm_runtime_allocator_expandable_segments: bool = True,
     llm_runtime_allocator_max_split_size_mb: int = 0,
     llm_prefer_cnn_attempt1: bool = False,
+    llm_infer_artifact_dir: Optional[str] = None,
+    llm_infer_artifact_run_name: str = "",
 ) -> List[str]:
     model_names = models or ["baseline_approx"]
     cmd = build_run_py_base_command(_CONTEST, "train_and_submit", data_root)
@@ -253,6 +265,8 @@ def build_train_and_submit_command(
         )
         if llm_adapt_disabled:
             cmd.append("--llm-adapt-disabled")
+        if llm_per_task_adaptation:
+            cmd.append("--llm-per-task-adaptation")
         cmd.extend(["--llm-runtime-attention-mode", str(llm_runtime_attention_mode or "auto")])
         if llm_runtime_disable_compile:
             cmd.append("--llm-runtime-disable-compile")
@@ -264,6 +278,10 @@ def build_train_and_submit_command(
             )
         if llm_prefer_cnn_attempt1:
             cmd.append("--llm-prefer-cnn-attempt1")
+        if llm_infer_artifact_dir and str(llm_infer_artifact_dir).strip():
+            cmd.extend(["--llm-infer-artifact-dir", str(llm_infer_artifact_dir).strip()])
+        if str(llm_infer_artifact_run_name or "").strip():
+            cmd.extend(["--llm-infer-artifact-run-name", str(llm_infer_artifact_run_name).strip()])
     return cmd
 
 
@@ -298,12 +316,15 @@ def build_tune_and_submit_command(
     llm_adapt_batch_size: int = 1,
     llm_adapt_gradient_accumulation_steps: int = 1,
     llm_adapt_disabled: bool = False,
+    llm_per_task_adaptation: bool = False,
     llm_augmentation_likelihood_weight: float = 1.0,
     llm_runtime_attention_mode: str = "auto",
     llm_runtime_disable_compile: bool = False,
     llm_runtime_allocator_expandable_segments: bool = True,
     llm_runtime_allocator_max_split_size_mb: int = 0,
     llm_prefer_cnn_attempt1: bool = False,
+    llm_infer_artifact_dir: Optional[str] = None,
+    llm_infer_artifact_run_name: str = "",
 ) -> List[str]:
     model_names = models or ["baseline_approx"]
     cmd = build_run_py_base_command(_CONTEST, "tune_and_submit", data_root)
@@ -356,6 +377,8 @@ def build_tune_and_submit_command(
         )
         if llm_adapt_disabled:
             cmd.append("--llm-adapt-disabled")
+        if llm_per_task_adaptation:
+            cmd.append("--llm-per-task-adaptation")
         cmd.extend(["--llm-runtime-attention-mode", str(llm_runtime_attention_mode or "auto")])
         if llm_runtime_disable_compile:
             cmd.append("--llm-runtime-disable-compile")
@@ -367,5 +390,9 @@ def build_tune_and_submit_command(
             )
         if llm_prefer_cnn_attempt1:
             cmd.append("--llm-prefer-cnn-attempt1")
+        if llm_infer_artifact_dir and str(llm_infer_artifact_dir).strip():
+            cmd.extend(["--llm-infer-artifact-dir", str(llm_infer_artifact_dir).strip()])
+        if str(llm_infer_artifact_run_name or "").strip():
+            cmd.extend(["--llm-infer-artifact-run-name", str(llm_infer_artifact_run_name).strip()])
     return cmd
 

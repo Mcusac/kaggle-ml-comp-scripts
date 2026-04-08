@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import json
 from pathlib import Path
 
@@ -20,7 +18,7 @@ def _write_min_arc_dataset(root: Path) -> None:
 
 
 def test_augmentation_inversion_roundtrip() -> None:
-    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.augmentations import (
+    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
         apply_augmentation,
         generate_augmentation_specs,
         invert_augmentation,
@@ -35,7 +33,7 @@ def test_augmentation_inversion_roundtrip() -> None:
 
 
 def test_decoder_respects_constraints() -> None:
-    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.decoder_dfs import decode_grid_candidates
+    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import decode_grid_candidates
 
     probs = [
         [[0.9] + [0.1 / 9.0] * 9, [0.05, 0.9] + [0.05 / 8.0] * 8],
@@ -51,7 +49,7 @@ def test_decoder_respects_constraints() -> None:
 
 
 def test_candidate_ranking_is_deterministic() -> None:
-    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.candidate_scoring import (
+    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
         CandidatePrediction,
         rank_candidate_grids,
     )
@@ -81,7 +79,7 @@ def test_submission_pipeline_llm_tta_dfs_outputs_two_attempts(tmp_path: Path) ->
     _write_min_arc_dataset(tmp_path)
     out = tmp_path / "submission.json"
 
-    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4.stages import run_submission_pipeline
+    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_5 import run_submission_pipeline
 
     run_submission_pipeline(
         str(tmp_path),
@@ -106,7 +104,7 @@ def test_submission_pipeline_llm_backend_mode_with_mock(tmp_path: Path) -> None:
     _write_min_arc_dataset(tmp_path)
     out = tmp_path / "submission_lm_mock.json"
 
-    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4.stages import run_submission_pipeline
+    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_5 import run_submission_pipeline
 
     run_submission_pipeline(
         str(tmp_path),
@@ -124,7 +122,7 @@ def test_submission_pipeline_llm_backend_mode_with_mock(tmp_path: Path) -> None:
 
 
 def test_llm_surrogate_mode_rejects_lm_only_flags() -> None:
-    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2.llm_tta_inference import LlmTtaDfsConfig
+    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import LlmTtaDfsConfig
     from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3.llm_tta_runner import (
         predict_attempts_for_llm_tta_dfs,
     )
@@ -145,7 +143,7 @@ def test_llm_surrogate_mode_rejects_lm_only_flags() -> None:
 
 
 def test_llm_budget_forces_fallback() -> None:
-    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2.llm_tta_inference import LlmTtaDfsConfig
+    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import LlmTtaDfsConfig
     from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3.llm_tta_runner import (
         predict_attempts_for_llm_tta_dfs,
     )

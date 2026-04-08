@@ -5,7 +5,7 @@ from typing import Any
 from torch.utils.data import Dataset
 
 from layers.layer_0_core.level_0 import get_logger, get_torch
-from layers.layer_1_competition.level_0_infra.level_0.artifacts import read_json
+from layers.layer_0_core.level_4 import load_json_raw
 
 torch = get_torch()
 logger = get_logger(__name__)
@@ -28,7 +28,7 @@ def collect_same_shape_train_pairs(data_root: str) -> list[tuple[list[list[int]]
     path = _find_training_json(root)
     if not path.is_file():
         return []
-    challenges = read_json(path)
+    challenges = load_json_raw(path)
     if not isinstance(challenges, dict):
         return []
     pairs: list[tuple[list[list[int]], list[list[int]]]] = []

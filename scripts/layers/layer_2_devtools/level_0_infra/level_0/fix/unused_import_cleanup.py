@@ -1,7 +1,5 @@
 """Remove unused imports from sources using a check_health-style JSON report."""
 
-from __future__ import annotations
-
 import json
 import re
 from pathlib import Path

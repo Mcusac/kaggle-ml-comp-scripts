@@ -13,8 +13,6 @@ Legacy: Step 2.7 (precheck) + emit for each row in an audit_targets manifest.
 Run from scripts/:  python dev/scripts/comprehensive_audit_emit.py --manifest <queue.json>
 """
 
-from __future__ import annotations
-
 import argparse
 import sys
 from pathlib import Path

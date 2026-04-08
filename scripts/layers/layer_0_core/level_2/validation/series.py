@@ -5,8 +5,8 @@ Validation utilities for pandas Series.
 
 import pandas as pd
 
-from layers.layer_0_core.level_0 import DataValidationError
-from layers.layer_0_core.level_1 import check_not_none, check_min_collection_length
+from level_0 import DataValidationError
+from level_1 import check_not_none, check_min_collection_length
 
 def validate_series(
     series: pd.Series,

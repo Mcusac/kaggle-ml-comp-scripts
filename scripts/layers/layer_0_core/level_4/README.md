@@ -12,7 +12,7 @@ Orchestration layer for data loaders, feature extraction, ensembling, pipelines,
 | ensemble | Stacking ensemble with meta-model validation |
 | features | SigLIP embeddings and FeatureExtractor adapter |
 | file_io | Load/save CSV, JSON, YAML, pickle, images, memmap |
-| metrics | Weighted R² calculator for regression contests |
+| metrics | Task-aware metric dispatch (`calculate_metrics`, `calculate_metric_by_name`) and weighted R² factory |
 | models | Vision model factory (DINOv2, timm) |
 | pipeline | EvaluatePipeline, SubmissionAveragingWorkflow, threshold optimization |
 | runtime | ProgressTracker for training and inference |
@@ -26,12 +26,13 @@ Orchestration layer for data loaders, feature extraction, ensembling, pipelines,
 | stacking_ensemble_with_validation | Stack base models with learned meta-model |
 | compute_siglip_embeddings | Extract SigLIP embeddings from DataFrame |
 | SigLIPFeatureExtractorAdapter | Adapter for SigLIP in FeatureExtractor interface |
-| load_csv_raw, load_csv, save_csv | CSV I/O |
+| load_csv_raw, load_csv_raw_if_exists, load_csv, save_csv | CSV I/O |
 | load_image_raw, load_image, save_image | Image I/O |
-| load_json_raw, load_json, save_json | JSON I/O |
+| load_json_raw, load_json, load_best_config_json, save_json, save_json_atomic | JSON I/O |
 | should_use_memmap, create_memmap, load_memmap, save_memmap_with_metadata, load_memmap_with_metadata, MEMMAP_THRESHOLD_MB | Memmap utilities |
 | load_pickle_raw, load_pickle, save_pickle | Pickle I/O |
 | load_yaml_raw, load_yaml, save_yaml | YAML I/O |
+| calculate_metrics, calculate_metric_by_name | Dispatch metrics by task type or registered name |
 | create_weighted_r2_calculator | Create weighted R² calculator for regression |
 | create_vision_model | Factory for vision models (DINOv2, timm) |
 | EvaluatePipeline | Pipeline for evaluation |
@@ -42,7 +43,7 @@ Orchestration layer for data loaders, feature extraction, ensembling, pipelines,
 ## Dependencies
 
 - **level_0** — errors, paths, vision, runtime, prediction_guards, scoring
-- **level_1** — BasePipeline, BaseVisionModel, validate_paired_predictions, ProgressConfig, get_device_info
+- **level_1** — BasePipeline, BaseVisionModel, `get_metric`, `list_metrics`, `validate_config_section_exists`, `validate_paired_predictions`, ProgressConfig, `get_device_info`
 - **level_2** — dataloader, ensemble_strategies, models, validation, vision_transforms
 - **level_3** — dataloader, ensemble, features, metrics, runtime, transforms
 

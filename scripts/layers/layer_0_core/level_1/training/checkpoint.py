@@ -3,7 +3,7 @@
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from layers.layer_0_core.level_0 import ensure_dir, get_logger, get_torch
+from level_0 import ensure_dir, get_logger, get_torch
 
 torch = get_torch()
 nn = torch.nn if torch is not None else None

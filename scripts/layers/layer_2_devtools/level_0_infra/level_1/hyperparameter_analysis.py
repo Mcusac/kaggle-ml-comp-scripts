@@ -16,7 +16,7 @@ except ImportError:
     # Fallback if contest-specific import fails (may not be available in all contexts)
     extract_top_results = None
 
-from ..level_0 import get_hyperparameters_for_model
+from ..level_0.hyperparameter import get_hyperparameters_for_model
 
 logger = logging.getLogger(__name__)
 

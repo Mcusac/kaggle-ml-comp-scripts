@@ -8,7 +8,7 @@ from layers.layer_0_core.level_1 import create_kfold_splits, get_device, cleanup
 from layers.layer_0_core.level_2 import save_features
 from layers.layer_0_core.level_3 import create_train_dataloader
 
-from layers.layer_1_competition.level_0_infra.level_3 import create_trainer
+from layers.layer_1_competition.level_0_infra.level_4 import create_trainer
 
 from layers.layer_1_competition.level_1_impl.level_csiro.level_0 import (
     aggregate_train_csv,

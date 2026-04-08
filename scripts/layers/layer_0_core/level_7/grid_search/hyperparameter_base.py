@@ -1,11 +1,11 @@
 """Base class for hyperparameter grid searches; extends framework GridSearchBase."""
 
 from abc import ABC
-from typing import Dict, List, Any, Tuple
 from itertools import product
+from typing import Any, Dict, List, Tuple
 
-from layers.layer_0_core.level_0 import get_logger
-from layers.layer_0_core.level_6 import GridSearchBase
+from level_0 import get_logger
+from level_6 import GridSearchBase
 
 logger = get_logger(__name__)
 

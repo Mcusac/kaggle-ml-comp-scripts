@@ -6,10 +6,10 @@ import numpy as np
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from layers.layer_0_core.level_0 import get_logger, EnsemblingMethod
-from layers.layer_0_core.level_4 import load_pickle
-from layers.layer_0_core.level_6 import SimpleAverageEnsemble
-from layers.layer_0_core.level_7 import create_ensembling_method
+from level_0 import EnsemblingMethod, get_logger
+from level_4 import load_pickle
+from level_6 import SimpleAverageEnsemble
+from level_7 import create_ensembling_method
 
 logger = get_logger(__name__)
 

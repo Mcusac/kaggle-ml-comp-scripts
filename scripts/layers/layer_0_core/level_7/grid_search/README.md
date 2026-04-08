@@ -29,10 +29,9 @@ Grid search sub-package: hyperparameter base class, variant result builders, and
 
 ## Dependencies
 
-- **level_0**: Logging, config, paths, grid search constants, result builders
-- **level_1**: GPU cleanup, transformer hyperparameter grid, environment paths
-- **level_5**: get_focused_parameter_grid (focused grid from prior results)
-- **level_6**: GridSearchBase, create_variant_specific_data, results detection, cleanup orchestration (re-exported through this package)
+- **level_0**: Logging, validation, paths helpers, result-dict builders
+- **level_1**: `cleanup_gpu_memory` in dataset variant execution
+- **level_6**: `GridSearchBase`, `create_variant_specific_data`, results detection, cleanup orchestration (re-exported through this package)
 
 ## Usage Example
 

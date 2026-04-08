@@ -5,8 +5,6 @@ Emit deterministic audit target queues (orchestrator Step 1e).
 Run from scripts/:  python dev/scripts/audit_targets.py ...
 """
 
-from __future__ import annotations
-
 import argparse
 import io
 import sys

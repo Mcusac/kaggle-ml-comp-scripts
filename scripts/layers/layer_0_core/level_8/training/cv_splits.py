@@ -1,15 +1,15 @@
 """CV split creation: visual clustering and hierarchical stratification."""
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 from typing import Dict, List, Optional
 
-from sklearn.model_selection import StratifiedKFold, StratifiedGroupKFold
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
+from sklearn.model_selection import StratifiedGroupKFold, StratifiedKFold
 
-from layers.layer_0_core.level_0 import get_logger
+from level_0 import get_logger
 
 logger = get_logger(__name__)
 

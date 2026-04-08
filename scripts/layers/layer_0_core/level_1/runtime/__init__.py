@@ -28,6 +28,8 @@ from .paths import (
     get_environment_type, 
     get_environment_paths, 
     get_environment_root, 
+    get_default_submission_csv_path,
+    get_kaggle_working_submission_csv_path,
     resolve_environment_path, 
     resolve_path
 )
@@ -53,6 +55,8 @@ __all__ = (
     "get_environment_type",
     "get_environment_paths",
     "get_environment_root",
+    "get_default_submission_csv_path",
+    "get_kaggle_working_submission_csv_path",
     "resolve_environment_path",
     "resolve_path",
     "run_command",

@@ -4,8 +4,6 @@ This does not change any on-disk file formats; it only standardizes keys used
 in PipelineResult.artifacts / PipelineResult.metadata across contests.
 """
 
-from __future__ import annotations
-
 from typing import Any, Dict, Mapping, Optional
 
 
@@ -109,15 +107,3 @@ def capture_metrics_paths(
         }.items()
         if v
     }
-
-
-__all__ = [
-    "ArtifactKeys",
-    "artifacts_merge",
-    "capture_config_paths",
-    "capture_metrics_paths",
-    "capture_model_paths",
-    "capture_submission_paths",
-    "metadata_merge",
-]
-

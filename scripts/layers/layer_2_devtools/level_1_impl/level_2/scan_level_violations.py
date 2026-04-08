@@ -4,8 +4,6 @@ Scan general stack level_0 .. level_10 for import layering violations.
 Read-only: writes a markdown report under .cursor/audit-results/general/audits/.
 """
 
-from __future__ import annotations
-
 import argparse
 import sys
 from datetime import date

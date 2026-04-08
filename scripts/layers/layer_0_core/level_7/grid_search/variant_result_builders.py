@@ -1,9 +1,9 @@
 """Variant result builders for hyperparameter and regression grid search."""
 
-from typing import Dict, Any, Optional, List
+from typing import Any, Dict, List, Optional
 
-from layers.layer_0_core.level_0 import create_result_dict, create_error_result_dict
-from layers.layer_0_core.level_6 import create_variant_specific_data
+from level_0 import create_error_result_dict, create_result_dict
+from level_6 import create_variant_specific_data
 
 
 def build_success_result(

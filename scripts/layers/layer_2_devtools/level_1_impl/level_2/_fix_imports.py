@@ -1,7 +1,5 @@
 """CLI entry for layer_0_core import rewrites — logic in devtools layer."""
 
-from __future__ import annotations
-
 import sys
 from pathlib import Path
 

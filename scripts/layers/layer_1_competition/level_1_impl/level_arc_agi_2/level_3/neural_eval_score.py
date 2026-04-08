@@ -1,7 +1,5 @@
 """Neural checkpoint scoring vs evaluation solutions (composition tier: imports level_2 inference)."""
 
-from __future__ import annotations
-
 from pathlib import Path
 
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import scoring as _arc_scoring

@@ -7,8 +7,6 @@ Usage:
   python dev/scripts/cleanup_imports.py --report unused_imports_report.json
 """
 
-from __future__ import annotations
-
 import argparse
 import io
 import sys

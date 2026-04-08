@@ -1,10 +1,8 @@
 """Local LB-style scoring: two attempts per test, partial credit across tests."""
 
-from __future__ import annotations
-
 from typing import Any
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0.arc_grids_equal import (
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     arc_grids_equal,
 )
 

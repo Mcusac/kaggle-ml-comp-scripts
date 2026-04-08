@@ -3,8 +3,8 @@
 from pathlib import Path
 from typing import Dict, Any, List
 
-from layers.layer_0_core.level_0 import get_logger, get_torch
-from layers.layer_0_core.level_1 import load_model_checkpoint
+from level_0 import get_logger, get_torch
+from level_1 import load_model_checkpoint
 
 torch = get_torch()
 nn = torch.nn

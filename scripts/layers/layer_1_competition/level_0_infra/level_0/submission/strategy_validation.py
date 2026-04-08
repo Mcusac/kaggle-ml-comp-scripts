@@ -21,7 +21,3 @@ def validate_strategy_models(strategy: str, models: Sequence[str]) -> None:
             raise ValueError(f"Strategy {s!r} requires at least 2 models, got {n}")
         return
     raise ValueError(f"Unknown strategy: {strategy}")
-
-
-__all__ = ["validate_strategy_models"]
-

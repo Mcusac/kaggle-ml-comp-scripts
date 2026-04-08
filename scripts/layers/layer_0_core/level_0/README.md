@@ -10,7 +10,7 @@ CLI argument parsing and dispatch, exception hierarchy, base config schemas, pat
 
 | Subpackage | Responsibility |
 |------------|----------------|
-| `abstractions` | Framework extension Protocols: `EnsemblingMethod`, `GridSearchContext`, `HandlerContextBuilder`, `Metric`, `ModelRegistry` |
+| `abstractions` | ABCs and protocols: `EnsemblingMethod`, `Metric`, `ModelRegistry`, `NamedRegistry`, `GridSearchContext`, `HandlerContextBuilder`, `PipelineResult`, `build_unknown_key_error` |
 | `cli` | Argument parsing helpers, argument group builders, `Command` enum, `dispatch_command` |
 | `config` | `BaseConfig`, `TrainingSchema`, `EvaluationSchema`, `PathConfig`, `CompositeConfig`, `RuntimeConfig`, `PipelineConfig`, `TrainingCadenceConfig`, `TrainingMode`, `DataSplit`, `get_config_value` |
 | `embeddings` | `align_embeddings`, `find_common_ids`, `normalize_embedding_type`, `resolve_embedding_base_path` |

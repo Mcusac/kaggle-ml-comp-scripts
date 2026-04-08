@@ -1,8 +1,8 @@
-# Level 10: Train-then-predict workflow
+# Level 10: Hyperparameter grid search orchestration
 
 ## Purpose
 
-Provides the end-to-end hyperparameter grid search pipeline that runs full training for each variant. Designed to be invoked by the contest layer with `contest_context` and `train_pipeline_fn` injected (orchestration does not import contest).
+Owns end-to-end hyperparameter grid search: for each variant it runs the full training pipeline supplied by the contest layer via `train_pipeline_fn`, without importing contest code.
 
 ## Contents
 
@@ -33,7 +33,7 @@ Provides the end-to-end hyperparameter grid search pipeline that runs full train
 - **contest_context**: Must provide `get_paths()` and `get_config()`.
 - **train_pipeline_fn**: Callable `(data_root, model, n_folds, **config_overrides) -> (cv_score, fold_scores)`. Injected by contest layer; level_10 does not import contest.
 
-## Usage example
+## Usage Example
 
 ```python
 from level_10 import hyperparameter_grid_search_pipeline

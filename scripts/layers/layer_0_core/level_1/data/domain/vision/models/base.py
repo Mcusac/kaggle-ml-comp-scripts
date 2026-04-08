@@ -1,12 +1,14 @@
 """Base vision model abstract class."""
 
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from typing import Tuple, Union
 
-from layers.layer_0_core.level_0 import get_torch
+from level_0 import get_nn_module_base_class, get_torch
 
 torch = get_torch()
-_NNModule = torch.nn.Module if torch is not None else object
+_NNModule = get_nn_module_base_class()
 
 
 class BaseVisionModel(_NNModule, ABC):
@@ -65,13 +67,19 @@ class BaseVisionModel(_NNModule, ABC):
 
     def save(self, path: str) -> None:
         """Save model state dict to path."""
+        if torch is None:
+            raise RuntimeError("PyTorch is required to save vision models.")
         torch.save(self.state_dict(), path)
 
     def load(self, path: str, device: str = 'cpu') -> None:
         """Load model state dict from path."""
+        if torch is None:
+            raise RuntimeError("PyTorch is required to load vision models.")
         state_dict = torch.load(path, map_location=device)
         self.load_state_dict(state_dict)
 
     def get_num_parameters(self) -> int:
         """Return total number of model parameters."""
+        if torch is None:
+            return 0
         return sum(p.numel() for p in self.parameters())

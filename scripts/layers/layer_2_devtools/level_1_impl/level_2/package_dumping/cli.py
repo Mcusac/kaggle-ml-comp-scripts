@@ -1,7 +1,5 @@
 """Package tree dump CLI — entrypoint only; logic in devtools layer."""
 
-from __future__ import annotations
-
 import sys
 from pathlib import Path
 

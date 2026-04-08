@@ -7,8 +7,8 @@ import pandas as pd
 
 from typing import Optional, List
 
-from layers.layer_0_core.level_0 import DataValidationError
-from layers.layer_0_core.level_1 import check_not_none, check_min_collection_length
+from level_0 import DataValidationError
+from level_1 import check_not_none, check_min_collection_length
 
 
 def validate_dataframe(

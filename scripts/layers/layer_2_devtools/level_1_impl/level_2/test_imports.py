@@ -4,8 +4,6 @@ Comprehensive import test suite entrypoint.
 Run: python dev/tests/test_imports.py [--verbose]
 """
 
-from __future__ import annotations
-
 import argparse
 import io
 import sys

@@ -5,9 +5,8 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 
 from layers.layer_0_core.level_0 import get_logger
+from layers.layer_0_core.level_1 import resolve_environment_path
 from layers.layer_0_core.level_5 import export_from_training_dir
-
-from layers.layer_1_competition.level_0_infra.level_1 import get_output_path
 
 logger = get_logger(__name__)
 
@@ -24,9 +23,9 @@ def handle_export_only_mode(
     logger.info("Export mode: Reusing existing model (export_only=True)")
 
     if model is None:
-        training_model_dir = Path(get_output_path("best_model_training"))
+        training_model_dir = resolve_environment_path("best_model_training", purpose="output")
     else:
-        training_model_dir = Path(get_output_path(f"{model}_training"))
+        training_model_dir = resolve_environment_path(f"{model}_training", purpose="output")
 
     if not training_model_dir.exists():
         raise FileNotFoundError(f"Training directory not found: {training_model_dir}")
@@ -45,7 +44,7 @@ def handle_export_only_mode(
             existing_metadata = json.load(f)
             export_metadata.update(existing_metadata)
 
-    export_dir_path = Path(export_dir) if export_dir else Path(get_output_path("exports"))
+    export_dir_path = Path(export_dir) if export_dir else resolve_environment_path("exports", purpose="output")
     export_dir_path.mkdir(parents=True, exist_ok=True)
 
     export_from_training_dir(

@@ -7,7 +7,7 @@ produces a controlled warning rather than a raw ImportError.
 
 from typing import Any, Dict, Optional
 
-from layers.layer_0_core.level_2 import get_lasso, get_linear_regression, get_ridge
+from level_2 import get_lasso, get_linear_regression, get_ridge
 
 
 def create_meta_model(

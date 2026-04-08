@@ -10,7 +10,7 @@ from typing import Any, List, Optional, Tuple
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_1 import cleanup_gpu_memory, get_fold_data
 from layers.layer_0_core.level_4 import load_json
-from layers.layer_0_core.level_6 import create_test_dataloader
+from layers.layer_0_core.level_6 import create_streaming_test_dataloader
 from layers.layer_0_core.level_7 import create_ensembling_method
 
 from layers.layer_1_competition.level_0_infra.level_1 import create_feature_extraction_model
@@ -80,7 +80,7 @@ def load_and_run_model_inference(
     image_size = model.get_input_size() if hasattr(model, 'get_input_size') else (224, 224)
 
     # Create dataloaders
-    val_loader = create_test_dataloader(
+    val_loader = create_streaming_test_dataloader(
         test_csv_path=val_csv_path,
         data_root=data_root,
         image_path_column=data_schema.image_path_column,
@@ -91,7 +91,7 @@ def load_and_run_model_inference(
         num_workers=0
     )
 
-    test_loader = create_test_dataloader(
+    test_loader = create_streaming_test_dataloader(
         test_csv_path=test_csv_path,
         data_root=data_root,
         image_path_column=data_schema.image_path_column,

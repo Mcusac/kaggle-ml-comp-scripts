@@ -4,11 +4,12 @@
 
 Composed pipelines and higher-level components for ML competition workflows: dataloaders, feature extraction, metrics, ensemble methods, training models, and orchestration.
 
-**Dependency and import policy:** `level_3` may import only from **level_0**, **level_1**, and **level_2** (lower levels). Imports of other modules under `level_3` must use fully qualified names (`from level_3.subpackage.module import ...`) so dependencies are explicit. In `__init__.py` only, `from . import submodule` is allowed when a fully qualified same-package import would be circular during package initialization.
+**Dependency and import policy:** After `path_bootstrap.prepend_framework_paths()`, logic modules import only via **`from level_0 import …`**, **`from level_1 import …`**, and **`from level_2 import …`** (each level’s public API — no `layers.layer_0_core.level_*` paths in leaf modules). Only `__init__.py` files under `level_3` use relative imports (`from . …`) to aggregate sub-packages.
 
 ## Contents
 
 - `dataloader/` — PyTorch DataLoader factories for training and validation splits with configurable augmentation presets.
+- `ensemble_strategies/` — Log-formatting handlers for ensemble, regression-ensemble, and stacking subprocess results.
 - `ensemble/` — Prediction blending, learned weight fitting, meta-model factory, and per-target weighted ensembling.
 - `transforms/` — Config-driven transform factory: build_train_transform, build_val_transform, build_tta_transforms.
 - `features/` — SigLIP patch embedding extractor, supervised dimensionality-reduction engine (PCA + PLS + GMM), handcrafted protein feature extraction (sequential, parallel, streaming), and DataLoader-based bulk extraction.
@@ -22,6 +23,7 @@ Composed pipelines and higher-level components for ML competition workflows: dat
 All names from each sub-package's `__all__` are re-exported at this level. See each sub-package's `README.md` for the full listing.
 
 Key exports by sub-package:
+- **ensemble_strategies**: `handle_ensemble_result`, `handle_regression_ensemble_result`, `handle_stacking_result`, `handle_hybrid_stacking_result`
 - **dataloader**: `create_train_dataloader`, `create_val_dataloader`, `build_transforms_for_dataloaders`
 - **ensemble**: `blend_predictions`, `learn_blending_weights`, `create_meta_model`, `PerTargetWeightedEnsemble`
 - **features**: `SigLIPExtractor`, `SupervisedEmbeddingEngine`, `extract_all_features`, `extract_handcrafted_features_for_ids`, `extract_handcrafted_parallel`, `stream_features`

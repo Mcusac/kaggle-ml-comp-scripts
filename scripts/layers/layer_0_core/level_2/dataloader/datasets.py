@@ -4,7 +4,7 @@ import pandas as pd
 
 from typing import Callable, List, Optional, Tuple
 
-from layers.layer_0_core.level_1 import BaseImageDataset
+from level_1 import BaseImageDataset
 
 
 def create_dataset_for_test_dataloader(

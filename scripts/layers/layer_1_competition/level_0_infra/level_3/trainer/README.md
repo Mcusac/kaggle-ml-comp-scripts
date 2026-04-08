@@ -1,38 +1,52 @@
-# infra/level_3/trainer — Trainer factory
+---
+generated: 2026-04-08
+---
 
-**On disk:** `…/level_0_infra/level_3/trainer/`. **Import:** `layers.layer_1_competition.level_0_infra.level_3`.
+# infra/level_3/trainer — `FeatureExtractionTrainer`
+
+**On disk:** `…/level_0_infra/level_3/trainer/`.  
+**Import:** `layers.layer_1_competition.level_0_infra.level_3` (barrel) or `…level_3.trainer` for cycle breaks only.
 
 ## Purpose
 
-Creates the appropriate trainer instance based on config mode: `FeatureExtractionTrainer` when `config.model.feature_extraction_mode` is True, otherwise `BaseModelTrainer`.
+Implements `FeatureExtractionTrainer` for two-stage training. For a config-driven choice between this trainer and end-to-end `BaseModelTrainer`, use **`layers.layer_1_competition.level_0_infra.level_4.create_trainer`** (not this tier’s barrel).
 
 ## Contents
+
 | Module | Description |
-|---|---|
-| `factory` | `create_trainer` — inspects config and instantiates the correct trainer. |
+|--------|-------------|
+| `feature_extraction.py` | `FeatureExtractionTrainer` class. |
 
 ## Public API
+
 | Name | Description |
-|---|---|
-| `create_trainer` | Creates a trainer instance appropriate for the given config and device. |
+|------|-------------|
+| `FeatureExtractionTrainer` | Two-stage trainer (feature extractor + regression model). |
 
 ## Dependencies
-| Level | Reason |
-|---|---|
-| `level_0` | `get_config_value`, `get_logger`. |
-| `level_5` | `BaseModelTrainer`. |
-| `infra level_0` | `get_feature_extraction_mode`. |
-| `infra level_2` | `FeatureExtractionTrainer`. |
+
+Same as parent `level_3` README (core levels 0–5, infra `level_1` / `level_2`).
 
 ## Usage Example
+
 ```python
-from layers.layer_1_competition.level_0_infra.level_3 import create_trainer
+from layers.layer_1_competition.level_0_infra.level_3 import FeatureExtractionTrainer
+
+trainer = FeatureExtractionTrainer(
+    config=config,
+    device=device,
+    metric_calculator=metric_calculator,
+)
+```
+
+Config-based factory:
+
+```python
+from layers.layer_1_competition.level_0_infra.level_4 import create_trainer
 
 trainer = create_trainer(
     config=config,
     device=device,
-    model=None,
     metric_calculator=metric_calculator,
 )
-trainer.train(train_loader, val_loader, num_epochs=10, save_dir=save_dir)
 ```

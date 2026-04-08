@@ -1,7 +1,5 @@
 """Guard __init__.py export aggregation against list/tuple concat hazards."""
 
-from __future__ import annotations
-
 from pathlib import Path
 
 from layers.layer_2_devtools.level_0_infra.level_0.validation.init_all_concat import (

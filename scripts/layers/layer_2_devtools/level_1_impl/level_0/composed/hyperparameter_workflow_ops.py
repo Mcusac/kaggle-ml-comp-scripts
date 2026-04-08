@@ -1,7 +1,5 @@
 """Hyperparameter analyze + verify workflows (metadata load, stats, recommendations)."""
 
-from __future__ import annotations
-
 import json
 import statistics
 import traceback

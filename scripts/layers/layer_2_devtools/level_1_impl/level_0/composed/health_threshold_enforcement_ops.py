@@ -1,7 +1,5 @@
 """Load health JSON report, run threshold checker, derive CLI exit code."""
 
-from __future__ import annotations
-
 from pathlib import Path
 from typing import Optional
 

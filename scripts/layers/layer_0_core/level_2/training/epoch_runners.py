@@ -4,11 +4,11 @@ For conventional supervised learning: (X, y) batches, single model,
 single criterion, single optimizer.
 """
 
-from typing import Optional
 from tqdm import tqdm
+from typing import Optional
 
-from layers.layer_0_core.level_0 import get_torch
-from layers.layer_0_core.level_1 import train_one_epoch, run_supervised_batch
+from level_0 import get_torch
+from level_1 import train_one_epoch, run_supervised_batch
 
 torch = get_torch()
 nn = torch.nn

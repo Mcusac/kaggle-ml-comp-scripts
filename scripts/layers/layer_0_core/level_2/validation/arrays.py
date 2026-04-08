@@ -6,8 +6,8 @@ import numpy as np
 
 from typing import Optional, Tuple
 
-from layers.layer_0_core.level_0 import DataValidationError
-from layers.layer_0_core.level_1 import check_not_none, check_array_finite
+from level_0 import DataValidationError
+from level_1 import check_not_none, check_array_finite
 
 def validate_array(
     array: np.ndarray,

@@ -1,13 +1,16 @@
 """Base head for vision models (classification/regression)."""
 
-from typing import Any, Optional
+from typing import Optional
 
-from layers.layer_0_core.level_0 import get_torch
+from level_0 import (
+    get_nn_module_base_class,
+    get_torch,
+    get_vision_module_and_tensor_types,
+)
 
 torch = get_torch()
-_NNModule = torch.nn.Module if torch is not None else object
-ModuleT = torch.nn.Module if torch is not None else Any
-TensorT = torch.Tensor if torch is not None else Any
+_NNModule = get_nn_module_base_class()
+ModuleT, TensorT = get_vision_module_and_tensor_types()
 
 
 class BaseHead(_NNModule):
@@ -27,6 +30,8 @@ class BaseHead(_NNModule):
         activation: str = "relu",
     ):
         super().__init__()
+        if torch is None:
+            raise RuntimeError("PyTorch is required to build vision heads.")
         self.in_features = in_features
         self.out_features = out_features
 

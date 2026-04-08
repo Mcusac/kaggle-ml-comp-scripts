@@ -1,7 +1,5 @@
 """Audit precheck composed workflows."""
 
-from __future__ import annotations
-
 from dataclasses import dataclass
 from datetime import date
 import json
@@ -37,7 +35,10 @@ from layers.layer_2_devtools.level_0_infra.level_0.format.audit_machine_emit_tem
 from layers.layer_2_devtools.level_0_infra.level_0.format.inventory_bootstrap_markdown import (
     bootstrap_markdown,
 )
-from layers.layer_2_devtools.level_0_infra.level_0.path.audit_paths import precheck_summary_json_path
+from layers.layer_2_devtools.level_0_infra.level_0.path.audit_paths import (
+    mirror_files_to_run_snapshot,
+    precheck_summary_json_path,
+)
 from layers.layer_2_devtools.level_0_infra.level_0.path.layer_core_paths import find_layer_0_core_ancestor
 from layers.layer_2_devtools.level_0_infra.level_0.path.workspace import find_workspace_root
 from layers.layer_2_devtools.level_0_infra.level_0.path.workspace import resolve_workspace_root
@@ -324,7 +325,25 @@ def run_comprehensive_audit_emit(
         )
         aud_dir = workspace / ".cursor/audit-results" / scope / "audits"
         aud_dir.mkdir(parents=True, exist_ok=True)
-        (aud_dir / f"{level_name}_audit.md").write_text(audit, encoding="utf-8")
+        aud_path = aud_dir / f"{level_name}_audit.md"
+        aud_path.write_text(audit, encoding="utf-8")
+
+        snap_sources: list[Path] = [inv_path, aud_path]
+        if not skip_precheck:
+            snap_base = _build_output_base(workspace, scope, level_name, generated)
+            snap_md = Path(str(snap_base) + ".md")
+            snap_json = Path(str(snap_base) + ".json")
+            if snap_md.is_file():
+                snap_sources.append(snap_md)
+            if snap_json.is_file():
+                snap_sources.append(snap_json)
+        mirror_files_to_run_snapshot(
+            workspace=workspace,
+            audit_scope=scope,
+            level_name=level_name,
+            generated=generated,
+            sources=snap_sources,
+        )
 
     print("✅ comprehensive_audit_emit done")
     return 0

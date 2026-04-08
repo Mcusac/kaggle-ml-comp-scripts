@@ -2,16 +2,16 @@
 
 import numpy as np
 
-from typing import Dict, Any, List, Optional
 from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 from sklearn.model_selection import KFold, StratifiedKFold
 
-from layers.layer_0_core.level_0 import get_logger
-from layers.layer_0_core.level_1 import BasePipeline
-from layers.layer_0_core.level_4 import EvaluatePipeline
-from layers.layer_0_core.level_6 import PredictPipeline
-from layers.layer_0_core.level_8 import TrainPipeline
+from level_0 import get_logger
+from level_1 import BasePipeline
+from level_4 import EvaluatePipeline
+from level_6 import PredictPipeline
+from level_8 import TrainPipeline
 
 logger = get_logger(__name__)
 
@@ -50,7 +50,8 @@ class CrossValidateWorkflow(BasePipeline):
             primary_metric_key: Key for tabular fold score in eval metrics (default: 'f1_macro').
             **kwargs: Additional parameters passed to train and evaluate pipelines.
         """
-        super().__init__(config, **kwargs)
+        super().__init__(config)
+        self.kwargs = kwargs
         self.model_type = model_type
         self.n_folds = n_folds
         self.shuffle = shuffle

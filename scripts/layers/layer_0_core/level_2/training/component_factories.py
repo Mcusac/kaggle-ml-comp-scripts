@@ -2,8 +2,8 @@
 
 from typing import Any, Dict, Optional, Type, Union
 
-from layers.layer_0_core.level_0 import get_logger, get_torch, get_config_value
-from layers.layer_0_core.level_1 import (
+from level_0 import get_logger, get_torch, get_config_value
+from level_1 import (
     FocalLoss,
     WeightedBCELoss,
     SparseBCEWithLogitsLoss,

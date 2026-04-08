@@ -2,7 +2,7 @@
 
 from typing import Union, Tuple
 
-from layers.layer_0_core.level_0 import get_torch
+from level_0 import get_torch
 
 torch = get_torch()
 nn = torch.nn if torch is not None else None

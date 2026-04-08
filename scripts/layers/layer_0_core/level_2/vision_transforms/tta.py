@@ -5,8 +5,8 @@ import torchvision.transforms as transforms
 from typing import List, Union, Tuple
 from enum import Enum
 
-from layers.layer_0_core.level_0 import get_logger, IMAGENET_MEAN, IMAGENET_STD
-from layers.layer_0_core.level_1 import get_resize_transform, get_normalize_transform, compose_transform_pipeline
+from level_0 import get_logger, IMAGENET_MEAN, IMAGENET_STD
+from level_1 import get_resize_transform, get_normalize_transform, compose_transform_pipeline
 
 logger = get_logger(__name__)
 

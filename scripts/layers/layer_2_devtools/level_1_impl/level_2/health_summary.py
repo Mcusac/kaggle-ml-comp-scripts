@@ -9,8 +9,6 @@ From within scripts/:
     python dev/scripts/health_summary.py --root .
 """
 
-from __future__ import annotations
-
 import argparse
 import sys
 from pathlib import Path

@@ -1,7 +1,5 @@
 """Build the machine-generated inventory markdown fragment (tree + per-file AST summary)."""
 
-from __future__ import annotations
-
 import ast
 from pathlib import Path
 

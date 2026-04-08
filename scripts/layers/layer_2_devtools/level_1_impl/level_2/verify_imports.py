@@ -4,8 +4,6 @@ Import verification script.
 Verifies all imports in the codebase are valid and can be resolved.
 """
 
-from __future__ import annotations
-
 import sys
 from pathlib import Path
 

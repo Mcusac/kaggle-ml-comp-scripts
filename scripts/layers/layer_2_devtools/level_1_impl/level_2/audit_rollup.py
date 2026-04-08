@@ -8,8 +8,6 @@ replace human-written theme summaries.
 Run from scripts/:  python dev/scripts/audit_rollup.py ...
 """
 
-from __future__ import annotations
-
 import argparse
 import sys
 from pathlib import Path

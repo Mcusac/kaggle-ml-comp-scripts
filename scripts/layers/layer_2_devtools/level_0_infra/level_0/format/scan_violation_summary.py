@@ -1,7 +1,5 @@
 """Summarize level violation scan JSON for console output."""
 
-from __future__ import annotations
-
 from collections import defaultdict
 from typing import Any
 

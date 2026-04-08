@@ -5,8 +5,7 @@ from typing import Optional, Dict, Any, Union
 from layers.layer_0_core.level_0 import get_config_value, get_logger
 from layers.layer_0_core.level_5 import BaseModelTrainer
 
-from layers.layer_1_competition.level_0_infra.level_0 import get_feature_extraction_mode
-from layers.layer_1_competition.level_0_infra.level_3.trainer import FeatureExtractionTrainer
+from layers.layer_1_competition.level_0_infra.level_3 import FeatureExtractionTrainer
 
 logger = get_logger(__name__)
 
@@ -25,7 +24,7 @@ def create_trainer(
     If config.model.feature_extraction_mode is True, creates FeatureExtractionTrainer.
     Otherwise, creates BaseModelTrainer for end-to-end training.
     """
-    if get_feature_extraction_mode(config):
+    if get_config_value(config, "model.feature_extraction_mode", default=False):
         num_primary_targets = get_config_value(config, "num_primary_targets", default=None)
         if regression_only:
             logger.info("Creating FeatureExtractionTrainer (regression-only mode: features already extracted)")

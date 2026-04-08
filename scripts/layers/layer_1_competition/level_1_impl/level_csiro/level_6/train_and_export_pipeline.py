@@ -14,11 +14,10 @@ from pathlib import Path
 from typing import Optional
 
 from layers.layer_0_core.level_0 import get_logger
+from layers.layer_0_core.level_1 import resolve_environment_path
 
 from layers.layer_1_competition.level_0_infra.level_1 import (
-    get_best_model_path,
     get_data_root_path,
-    get_output_path,
 )
 
 from layers.layer_1_competition.level_1_impl.level_csiro.level_0 import (
@@ -87,7 +86,7 @@ def train_and_export_pipeline(
     if data_root is None:
         data_root = get_data_root_path()
     if export_dir is None:
-        export_dir = str(get_best_model_path())
+        export_dir = str(resolve_environment_path("best_model", purpose="output"))
 
     logger.info("=" * 60)
     logger.info("TRAIN AND EXPORT PIPELINE")
@@ -110,7 +109,7 @@ def train_and_export_pipeline(
     else:
         logger.info("Train mode: Resuming from checkpoints (fresh_train=False)")
 
-    training_model_dir = Path(get_output_path("best_model_training"))
+    training_model_dir = resolve_environment_path("best_model_training", purpose="output")
     training_model_dir.mkdir(parents=True, exist_ok=True)
 
     regression_model_hyperparameters = None

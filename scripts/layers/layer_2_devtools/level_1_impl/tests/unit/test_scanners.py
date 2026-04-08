@@ -1,7 +1,5 @@
 """Unit tests for layered scan operations."""
 
-from __future__ import annotations
-
 import sys
 from pathlib import Path
 

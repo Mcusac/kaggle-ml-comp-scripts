@@ -5,8 +5,7 @@ from typing import Optional, Any
 
 from layers.layer_0_core.level_0 import ensure_dir, get_logger
 
-from layers.layer_1_competition.level_0_infra.level_1.export.export_handlers import (
-    handle_auto_detect,
+from layers.layer_1_competition.level_0_infra.level_1.export.source_handlers import (
     handle_best_variant_file,
     handle_just_trained_model,
     handle_results_file,
@@ -64,14 +63,10 @@ def export_model_pipeline(
             paths=paths,
         )
     else:
-        # Scenario 4: Auto-detect from models base dir
+        # Scenario 4: Scan models base dir (auto-detect). For now, export from base dir.
         scan_dir = model_dir or str(paths.get_models_base_dir())
-        logger.info(f"Auto-detecting best model in: {scan_dir}")
-        export_path, metadata = handle_auto_detect(
-            model_dir=scan_dir,
-            config=config,
-            export_dir=export_dir,
-        )
+        logger.info(f"Exporting model from: {scan_dir}")
+        export_path, metadata = handle_just_trained_model(model_dir=scan_dir, config=config)
 
     logger.info(f"✅ Model exported to: {export_path}")
 

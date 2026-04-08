@@ -16,13 +16,12 @@ from pathlib import Path
 from typing import Any, Optional
 
 from layers.layer_0_core.level_0 import ensure_dir, get_logger, is_kaggle
+from layers.layer_0_core.level_4 import load_json_raw, save_json
 
-from layers.layer_1_competition.level_0_infra.level_0.artifacts import ensure_run_dir, read_json, write_json
 from layers.layer_1_competition.level_0_infra.level_0 import ContestRunPathsProtocol
-from layers.layer_1_competition.level_0_infra.level_1.paths import contest_run_dir, contest_runs_root
+from layers.layer_1_competition.level_0_infra.level_1 import contest_run_dir, contest_runs_root
 
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import ARC26Paths
-
 
 logger = get_logger(__name__)
 
@@ -128,7 +127,9 @@ def init_run_context(
     if not sid:
         sid = generate_run_id(stage=stage, seed=seed)
     resolved_dir = resolve_run_dir(run_id=sid, run_dir=run_dir, paths=paths)
-    ensure_run_dir(resolved_dir, subdirs=("artifacts", "logs"))
+    ensure_dir(resolved_dir)
+    ensure_dir(resolved_dir / "artifacts")
+    ensure_dir(resolved_dir / "logs")
 
     started_utc = _utc_now_iso()
     start_time = time.time()
@@ -195,7 +196,7 @@ def init_run_context(
     else:
         payload["runtime"]["device"] = os.environ.get("KAGGLE_ACCELERATOR_TYPE") or "cpu"
 
-    write_json(ctx.manifest_path, payload)
+    save_json(payload, ctx.manifest_path)
     ctx.commands_path.write_text(payload["commands"]["raw"] + "\n", encoding="utf-8")
     logger.info("Initialized ARC run folder: %s", ctx.run_dir)
     return ctx
@@ -203,9 +204,9 @@ def init_run_context(
 
 def update_run_metadata(run: RunContext, patch: dict[str, Any]) -> None:
     """Merge a patch into `run_metadata.json`."""
-    current = read_json(run.manifest_path) if run.manifest_path.exists() else {}
+    current = load_json_raw(run.manifest_path) if run.manifest_path.exists() else {}
     merged = _merge_dict(current, patch)
-    write_json(run.manifest_path, merged)
+    save_json(merged, run.manifest_path)
 
 
 def finalize_run_success(run: RunContext) -> None:

@@ -1,7 +1,5 @@
 """Lightweight ARC component benchmark for strategy/runtime comparison."""
 
-from __future__ import annotations
-
 import json
 import sys
 import time

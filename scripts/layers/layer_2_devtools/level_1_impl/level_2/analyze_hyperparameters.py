@@ -10,8 +10,6 @@ Usage:
   From scripts/:      python dev/scripts/analyze_hyperparameters.py --model-type lgbm [--metadata-dir PATH] [--top-n 20] [--json] [--output FILE]
 """
 
-from __future__ import annotations
-
 import argparse
 import sys
 from pathlib import Path

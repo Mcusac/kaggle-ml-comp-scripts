@@ -3,12 +3,18 @@
 import argparse
 import os
 
-from typing import Callable, Dict, Type, Optional
+from typing import Any, Callable, Dict, Type, Optional
 
 from layers.layer_0_core.level_0 import get_arg
 from layers.layer_0_core.level_0 import get_logger
 
-from layers.layer_1_competition.level_0_infra.level_0 import ContestConfig, ContestDataSchema, ContestPaths, ContestPostProcessor
+from layers.layer_1_competition.level_0_infra.level_0 import (
+    ContestConfig,
+    ContestDataSchema,
+    ContestPaths,
+    ContestPostProcessor,
+    register_model_id_map,
+)
 
 logger = get_logger(__name__)
 
@@ -16,7 +22,7 @@ logger = get_logger(__name__)
 class ContestRegistry:
     """Registry for contest implementations."""
 
-    _contests: Dict[str, Dict[str, Type]] = {}
+    _contests: Dict[str, Dict[str, Any]] = {}
 
     @classmethod
     def register(
@@ -50,7 +56,7 @@ class ContestRegistry:
         cls._contests[name] = entry
 
     @classmethod
-    def get(cls, name: str) -> Optional[Dict[str, Type]]:
+    def get(cls, name: str) -> Optional[Dict[str, Any]]:
         """
         Get contest implementation by name.
 
@@ -148,3 +154,8 @@ def detect_contest(args: argparse.Namespace) -> str:  # only used in cli/handler
             % available
         )
     raise ValueError("No contests registered. Please register a contest implementation.")
+
+
+# Default model-name → ID map for core feature-cache naming. Contests that call
+# set_model_id_map (e.g. CSIRO registration) run after level_1 loads and replace this.
+register_model_id_map()

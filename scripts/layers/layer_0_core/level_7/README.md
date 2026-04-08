@@ -17,21 +17,23 @@ Level 7 provides grid search results detection, variant result builders, hyperpa
 |------|-------------|
 | `calculate_focused_grid_size` | Calculate focused grid size before running search |
 | `auto_detect_grid_search_results` | Auto-detect grid search results files |
+| `get_completed_count` | Count completed variants from results file |
 | `build_success_result` | Build success variant result dict |
 | `build_error_result` | Build error variant result dict |
 | `create_ensembling_method` | Factory: create ensembling method by name |
 | `HyperparameterGridSearchBase` | Base class for hyperparameter grid searches |
 | `run_single_variant` | Run training for a single dataset variant |
+| `run_variant_cleanup` | Per-variant checkpoint cleanup after a variant |
+| `run_final_cleanup` | Final cleanup after grid search |
 | `create_tabular_model` | Factory: create tabular model by type |
 
 ## Dependencies
 
-- **level_0**: Logging, config, paths, grid search constants, result builders
-- **level_1**: GPU cleanup, transformer hyperparameter grid, environment paths
-- **level_3**: PerTargetWeightedEnsemble
-- **level_5**: BaseTabularModel
-- **level_5**: get_focused_parameter_grid and grid-search persistence/analysis helpers
-- **level_6**: GridSearchBase, tabular models, ensembling methods, variant helpers (also re-exports focused-grid helpers from level_5)
+- **level_0**: Logging, validation errors, dataset grid-search model-dir constant, shared result-dict helpers, `EnsemblingMethod` abstraction
+- **level_1**: `cleanup_gpu_memory` for dataset variant runs
+- **level_3**: `PerTargetWeightedEnsemble` for the ensembling factory
+- **level_5**: `BaseTabularModel` type for tabular model factory
+- **level_6**: Concrete tabular and ensembling classes, `GridSearchBase`, grid-search results/cleanup utilities, `create_variant_specific_data`
 
 ## Usage Example
 

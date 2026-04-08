@@ -1,7 +1,5 @@
 """RNA3D composite pipeline: validate -> train -> submit (PipelineResult wrapper)."""
 
-from __future__ import annotations
-
 from typing import List, Optional
 
 from layers.layer_1_competition.level_0_infra.level_0 import PipelineResult, contest_models_dir

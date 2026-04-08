@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Callable, Iterator, List, Optional
 from torchvision.transforms import ToTensor
 
-from layers.layer_0_core.level_0 import get_logger, load_image_pil, get_torch
+from level_0 import get_logger, load_image_pil, get_torch
 
 _torch = get_torch()
 IterableDataset = _torch.utils.data.IterableDataset if _torch else object

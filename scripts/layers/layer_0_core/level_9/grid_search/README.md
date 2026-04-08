@@ -44,3 +44,7 @@ regression_grid_search_pipeline(
     search_type="quick",
 )
 ```
+
+## Generated
+
+2026-04-08 (audit pass 1).

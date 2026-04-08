@@ -1,7 +1,5 @@
 """Discover contest implementation modules and run import validation."""
 
-from __future__ import annotations
-
 from pathlib import Path
 from typing import Optional
 

@@ -5,7 +5,7 @@ from typing import Any
 from layers.layer_0_core.level_1 import get_regression_grid
 from layers.layer_0_core.level_2 import find_feature_cache, load_features
 
-from layers.layer_1_competition.level_0_infra.level_3 import build_grid_search_context
+from layers.layer_1_competition.level_0_infra.level_1 import build_grid_search_context
 
 from layers.layer_1_competition.level_1_impl.level_csiro.level_0 import calc_metric
 from layers.layer_1_competition.level_1_impl.level_csiro.level_1 import test_pipeline

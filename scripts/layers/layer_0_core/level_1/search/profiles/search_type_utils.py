@@ -1,6 +1,6 @@
 """Search type normalization and validation."""
 
-from layers.layer_0_core.level_0 import VALID_HYPERPARAMETER_SEARCH_TYPES
+from level_0 import VALID_HYPERPARAMETER_SEARCH_TYPES
 
 
 def normalize_search_type(value: str) -> str:

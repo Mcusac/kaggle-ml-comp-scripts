@@ -11,8 +11,6 @@ Rules applied:
                                                      →  from level_N import X (top-level API)
 """
 
-from __future__ import annotations
-
 import re
 from pathlib import Path
 

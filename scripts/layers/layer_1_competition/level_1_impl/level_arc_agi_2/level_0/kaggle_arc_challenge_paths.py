@@ -1,7 +1,5 @@
 ﻿"""Default Kaggle ARC-AGI-2 JSON paths (stdlib; respects ``KAGGLE_IS_COMPETITION_RERUN``)."""
 
-from __future__ import annotations
-
 import os
 
 _DEFAULT_ROOT = "/kaggle/input/competitions/arc-prize-2026-arc-agi-2"

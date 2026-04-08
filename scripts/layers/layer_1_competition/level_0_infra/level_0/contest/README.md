@@ -31,12 +31,13 @@ Abstract base classes that define the contest contract. Each contest implementat
 
 ## Dependencies
 
-- **level_0.runtime:** is_kaggle
+- `layers.layer_0_core.level_0`: `is_kaggle`
+- `layers.layer_0_core.level_5`: `find_project_input_root`
 
 ## Usage Example
 
 ```python
-from layers.layer_1_competition.level_0_infra.level_0 import ContestPaths, ContestConfig, ContestDataSchema, ContestPostProcessor
+from layers.layer_1_competition.level_0_infra.level_0 import ContestPaths
 
 # Contest implementations extend these base classes
 class MyContestPaths(ContestPaths):

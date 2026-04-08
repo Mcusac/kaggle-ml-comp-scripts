@@ -1,7 +1,5 @@
 """CLI entry for bundled RELATIVE_IN_LOGIC fixes — logic in devtools layer."""
 
-from __future__ import annotations
-
 import argparse
 import sys
 from pathlib import Path

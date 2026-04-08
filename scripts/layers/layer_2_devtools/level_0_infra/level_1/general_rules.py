@@ -1,7 +1,5 @@
 """Atomic import-rule classifiers used by devtools scanners."""
 
-from __future__ import annotations
-
 from layers.layer_2_devtools.level_0_infra.level_0 import (
     DEEP_LEVEL_RE,
     LEVEL_DIR_RE,

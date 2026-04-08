@@ -1,12 +1,12 @@
 """Tabular model factory. Uses level_5, level_6."""
 
-from layers.layer_0_core.level_5 import BaseTabularModel
-from layers.layer_0_core.level_6 import (
-    MLPModel,
+from level_5 import BaseTabularModel
+from level_6 import (
+    LightGBMModel,
     LogisticRegressionModel,
+    MLPModel,
     RidgeModel,
     XGBoostModel,
-    LightGBMModel,
 )
 
 

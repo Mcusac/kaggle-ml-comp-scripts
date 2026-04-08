@@ -8,10 +8,11 @@ Run from scripts/:  python dev/scripts/audit_precheck.py ...
 Does not replace the planner/auditor; feeds machine findings for Phase 7 reconciliation.
 """
 
-from __future__ import annotations
-
 import argparse
+from dataclasses import dataclass
+from datetime import date as _date
 import io
+import json
 import sys
 from pathlib import Path
 
@@ -20,7 +21,93 @@ _SCRIPTS_ROOT = _SCRIPT_DIR.parents[3]
 if str(_SCRIPTS_ROOT) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_ROOT))
 
-from layers.layer_2_devtools.level_1_impl.level_1.api_audit import run_audit_precheck_cli_complete
+_PRECHECK_STUB_DIR = _SCRIPTS_ROOT / "dev" / "scripts"
+if str(_PRECHECK_STUB_DIR) not in sys.path:
+    sys.path.insert(0, str(_PRECHECK_STUB_DIR))
+
+try:
+    import path_bootstrap
+
+    path_bootstrap.prepend_framework_paths()
+except Exception:
+    pass
+
+from precheck_artifact_root import resolve_audit_artifact_root
+
+
+@dataclass(frozen=True)
+class _FallbackArgs:
+    audit_scope: str
+    level_name: str
+    level_path: Path | None
+    workspace_root: Path | None
+    generated: str | None
+
+
+def _write_skipped_precheck(*, args: _FallbackArgs, reason: str) -> int:
+    ws = (
+        args.workspace_root.resolve()
+        if args.workspace_root is not None
+        else resolve_audit_artifact_root(args.level_path or _SCRIPTS_ROOT)
+    )
+    gen = args.generated or _date.today().isoformat()
+    out_base = (
+        ws
+        / ".cursor"
+        / "audit-results"
+        / args.audit_scope
+        / "summaries"
+        / f"precheck_{args.level_name}_{gen}"
+    )
+    out_base.parent.mkdir(parents=True, exist_ok=True)
+
+    md = "\n".join(
+        [
+            "---",
+            f"generated: {gen}",
+            f"audit_scope: {args.audit_scope}",
+            f"level_name: {args.level_name}",
+            "artifact_kind: precheck",
+            "precheck_status: skipped_machine_script",
+            "---",
+            "",
+            "# Precheck (machine script unavailable)",
+            "",
+            "## Why skipped",
+            "",
+            reason.rstrip(),
+            "",
+            "## What this means",
+            "",
+            "- This environment could not import the devtools precheck stack.",
+            "- The code-audit orchestrator can still run (inventories/audits); Phase 7 machine reconciliation is unavailable.",
+            "",
+            "## How to get machine precheck locally",
+            "",
+            "- Create/activate a venv where optional deps (notably `torchvision`) import cleanly, then rerun this command.",
+            "",
+        ]
+    ).rstrip() + "\n"
+
+    payload = {
+        "generated": gen,
+        "audit_scope": args.audit_scope,
+        "level_name": args.level_name,
+        "artifact_kind": "precheck",
+        "precheck_status": "skipped_machine_script",
+        "reason": reason,
+    }
+
+    Path(str(out_base) + ".md").write_text(md, encoding="utf-8")
+    Path(str(out_base) + ".json").write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+
+    # Avoid unicode output issues on Windows consoles with legacy encodings.
+    print(f"[WARN] audit_precheck skipped: {reason}")
+    print(f"[OK] Wrote {Path(str(out_base) + '.md')}")
+    print(f"[OK] Wrote {Path(str(out_base) + '.json')}")
+    return 0
 
 
 def _win_utf8_stdio() -> None:
@@ -56,7 +143,10 @@ def main() -> int:
         "--workspace-root",
         type=Path,
         default=None,
-        help="Repo root with .cursor/audit-results (default: discover from level-path)",
+        help=(
+            "artifact_base: directory with .cursor/audit-results (default: discover; "
+            "prefers input/kaggle-ml-comp-scripts when under that package)"
+        ),
     )
     parser.add_argument(
         "--date",
@@ -84,6 +174,21 @@ def main() -> int:
         ),
     )
     args = parser.parse_args()
+    try:
+        from layers.layer_2_devtools.level_1_impl.level_1.api_audit import (  # type: ignore
+            run_audit_precheck_cli_complete,
+        )
+    except ModuleNotFoundError as exc:
+        fb = _FallbackArgs(
+            audit_scope=args.audit_scope,
+            level_name=args.level_name,
+            level_path=args.level_path,
+            workspace_root=args.workspace_root,
+            generated=args.date,
+        )
+        missing = str(exc)
+        return _write_skipped_precheck(args=fb, reason=f"ModuleNotFoundError: {missing}")
+
     env = run_audit_precheck_cli_complete(
         {
             "scripts_root": _SCRIPTS_ROOT,

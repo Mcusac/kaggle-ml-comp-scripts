@@ -2,7 +2,7 @@
 
 from typing import Sized
 
-from layers.layer_0_core.level_0 import DataValidationError
+from level_0 import DataValidationError
 
 
 def check_min_collection_length(

@@ -6,8 +6,6 @@ under a \"Machine-generated (verify)\" section of INVENTORY_<level>.md.
 Run from scripts/:  python dev/scripts/inventory_bootstrap.py --level-path <dir> [--output path.md]
 """
 
-from __future__ import annotations
-
 import argparse
 import io
 import sys

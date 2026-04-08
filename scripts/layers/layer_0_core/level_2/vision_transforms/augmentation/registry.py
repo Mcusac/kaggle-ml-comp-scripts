@@ -2,7 +2,7 @@
 
 from typing import Dict, Callable, Optional, Any, Tuple
 
-from layers.layer_0_core.level_1 import (
+from level_1 import (
     get_geometric_transform,
     get_color_jitter_transform,
     get_blur_transform,

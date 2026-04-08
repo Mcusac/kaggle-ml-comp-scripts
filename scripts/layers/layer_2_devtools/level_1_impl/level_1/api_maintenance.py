@@ -1,7 +1,5 @@
 """Public API: thin script orchestration (cleanup, bootstrap, one-off fixers)."""
 
-from __future__ import annotations
-
 from pathlib import Path
 from typing import Any
 

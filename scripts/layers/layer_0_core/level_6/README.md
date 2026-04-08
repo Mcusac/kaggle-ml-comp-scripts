@@ -10,10 +10,11 @@ Level 6 provides ensembling methods, prediction pipelines, grid search infrastru
 |---------|-------------|
 | `ensembling/` | EnsemblingMethod implementations (simple, weighted, ranked, percentile, target-specific) |
 | `grid_search/` | Grid search base, result handlers, variant grid, focused parameter grid, cleanup |
-| `prediction/` | PredictPipeline and create_test_dataloader (streaming; distinct from level_4 DataFrame-based) |
+| `metadata/` | Combo and metadata lookup helpers |
+| `prediction/` | PredictPipeline and `create_streaming_test_dataloader` (CSV + streaming dataset; distinct from level_4 DataFrame factory) |
 | `tabular/` | TabularTrainer, TabularPredictor, MLPModel |
 | `tabular_models/` | Linear and tree tabular model wrappers (LogisticRegression, Ridge, XGBoost, LightGBM) |
-| `vision/` | VisionTrainer and vision model registry |
+| `vision/` | JSON-backed vision model registry (`get_vision_model_config`, `list_vision_models`) |
 
 ## Public API
 
@@ -41,9 +42,9 @@ Level 6 provides ensembling methods, prediction pipelines, grid search infrastru
 | `TabularTrainer` | Trainer for tabular models |
 | `TabularPredictor` | Predictor for tabular models |
 | `PredictPipeline` | Prediction pipeline for vision/tabular |
-| `create_test_dataloader` | Create test DataLoader (streaming) |
+| `create_streaming_test_dataloader` | Test DataLoader from CSV path using streaming dataset |
 | `get_focused_parameter_grid` | Focused grid from previous results |
-| `VisionTrainer` | Vision model trainer |
+| `find_combo_id_from_config` | Resolve combo id from config using metadata |
 | `get_vision_model_config` | Return config dict for vision model by name |
 | `list_vision_models` | List registered vision model names |
 | `run_variant_cleanup` | Run per-variant checkpoint cleanup |
@@ -69,7 +70,6 @@ from level_6 import (
     create_variant_key,
     GridSearchBase,
     PredictPipeline,
-    VisionTrainer,
 )
 
 # Create tabular model

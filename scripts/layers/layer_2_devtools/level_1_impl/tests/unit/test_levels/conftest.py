@@ -7,8 +7,6 @@ Uses ``path_bootstrap.prepend_framework_paths()`` — same as ``run.py`` — so
 competition packages.
 """
 
-from __future__ import annotations
-
 import sys
 from pathlib import Path
 from typing import Callable

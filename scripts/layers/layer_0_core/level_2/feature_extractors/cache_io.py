@@ -6,8 +6,8 @@ import numpy as np
 from pathlib import Path
 from typing import Any, Dict, Optional, Tuple
 
-from layers.layer_0_core.level_0 import get_logger
-from layers.layer_0_core.level_1 import (
+from level_0 import get_logger
+from level_1 import (
     get_cache_base_paths, 
     get_model_name_from_model_id, 
     get_metadata_dir, 

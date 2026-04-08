@@ -15,15 +15,15 @@ from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_2 import find_feature_cache, load_features
 from layers.layer_0_core.level_3 import create_regression_model
 from layers.layer_0_core.level_4 import load_pickle
+from layers.layer_0_core.level_5 import save_submission_csv
 from layers.layer_0_core.level_7 import create_ensembling_method
 
 from layers.layer_1_competition.level_0_infra.level_1 import get_contest
 from layers.layer_1_competition.level_0_infra.level_2 import (
     extract_test_features_from_model,
 )
-from layers.layer_1_competition.level_0_infra.level_3.submission import (
+from layers.layer_1_competition.level_0_infra.level_5 import (
     expand_predictions_to_submission_format,
-    save_submission,
 )
 
 from layers.layer_1_competition.level_1_impl.level_csiro.level_0 import calc_metric
@@ -394,7 +394,7 @@ def stacking_ensemble_pipeline(
     )
 
     output_path = str(paths.get_output_dir() / 'submission.csv')
-    save_submission(submission_df, output_path=output_path)
+    save_submission_csv(submission_df, output_path=output_path)
 
     logger.info("=" * 60)
     logger.info("✅ Stacking Ensemble Pipeline Complete")

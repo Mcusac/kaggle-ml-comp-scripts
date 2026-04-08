@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import json
 
 from pathlib import Path
@@ -23,7 +21,7 @@ def _write_min_arc_dataset(root: Path) -> None:
 
 
 def test_arc_validate_pipeline_returns_failure_without_raising(tmp_path: Path) -> None:
-    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_5.orchestration import (
+    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_6 import (
         run_validate_data_pipeline,
     )
 
@@ -35,7 +33,7 @@ def test_arc_validate_pipeline_returns_failure_without_raising(tmp_path: Path) -
 
 
 def test_arc_train_pipeline_short_circuits_on_validation_failure(tmp_path: Path) -> None:
-    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_5.orchestration import (
+    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_6 import (
         run_train_pipeline_result,
     )
 
@@ -60,10 +58,10 @@ def test_train_and_submit_returns_train_stage_when_train_raises(tmp_path: Path, 
         raise RuntimeError("train boom")
 
     monkeypatch.setattr(
-        "layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4.stages.run_train_pipeline",
+        "layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_5.stages.run_train_pipeline",
         _boom,
     )
-    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_5.orchestration import (
+    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_6 import (
         run_train_and_submit_pipeline_result,
     )
 
@@ -84,7 +82,7 @@ def test_train_and_submit_returns_train_stage_when_train_raises(tmp_path: Path, 
 def test_submit_default_uses_copy_input_attempt(tmp_path: Path) -> None:
     _write_min_arc_dataset(tmp_path)
     out = tmp_path / "submission.json"
-    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4.stages import run_submission_pipeline
+    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_5 import run_submission_pipeline
 
     run_submission_pipeline(
         str(tmp_path),
@@ -107,7 +105,7 @@ def test_submit_respects_tuned_blank_grid(tmp_path: Path) -> None:
         encoding="utf-8",
     )
     out = tmp_path / "submission2.json"
-    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4.stages import run_submission_pipeline
+    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_5 import run_submission_pipeline
 
     run_submission_pipeline(
         str(tmp_path),
@@ -124,7 +122,7 @@ def test_submit_respects_tuned_blank_grid(tmp_path: Path) -> None:
 
 
 def test_predict_attempts_unknown_heuristic_falls_back() -> None:
-    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0.heuristics import (
+    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
         predict_attempts_from_chosen_params,
     )
 

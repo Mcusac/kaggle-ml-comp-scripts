@@ -5,6 +5,8 @@ from .grid_search_context import GridSearchContext
 from .handler_context_builder import HandlerContextBuilder
 from .metric import Metric
 from .model_registry import ModelRegistry
+from .named_registry import NamedRegistry, build_unknown_key_error
+from .pipeline_result import PipelineResult
 
 __all__ = [
     "EnsemblingMethod",
@@ -12,4 +14,7 @@ __all__ = [
     "HandlerContextBuilder",
     "Metric",
     "ModelRegistry",
+    "NamedRegistry",
+    "build_unknown_key_error",
+    "PipelineResult",
 ]

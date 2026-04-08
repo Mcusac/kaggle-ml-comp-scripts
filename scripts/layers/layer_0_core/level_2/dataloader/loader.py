@@ -2,7 +2,7 @@
 
 from typing import Any, Callable, Optional
 
-from layers.layer_0_core.level_0 import get_torch
+from level_0 import get_torch
 
 
 def create_dataloader_from_dataset(

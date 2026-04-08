@@ -5,8 +5,9 @@ from .contest_abstractions import (
     ContestMetric,
     ContestPipelineProtocol,
 )
-from .pipeline_result import PipelineResult
 from .run_paths_protocol import ContestRunPathsProtocol
+
+from layers.layer_0_core.level_0 import PipelineResult
 
 __all__ = [
     "ContestInputValidator",

@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from layers.layer_0_core.level_0 import DataValidationError
+from level_0 import DataValidationError
 
 EPSILON_WEIGHT = 1e-6
 

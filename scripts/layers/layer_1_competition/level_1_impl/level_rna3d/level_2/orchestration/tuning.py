@@ -15,7 +15,7 @@ from layers.layer_1_competition.level_1_impl.level_rna3d.level_1 import (
     evaluate_predictions_tm,
     run_baseline_approx_predictions,
 )
-from layers.layer_1_competition.level_0_infra.level_0.artifacts import write_json
+from layers.layer_0_core.level_4 import save_json
 from layers.layer_1_competition.level_0_infra.level_0 import contest_models_dir
 
 logger = get_logger(__name__)
@@ -158,7 +158,7 @@ def tune_pipeline(
     ensure_dir(output_dir)
     config_path = output_dir / "best_config.json"
 
-    write_json(config_path, best_dict, indent=2, ensure_ascii=False)
+    save_json(best_dict, config_path, indent=2, ensure_ascii=False)
 
     logger.info("Saved best config: %s", config_path)
 

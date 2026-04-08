@@ -6,7 +6,7 @@ import pandas as pd
 from pathlib import Path
 from typing import Optional, Union
 
-from layers.layer_0_core.level_3 import SigLIPExtractor
+from level_3 import SigLIPExtractor
 
 
 def compute_siglip_embeddings(

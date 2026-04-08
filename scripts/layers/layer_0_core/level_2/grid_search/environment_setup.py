@@ -3,8 +3,8 @@
 from pathlib import Path
 from typing import Tuple, Any, Union, Dict
 
-from layers.layer_0_core.level_0 import ensure_dir, ConfigValidationError, get_logger
-from layers.layer_0_core.level_1 import get_device, get_device_info
+from level_0 import ensure_dir, ConfigValidationError, get_logger
+from level_1 import get_device, get_device_info
 
 logger = get_logger(__name__)
 

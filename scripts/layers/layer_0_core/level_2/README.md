@@ -32,7 +32,7 @@ Key top-level exports (re-exported from subpackages):
 - `FeatureExtractor`, `SemanticFeatureExtractor`, `extract_handcrafted_features` — feature extraction
 - `build_preprocessing_transforms`, `build_tta_transforms`, `TTAVariant` — vision transforms
 - `run_train_epoch`, `run_validate_epoch`, `TrainingPhaseExecutor`, `ValidationPhaseExecutor` — training
-- `simple_average`, `weighted_average`, `build_weight_matrix` — ensemble strategies
+- `simple_average`, `weighted_average`, `build_weight_matrix`, `log_pipeline_completion` — ensemble strategies and pipeline logging
 - `ProgressBarManager`, `ProgressMetrics` — progress tracking
 
 ## Dependencies

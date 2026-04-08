@@ -1,7 +1,5 @@
 """ARC stacking policy: not supported without validation OOF predictions."""
 
-from __future__ import annotations
-
 _STACKING_NAMES = frozenset({"stacking", "stacking_ensemble"})
 
 

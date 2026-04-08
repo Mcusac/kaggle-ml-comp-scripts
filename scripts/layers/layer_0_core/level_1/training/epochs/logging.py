@@ -5,7 +5,7 @@ Framework-level: metric-agnostic.
 
 from typing import Optional
 
-from layers.layer_0_core.level_0 import get_logger
+from level_0 import get_logger
 
 logger = get_logger(__name__)
 

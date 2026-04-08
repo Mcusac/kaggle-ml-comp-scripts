@@ -4,8 +4,8 @@ Scores and ranks heuristics by corpus-level scores so the tuning phase
 can select strong candidates before submission.
 
 Intra-package dependencies (fully qualified per architecture rules):
-  layers...level_arc_agi_2.level_1.heuristics  — predict_attempts_for_heuristic
-  layers...level_arc_agi_2.level_1.submit_limits — read_submit_max_tasks_env
+  layers...level_arc_agi_2.level_0 (re-exporting heuristics) — predict_attempts_for_heuristic
+  layers...level_arc_agi_2.level_0 (re-exporting submit_limits) — read_submit_max_tasks_env
 """
 
 from pathlib import Path
@@ -13,7 +13,7 @@ from typing import Any
 
 from layers.layer_0_core.level_0 import get_logger
 
-from layers.layer_1_competition.level_0_infra.level_0 import read_json
+from layers.layer_0_core.level_4 import load_json_raw
 
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     DEFAULT_SUBMIT_HEURISTIC,
@@ -40,7 +40,7 @@ def _find_existing(root: Path, names: list[str]) -> Path:
 
 
 def _load_json_path(path: Path) -> Any:
-    return read_json(path)
+    return load_json_raw(path)
 
 
 def _eval_solution_grids_for_task(

@@ -1,72 +1,56 @@
-# infra/level_2 — Feature-extraction trainer and regression submission
+# infra/level_2 — Feature extraction and CLI handler registry
 
 **On disk:** `scripts/layers/layer_1_competition/level_0_infra/level_2/`.  
 **Import:** `layers.layer_1_competition.level_0_infra.level_2`.
 
 ## Purpose
 
-Two-stage training (feature extraction + regression) and submission creation for contest pipelines. Extracts features from images, trains regression models (LGBM/XGB/Ridge), and produces submission CSVs.
+Shared feature-extraction utilities for contest pipelines (joint feature/target extraction from loaders, test-time feature extraction, ensemble metadata lookup) plus registration of per-contest CLI handler modules on `ContestRegistry`.
 
 ## Contents
 
 | Sub-package | Description |
 |-------------|-------------|
-| `feature_extraction/` | Trainer, config helpers, and test-time feature extraction |
-| `submission/` | Expand predictions to submission format, save CSV, create regression submission |
+| `feature_extraction/` | `FeatureExtractionHelper` and test-time / metadata helpers |
+| `registry/` | Register and resolve dotted module paths for contest CLI handlers |
+
+Two-stage training (`FeatureExtractionTrainer`) lives in **`level_0_infra.level_3`**, not here.
 
 ## Public API
 
-All names exported from `__init__.py`:
+Names from `level_2/__init__.py` (re-exported from sub-packages):
 
-- **FeatureExtractionConfigHelper** — Static config extraction (dataset_type, regression_model_type, feature_extraction_model_name)
-- **FeatureExtractionHelper** — Wraps FeatureExtractor for joint feature+target extraction from DataLoader
-- **FeatureExtractionTrainer** — Two-stage trainer: extract features, train regression model
-- **create_regression_submission** — Load regression model, extract test features, predict, expand, save
-- **expand_predictions_to_submission_format** — Expand primary predictions to all targets, apply post-processing
-- **save_submission** — Save submission DataFrame to CSV (Kaggle-aware)
-- **extract_test_features_from_model** — Extract test features using feature extraction model
-- **find_feature_filename_from_ensemble_metadata** — Resolve feature_filename from ensemble model metadata
+- **FeatureExtractionHelper** — Run `FeatureExtractor.extract_features_and_targets` over a dataloader for a given `dataset_type`.
+- **extract_test_features_from_model** — Build feature model + test loader, extract test features, release GPU memory.
+- **find_feature_filename_from_ensemble_metadata** — Read `feature_filename` from the first ensemble model’s `model_metadata.json`.
+- **register_cli_handlers_module** — Store a contest’s CLI handlers module path on its registry entry.
+- **list_contests_with_cli_handlers** — Contest keys that registered a handlers module.
+- **get_cli_handlers_module** — `importlib.import_module` for the registered handlers path.
 
 ## Dependencies
 
-- **level_0:** ensure_dir, get_logger, get_torch
-- **level_1:** split_features_by_fold, resolve_environment_path, cleanup_gpu_memory, get_device
-- **level_2:** FeatureExtractor
-- **level_3:** create_regression_model
-- **level_4:** load_json
-- **level_5:** save_regression_model, load_and_validate_test_data
-- **level_6:** create_test_dataloader
-- **layers.layer_1_competition.level_0_infra.level_0:** get_dataset_type, get_feature_extraction_model_name, get_regression_model_type (package root)
-- **layers.layer_1_competition.level_0_infra.level_1:** create_feature_extraction_model, validate_feature_extraction_inputs
+- **`layers.layer_0_core`:** `get_logger`, `get_device`, `cleanup_gpu_memory`, `FeatureExtractor`, `load_json`, `create_streaming_test_dataloader`.
+- **`layers.layer_1_competition.level_0_infra.level_1`:** `create_feature_extraction_model`, `ContestRegistry`.
 
 ## Usage Example
 
 ```python
-from layers.layer_1_competition.level_0_infra.level_2 import FeatureExtractionTrainer, create_regression_submission
-
-# Two-stage training
-trainer = FeatureExtractionTrainer(
-    config=config,
-    device=device,
-    metric_calculator=contest_metric,
-    num_primary_targets=config.num_primary_targets,
-)
-history = trainer.train(
-    train_loader=train_loader,
-    val_loader=val_loader,
-    save_dir=fold_dir,
+from layers.layer_1_competition.level_0_infra.level_2 import (
+    extract_test_features_from_model,
+    register_cli_handlers_module,
 )
 
-# Create submission from trained regression model
-create_regression_submission(
-    regression_model_path=str(model_path),
-    feature_extraction_model_name="dinov2_base",
-    test_csv_path=str(test_csv_path),
-    data_root=data_root,
+# Contest registration.py (after register_contest):
+register_cli_handlers_module(
+    "csiro",
+    "layers.layer_1_competition.level_1_impl.level_csiro.level_7.handlers",
+)
+
+features = extract_test_features_from_model(
+    test_csv_path=path_to_csv,
+    data_root="/kaggle/input",
+    dataset_type="split",
     config=config,
-    device=device,
-    output_path=str(output_path),
     data_schema=data_schema,
-    post_processor=post_processor,
 )
 ```

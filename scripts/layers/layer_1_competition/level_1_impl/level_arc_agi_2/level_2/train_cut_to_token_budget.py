@@ -2,12 +2,11 @@
 
 # FLAG: naming — optional rename to lm_token_budget_trim (or similar); deferred to reduce import churn.
 
-from __future__ import annotations
-
 import copy
+
 from typing import Any, Mapping
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.lm_qwen_chat_format import (
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
     ArcQwenGridChatFormatter,
     arc_count_tokens,
 )

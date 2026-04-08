@@ -1,14 +1,15 @@
 """Generic test feature extraction for stacking and ensemble pipelines."""
 
+import numpy as np
+
 from pathlib import Path
 from typing import Any, Tuple
-
-import numpy as np
 
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_1 import cleanup_gpu_memory, get_device
 from layers.layer_0_core.level_2 import FeatureExtractor
-from layers.layer_0_core.level_6 import create_test_dataloader
+from layers.layer_0_core.level_4 import load_json
+from layers.layer_0_core.level_6 import create_streaming_test_dataloader
 
 from layers.layer_1_competition.level_0_infra.level_1 import create_feature_extraction_model
 
@@ -66,7 +67,7 @@ def extract_test_features_from_model(
     )
 
     feature_extractor = FeatureExtractor(feature_model, device)
-    test_loader = create_test_dataloader(
+    test_loader = create_streaming_test_dataloader(
         test_csv_path=str(test_csv_path),
         data_root=data_root,
         image_path_column=data_schema.image_path_column,
@@ -104,8 +105,6 @@ def find_feature_filename_from_ensemble_metadata(
     Raises:
         ValueError: If feature_filename cannot be determined
     """
-    from layers.layer_0_core.level_4 import load_json
-
     for ensemble_config in ensemble_configs:
         model_paths = ensemble_config.get(metadata_key, [])
         if model_paths:

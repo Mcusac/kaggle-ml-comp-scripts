@@ -3,7 +3,7 @@ import argparse
 
 from typing import Optional, Callable, Any
 
-from layers.layer_0_core.level_0 import get_arg, ConfigValidationError
+from level_0 import get_arg, ConfigValidationError
 
 
 def create_config(

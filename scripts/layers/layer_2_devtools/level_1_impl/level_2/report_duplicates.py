@@ -6,8 +6,6 @@ Usage:
   From scripts/: python dev/scripts/report_duplicates.py path/to/health_report.json
 """
 
-from __future__ import annotations
-
 import argparse
 import sys
 from pathlib import Path

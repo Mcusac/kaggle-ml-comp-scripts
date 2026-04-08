@@ -1,14 +1,12 @@
 """Source handlers that resolve model artifacts for export."""
 
-from __future__ import annotations
-
 import csv
-import json
 
 from pathlib import Path
 from typing import Any, Dict, Optional, Tuple
 
 from layers.layer_0_core.level_0 import get_logger
+from layers.layer_0_core.level_4 import load_json_raw
 from layers.layer_0_core.level_5 import find_trained_model_path
 
 from layers.layer_1_competition.level_0_infra.level_1.export.metadata_builders import (
@@ -47,8 +45,7 @@ def handle_best_variant_file(
     path = Path(best_variant_file)
     if not path.exists():
         raise FileNotFoundError(f"Best variant file not found: {path}")
-    with open(path, "r") as f:
-        data = json.load(f)
+    data = load_json_raw(path)
     model_dir = data.get("model_dir")
     if not model_dir and data.get("variant_id") and paths:
         model_dir = str(paths.get_models_base_dir() / "dataset_grid_search" / data["variant_id"])
@@ -69,8 +66,7 @@ def handle_results_file(
     if not path.exists():
         raise FileNotFoundError(f"Results file not found: {path}")
     if path.suffix.lower() == ".json":
-        with open(path, "r") as f:
-            raw = json.load(f)
+        raw = load_json_raw(path)
         if isinstance(raw, list):
             results = raw
         elif isinstance(raw, dict) and "results" in raw:
@@ -97,17 +93,6 @@ def handle_results_file(
         variant_id=variant_id,
         variant_info=variant if isinstance(variant, dict) else None,
     )
-
-
-def handle_auto_detect(
-    model_dir: str,
-    config: Any,
-    export_dir: Optional[str] = None,
-) -> Tuple[Path, Dict[str, Any]]:
-    """Scan model_dir for best model and export."""
-    return handle_just_trained_model(model_dir=model_dir, config=config)
-
-
 def _parse_results_csv(path: Path) -> list:
     rows = []
     with open(path, "r", newline="", encoding="utf-8") as f:

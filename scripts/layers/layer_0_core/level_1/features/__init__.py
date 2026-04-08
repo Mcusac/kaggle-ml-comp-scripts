@@ -4,7 +4,7 @@ from . import cache
 
 from .cache import *
 
-from .base_feature_extractor import BaseFeatureExtractor 
+from .base_feature_extractor import BaseFeatureExtractor
 from .feature_registry import INDIVIDUAL_FEATURES, FEATURE_PRESETS, get_feature_preset, parse_feature_spec
 from .film import FiLM
 from .fuse_embeddings import fuse_embeddings

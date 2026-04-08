@@ -5,8 +5,8 @@ import pandas as pd
 
 from typing import Union, Optional
 
-from layers.layer_0_core.level_0 import get_logger
-from layers.layer_0_core.level_5 import BaseTabularModel
+from level_0 import get_logger
+from level_5 import BaseTabularModel
 
 logger = get_logger(__name__)
 

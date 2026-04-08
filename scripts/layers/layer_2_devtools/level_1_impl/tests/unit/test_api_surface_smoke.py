@@ -1,7 +1,5 @@
 """Smoke tests: public devtools API envelope and imports (no impl/level_0 in callers)."""
 
-from __future__ import annotations
-
 import sys
 from pathlib import Path
 

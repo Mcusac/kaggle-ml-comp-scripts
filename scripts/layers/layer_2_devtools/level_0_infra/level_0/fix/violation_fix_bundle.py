@@ -187,14 +187,14 @@ def run_violation_fix_bundle(scripts_dev_dir: Path, dry_run: bool) -> None:
         "from .handle_stacking_results import handle_stacking_result, handle_hybrid_stacking_result\n"
         "from .pipeline_result_handler import handle_ensemble_result\n"
         "from .weight_matrix_builder import build_weight_matrix\n",
-        "from .result_handler_common import _log_pipeline_completion\n"
+        "from .result_handler_common import log_pipeline_completion\n"
         "from .weight_matrix_builder import build_weight_matrix\n",
         dry_run,
     )
     patch_text(
         l2e,
         "    'merge_submissions',\n",
-        "    'merge_submissions',\n    '_log_pipeline_completion',\n",
+        "    'merge_submissions',\n    'log_pipeline_completion',\n",
         dry_run,
     )
     patch_text(
@@ -215,8 +215,8 @@ def run_violation_fix_bundle(scripts_dev_dir: Path, dry_run: bool) -> None:
         src = sd / "level_2/ensemble_strategies" / fn
         dest = sd / "level_3/ensemble_strategies" / fn
         body = src.read_text(encoding="utf-8").replace(
-            "from .result_handler_common import _log_pipeline_completion\n",
-            "from level_2 import _log_pipeline_completion\n",
+            "from .result_handler_common import log_pipeline_completion\n",
+            "from level_2 import log_pipeline_completion\n",
         )
         write_text(dest, body, dry_run)
         delete_file(src, dry_run)

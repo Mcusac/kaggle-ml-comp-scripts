@@ -25,13 +25,18 @@ Protocol definitions for contest pipelines (`ContestPipelineProtocol`, `ContestI
 ## Usage Example
 
 ```python
-from layers.layer_1_competition.level_0_infra.level_0 import ContestPipelineProtocol, ContestInputValidator
+from pathlib import Path
+from typing import Optional
 
-class MyContestPipeline:
-    def train_pipeline(self, data_root: str, **kwargs):
-        ...
-    def submit_pipeline(self, data_root: str, strategy: str, **kwargs):
-        ...
-    def tune_pipeline(self, data_root: str, **kwargs):
-        ...
+from layers.layer_1_competition.level_0_infra.level_0 import ContestPipelineProtocol
+
+class MyContestPipeline(ContestPipelineProtocol):
+    def train_pipeline(self, data_root: str, **kwargs) -> Optional[Path]:
+        raise NotImplementedError
+
+    def submit_pipeline(self, data_root: str, strategy: str, **kwargs) -> Path:
+        raise NotImplementedError
+
+    def tune_pipeline(self, data_root: str, **kwargs) -> Optional[Path]:
+        raise NotImplementedError
 ```

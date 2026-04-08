@@ -4,8 +4,8 @@ import numpy as np
 
 from typing import Any, Callable, List, Tuple
 
-from layers.layer_0_core.level_0 import get_logger, get_torch
-from layers.layer_0_core.level_1 import run_supervised_batch
+from level_0 import get_logger, get_torch
+from level_1 import run_supervised_batch
 
 torch = get_torch()
 nn = torch.nn

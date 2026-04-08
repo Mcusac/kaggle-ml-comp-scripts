@@ -1,7 +1,5 @@
 """Contest output root builders."""
 
-from __future__ import annotations
-
 from pathlib import Path
 
 from layers.layer_1_competition.level_0_infra.level_0 import ContestPaths

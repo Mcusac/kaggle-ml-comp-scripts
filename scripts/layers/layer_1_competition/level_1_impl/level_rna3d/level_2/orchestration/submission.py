@@ -11,6 +11,7 @@ from layers.layer_0_core.level_0 import (
     fit_stacking_weights_from_scores,
     get_logger,
 )
+from layers.layer_0_core.level_4 import load_best_config_json
 
 from layers.layer_1_competition.level_1_impl.level_rna3d.level_0 import validate_rna3d_inputs
 from layers.layer_1_competition.level_1_impl.level_rna3d.level_1 import (
@@ -20,7 +21,6 @@ from layers.layer_1_competition.level_1_impl.level_rna3d.level_1 import (
     run_baseline_approx_predictions,
 )
 from layers.layer_1_competition.level_0_infra.level_1.contest import ValidateFirstRunner
-from layers.layer_1_competition.level_0_infra.level_0.artifacts import load_best_config_json
 from layers.layer_1_competition.level_0_infra.level_0.submission import validate_strategy_models
 
 logger = get_logger(__name__)
@@ -45,7 +45,7 @@ def _load_model_config(model_name: str, model_dir: Optional[str] = None) -> Base
     if model_dir:
         config_path = Path(model_dir) / "best_config.json"
         if config_path.exists():
-            cfg_dict = load_best_config_json(config_path)
+            cfg_dict = load_best_config_json(config_path, drop_keys=("score",))
             return BaselineApproxConfig(**cfg_dict)
 
     return BaselineApproxConfig()

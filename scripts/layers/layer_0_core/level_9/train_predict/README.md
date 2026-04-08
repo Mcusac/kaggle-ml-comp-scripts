@@ -41,3 +41,7 @@ workflow.setup()
 result = workflow.execute()
 # result['predictions_path'] contains output path
 ```
+
+## Generated
+
+2026-04-08 (audit pass 1).

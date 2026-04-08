@@ -9,7 +9,7 @@ import os
 from pathlib import Path
 from typing import Dict, Union, Optional
 
-from layers.layer_0_core.level_0 import is_kaggle, EnvironmentConfigError
+from level_0 import EnvironmentConfigError, is_kaggle
 
 def get_environment_type() -> str:
     """
@@ -130,3 +130,22 @@ def resolve_path(
     if is_kaggle() and kaggle_path is not None:
         return Path(kaggle_path)
     return Path(path)
+
+
+def get_kaggle_working_submission_csv_path() -> Path:
+    """
+    Return the canonical Kaggle working-dir submission path.
+    """
+    return Path(os.getenv('KAGGLE_WORKING_DIR', '/kaggle/working')) / "submission.csv"
+
+
+def get_default_submission_csv_path(*, purpose: str = "output") -> Path:
+    """
+    Return the default environment-specific submission CSV path.
+
+    - Kaggle: /kaggle/working/submission.csv (or KAGGLE_WORKING_DIR override)
+    - Local: <output-root>/submission.csv
+    """
+    if is_kaggle():
+        return get_kaggle_working_submission_csv_path()
+    return resolve_environment_path("submission.csv", purpose=purpose)

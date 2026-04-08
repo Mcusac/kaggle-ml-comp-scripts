@@ -1,7 +1,5 @@
 """Remove __pycache__ trees and optional loose .pyc files (stdlib + pathlib only)."""
 
-from __future__ import annotations
-
 from dataclasses import dataclass
 import os
 from pathlib import Path

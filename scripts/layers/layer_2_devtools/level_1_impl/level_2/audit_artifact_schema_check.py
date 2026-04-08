@@ -7,13 +7,19 @@ Checks:
 - Required audit result sections in *_audit.md files
 """
 
-from __future__ import annotations
-
 import argparse
 import io
 import re
 import sys
 from pathlib import Path
+
+_SCRIPT_DIR = Path(__file__).resolve().parent
+_SCRIPTS_ROOT = _SCRIPT_DIR.parents[3]
+_PRECHECK_STUB_DIR = _SCRIPTS_ROOT / "dev" / "scripts"
+if str(_PRECHECK_STUB_DIR) not in sys.path:
+    sys.path.insert(0, str(_PRECHECK_STUB_DIR))
+
+from precheck_artifact_root import resolve_audit_artifact_root
 
 CANONICAL_KEYS = ("audit_scope:", "level_name:", "pass_number:")
 LEGACY_KEYS = ("scope:", "level:", "pass:")
@@ -38,18 +44,13 @@ def _resolve_workspace(explicit_root: str | None) -> Path:
             return root
         raise ValueError(f"root has no .cursor/audit-results: {root}")
 
-    start = Path.cwd().resolve()
-    for parent in (start, *start.parents):
-        results_dir = parent / ".cursor" / "audit-results"
-        if not results_dir.is_dir():
-            continue
-        has_expected_scope = any(
-            (results_dir / scope / "audits").is_dir()
-            for scope in ("general", "competition_infra", "contests_special")
+    ws = resolve_audit_artifact_root(Path.cwd())
+    if not (ws / ".cursor" / "audit-results").is_dir():
+        raise ValueError(
+            "could not locate artifact_base containing .cursor/audit-results "
+            f"(cwd={Path.cwd()})"
         )
-        if has_expected_scope:
-            return parent
-    raise ValueError("could not locate workspace root containing .cursor/audit-results")
+    return ws
 
 
 def _read_text(path: Path) -> str:
@@ -96,7 +97,7 @@ def main() -> int:
         "--root",
         type=str,
         default=None,
-        help="Workspace root containing .cursor/audit-results",
+        help="Artifact root directory (e.g. input/kaggle-ml-comp-scripts) containing .cursor/audit-results",
     )
     parser.add_argument(
         "--strict",

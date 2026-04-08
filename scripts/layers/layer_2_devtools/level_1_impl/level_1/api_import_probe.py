@@ -1,7 +1,5 @@
 """Public API: import-test suite (moved from dev/tests for thin entrypoints)."""
 
-from __future__ import annotations
-
 import importlib
 from pathlib import Path
 from typing import Any
@@ -11,8 +9,8 @@ from layers.layer_2_devtools.level_0_infra.level_0.contracts.envelope import ok
 from layers.layer_2_devtools.level_0_infra.level_0.import_testing.classifier import ErrorClassifier
 from layers.layer_2_devtools.level_0_infra.level_0.import_testing.discoverer import DiscoveryConfig
 from layers.layer_2_devtools.level_0_infra.level_0.import_testing.discoverer import ModuleDiscoverer
-from layers.layer_2_devtools.level_0_infra.level_0.import_testing.reporter import TestReporter
-from layers.layer_2_devtools.level_0_infra.level_0.import_testing.tester import ImportTester
+from layers.layer_2_devtools.level_0_infra.level_1.tester import ImportTester
+from layers.layer_2_devtools.level_0_infra.level_2.reporter import TestReporter
 
 
 def run_import_test_suite_cli_api(config: dict[str, Any]) -> dict[str, Any]:

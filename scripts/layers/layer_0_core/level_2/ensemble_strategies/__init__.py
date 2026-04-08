@@ -21,7 +21,7 @@ from .averaging import (
     max_ensemble,
     merge_submissions,
 )
-from .result_handler_common import _log_pipeline_completion
+from .result_handler_common import log_pipeline_completion
 from .weight_matrix_builder import build_weight_matrix
 
 __all__ = [
@@ -34,6 +34,6 @@ __all__ = [
     'geometric_mean',    
     'max_ensemble',
     'merge_submissions',
-    '_log_pipeline_completion',
+    'log_pipeline_completion',
     'build_weight_matrix'
 ]

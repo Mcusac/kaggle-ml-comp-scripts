@@ -1,12 +1,15 @@
 """Noise addition augmentations. Callers pass params (e.g. from contest transform_defaults)."""
 
-from typing import Any
-
-from layers.layer_0_core.level_0 import get_logger, get_torch
+from level_0 import (
+    get_logger,
+    get_nn_module_base_class,
+    get_torch,
+    get_vision_module_and_tensor_types,
+)
 
 torch = get_torch()
-_NNModule = torch.nn.Module if torch is not None else object
-TensorT = torch.Tensor if torch is not None else Any
+_NNModule = get_nn_module_base_class()
+_, TensorT = get_vision_module_and_tensor_types()
 logger = get_logger(__name__)
 
 

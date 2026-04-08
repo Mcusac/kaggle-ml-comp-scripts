@@ -1,11 +1,11 @@
 """Train and export workflow."""
 
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
 
-from layers.layer_0_core.level_0 import get_logger
-from layers.layer_0_core.level_1 import BasePipeline
-from layers.layer_0_core.level_5 import ExportPipeline
-from layers.layer_0_core.level_8 import TrainPipeline
+from level_0 import get_logger
+from level_1 import BasePipeline
+from level_5 import ExportPipeline
+from level_8 import TrainPipeline
 
 logger = get_logger(__name__)
 
@@ -35,7 +35,8 @@ class TrainAndExportWorkflow(BasePipeline):
             export_dir: Optional export directory (default: config.paths.output_dir / 'exports').
             **kwargs: Additional parameters passed to train and export pipelines.
         """
-        super().__init__(config, **kwargs)
+        super().__init__(config)
+        self.kwargs = kwargs
         self.model_type = model_type
         self.export_dir = export_dir
         self.train_results = None

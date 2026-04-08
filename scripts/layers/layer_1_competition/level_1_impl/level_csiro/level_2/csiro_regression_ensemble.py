@@ -8,7 +8,7 @@ Contest-specific: not imported by the general ``layer_0_core`` stack.
 
 from typing import Any, Dict, List, Optional
 
-from layers.layer_0_core.level_8 import RegressionEnsemble, create_regression_ensemble_from_paths
+from level_8 import RegressionEnsemble, create_regression_ensemble_from_paths
 
 from layers.layer_1_competition.level_1_impl.level_csiro.level_1 import csiro_modeling
 

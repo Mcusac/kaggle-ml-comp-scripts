@@ -6,7 +6,7 @@ This module exposes pure hardware facts — no logging, no policy decisions.
 
 from typing import Dict, List
 
-from layers.layer_0_core.level_0 import get_torch, DeviceError
+from level_0 import get_torch, DeviceError
 
 def is_cuda_available() -> bool:
     """Return True if CUDA is available."""
