@@ -1,0 +1,9 @@
+{
+  "artifact": "precheck",
+  "generated": "2026-04-08",
+  "level": "level_0",
+  "parse_errors": [],
+  "scan_root": "C:\\Users\\mdc0431\\OneDrive - UNT System\\Documents\\Kaggle\\code\\input\\kaggle-ml-comp-scripts\\scripts\\layers\\layer_1_competition\\level_0_infra\\level_0",
+  "scope": "competition_infra",
+  "violations": []
+}

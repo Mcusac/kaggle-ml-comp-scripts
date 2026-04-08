@@ -30,6 +30,7 @@ Top-of-file **ordering and blank lines**: `python-import-order.mdc`. This file d
 
 ## Competition infra (`layers.layer_1_competition.level_0_infra.level_N`)
 
+- For symbols re-exported on **`layers.layer_1_competition.level_0_infra.level_J`**, use **`from layers.layer_1_competition.level_0_infra.level_J import …`** (package barrel), **including** when the importer lives under the same `level_0_infra/level_J/` tree. This mirrors contest `level_K` barrels and is **not** the general stack rule “a logic file under `level_N/` must not use `from level_N import …`” (that rule applies only to top-level **`level_N`** packages after `path_bootstrap`, not to `layers.layer_1_competition.level_0_infra.level_J`).
 - Prefer **`from layers.layer_1_competition.level_0_infra.level_0 import …`** (and siblings `level_1` … `level_4`) for anything listed on that package’s `__init__.py` / `__all__`.
 - Submodule imports (e.g. **`from layers.layer_1_competition.level_0_infra.level_0.registry import register_contest`**) are fine when the symbol is **not** re-exported at the package root — see `contest-package-registration.mdc` for `registration.py` patterns.
 - Avoid **`from layers.layer_1_competition.level_0_infra.level_0.some_module import …`** when the same name is already re-exported from the **`level_0`** package root.

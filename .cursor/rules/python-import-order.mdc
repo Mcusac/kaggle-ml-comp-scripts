@@ -44,6 +44,7 @@ from layers.layer_1_competition.contests.level_csiro.level_2 import (
 
 ## Notes
 
+- Group **1** (bare `import` for stdlib and third-party, e.g. `import pandas as pd`) always comes **before** group **2** (`from … import …` for stdlib/third-party, e.g. `from pathlib import Path`).
 - Do not interleave groups (e.g. do not place a `level_4` import between two third-party `from` imports).
 - If a group has no imports, skip that group entirely (no blank line placeholder for an empty group).
 - Follow `python-import-surfaces.mdc` for **what** may be imported (public APIs, contest `level_K` barrels, etc.); this rule only governs **ordering and spacing**.

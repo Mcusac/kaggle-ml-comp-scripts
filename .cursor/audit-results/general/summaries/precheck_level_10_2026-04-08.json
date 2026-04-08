@@ -1,0 +1,8 @@
+{
+  "artifact_kind": "precheck",
+  "audit_scope": "general",
+  "generated": "2026-04-08",
+  "level_name": "level_10",
+  "precheck_status": "skipped_machine_script",
+  "reason": "ModuleNotFoundError: No module named 'torchvision'"
+}
