@@ -6,20 +6,25 @@ on:
   pull_request:
     branches: [ main, develop ]
   schedule:
-    # Run weekly on Monday
     - cron: '0 0 * * 1'
+
+concurrency:
+  group: health-check-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   health-check:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v4
     
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.10'
+        cache: 'pip'
     
     - name: Install dependencies
       run: |
@@ -27,18 +32,39 @@ jobs:
     
     - name: Run health check
       run: |
-        python scripts/dev/scripts/check_health.py --root input/kaggle-ml-comp-scripts --json > health_report.json
-
+        python scripts/dev/scripts/check_health.py \
+          --root input/kaggle-ml-comp-scripts \
+          --json > health_report.json
+    
     - name: CSIRO contest tier imports
       working-directory: scripts
-      run: python dev/scan_csiro_level_violations.py
-    
-    - name: Upload health report
-      uses: actions/upload-artifact@v3
-      with:
-        name: health-report
-        path: health_report.json
+      run: |
+        python dev/scan_csiro_level_violations.py
     
     - name: Check thresholds
       run: |
-        python scripts/dev/scripts/check_health_thresholds.py --report health_report.json || exit 1
+        python scripts/dev/scripts/check_health_thresholds.py \
+          --report health_report.json
+    
+    - name: Pretty print report
+      if: always()
+      run: |
+        python -m json.tool health_report.json > health_report_pretty.json
+    
+    - name: Upload health report artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: health-report
+        path: |
+          health_report.json
+          health_report_pretty.json
+        if-no-files-found: error
+        compression-level: 6
+    
+    - name: Publish summary
+      if: always()
+      run: |
+        echo "## Code Health Report" >> $GITHUB_STEP_SUMMARY
+        echo '```json' >> $GITHUB_STEP_SUMMARY
+        cat health_report.json >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY

@@ -3,9 +3,10 @@
 import json
 import sys
 import time
-from pathlib import Path
 import types
 import importlib.util
+
+from pathlib import Path
 
 _SCRIPTS_ROOT = Path(__file__).resolve().parents[4]
 if str(_SCRIPTS_ROOT) not in sys.path:
