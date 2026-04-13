@@ -18,8 +18,6 @@ Ports NVARC ``score_sum`` / ``getter_*`` behavior:
   to the outer mean like the reference.
 """
 
-from __future__ import annotations
-
 from typing import Any, Callable
 
 Grid = list[list[int]]

@@ -1,9 +1,14 @@
 import os
 import time
 import json
-import torch
 import argparse
 import torch.multiprocessing as mp
+
+from layers.layer_0_core.level_0 import get_torch
+
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_Z.arc_solver import worker
+
+torch = get_torch()
 
 
 def local_worker(rank, queue, end_time):
@@ -17,7 +22,6 @@ def local_worker(rank, queue, end_time):
         while not os.path.exists(f"/kaggle/worker{rank-1}"):
             time.sleep(5)
     
-    from arc_solver import worker
 
     with open(f"/kaggle/worker{rank}", "w") as f:
         f.write("Ok")

@@ -1,7 +1,7 @@
 """Utilities for creating pipeline/workflow kwargs."""
+# CANDIDATE: could be more general and then call and wrap it for machine learning (ie the model_type)
 
 from typing import Any, Optional
-
 
 def create_pipeline_kwargs(
     paths: Any,

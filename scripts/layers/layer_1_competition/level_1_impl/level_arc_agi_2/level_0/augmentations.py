@@ -1,9 +1,9 @@
 """ARC geometric/color augmentations with invertible specs."""
 
 import random
+
 from dataclasses import dataclass
 from typing import Iterable
-
 
 Grid = list[list[int]]
 

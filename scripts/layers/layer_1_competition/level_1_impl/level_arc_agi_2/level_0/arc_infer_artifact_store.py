@@ -13,12 +13,11 @@ On-disk layout under an artifact *root* directory (NVARC / parity map):
   (:func:`infer_save_intermediate_candidates`).
 """
 
-from __future__ import annotations
-
 import bz2
 import json
 import os
 import pickle
+
 from typing import Any
 
 GuessDict = dict[str, Any]

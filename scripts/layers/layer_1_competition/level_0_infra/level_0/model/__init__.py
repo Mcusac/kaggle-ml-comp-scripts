@@ -9,13 +9,9 @@ from .model_constants import (
     get_pretrained_weights_path,
     register_model_id_map,
 )
-from .verify_export_output import verify_export_output
-
-from layers.layer_0_core.level_1 import get_model_id
 
 __all__ = [
     "MODEL_ID_MAP",
-    "get_model_id",
     "get_model_image_size",
     "get_model_name_from_pretrained",
     "get_pretrained_weights_path",
@@ -23,5 +19,4 @@ __all__ = [
     "load_structured_features",
     "register_model_id_map",
     "register_features",
-    "verify_export_output",
 ]

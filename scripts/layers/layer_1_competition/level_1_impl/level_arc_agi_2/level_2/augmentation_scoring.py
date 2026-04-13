@@ -8,8 +8,6 @@ Also pairs (query, answer) strings under :class:`AugmentationSpec` using the sam
 forward/inverse grid transforms as TTA decoding.
 """
 
-from __future__ import annotations
-
 from collections.abc import Sequence
 from typing import Any, Literal
 
@@ -205,15 +203,3 @@ def calc_scores_under_augmentations(
     if aggregate == "none":
         return nlls
     return aggregate_scores_across_augmentations(nlls, mode=aggregate)
-
-
-__all__ = [
-    "calc_scores",
-    "calc_scores_chunked",
-    "concat_calc_score_batches",
-    "aggregate_scores_across_augmentations",
-    "format_augmented_query_reply_strings",
-    "format_augmented_query_reply_batch",
-    "invert_candidate_grid",
-    "calc_scores_under_augmentations",
-]
