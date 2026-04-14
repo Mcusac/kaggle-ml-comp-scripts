@@ -31,7 +31,7 @@ def _ddp_safe_loss(loss, accelerator):
 
 class UnslothFixedTrainer(UnslothTrainer):
     """
-    v1 / v2 compute_loss: delegates to label_smoother when present,
+    v1 compute_loss: delegates to label_smoother when present,
     detects Unsloth models to pass ``shift_labels=True``.
 
     Ref: https://github.com/unslothai/unsloth/issues/2435
@@ -47,7 +47,10 @@ class UnslothFixedTrainer(UnslothTrainer):
 
         if labels is not None:
             unwrapped = self.accelerator.unwrap_model(model)
-            is_unsloth = hasattr(unwrapped, "_get_name") and "unsloth" in unwrapped._get_name().lower()
+            is_unsloth = (
+                hasattr(unwrapped, "_get_name")
+                and "unsloth" in unwrapped._get_name().lower()
+            )
             if is_unsloth:
                 loss = self.label_smoother(outputs, labels, shift_labels=True)
             else:
@@ -62,8 +65,7 @@ class UnslothFixedTrainer(UnslothTrainer):
 class UnslothV2FixedTrainer(UnslothTrainer):
     """
     v2 compute_loss: bypasses Unsloth's Dynamo-compiled loss entirely by
-    popping labels and computing a vanilla CrossEntropyLoss.  Required when
-    ``TORCH_COMPILE_DISABLE`` cannot suppress all compiled paths.
+    popping labels and computing a vanilla CrossEntropyLoss.
     """
 
     def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
@@ -74,6 +76,7 @@ class UnslothV2FixedTrainer(UnslothTrainer):
             logits = outputs.logits
             shift_logits = logits[..., :-1, :].contiguous()
             shift_labels = labels[..., 1:].contiguous()
+
             loss_fct = torch.nn.CrossEntropyLoss()
             loss = loss_fct(
                 shift_logits.view(-1, shift_logits.size(-1)),

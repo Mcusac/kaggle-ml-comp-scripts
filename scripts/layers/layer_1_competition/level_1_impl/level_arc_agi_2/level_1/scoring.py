@@ -3,6 +3,10 @@
 Scores and ranks heuristics by corpus-level scores so the tuning phase
 can select strong candidates before submission.
 
+Public helpers are intentionally exposed for reuse by higher levels:
+  find_existing
+  load_json_path
+
 Intra-package dependencies (fully qualified per architecture rules):
   layers...level_arc_agi_2.level_0 (re-exporting heuristics) — predict_attempts_for_heuristic
   layers...level_arc_agi_2.level_0 (re-exporting submit_limits) — read_submit_max_tasks_env
@@ -26,10 +30,10 @@ logger = get_logger(__name__)
 
 
 # ---------------------------------------------------------------------------
-# Private file-system helpers
+# Public file-system helpers (used by higher levels)
 # ---------------------------------------------------------------------------
 
-def _find_existing(root: Path, names: list[str]) -> Path:
+def find_existing(root: Path, names: list[str]) -> Path:
     """Return the first name in ``names`` that exists under ``root``, else ``root/names[0]``."""
     for name in names:
         p = root / name
@@ -38,7 +42,8 @@ def _find_existing(root: Path, names: list[str]) -> Path:
     return root / names[0]
 
 
-def _load_json_path(path: Path) -> Any:
+def load_json_path(path: Path) -> Any:
+    """Load JSON file using core loader."""
     return load_json_raw(path)
 
 
@@ -101,12 +106,9 @@ def score_heuristic_on_training_challenges(
     max_tasks: int = 0,
     max_pairs_per_task: int = 0,
 ) -> float:
-    """Mean per-cell accuracy on the training corpus (attempt_1 vs output).
-
-    Iterates each task's ``train`` pairs; no evaluation solutions required.
-    """
+    """Mean per-cell accuracy on the training corpus (attempt_1 vs output)."""
     root = Path(data_root)
-    train_ch_path = _find_existing(
+    train_ch_path = find_existing(
         root,
         [
             "arc-agi_training_challenges.json",
@@ -115,7 +117,7 @@ def score_heuristic_on_training_challenges(
     )
     if not train_ch_path.is_file():
         return 0.0
-    challenges = _load_json_path(train_ch_path)
+    challenges = load_json_path(train_ch_path)
     if not isinstance(challenges, dict):
         return 0.0
 
@@ -159,7 +161,7 @@ def score_heuristic_exact_match_on_training(
 ) -> float:
     """Fraction of training pairs where attempt_1 is an exact grid match."""
     root = Path(data_root)
-    train_ch_path = _find_existing(
+    train_ch_path = find_existing(
         root,
         [
             "arc-agi_training_challenges.json",
@@ -168,7 +170,7 @@ def score_heuristic_exact_match_on_training(
     )
     if not train_ch_path.is_file():
         return 0.0
-    challenges = _load_json_path(train_ch_path)
+    challenges = load_json_path(train_ch_path)
     if not isinstance(challenges, dict):
         return 0.0
 
@@ -210,19 +212,16 @@ def score_heuristic_on_evaluation(
     max_tasks: int = 0,
     max_targets: int = 0,
 ) -> float:
-    """Mean per-cell accuracy vs evaluation solutions (attempt_1 only).
-
-    Returns 0.0 when evaluation solutions are not present on disk.
-    """
+    """Mean per-cell accuracy vs evaluation solutions (attempt_1 only)."""
     root = Path(data_root)
-    eval_ch_path = _find_existing(
+    eval_ch_path = find_existing(
         root,
         [
             "arc-agi_evaluation_challenges.json",
             "arc-agi_evaluation-challenges.json",
         ],
     )
-    eval_sol_path = _find_existing(
+    eval_sol_path = find_existing(
         root,
         [
             "arc-agi_evaluation_solutions.json",
@@ -234,8 +233,8 @@ def score_heuristic_on_evaluation(
     if not eval_sol_path.is_file():
         logger.info("No evaluation solutions on disk; skipping tune scoring for %s", heuristic)
         return 0.0
-    challenges = _load_json_path(eval_ch_path)
-    solutions_raw = _load_json_path(eval_sol_path)
+    challenges = load_json_path(eval_ch_path)
+    solutions_raw = load_json_path(eval_sol_path)
     if not isinstance(challenges, dict) or not isinstance(solutions_raw, dict):
         return 0.0
 
@@ -265,82 +264,3 @@ def score_heuristic_on_evaluation(
     if total_cells == 0:
         return 0.0
     return correct_cells / float(total_cells)
-
-
-def rank_heuristics_on_training(
-    data_root: str,
-    heuristic_order: tuple[str, ...],
-    *,
-    max_tasks: int = 0,
-    max_pairs_per_task: int = 0,
-) -> list[tuple[str, float]]:
-    """Score each heuristic on training data; return (name, score) sorted descending."""
-    ranked: list[tuple[str, float]] = []
-    for h in heuristic_order:
-        s = score_heuristic_on_training_challenges(
-            data_root,
-            h,
-            max_tasks=max_tasks,
-            max_pairs_per_task=max_pairs_per_task,
-        )
-        ranked.append((h, s))
-    ranked.sort(key=lambda x: (-x[1], x[0]))
-    return ranked
-
-
-def select_best_heuristic_on_training(
-    data_root: str,
-    train_mode: str,
-    *,
-    max_targets: int = 0,
-) -> tuple[dict[str, Any], dict[str, float]]:
-    """Pick heuristic using training-challenge ``train`` pairs only.
-
-    No evaluation solutions are required. Returns (chosen_params, scores).
-    """
-    mode = str(train_mode or "").strip().lower()
-    order = HEURISTIC_QUICK_ORDER if mode == "quick" else HEURISTIC_THOROUGH_ORDER
-    max_tasks_env = read_submit_max_tasks_env()
-    scores: dict[str, float] = {}
-    best_h: str | None = None
-    best_s = -1.0
-    for h in order:
-        s = score_heuristic_on_training_challenges(
-            data_root,
-            h,
-            max_tasks=max_tasks_env or 0,
-            max_pairs_per_task=int(max_targets or 0),
-        )
-        scores[h] = s
-        if s > best_s:
-            best_s = s
-            best_h = h
-    chosen = best_h or DEFAULT_SUBMIT_HEURISTIC
-    return {"heuristic": chosen, "version": 1}, scores
-
-
-def select_best_heuristic(
-    data_root: str,
-    search_type: str,
-    *,
-    max_targets: int = 0,
-) -> tuple[dict[str, Any], dict[str, float]]:
-    """Pick chosen_params heuristic by evaluation score; ties favour earlier in order."""
-    order = HEURISTIC_QUICK_ORDER if search_type == "quick" else HEURISTIC_THOROUGH_ORDER
-    max_tasks_env = read_submit_max_tasks_env()
-    scores: dict[str, float] = {}
-    best_h: str | None = None
-    best_s = -1.0
-    for h in order:
-        s = score_heuristic_on_evaluation(
-            data_root,
-            h,
-            max_tasks=max_tasks_env or 0,
-            max_targets=max_targets,
-        )
-        scores[h] = s
-        if s > best_s:
-            best_s = s
-            best_h = h
-    chosen = best_h or DEFAULT_SUBMIT_HEURISTIC
-    return {"heuristic": chosen, "version": 1}, scores

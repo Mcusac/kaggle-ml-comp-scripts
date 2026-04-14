@@ -1,6 +1,8 @@
 import numpy as np
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import ENSEMBLE_REFERENCE_RANKERS
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
+    ENSEMBLE_REFERENCE_RANKERS,
+)
 
 
 def benchmark_selection_algos(
@@ -23,7 +25,7 @@ def benchmark_selection_algos(
         mult_key, mult_sub = basekey.split("_")
         num_tasks_per_puzzle[mult_key] = max(
             num_tasks_per_puzzle.get(mult_key, 0),
-            int(mult_sub) + 1
+            int(mult_sub) + 1,
         )
 
         labels[basekey] = correct_solution = dataset.replies[basekey][0]
@@ -55,6 +57,7 @@ def benchmark_selection_algos(
 
     print(f" subkeys: {num_solved_keys}/{num_total_keys}")
 
+    # v2-safe handling of empty scores
     if len(correct_beam_scores) > 0:
         print(f" avg correct beam score: {np.mean(correct_beam_scores):8.5f}")
         print(f" max correct beam score: {np.max(correct_beam_scores):8.5f}")
@@ -64,13 +67,14 @@ def benchmark_selection_algos(
 
     num_puzzles = len(num_tasks_per_puzzle)
 
-    for selection_algorithm in ENSEMBLE_REFERENCE_RANKERS:
-        name = selection_algorithm.__name__
+    # FIX: iterate over dict items to get name + callable
+    for name, selection_algorithm in ENSEMBLE_REFERENCE_RANKERS.items():
 
         selected = run_selection_algo(selection_algorithm)
 
         correct_puzzles = {
-            k for k, v in selected.items()
+            k
+            for k, v in selected.items()
             if any(
                 np.array_equal(guess, labels[k])
                 for guess in v[:n_guesses]

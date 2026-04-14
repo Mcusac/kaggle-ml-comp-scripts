@@ -1,9 +1,14 @@
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import infer_load_decoded_results_from_dir, ensemble_score_kgmon
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import benchmark_selection_algos_v2
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
+    infer_load_decoded_results_from_dir,
+    ensemble_score_kgmon,
+)
+
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
+    benchmark_selection_algos,
+)
 
 
-class ArcDecoderV2:
-    
+class ArcDecoder:
     def __init__(self, dataset, n_guesses):
         self.dataset = dataset
         self.n_guesses = n_guesses
@@ -13,7 +18,7 @@ class ArcDecoderV2:
         infer_load_decoded_results_from_dir(
             self.decoded_results,
             store,
-            run_name
+            run_name,
         )
 
     def run_selection_algo(self, selection_algorithm=ensemble_score_kgmon):
@@ -23,7 +28,7 @@ class ArcDecoderV2:
         }
 
     def benchmark_selection_algos(self):
-        benchmark_selection_algos_v2(
+        benchmark_selection_algos(
             decoded_results=self.decoded_results,
             dataset=self.dataset,
             n_guesses=self.n_guesses,
