@@ -30,6 +30,3 @@ class FormattingHelpers:
     @staticmethod
     def format_success_message(message: str) -> str:
         return f"✓ {message}"
-
-
-__all__ = ["FormattingHelpers"]

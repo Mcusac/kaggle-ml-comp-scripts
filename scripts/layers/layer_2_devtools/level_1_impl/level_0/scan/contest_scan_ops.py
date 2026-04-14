@@ -212,12 +212,3 @@ def _read_parse_error(path: Path) -> str:
     except OSError as exc:
         return str(exc)
     return "Failed to parse file"
-
-
-__all__ = [
-    "load_level_barrel_names",
-    "scan_contest_package_file",
-    "iter_contest_level_py_files",
-    "scan_contest_root_directory",
-    "scan_contest_level_directory",
-]

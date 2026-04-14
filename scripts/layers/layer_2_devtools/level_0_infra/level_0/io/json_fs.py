@@ -20,6 +20,3 @@ def latest_path_by_glob_mtime(directory: Path, pattern: str) -> Path:
     if not files:
         raise FileNotFoundError(f"No files matching {pattern!r} under {directory}")
     return files[0]
-
-
-__all__ = ["latest_path_by_glob_mtime", "read_json_object"]

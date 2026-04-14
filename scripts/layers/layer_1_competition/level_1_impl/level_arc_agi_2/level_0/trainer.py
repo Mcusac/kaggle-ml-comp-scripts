@@ -3,10 +3,10 @@ Unsloth trainer subclasses that fix the view-tensor / Dynamo compiled loss issue
 
 Two variants are provided:
 
-  UnslothFixedTrainer      — v1/v2 strategy: routes through label_smoother with
+  UnslothFixedTrainer      — v1 strategy: routes through label_smoother with
                              Unsloth model detection.  See GitHub issue #2435.
 
-  UnslothV3FixedTrainer    — v3 strategy: pops labels and computes a standard
+  UnslothV2FixedTrainer    — v2 strategy: pops labels and computes a standard
                              PyTorch CrossEntropyLoss, fully bypassing Unsloth's
                              compiled loss path (needed when torch.compile is active).
 
@@ -14,6 +14,7 @@ Both share the same DDP loss-scaling fix (clone before in-place ops).
 """
 
 from unsloth import UnslothTrainer
+
 from layers.layer_0_core.level_0 import get_torch
 
 torch = get_torch()
@@ -58,9 +59,9 @@ class UnslothFixedTrainer(UnslothTrainer):
         return (loss, outputs) if return_outputs else loss
 
 
-class UnslothV3FixedTrainer(UnslothTrainer):
+class UnslothV2FixedTrainer(UnslothTrainer):
     """
-    v3 compute_loss: bypasses Unsloth's Dynamo-compiled loss entirely by
+    v2 compute_loss: bypasses Unsloth's Dynamo-compiled loss entirely by
     popping labels and computing a vanilla CrossEntropyLoss.  Required when
     ``TORCH_COMPILE_DISABLE`` cannot suppress all compiled paths.
     """

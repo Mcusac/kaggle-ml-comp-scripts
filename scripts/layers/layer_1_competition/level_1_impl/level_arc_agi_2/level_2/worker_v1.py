@@ -10,12 +10,16 @@ Characteristics:
   - AMP grad scaler disabled (monkey-patched)
 """
 
-import torch
+from layers.layer_0_core.level_0 import get_torch
 
-from .attention import install_repeat_interleave_attention
-from .config import WorkerConfig, build_batches_grouped
-from .trainer import UnslothFixedTrainer
-from .worker import worker_core
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
+    install_repeat_interleave_attention, 
+    UnslothFixedTrainer, 
+    infer_notebook_style_decode_batches,
+)
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import WorkerConfig, worker_core
+
+torch = get_torch()
 
 # ---------------------------------------------------------------------------
 # v1 config
@@ -82,7 +86,7 @@ V1_CONFIG = WorkerConfig(
     trainer_class=UnslothFixedTrainer,
     install_attention=install_repeat_interleave_attention,
     post_peft_setup=_post_peft_setup_v1,
-    build_batches=build_batches_grouped,
+    build_batches=infer_notebook_style_decode_batches,
     dir_outputs="/kaggle/inference_outputs",
     disable_amp_grad_scaler=True,
 )

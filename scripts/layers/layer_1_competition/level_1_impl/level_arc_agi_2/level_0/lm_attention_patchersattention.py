@@ -10,8 +10,9 @@ Call the appropriate ``install_*`` function at process startup before loading th
 
 import unsloth.models.qwen3 as qwen3_module
 
-from layers.layer_0_core.level_0 import get_torch
 from torch.nn.functional import scaled_dot_product_attention
+
+from layers.layer_0_core.level_0 import get_torch
 
 torch = get_torch()
 

@@ -211,14 +211,3 @@ def _contest_has_root_py(contest_dir: Path) -> bool:
     if not contest_dir.is_dir():
         return False
     return any(path.is_file() and path.suffix == ".py" for path in contest_dir.iterdir())
-
-
-__all__ = [
-    "AuditScope",
-    "AuditTarget",
-    "default_layers_root",
-    "build_comprehensive_queue",
-    "queue_to_json",
-    "dumps_queue_json",
-    "build_markdown_table",
-]

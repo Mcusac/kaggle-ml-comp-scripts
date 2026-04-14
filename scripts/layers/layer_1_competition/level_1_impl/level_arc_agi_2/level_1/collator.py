@@ -8,7 +8,7 @@ import numpy as np
 from typing import Any, Union
 from transformers import DataCollatorForLanguageModeling
 
-from .constants import USER_TOKEN_ID, ASSISTANT_TOKEN_ID, EOS_ID
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import REFERENCE_USER_TOKEN_ID, REFERENCE_ASSISTANT_TOKEN_ID, REFERENCE_EOS_ID
 
 
 class QwenDataCollatorForCompletionOnlyLM(DataCollatorForLanguageModeling):
@@ -21,10 +21,10 @@ class QwenDataCollatorForCompletionOnlyLM(DataCollatorForLanguageModeling):
         batch = super().torch_call(examples)
         for i in range(len(examples)):
             labels = batch["input_ids"][i].clone()
-            user_start_idx = np.where(labels == USER_TOKEN_ID)[0].tolist()
-            assistant_start_idx = np.where(labels == ASSISTANT_TOKEN_ID)[0].tolist()
+            user_start_idx = np.where(labels == REFERENCE_USER_TOKEN_ID)[0].tolist()
+            assistant_start_idx = np.where(labels == REFERENCE_ASSISTANT_TOKEN_ID)[0].tolist()
             start_idx = sorted(user_start_idx + assistant_start_idx)
-            end_idx = np.where(labels == EOS_ID)[0]
+            end_idx = np.where(labels == REFERENCE_EOS_ID)[0]
             batch["labels"][i, :] = -100
             for j, (start, end) in enumerate(zip(start_idx, end_idx)):
                 assert start < end

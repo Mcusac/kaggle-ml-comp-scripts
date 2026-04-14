@@ -16,6 +16,3 @@ class FileReport:
     path: Path
     parse_error: str | None = None
     violations: list[Violation] = field(default_factory=list)
-
-
-__all__ = ["Violation", "FileReport"]

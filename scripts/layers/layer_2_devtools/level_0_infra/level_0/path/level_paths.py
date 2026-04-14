@@ -39,7 +39,3 @@ def contest_tier_from_path(path: Path, contest_dir: Path) -> int | None:
         if match:
             return int(match.group(1))
     return None
-
-
-__all__ = ["file_level_from_path", "infra_tier_from_level_dir", "contest_tier_from_path"]
-

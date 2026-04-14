@@ -80,6 +80,3 @@ def build_comprehensive_rollup_skeleton_markdown(
         ]
     )
     return "\n".join(lines)
-
-
-__all__ = ["build_comprehensive_rollup_skeleton_markdown"]

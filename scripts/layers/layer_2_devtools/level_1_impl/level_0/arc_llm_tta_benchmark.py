@@ -5,25 +5,13 @@ import sys
 import time
 import types
 import importlib.util
+import torchvision.transforms  # type: ignore
 
 from pathlib import Path
 
 _SCRIPTS_ROOT = Path(__file__).resolve().parents[4]
 if str(_SCRIPTS_ROOT) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_ROOT))
-
-try:
-    import torchvision.transforms  # type: ignore
-except Exception:
-    tv = types.ModuleType("torchvision")
-    transforms = types.ModuleType("torchvision.transforms")
-    transforms.Compose = lambda x: x
-    transforms.Normalize = lambda *a, **k: ("Normalize", a, k)
-    transforms.Resize = lambda *a, **k: ("Resize", a, k)
-    transforms.ToTensor = lambda *a, **k: ("ToTensor", a, k)
-    tv.transforms = transforms
-    sys.modules["torchvision"] = tv
-    sys.modules["torchvision.transforms"] = transforms
 
 
 def _load_module(name: str, path: Path):

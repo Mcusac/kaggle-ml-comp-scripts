@@ -43,6 +43,3 @@ def run_violation_fix_cli_api(config: dict[str, Any]) -> dict[str, Any]:
         return err([str(code) if str(code) else "workflow exited"])
     except (OSError, TypeError, ValueError) as exc:
         return err([str(exc)])
-
-
-__all__ = ["run_violation_fix_cli_api"]

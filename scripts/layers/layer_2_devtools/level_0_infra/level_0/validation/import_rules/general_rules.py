@@ -30,7 +30,3 @@ def classify_general_import_from(module_name: str, current_level: int) -> str | 
     if imported_level > current_level:
         return "UPWARD_VIOLATION"
     return None
-
-
-__all__ = ["classify_general_import_from", "has_deep_level_path"]
-

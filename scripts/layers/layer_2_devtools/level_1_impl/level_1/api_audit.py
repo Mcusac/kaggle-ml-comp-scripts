@@ -581,19 +581,3 @@ def run_csiro_level_violations_cli_api(config: dict[str, Any]) -> dict[str, Any]
         return run_contest_tier_scan_with_artifacts(merged)
     except (OSError, TypeError, ValueError) as exc:
         return _err([str(exc)])
-
-
-__all__ = [
-    "build_audit_rollup_from_queue_path",
-    "build_comprehensive_rollup_skeleton",
-    "resolve_layer_0_core",
-    "resolve_workspace",
-    "run_audit_precheck",
-    "run_audit_precheck_cli_complete",
-    "run_contest_tier_scan",
-    "run_contest_tier_scan_with_artifacts",
-    "run_csiro_level_violations_cli_api",
-    "run_general_stack_scan",
-    "run_general_stack_scan_with_artifacts",
-    "serialize_precheck_payload",
-]

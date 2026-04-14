@@ -15,6 +15,3 @@ def read_file_safe(path: Path) -> str | None:
         return path.read_text(encoding="utf-8")
     except OSError:
         return None
-
-
-__all__ = ["count_lines", "read_file_safe"]

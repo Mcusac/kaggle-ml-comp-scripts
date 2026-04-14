@@ -27,6 +27,3 @@ def load_json_report(path: Path) -> dict[str, Any]:
     if not isinstance(data, dict):
         raise ValueError(f"Expected JSON object at top level in {path}, got {type(data)}")
     return data
-
-
-__all__ = ["load_json_report"]

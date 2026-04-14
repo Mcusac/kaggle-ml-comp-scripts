@@ -49,6 +49,3 @@ def _read_parse_error(path: Path) -> str:
     except OSError as exc:
         return str(exc)
     return "Failed to parse file"
-
-
-__all__ = ["scan_special_tree_file", "iter_special_py_files", "scan_special_tree_directory"]

@@ -180,11 +180,3 @@ def emit_health_report_view_api(config: dict[str, Any]) -> dict[str, Any]:
         return err(['view_kind must be "complexity", "srp", "duplicates", or "compare"'])
     except (OSError, TypeError, ValueError) as exc:
         return err([str(exc)])
-
-
-__all__ = [
-    "emit_health_report_view_api",
-    "run_health_summary_api",
-    "run_health_threshold_check_api",
-    "run_package_health_cli_api",
-]

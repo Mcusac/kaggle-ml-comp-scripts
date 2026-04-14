@@ -1,5 +1,6 @@
 import numpy as np
-from .selection_algorithms import selection_algorithms
+
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import ENSEMBLE_REFERENCE_RANKERS
 
 
 def benchmark_selection_algos(
@@ -53,17 +54,12 @@ def benchmark_selection_algos(
             num_total_keys += 1
 
     print(f" subkeys: {num_solved_keys}/{num_total_keys}")
-
-    if len(correct_beam_scores) > 0:
-        print(f" avg correct beam score: {np.mean(correct_beam_scores):8.5f}")
-        print(f" max correct beam score: {np.max(correct_beam_scores):8.5f}")
-    else:
-        print(" avg correct beam score:      nan")
-        print(" max correct beam score:      nan")
+    print(f" avg correct beam score: {np.mean(correct_beam_scores):8.5f}")
+    print(f" max correct beam score: {np.max(correct_beam_scores):8.5f}")
 
     num_puzzles = len(num_tasks_per_puzzle)
 
-    for selection_algorithm in selection_algorithms:
+    for selection_algorithm in ENSEMBLE_REFERENCE_RANKERS:
         name = selection_algorithm.__name__
 
         selected = run_selection_algo(selection_algorithm)

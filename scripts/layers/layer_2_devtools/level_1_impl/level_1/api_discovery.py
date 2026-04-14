@@ -118,10 +118,3 @@ def run_audit_targets_cli_complete(config: dict[str, Any]) -> dict[str, Any]:
         )
     except (OSError, TypeError, ValueError) as exc:
         return _err([str(exc)])
-
-
-__all__ = [
-    "resolve_default_layers_root_api",
-    "run_audit_target_discovery",
-    "run_audit_targets_cli_complete",
-]

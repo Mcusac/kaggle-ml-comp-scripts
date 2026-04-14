@@ -155,6 +155,3 @@ def run_import_test_suite_cli_api(config: dict[str, Any]) -> dict[str, Any]:
         return ok({"exit_code": int(exit_code)})
     except (OSError, TypeError, ValueError) as exc:
         return err([str(exc)])
-
-
-__all__ = ["run_import_test_suite_cli_api"]

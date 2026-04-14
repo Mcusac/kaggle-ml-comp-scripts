@@ -9,6 +9,3 @@ def find_layer_0_core_ancestor(start: Path) -> Path | None:
         if path.name == "layer_0_core" and path.is_dir():
             return path
     return None
-
-
-__all__ = ["find_layer_0_core_ancestor"]

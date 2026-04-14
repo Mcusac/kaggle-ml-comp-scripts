@@ -347,13 +347,3 @@ def run_comprehensive_audit_emit(
 
     print("✅ comprehensive_audit_emit done")
     return 0
-
-
-__all__ = [
-    "PrecheckRunResult",
-    "dumps_precheck_payload",
-    "resolve_contests_precheck_kind",
-    "run_comprehensive_audit_emit",
-    "run_general_full_precheck",
-    "run_target_precheck",
-]

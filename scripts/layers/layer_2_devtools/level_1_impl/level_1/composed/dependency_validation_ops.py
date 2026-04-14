@@ -313,10 +313,3 @@ def _build_markdown_summary(report: dict[str, Any]) -> str:
             )
     lines.append("")
     return "\n".join(lines)
-
-
-__all__ = [
-    "DependencyEdge",
-    "run_dependency_validation_workflow",
-    "write_dependency_report_artifacts",
-]

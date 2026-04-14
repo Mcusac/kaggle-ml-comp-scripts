@@ -55,6 +55,3 @@ def run_audit_target_discovery(
 def resolve_default_layers_root(scripts_root: Path) -> Path:
     """Resolve default layers root from scripts root."""
     return default_layers_root(scripts_root.resolve())
-
-
-__all__ = ["run_audit_target_discovery", "resolve_default_layers_root"]

@@ -1,6 +1,5 @@
-from .decoded_loader import load_decoded_results_into
-from .selection_algorithms import score_kgmon
-from .benchmarking_v1 import benchmark_selection_algos_v1
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import infer_load_decoded_results_from_dir, ensemble_score_kgmon
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import benchmark_selection_algos_v1
 
 
 class ArcDecoder:
@@ -11,13 +10,13 @@ class ArcDecoder:
         self.decoded_results = {}
 
     def load_decoded_results(self, store, run_name=""):
-        load_decoded_results_into(
+        infer_load_decoded_results_from_dir(
             self.decoded_results,
             store,
             run_name
         )
 
-    def run_selection_algo(self, selection_algorithm=score_kgmon):
+    def run_selection_algo(self, selection_algorithm=ensemble_score_kgmon):
         return {
             bk: selection_algorithm({k: g for k, g in v.items()})
             for bk, v in self.decoded_results.items()

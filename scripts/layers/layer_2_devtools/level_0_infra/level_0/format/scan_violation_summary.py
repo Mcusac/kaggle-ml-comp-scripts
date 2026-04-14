@@ -28,6 +28,3 @@ def format_scan_violation_summary_lines(data: dict[str, Any]) -> list[str]:
     if pe:
         lines.append(f"  PARSE_ERROR entries: {len(pe)}")
     return lines
-
-
-__all__ = ["format_scan_violation_summary_lines"]

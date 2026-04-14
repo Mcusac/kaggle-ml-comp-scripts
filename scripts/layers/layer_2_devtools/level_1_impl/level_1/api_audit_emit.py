@@ -49,6 +49,3 @@ def run_comprehensive_audit_emit_cli_api(config: dict[str, Any]) -> dict[str, An
         return ok({"exit_code": int(rc)})
     except (OSError, TypeError, ValueError) as exc:
         return err([str(exc)])
-
-
-__all__ = ["run_comprehensive_audit_emit_cli_api"]

@@ -24,6 +24,3 @@ def classify_general_import_from(
     if imported_level > current_level:
         return ("UPWARD", imported_level)
     return None
-
-
-__all__ = ["has_deep_level_path", "classify_general_import_from"]

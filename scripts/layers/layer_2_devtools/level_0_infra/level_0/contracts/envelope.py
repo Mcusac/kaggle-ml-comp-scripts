@@ -30,6 +30,3 @@ def parse_generated_optional(raw: Any) -> date | None:
     if isinstance(raw, str):
         return date.fromisoformat(raw)
     raise TypeError("generated must be None, a date, or YYYY-MM-DD string")
-
-
-__all__ = ["err", "ok", "parse_generated", "parse_generated_optional"]

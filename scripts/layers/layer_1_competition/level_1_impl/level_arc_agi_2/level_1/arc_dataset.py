@@ -1,7 +1,7 @@
 import json
-import numpy as np
-from shuffle_utils import shuffled
-from arc_transform import forward_mod, invert_mod
+
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import shuffled
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import forward_mod, invert_mod
 
 class ArcDataset:
     """Core dataset skeleton: queries, replies, keys, I/O, submission."""

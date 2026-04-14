@@ -26,6 +26,3 @@ def run_pre_upload_validation_cli_api(config: dict[str, Any]) -> dict[str, Any]:
         return ok({"exit_code": int(rc)})
     except (OSError, TypeError, ValueError) as exc:
         return err([str(exc)])
-
-
-__all__ = ["run_pre_upload_validation_cli_api"]

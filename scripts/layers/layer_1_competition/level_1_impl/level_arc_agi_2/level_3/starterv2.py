@@ -9,7 +9,7 @@ import torch.multiprocessing as mp
 
 from layers.layer_0_core.level_0 import get_torch
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_Z.arc_solver import worker
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2 import worker_v2
 
 torch = get_torch()
 
@@ -30,7 +30,7 @@ def local_worker(rank, queue, end_time):
     
     print(f"[Rank {rank}] start!")
     
-    worker(rank, queue, end_time)
+    worker_v2(rank, queue, end_time)
     
     print(f"[Rank {rank}] done!")
 

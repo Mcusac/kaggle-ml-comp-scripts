@@ -101,6 +101,3 @@ def _build_markdown(
             lines.append(f"- `{path}` line {violation.line}: {violation.detail}")
         lines.append("")
     return "\n".join(lines) + "\n"
-
-
-__all__ = ["ContestTierScanResult", "run_contest_tier_scan_workflow"]

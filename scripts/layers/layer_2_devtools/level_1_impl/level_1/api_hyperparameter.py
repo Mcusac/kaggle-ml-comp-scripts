@@ -61,9 +61,3 @@ def run_verify_hyperparameter_recommendations_cli_api(
         return ok({"exit_code": int(rc)})
     except (OSError, TypeError, ValueError) as exc:
         return err([str(exc)])
-
-
-__all__ = [
-    "run_analyze_hyperparameters_cli_api",
-    "run_verify_hyperparameter_recommendations_cli_api",
-]

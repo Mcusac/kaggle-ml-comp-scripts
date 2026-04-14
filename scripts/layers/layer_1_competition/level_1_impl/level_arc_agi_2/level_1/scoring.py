@@ -12,7 +12,6 @@ from pathlib import Path
 from typing import Any
 
 from layers.layer_0_core.level_0 import get_logger
-
 from layers.layer_0_core.level_4 import load_json_raw
 
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (

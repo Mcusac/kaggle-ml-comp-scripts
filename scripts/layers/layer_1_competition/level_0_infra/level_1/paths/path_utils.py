@@ -19,6 +19,3 @@ def resolve_data_root(
     if data_root is not None and data_root.strip():
         return data_root.strip()
     return str(paths.get_data_root())
-
-
-__all__ = ["resolve_data_root"]

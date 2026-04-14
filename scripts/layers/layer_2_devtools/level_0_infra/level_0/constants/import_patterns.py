@@ -11,10 +11,3 @@ CONTEST_LAYER_IMPORT_RE = re.compile(
 INFRA_LAYER_IMPORT_RE = re.compile(
     r"^layers\.layer_1_competition\.level_0_infra\.level_(\d+)(?:\.(.+))?$"
 )
-
-__all__ = [
-    "LEVEL_DIR_RE",
-    "DEEP_LEVEL_RE",
-    "CONTEST_LAYER_IMPORT_RE",
-    "INFRA_LAYER_IMPORT_RE",
-]

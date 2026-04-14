@@ -42,7 +42,3 @@ class ValidateTrainSubmitPipelineResultShell:
             second_stage=str(self.submit_stage),
             second_fn=self.submit_fn,
         )
-
-
-__all__ = ["ValidateTrainSubmitPipelineResultShell"]
-

@@ -9,41 +9,11 @@ touching any shared logic.
 from dataclasses import dataclass, field
 from typing import Callable, Type
 
-from layers.layer_0_core.level_0 import get_torch
-
-torch = get_torch()
-
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import infer_notebook_style_decode_batches
 
 # ---------------------------------------------------------------------------
-# Batch-construction strategies
+# Batch-construction strategy
 # ---------------------------------------------------------------------------
-
-def build_batches_grouped(test_id_to_subkeys: dict) -> list:
-    """
-    v1 / v2 strategy: group subkeys in pairs of 4 across complementary rotation
-    offsets so that each forward pass covers a diverse set of augmentations.
-
-    Offset layout (per test_id):
-      [0,4]  → permute × 2  +  rot90² permute × 2
-      [2,6]  → rot90 permute × 2  +  rot90³ permute × 2
-      [8,12] → transpose permute × 2  +  transpose rot90² permute × 2
-      [10,14]→ transpose rot90 permute × 2  +  transpose rot90³ permute × 2
-    """
-    batches = []
-    for subkeys in test_id_to_subkeys.values():
-        for pair in ([0, 4], [2, 6]):
-            batch = []
-            for offset in pair:
-                batch.extend(subkeys[offset : offset + 2])
-            batches.append(batch)
-    for subkeys in test_id_to_subkeys.values():
-        for pair in ([8, 12], [10, 14]):
-            batch = []
-            for offset in pair:
-                batch.extend(subkeys[offset : offset + 2])
-            batches.append(batch)
-    return batches
-
 
 def build_batches_single(test_id_to_subkeys: dict) -> list:
     """
@@ -90,7 +60,7 @@ class WorkerConfig:
     post_train_cleanup: Callable = None
 
     # --- Batch construction ---
-    build_batches: Callable[[dict], list] = field(default_factory=lambda: build_batches_grouped)
+    build_batches: Callable[[dict], list] = field(default_factory=lambda: infer_notebook_style_decode_batches)
 
     # --- Inference output directory ---
     dir_outputs: str = "/kaggle/inference_outputs"

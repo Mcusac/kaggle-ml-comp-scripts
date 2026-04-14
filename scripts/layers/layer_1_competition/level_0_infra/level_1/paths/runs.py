@@ -17,7 +17,3 @@ def contest_runs_root(paths: ContestPaths, contest_slug: str) -> Path:
 def contest_run_dir(paths: ContestPaths, contest_slug: str, run_id: str) -> Path:
     """Return `<output_dir>/<contest_slug>/runs/<run_id>`."""
     return (contest_runs_root(paths, contest_slug) / str(run_id)).resolve()
-
-
-__all__ = ["contest_run_dir", "contest_runs_root"]
-
