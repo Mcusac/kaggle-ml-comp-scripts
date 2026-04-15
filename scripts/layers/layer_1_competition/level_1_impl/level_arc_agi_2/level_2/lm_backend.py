@@ -10,6 +10,7 @@ from layers.layer_0_core.level_0 import get_logger
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     arc_grid_to_text_lines,
     ArcLmAdaptationConfig,
+    COMMON_PEFT_PARAMS,
 )
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
     ArcQwenGridChatFormatter,
@@ -19,29 +20,6 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
 logger = get_logger(__name__)
 
 Grid = list[list[int]]
-
-REF_NOTEBOOK_PEFT_PARAMS: dict[str, Any] = dict(
-    r=256,
-    target_modules=[
-        "q_proj",
-        "k_proj",
-        "v_proj",
-        "o_proj",
-        "gate_proj",
-        "up_proj",
-        "down_proj",
-        "embed_tokens",
-        "lm_head",
-    ],
-    lora_alpha=32,
-    lora_dropout=0.0,
-    bias="none",
-    use_gradient_checkpointing=False,
-    random_state=42,
-    use_rslora=True,
-    loftq_config=None,
-)
-
 
 def _token_id_for_single_text(tokenizer: Any, text: str) -> int:
     """Return a single token id for `text` or raise if it encodes to multiple ids."""
@@ -487,7 +465,7 @@ class UnslothArcLmBackend(_SharedTorchLmInference, ArcLmBackend):
             attn_implementation=str(self._config.from_pretrained_attn_implementation or "eager"),
         )
 
-        model = FastLanguageModel.get_peft_model(model, **REF_NOTEBOOK_PEFT_PARAMS)
+        model = FastLanguageModel.get_peft_model(model, **COMMON_PEFT_PARAMS)
         model.config._attn_implementation = "eager"
 
         lp = str(self._config.lora_path).strip() if self._config.lora_path else ""

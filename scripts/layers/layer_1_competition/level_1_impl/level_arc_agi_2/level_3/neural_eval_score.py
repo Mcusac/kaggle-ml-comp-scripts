@@ -2,7 +2,13 @@
 
 from pathlib import Path
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import scoring as _arc_scoring
+from layers.layer_0_core.level_4 import load_json_raw
+
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import arc_find_first_existing_file
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
+    eval_solution_grids_for_task,
+    score_grid_exact_match,
+)
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2 import predict_grid_from_checkpoint
 
 
@@ -16,24 +22,25 @@ def score_neural_on_evaluation(
 ) -> float:
     """Exact-match fraction of neural attempt_1 on evaluation solutions."""
     root = Path(data_root)
-    eval_ch_path = _arc_scoring._find_existing(
+    eval_ch_path = arc_find_first_existing_file(
         root,
         [
             "arc-agi_evaluation_challenges.json",
             "arc-agi_evaluation-challenges.json",
         ],
     )
-    eval_sol_path = _arc_scoring._find_existing(
+    eval_sol_path = arc_find_first_existing_file(
         root,
         [
             "arc-agi_evaluation_solutions.json",
             "arc-agi_evaluation-solutions.json",
         ],
     )
-    if not eval_ch_path.is_file() or not eval_sol_path.is_file():
+    if eval_ch_path is None or eval_sol_path is None:
         return 0.0
-    challenges = _arc_scoring._load_json_path(eval_ch_path)
-    solutions_raw = _arc_scoring._load_json_path(eval_sol_path)
+
+    challenges = load_json_raw(eval_ch_path)
+    solutions_raw = load_json_raw(eval_sol_path)
     if not isinstance(challenges, dict) or not isinstance(solutions_raw, dict):
         return 0.0
 
@@ -49,7 +56,7 @@ def score_neural_on_evaluation(
         if not isinstance(tests, list) or not tests:
             continue
         bounds = len(tests) if max_targets <= 0 else min(len(tests), int(max_targets))
-        truth_series = _arc_scoring._eval_solution_grids_for_task(solutions_raw, str(task_id), bounds)
+        truth_series = eval_solution_grids_for_task(solutions_raw, str(task_id), bounds)
         for idx in range(bounds):
             pair = tests[idx]
             inp = pair.get("input")
@@ -58,7 +65,7 @@ def score_neural_on_evaluation(
                 continue
             pred = predict_grid_from_checkpoint(inp, checkpoint_path, train_config_path)
             total_targets += 1
-            if _arc_scoring.score_grid_exact_match(pred, truth):
+            if score_grid_exact_match(pred, truth):
                 exact_matches += 1
     if total_targets == 0:
         return 0.0

@@ -19,11 +19,7 @@ from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_4 import load_json_raw
 
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
-    DEFAULT_SUBMIT_HEURISTIC,
-    HEURISTIC_QUICK_ORDER,
-    HEURISTIC_THOROUGH_ORDER,
     predict_attempts_for_heuristic,
-    read_submit_max_tasks_env,
 )
 
 logger = get_logger(__name__)
@@ -47,7 +43,7 @@ def load_json_path(path: Path) -> Any:
     return load_json_raw(path)
 
 
-def _eval_solution_grids_for_task(
+def eval_solution_grids_for_task(
     solutions_obj: Any,
     task_id: str,
     n_tests: int,
@@ -250,7 +246,7 @@ def score_heuristic_on_evaluation(
         if not isinstance(tests, list) or not tests:
             continue
         bounds = len(tests) if max_targets <= 0 else min(len(tests), int(max_targets))
-        truth_series = _eval_solution_grids_for_task(solutions_raw, str(task_id), bounds)
+        truth_series = eval_solution_grids_for_task(solutions_raw, str(task_id), bounds)
         for idx in range(bounds):
             pair = tests[idx]
             inp = pair["input"]

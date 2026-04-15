@@ -14,12 +14,8 @@ class ArcDecoder:
         self.n_guesses = n_guesses
         self.decoded_results = {}
 
-    def load_decoded_results(self, store, run_name=""):
-        infer_load_decoded_results_from_dir(
-            self.decoded_results,
-            store,
-            run_name,
-        )
+    def load_decoded_results(self, store: str, run_name: str = "") -> None:
+            self.decoded_results = infer_load_decoded_results_from_dir(store, run_name)
 
     def run_selection_algo(self, selection_algorithm=ensemble_score_kgmon):
         return {

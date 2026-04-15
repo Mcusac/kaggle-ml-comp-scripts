@@ -4,25 +4,21 @@ import gc
 import importlib
 import io
 import tempfile
-import numpy as np
 
 from contextlib import redirect_stderr, redirect_stdout
-from typing import Any, Union
 
 from layers.layer_0_core.level_0 import get_logger
-from layers.layer_0.trainer import UnslothFixedTrainer
 
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     apply_augmentation,
     coerce_arc_grid,
     generate_augmentation_specs,
-    ArcLmAdaptationConfig,
+    UnslothFixedTrainer,
 )
-
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
     ArcQwenGridChatFormatter,
+    QwenDataCollatorForCompletionOnlyLM,
 )
-
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2 import (
     train_trim_task_train_pairs_to_token_budget,
 )
@@ -30,12 +26,6 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2 import (
 logger = get_logger(__name__)
 
 Grid = list[list[int]]
-
-_DataCollatorForLanguageModeling = getattr(
-    importlib.import_module("transformers"),
-    "DataCollatorForLanguageModeling",
-)
-
 
 def _resolve_collator_token_ids(tokenizer, formatter):
     eos_ids = tokenizer.encode(str(formatter.im_end), add_special_tokens=False)
@@ -113,33 +103,6 @@ def build_task_training_rows(
     return rows
 
 
-class QwenDataCollatorForCompletionOnlyLM(_DataCollatorForLanguageModeling):
-    def __init__(self, tokenizer, *, mlm, user_id, assistant_id, eos_id):
-        super().__init__(tokenizer=tokenizer, mlm=mlm)
-        self.user_id = user_id
-        self.assistant_id = assistant_id
-        self.eos_id = eos_id
-
-    def torch_call(self, examples):
-        batch = super().torch_call(examples)
-
-        for i in range(len(examples)):
-            labels = batch["input_ids"][i].clone()
-
-            user_idx = np.where(labels.cpu().numpy() == self.user_id)[0]
-            assistant_idx = np.where(labels.cpu().numpy() == self.assistant_id)[0]
-            start_idx = sorted(list(user_idx) + list(assistant_idx))
-            end_idx = np.where(labels.cpu().numpy() == self.eos_id)[0]
-
-            batch["labels"][i, :] = -100
-
-            for j, (start, end) in enumerate(zip(start_idx, end_idx)):
-                if j % 2 == 1:
-                    batch["labels"][i, start + 2 : end + 1] = labels[start + 2 : end + 1]
-
-        return batch
-
-
 def run_unsloth_task_adaptation(
     *,
     model,
@@ -190,12 +153,12 @@ def run_unsloth_task_adaptation(
     )
 
     collator = QwenDataCollatorForCompletionOnlyLM(
-        tokenizer,
-        mlm=False,
-        user_id=user_id,
-        assistant_id=assistant_id,
-        eos_id=eos_id,
-    )
+            tokenizer,
+            mlm=False,
+            user_token_id=user_id,
+            assistant_token_id=assistant_id,
+            eos_token_id=eos_id,
+        )
 
     ds = datasets.Dataset.from_list(rows)
 
