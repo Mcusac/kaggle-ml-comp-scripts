@@ -10,7 +10,7 @@ import torchvision.transforms as transforms
 
 from typing import Any, List, Optional, Tuple, Union
 
-from level_0 import (
+from layers.layer_0_core.level_0 import (
     AVAILABLE_TTA_VARIANTS,
     DEFAULT_BLUR_SIGMA,
     DEFAULT_COLOR_BRIGHTNESS,
@@ -23,14 +23,14 @@ from level_0 import (
     get_image_size_from_config,
     get_logger,
 )
-from level_1 import (
+from layers.layer_0_core.level_1 import (
     compose_transform_pipeline,
     get_color_jitter_transform,
     get_noise_transform,
     get_normalize_transform,
     get_resize_transform,
 )
-from level_2 import PREPROCESSING_BUILDERS, build_augmentation_transforms
+from layers.layer_0_core.level_2 import PREPROCESSING_BUILDERS, build_augmentation_transforms
 
 logger = get_logger(__name__)
 

@@ -34,7 +34,7 @@ Vision model registry utilities that load model configuration from an optional J
 ## Usage Example
 
 ```python
-from level_6.vision import get_vision_model_config, list_vision_models
+from layers.layer_0_core.level_6.vision import get_vision_model_config, list_vision_models
 
 models = list_vision_models()
 config = get_vision_model_config("dinov2")

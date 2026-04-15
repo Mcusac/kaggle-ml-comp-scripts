@@ -27,7 +27,7 @@ Loads images from disk in PIL and RGB formats, resolves image size from config o
 ## Usage Example
 
 ```python
-from level_0 import load_image_pil, split_image
+from layers.layer_0_core.level_0 import load_image_pil, split_image
 
 image = load_image_pil("photo.jpg")
 patches = split_image(image, patch_size=224)

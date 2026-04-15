@@ -14,7 +14,7 @@ from dataclasses import dataclass
 from enum import IntEnum
 from typing import Optional
 
-from level_0 import ConfigValidationError, get_logger
+from layers.layer_0_core.level_0 import ConfigValidationError, get_logger
 
 logger = get_logger(__name__)
 

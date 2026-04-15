@@ -17,10 +17,10 @@ import numpy as np
 
 from typing import Dict, List, Optional
 
-from level_0 import EnsemblingMethod, calculate_percentile_weights, get_logger
-from level_1 import validate_predictions_for_ensemble
-from level_2 import model_rank_weights, simple_average
-from level_5 import combine_with_fallback
+from layers.layer_0_core.level_0 import EnsemblingMethod, calculate_percentile_weights, get_logger
+from layers.layer_0_core.level_1 import validate_predictions_for_ensemble
+from layers.layer_0_core.level_2 import model_rank_weights, simple_average
+from layers.layer_0_core.level_5 import combine_with_fallback
 
 logger = get_logger(__name__)
 

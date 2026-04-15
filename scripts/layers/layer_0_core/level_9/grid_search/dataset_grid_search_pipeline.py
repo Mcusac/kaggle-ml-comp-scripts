@@ -2,14 +2,14 @@
 
 from typing import Any, Dict, Optional, Union
 
-from level_0 import (
+from layers.layer_0_core.level_0 import (
     AVAILABLE_AUGMENTATION,
     AVAILABLE_PREPROCESSING,
     BEST_VARIANT_FILE_DATASET,
     get_logger,
 )
-from level_4 import save_json
-from level_8 import DatasetGridSearch
+from layers.layer_0_core.level_4 import save_json
+from layers.layer_0_core.level_8 import DatasetGridSearch
 
 logger = get_logger(__name__)
 

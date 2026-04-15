@@ -16,8 +16,8 @@ CLI subparser setup and command builders for grid search, ensemble, submission, 
 
 ## Usage Example
 ```python
-from level_1.cli import setup_framework_subparsers
-from level_1.cli.builders import GridSearchCommandBuilder
+from layers.layer_0_core.level_1.cli import setup_framework_subparsers
+from layers.layer_0_core.level_1.cli.builders import GridSearchCommandBuilder
 
 parser = argparse.ArgumentParser()
 subparsers = parser.add_subparsers()

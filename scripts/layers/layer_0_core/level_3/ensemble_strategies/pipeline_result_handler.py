@@ -2,8 +2,8 @@
 
 from typing import List
 
-from level_1 import get_default_submission_csv_path
-from level_2 import log_pipeline_completion
+from layers.layer_0_core.level_1 import get_default_submission_csv_path
+from layers.layer_0_core.level_2 import log_pipeline_completion
 
 
 def handle_ensemble_result(

@@ -24,7 +24,7 @@ Creates train/validation dataset pairs for DataLoader construction and provides 
 
 ```python
 from torch.utils.data import DataLoader
-from level_2.dataloader import create_datasets_for_dataloaders, create_worker_init_fn
+from layers.layer_0_core.level_2.dataloader import create_datasets_for_dataloaders, create_worker_init_fn
 
 train_ds, val_ds = create_datasets_for_dataloaders(config, df_train, df_val)
 train_loader = DataLoader(

@@ -45,7 +45,7 @@ import path_bootstrap
 
 path_bootstrap.prepend_framework_paths()
 
-from level_9 import dataset_grid_search_pipeline, TrainPredictWorkflow
+from layers.layer_0_core.level_9 import dataset_grid_search_pipeline, TrainPredictWorkflow
 
 dataset_grid_search_pipeline(contest_context, train_pipeline_fn=my_train_fn)
 

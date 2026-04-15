@@ -5,8 +5,8 @@ import time
 
 from typing import Optional, Any
 
-from level_0 import get_logger, get_torch
-from level_1 import perform_aggressive_cleanup
+from layers.layer_0_core.level_0 import get_logger, get_torch
+from layers.layer_0_core.level_1 import perform_aggressive_cleanup
 
 logger = get_logger(__name__)
 torch = get_torch()

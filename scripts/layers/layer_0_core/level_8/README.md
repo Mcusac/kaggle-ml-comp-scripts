@@ -43,7 +43,7 @@ Exports are composed from sub-packages (`grid_search`, `regression`, `training`)
 ## Usage Example
 
 ```python
-from level_8 import TrainPipeline, create_robust_cv_splits
+from layers.layer_0_core.level_8 import TrainPipeline, create_robust_cv_splits
 
 # Train a vision model (typical kwargs: train_data, val_data, image_dir, target_cols)
 pipeline = TrainPipeline(

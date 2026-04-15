@@ -10,7 +10,7 @@ Core modules (device, process, seed, paths) do not log. The cuda subpackage
 (recovery, monitoring, gpu_cleanup) may log for OOM recovery, GPU status, and
 cleanup; callers may also log as appropriate to their layer.
 
-Consumers needing is_kaggle, get_torch, or is_torch_available must import from level_0.
+Consumers needing is_kaggle, get_torch, or is_torch_available must import from layers.layer_0_core.level_0.
 """
 
 from . import config, cuda

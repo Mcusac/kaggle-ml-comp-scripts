@@ -30,7 +30,7 @@ Provides physicochemical constants for amino acids and utilities for computing k
 ## Usage Example
 
 ```python
-from level_0 import extract_kmer_frequencies, AA_ALPHABET
+from layers.layer_0_core.level_0 import extract_kmer_frequencies, AA_ALPHABET
 
 freqs = extract_kmer_frequencies("ACDEFGHIKLM", k=2)
 ```

@@ -35,7 +35,7 @@ Feature extraction infrastructure: extractor base class, feature cache configura
 
 ## Usage Example
 ```python
-from level_1.features import BaseFeatureExtractor, set_feature_cache_path_provider
+from layers.layer_0_core.level_1.features import BaseFeatureExtractor, set_feature_cache_path_provider
 
 set_feature_cache_path_provider(my_paths_callable)
 

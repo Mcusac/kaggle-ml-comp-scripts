@@ -36,7 +36,7 @@ Grid search sub-package: hyperparameter base class, variant result builders, and
 ## Usage Example
 
 ```python
-from level_7 import (
+from layers.layer_0_core.level_7 import (
     HyperparameterGridSearchBase,
     run_single_variant,
     build_success_result,

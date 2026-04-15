@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Console and log post-processors for ensemble and stacking CLI/subprocess outcomes: they normalize completion banners and next-step hints via `log_pipeline_completion` from level_2.
+Console and log post-processors for ensemble and stacking CLI/subprocess outcomes: they normalize completion banners and next-step hints via `log_pipeline_completion` from layers.layer_0_core.level_2.
 
 ## Contents
 
@@ -25,7 +25,7 @@ Console and log post-processors for ensemble and stacking CLI/subprocess outcome
 ## Usage Example
 
 ```python
-from level_3 import handle_ensemble_result
+from layers.layer_0_core.level_3 import handle_ensemble_result
 
 handle_ensemble_result(
     returncode=0,

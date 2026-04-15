@@ -19,6 +19,6 @@ PyTorch Dataset classes for image data: DataFrame-backed loading and streaming i
 
 ## Usage Example
 ```python
-from level_1.data.processing.datasets import BaseImageDataset
+from layers.layer_0_core.level_1.data.processing.datasets import BaseImageDataset
 dataset = BaseImageDataset(df, image_dir="images/", target_cols=["label"])
 ```

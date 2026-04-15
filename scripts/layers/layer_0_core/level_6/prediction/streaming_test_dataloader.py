@@ -1,13 +1,13 @@
-"""Streaming test DataLoader from CSV path (distinct from level_4 DataFrame-based factory)."""
+"""Streaming test DataLoader from CSV path (distinct from layers.layer_0_core.level_4 DataFrame-based factory)."""
 
 from typing import List, Tuple
 
-from level_2 import (
+from layers.layer_0_core.level_2 import (
     build_preprocessing_transforms,
     create_dataloader_from_dataset,
     create_streaming_dataset_for_test,
 )
-from level_5 import load_and_validate_test_data, prepare_test_dataframe_with_dummy_targets
+from layers.layer_0_core.level_5 import load_and_validate_test_data, prepare_test_dataframe_with_dummy_targets
 
 
 def create_streaming_test_dataloader(

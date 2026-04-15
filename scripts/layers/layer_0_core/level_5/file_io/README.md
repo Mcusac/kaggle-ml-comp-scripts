@@ -21,7 +21,7 @@ Merge utilities for combining JSON/list data from input (read-only) and working 
 ## Usage Example
 
 ```python
-from level_5 import merge_json_from_input_and_working, merge_list_by_key_add_only
+from layers.layer_0_core.level_5 import merge_json_from_input_and_working, merge_list_by_key_add_only
 from pathlib import Path
 
 key_fn = lambda x: x.get("variant_id")

@@ -27,7 +27,7 @@ Reusable configuration dataclasses and base model components for vision and tabu
 
 ## Usage Example
 ```python
-from level_1.data.domain import VisionConfig, TabularDataset
+from layers.layer_0_core.level_1.data.domain import VisionConfig, TabularDataset
 
 config = VisionConfig()
 ```

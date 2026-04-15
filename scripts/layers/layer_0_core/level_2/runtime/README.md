@@ -12,7 +12,7 @@ Queries hardware and environment facts at the start of a pipeline run and return
 
 ## Public API
 
-- `setup_runtime_environment()` — Returns `Dict[str, Any]` with keys `is_kaggle` (bool), `has_gpu` (bool), `gpu_info` (dict from level_1's `get_device_info`)
+- `setup_runtime_environment()` — Returns `Dict[str, Any]` with keys `is_kaggle` (bool), `has_gpu` (bool), `gpu_info` (dict from layers.layer_0_core.level_1's `get_device_info`)
 
 ## Dependencies
 
@@ -22,7 +22,7 @@ Queries hardware and environment facts at the start of a pipeline run and return
 ## Usage Example
 
 ```python
-from level_2.runtime import setup_runtime_environment
+from layers.layer_0_core.level_2.runtime import setup_runtime_environment
 
 ctx = setup_runtime_environment()
 if ctx["has_gpu"]:

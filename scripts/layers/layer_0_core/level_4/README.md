@@ -50,7 +50,7 @@ Orchestration layer for data loaders, feature extraction, ensembling, pipelines,
 ## Usage Example
 
 ```python
-from level_4 import load_csv, create_dataloaders, create_vision_model, EvaluatePipeline
+from layers.layer_0_core.level_4 import load_csv, create_dataloaders, create_vision_model, EvaluatePipeline
 
 df = load_csv("data/train.csv", required_cols=["id", "target"])
 train_loader, val_loader = create_dataloaders(

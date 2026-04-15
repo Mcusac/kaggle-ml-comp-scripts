@@ -26,8 +26,8 @@ Unified progress tracking for training and inference. Coordinates progress bars,
 ## Usage Example
 
 ```python
-from level_4 import ProgressTracker
-from level_1 import ProgressConfig
+from layers.layer_0_core.level_4 import ProgressTracker
+from layers.layer_0_core.level_1 import ProgressConfig
 
 config = ProgressConfig(verbosity=...)
 tracker = ProgressTracker(config)

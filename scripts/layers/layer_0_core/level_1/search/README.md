@@ -18,7 +18,7 @@ Hyperparameter search infrastructure: domain-specific grid profiles and variant 
 
 ## Usage Example
 ```python
-from level_1.search import get_training_grid, generate_variant_grid
+from layers.layer_0_core.level_1.search import get_training_grid, generate_variant_grid
 grid = get_training_grid(search_type="quick")
 variants = generate_variant_grid(preprocessors, augmenters)
 ```

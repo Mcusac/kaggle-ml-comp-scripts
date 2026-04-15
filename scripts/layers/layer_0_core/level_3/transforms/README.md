@@ -25,7 +25,7 @@ Builds torchvision transform pipelines from config objects or dicts. This is the
 ## Usage Example
 
 ```python
-from level_3 import build_train_transform, build_val_transform, build_tta_transforms
+from layers.layer_0_core.level_3 import build_train_transform, build_val_transform, build_tta_transforms
 
 train_tf = build_train_transform(config)
 val_tf = build_val_transform(config)

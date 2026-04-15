@@ -2,7 +2,7 @@
 
 import gc
 
-from level_0 import get_logger, get_torch
+from layers.layer_0_core.level_0 import get_logger, get_torch
 
 logger = get_logger(__name__)
 torch = get_torch()

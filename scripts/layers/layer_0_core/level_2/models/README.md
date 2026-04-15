@@ -33,7 +33,7 @@ Provides concrete model implementations (DINOv2, sklearn/boosting), a regression
 ## Usage Example
 
 ```python
-from level_2.models import DINOv2Model, get_ridge
+from layers.layer_0_core.level_2.models import DINOv2Model, get_ridge
 
 model = DINOv2Model(model_name="facebook/dinov2-base", num_classes=6)
 Ridge = get_ridge()

@@ -4,8 +4,8 @@ from pathlib import Path
 from typing import Union, Optional
 from PIL import Image
 
-from level_0 import get_logger, DataLoadError, DataProcessingError, ensure_dir, load_image_pil
-from level_3 import validate_path_is_file
+from layers.layer_0_core.level_0 import get_logger, DataLoadError, DataProcessingError, ensure_dir, load_image_pil
+from layers.layer_0_core.level_3 import validate_path_is_file
 
 logger = get_logger(__name__)
 

@@ -40,7 +40,7 @@ Provides the composable pieces needed to implement a training loop: a training p
 
 ```python
 import torch
-from level_2.training import TrainingPhaseExecutor, ValidationPhaseExecutor
+from layers.layer_0_core.level_2.training import TrainingPhaseExecutor, ValidationPhaseExecutor
 
 train_executor = TrainingPhaseExecutor(model=model, device=device, optimizer=optimizer, criterion=criterion, config=config)
 val_executor = ValidationPhaseExecutor(model=model, device=device, criterion=criterion, config=config, metric_calculator=my_metrics_fn)

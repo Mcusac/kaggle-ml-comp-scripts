@@ -26,7 +26,7 @@ Factory for creating vision models. Supports DINOv2 (HuggingFace) and timm-based
 ## Usage Example
 
 ```python
-from level_4 import create_vision_model
+from layers.layer_0_core.level_4 import create_vision_model
 
 model = create_vision_model("efficientnet_b0", num_classes=5)
 model = create_vision_model("dinov2-base", num_classes=5, input_size=(518, 518))

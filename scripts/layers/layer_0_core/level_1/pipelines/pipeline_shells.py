@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from typing import Any, Callable, Generic, Optional, TypeVar
 
-from level_0 import PipelineResult
+from layers.layer_0_core.level_0 import PipelineResult
 
 T = TypeVar("T")
 

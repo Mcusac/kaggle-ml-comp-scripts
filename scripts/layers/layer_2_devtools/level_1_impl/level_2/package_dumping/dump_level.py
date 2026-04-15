@@ -1,16 +1,9 @@
-"""
-Dump a level's package directory structure to a text file.
-
-Usage: python dump_level.py level_0
-(from dev/scripts/package_dumping, with cwd such that package_dumps/ is writable)
-"""
-
 import argparse
 import sys
-
 from pathlib import Path
 
-_SCRIPTS = Path(__file__).resolve().parent.parent.parent.parent
+# Go up to scripts/ root (6 levels up from this file)
+_SCRIPTS = Path(__file__).resolve().parents[5]
 if str(_SCRIPTS) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS))
 
@@ -29,6 +22,7 @@ def main() -> int:
         help="Directory for dump output (default: package_dumps)",
     )
     args = parser.parse_args()
+
     env = run_dump_level_preset_cli_api(
         {
             "level_name": args.level_name,
@@ -36,9 +30,11 @@ def main() -> int:
             "output_dir": args.output_dir,
         }
     )
+
     if env["status"] != "ok":
         print("\n".join(env["errors"]), file=sys.stderr)
         return 1
+
     return 0
 
 

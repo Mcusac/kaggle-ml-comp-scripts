@@ -28,7 +28,7 @@ Provides utilities to detect and recover from out-of-memory errors during traini
 ## Usage Example
 
 ```python
-from level_2.training import is_oom_error, recover_from_oom
+from layers.layer_0_core.level_2.training import is_oom_error, recover_from_oom
 
 try:
     loss = criterion(model(inputs), targets)

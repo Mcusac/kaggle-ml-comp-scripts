@@ -4,20 +4,17 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from layers.layer_2_devtools.level_0_infra.level_0.format.health_reporters import JSONReporter
-from layers.layer_2_devtools.level_0_infra.level_2 import (
-    ConsoleReporter,
-)
-from layers.layer_2_devtools.level_0_infra.level_0.format.health_report_views import (
+from layers.layer_2_devtools.level_0_infra.level_0 import (
     DEFAULT_COMPLEXITY_TARGET_NAMES,
     lines_complexity_targets,
     lines_duplication_summary,
     lines_health_compare,
     lines_srp_summary,
+    ThresholdConfig,
+    load_json_report,
 )
-from layers.layer_2_devtools.level_0_infra.level_0.health_thresholds import ThresholdConfig
-from layers.layer_2_devtools.level_0_infra.level_0.parse.json.report_json import load_json_report
-from layers.layer_2_devtools.level_0_infra.level_0.scan.health_analyzers import (
+from layers.layer_2_devtools.level_0_infra.level_1 import (
+    JSONReporter,
     CohesionAnalyzer,
     ComplexityAnalyzer,
     DeadCodeFinder,
@@ -28,6 +25,9 @@ from layers.layer_2_devtools.level_0_infra.level_0.scan.health_analyzers import 
     ImportPathValidator,
     SOLIDChecker,
     TypeAnnotationChecker,
+)
+from layers.layer_2_devtools.level_0_infra.level_2 import (
+    ConsoleReporter,
 )
 
 

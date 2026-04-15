@@ -4,8 +4,8 @@ import numpy as np
 
 from typing import Dict, List
 
-from level_0 import get_logger
-from level_1 import ensure_positive_weights
+from layers.layer_0_core.level_0 import get_logger
+from layers.layer_0_core.level_1 import ensure_positive_weights
 
 logger = get_logger(__name__)
 

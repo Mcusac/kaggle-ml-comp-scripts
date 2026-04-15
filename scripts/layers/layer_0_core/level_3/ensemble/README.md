@@ -8,7 +8,7 @@ Higher-level ensemble combiners and meta-model factories that operate on lists o
 
 - `blending_ensemble.py` — `blend_predictions` for combining prediction arrays via weighted average, geometric mean, or power mean; `learn_blending_weights` for fitting blend weights from a held-out validation set.
 - `create_meta_model.py` — `create_meta_model` factory for instantiating ridge, linear, or lasso stacking meta-models.
-- `per_target_weighted.py` — `PerTargetWeightedEnsemble` class that applies different weights per target column, dispatching to vectorized or loop-based kernels from level_0.
+- `per_target_weighted.py` — `PerTargetWeightedEnsemble` class that applies different weights per target column, dispatching to vectorized or loop-based kernels from layers.layer_0_core.level_0.
 
 ## Public API
 
@@ -25,7 +25,7 @@ Higher-level ensemble combiners and meta-model factories that operate on lists o
 ## Usage Example
 
 ```python
-from level_3.ensemble import blend_predictions, learn_blending_weights, PerTargetWeightedEnsemble
+from layers.layer_0_core.level_3.ensemble import blend_predictions, learn_blending_weights, PerTargetWeightedEnsemble
 
 weights = learn_blending_weights(val_predictions, y_val, method="ridge")
 combined = blend_predictions(test_predictions, weights=weights, method="weighted_average")

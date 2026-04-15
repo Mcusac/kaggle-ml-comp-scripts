@@ -3,8 +3,8 @@
 from pathlib import Path
 from typing import Optional
 
-from level_0 import get_logger
-from level_4 import load_json_raw
+from layers.layer_0_core.level_0 import get_logger
+from layers.layer_0_core.level_4 import load_json_raw
 
 logger = get_logger(__name__)
 

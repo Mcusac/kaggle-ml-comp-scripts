@@ -17,7 +17,7 @@ All sub-package exports are re-exported from this package.
 
 ## Usage Example
 ```python
-from level_1.data.cv_splits import create_kfold_splits, get_fold_data
-from level_1.data.processing.datasets import BaseImageDataset
+from layers.layer_0_core.level_1.data.cv_splits import create_kfold_splits, get_fold_data
+from layers.layer_0_core.level_1.data.processing.datasets import BaseImageDataset
 df_with_folds = create_kfold_splits(df, n_folds=5)
 ```

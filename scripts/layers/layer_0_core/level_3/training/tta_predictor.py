@@ -6,9 +6,9 @@ from PIL import Image
 from typing import List, Optional, Union
 from tqdm import tqdm
 
-from level_0 import get_logger, get_torch
-from level_1 import forward_with_amp
-from level_2 import TTAVariant, build_tta_transforms
+from layers.layer_0_core.level_0 import get_logger, get_torch
+from layers.layer_0_core.level_1 import forward_with_amp
+from layers.layer_0_core.level_2 import TTAVariant, build_tta_transforms
 
 torch = get_torch()
 nn = torch.nn

@@ -1,5 +1,7 @@
 """Public API: thin script orchestration (cleanup, bootstrap, one-off fixers)."""
 
+import sys
+
 from pathlib import Path
 from typing import Any
 
@@ -8,18 +10,18 @@ from layers.layer_2_devtools.level_0_infra.level_0.contracts.envelope import ok
 from layers.layer_2_devtools.level_0_infra.level_0.fix.layer_core_import_rewrite import (
     run_layer_core_import_rewrite,
 )
-from layers.layer_2_devtools.level_0_infra.level_0.fix.unused_import_cleanup import (
+from layers.layer_2_devtools.level_0_infra.level_0 import (
     run_unused_import_cleanup,
 )
-from layers.layer_2_devtools.level_0_infra.level_0.fix.violation_fix_bundle import (
+from layers.layer_2_devtools.level_0_infra.level_0 import (
     run_violation_fix_bundle,
 )
-from layers.layer_2_devtools.level_0_infra.level_0.format.inventory_bootstrap_markdown import (
+from layers.layer_2_devtools.level_0_infra.level_0 import (
     bootstrap_markdown,
 )
-from layers.layer_2_devtools.level_0_infra.level_0.fs.pycache_cleanup import clean_pycache
-from layers.layer_2_devtools.level_0_infra.level_0.package_dump.cli import main as _package_dump_main
-from layers.layer_2_devtools.level_0_infra.level_0.package_dump.presets import dump_level as _dump_level_preset
+from layers.layer_2_devtools.level_0_infra.level_0 import clean_pycache
+from layers.layer_2_devtools.level_0_infra.level_1 import dump_level
+from layers.layer_2_devtools.level_0_infra.level_1 import package_dump_main
 
 
 def run_unused_import_cleanup_cli_api(config: dict[str, Any]) -> dict[str, Any]:
@@ -115,12 +117,10 @@ def run_violation_fix_bundle_standalone_cli_api(config: dict[str, Any]) -> dict[
 
 def run_package_dump_sys_argv_api(argv: list[str]) -> dict[str, Any]:
     """Invoke package dump CLI with a replacement ``sys.argv`` (excluding prog)."""
-    import sys
-
     old = sys.argv
     try:
         sys.argv = [old[0], *argv]
-        rc = _package_dump_main()
+        rc = package_dump_main()
         return ok({"exit_code": int(rc)})
     except SystemExit as exc:  # argparse may raise
         code = exc.code
@@ -140,7 +140,7 @@ def run_dump_level_preset_cli_api(config: dict[str, Any]) -> dict[str, Any]:
             return err(["level_name and scripts_root are required"])
         layer0 = Path(sr) / "layers" / "layer_0_core"
         od = Path(config.get("output_dir", "package_dumps"))
-        _dump_level_preset(str(name), scripts_root=layer0, output_dir=od)
+        dump_level(str(name), scripts_root=layer0, output_dir=od)
         return ok({})
     except (OSError, TypeError, ValueError) as exc:
         return err([str(exc)])

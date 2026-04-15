@@ -28,7 +28,7 @@ See sub-package `__init__.py` files for full symbol lists.
 
 ## Usage Example
 ```python
-from level_1.runtime import get_device, set_seed, ProgressConfig
+from layers.layer_0_core.level_1.runtime import get_device, set_seed, ProgressConfig
 device = get_device("auto")
 set_seed(42)
 cfg = ProgressConfig.from_env()

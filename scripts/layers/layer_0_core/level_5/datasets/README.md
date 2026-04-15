@@ -32,8 +32,8 @@ Test data loading, dataset split caching, and dataset variant grid generation fo
 ## Usage Example
 
 ```python
-from level_5 import load_and_validate_test_data, prepare_test_dataframe_with_dummy_targets
-from level_5 import save_dataset_splits, load_dataset_splits, apply_train_val_split
+from layers.layer_0_core.level_5 import load_and_validate_test_data, prepare_test_dataframe_with_dummy_targets
+from layers.layer_0_core.level_5 import save_dataset_splits, load_dataset_splits, apply_train_val_split
 
 df = load_and_validate_test_data("test.csv")
 df = prepare_test_dataframe_with_dummy_targets(df, "image_path", ["target"])

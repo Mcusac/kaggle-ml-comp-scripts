@@ -5,8 +5,8 @@ import time
 
 from typing import Any
 
-from level_0 import get_logger, get_torch
-from level_1 import is_cuda_available, perform_aggressive_cleanup
+from layers.layer_0_core.level_0 import get_logger, get_torch
+from layers.layer_0_core.level_1 import is_cuda_available, perform_aggressive_cleanup
 
 logger = get_logger(__name__)
 

@@ -27,7 +27,7 @@ Creates PyTorch DataLoaders from DataFrames for vision training and inference. W
 ## Usage Example
 
 ```python
-from level_4 import create_dataloaders, create_test_dataloader
+from layers.layer_0_core.level_4 import create_dataloaders, create_test_dataloader
 
 train_loader, val_loader = create_dataloaders(
     train_df, val_df, image_dir="/path/to/images",

@@ -6,9 +6,9 @@ import numpy as np
 
 from typing import List
 
-from level_0 import get_logger
-from level_1 import ensure_positive_weights, normalize_weights
-from level_2 import simple_average
+from layers.layer_0_core.level_0 import get_logger
+from layers.layer_0_core.level_1 import ensure_positive_weights, normalize_weights
+from layers.layer_0_core.level_2 import simple_average
 
 
 logger = get_logger(__name__)

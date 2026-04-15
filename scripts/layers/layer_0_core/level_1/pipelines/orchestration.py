@@ -2,7 +2,7 @@
 
 from typing import Any, Callable, Optional
 
-from level_0 import PipelineResult
+from layers.layer_0_core.level_0 import PipelineResult
 
 
 def run_pipeline_result_with_validation_first(

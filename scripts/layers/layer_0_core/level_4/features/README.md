@@ -26,7 +26,7 @@ SigLIP-based feature extraction: batch extraction from DataFrames and adapter fo
 ## Usage Example
 
 ```python
-from level_4 import compute_siglip_embeddings, SigLIPFeatureExtractorAdapter
+from layers.layer_0_core.level_4 import compute_siglip_embeddings, SigLIPFeatureExtractorAdapter
 
 embeddings = compute_siglip_embeddings(
     model_path="/path/to/siglip",

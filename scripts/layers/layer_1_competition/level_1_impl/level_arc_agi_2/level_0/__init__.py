@@ -1,5 +1,9 @@
 ﻿"""ARC-AGI-2 level_0 primitives."""
 
+from . import llm_tta_blocks
+
+from .llm_tta_blocks import *
+
 from .config import ARC26Config
 from .data_schema import ARC26DataSchema
 from .paths import ARC26Paths
@@ -102,8 +106,9 @@ from .kaggle_arc_challenge_paths import (
     arc_kaggle_evaluation_solutions_json_path,
 )
 
-__all__ = [
-    "ARC26Config",
+__all__ = (
+    *llm_tta_blocks.__all__,
+    ["ARC26Config",
     "ARC26DataSchema",
     "ARC26Paths",
     "ARC26PostProcessor",
@@ -181,3 +186,4 @@ __all__ = [
     "arc_kaggle_default_challenge_bundle_root",
     "arc_kaggle_evaluation_solutions_json_path",
 ]
+)

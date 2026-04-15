@@ -21,7 +21,7 @@ Runtime configuration and filename encoding for the feature cache. Path provider
 
 ## Usage Example
 ```python
-from level_1.features import set_feature_cache_path_provider, set_model_id_map, generate_feature_filename
+from layers.layer_0_core.level_1.features import set_feature_cache_path_provider, set_model_id_map, generate_feature_filename
 
 set_feature_cache_path_provider(lambda: my_paths)
 set_model_id_map({"model_a": "m1", "model_b": "m2"})

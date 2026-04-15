@@ -31,12 +31,12 @@ All names exported from each subpackage's `__init__.py`. See each subpackage REA
 
 ## Dependencies
 
-stdlib only. Optional: torch, torchvision, scipy. No imports from level_1 or higher.
+stdlib only. Optional: torch, torchvision, scipy. No imports from layers.layer_0_core.level_1 or higher.
 
 ## Usage Example
 
 ```python
-from level_0 import is_kaggle, setup_logging, dispatch_command
-from level_0 import RuntimeConfig, DataSplit, calculate_percentile_weights
-from level_0 import load_image_pil, build_minimal_val_transform
+from layers.layer_0_core.level_0 import is_kaggle, setup_logging, dispatch_command
+from layers.layer_0_core.level_0 import RuntimeConfig, DataSplit, calculate_percentile_weights
+from layers.layer_0_core.level_0 import load_image_pil, build_minimal_val_transform
 ```

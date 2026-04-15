@@ -17,7 +17,7 @@ Protein ID normalization (UniProt format) and embedding alignment to common ID s
 
 ## Usage Example
 ```python
-from level_1.protein import normalize_protein_ids, find_common_protein_ids
+from layers.layer_0_core.level_1.protein import normalize_protein_ids, find_common_protein_ids
 
 normalized = normalize_protein_ids(["sp|Q8VY15|NAME", "P12345"])
 common = find_common_protein_ids([(emb1, ids1), (emb2, ids2)], target_ids)

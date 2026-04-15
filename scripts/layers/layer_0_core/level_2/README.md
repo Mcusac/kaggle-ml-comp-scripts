@@ -43,8 +43,8 @@ Key top-level exports (re-exported from subpackages):
 ## Usage Example
 
 ```python
-from level_1 import ProgressConfig
-from level_2 import ProgressBarManager, ProgressMetrics
+from layers.layer_0_core.level_1 import ProgressConfig
+from layers.layer_0_core.level_2 import ProgressBarManager, ProgressMetrics
 
 config = ProgressConfig()
 metrics = ProgressMetrics(config)

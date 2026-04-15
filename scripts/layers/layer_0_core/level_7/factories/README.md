@@ -28,7 +28,7 @@ Factory functions that create tabular models and ensembling methods by name.
 ## Usage Example
 
 ```python
-from level_7 import create_tabular_model, create_ensembling_method
+from layers.layer_0_core.level_7 import create_tabular_model, create_ensembling_method
 
 # Create tabular model
 model = create_tabular_model("ridge", input_dim=100, output_dim=1)

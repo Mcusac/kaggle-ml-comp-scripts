@@ -34,7 +34,7 @@ stdlib only (abc, argparse, dataclasses, typing).
 ## Usage Example
 
 ```python
-from level_0 import HandlerContextBuilder, ModelRegistry
+from layers.layer_0_core.level_0 import HandlerContextBuilder, ModelRegistry
 
 def run_with_context(builder: HandlerContextBuilder):
     contest = builder.detect_contest(args)

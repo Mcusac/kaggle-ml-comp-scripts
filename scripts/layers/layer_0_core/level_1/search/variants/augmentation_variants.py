@@ -2,7 +2,7 @@
 
 from typing import Any, List, Optional, Set, Tuple
 
-from level_0 import generate_power_set
+from layers.layer_0_core.level_0 import generate_power_set
 
 
 def generate_variant_grid(

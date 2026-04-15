@@ -29,7 +29,7 @@ Converts raw model scores to percentile-based weights and combines weighted pred
 
 ```python
 import numpy as np
-from level_0 import calculate_percentile_weights, combine_predictions_vectorized
+from layers.layer_0_core.level_0 import calculate_percentile_weights, combine_predictions_vectorized
 
 scores = np.array([0.3, 0.9, 0.6])
 weights = calculate_percentile_weights(scores)

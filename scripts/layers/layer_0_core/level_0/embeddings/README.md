@@ -28,7 +28,7 @@ Provides utilities for aligning embedding arrays to a target ID list and for com
 
 ```python
 import numpy as np
-from level_0 import align_embeddings, find_common_ids
+from layers.layer_0_core.level_0 import align_embeddings, find_common_ids
 
 embeds = np.random.rand(3, 128).astype(np.float32)
 ids = ["a", "b", "c"]

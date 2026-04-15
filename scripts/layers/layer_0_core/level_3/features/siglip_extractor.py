@@ -6,13 +6,13 @@ from PIL import Image
 from pathlib import Path
 from typing import Any, Callable, List, Optional, Tuple, Union
 
-from level_0 import get_logger, get_torch, load_image_rgb, split_image
-from level_1 import (
+from layers.layer_0_core.level_0 import get_logger, get_torch, load_image_rgb, split_image
+from layers.layer_0_core.level_1 import (
     BaseFeatureExtractor,
     generate_feature_filename,
     get_siglip_image_classes,
 )
-from level_2 import save_features
+from layers.layer_0_core.level_2 import save_features
 
 torch = get_torch()
 logger = get_logger(__name__)

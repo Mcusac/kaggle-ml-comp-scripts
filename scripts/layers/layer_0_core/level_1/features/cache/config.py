@@ -7,7 +7,7 @@ set_model_id_map() at startup before any cache operations that depend on them.
 from pathlib import Path
 from typing import Any, Callable, Dict, Optional, Tuple
 
-from level_0 import get_logger, is_kaggle
+from layers.layer_0_core.level_0 import get_logger, is_kaggle
 
 logger = get_logger(__name__)
 

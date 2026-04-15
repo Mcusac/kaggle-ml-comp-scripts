@@ -22,7 +22,7 @@ Batch load CSV files and images with optional progress display, delegating to le
 ## Usage Example
 
 ```python
-from level_5 import load_csv_batch, load_image_batch
+from layers.layer_0_core.level_5 import load_csv_batch, load_image_batch
 from pathlib import Path
 
 csvs = load_csv_batch(Path("data").glob("*.csv"), show_progress=True)

@@ -4,7 +4,7 @@ import numpy as np
 
 from typing import Dict, List, Optional
 
-from level_0 import (
+from layers.layer_0_core.level_0 import (
     EnsemblingMethod,
     combine_predictions_loop,
     combine_predictions_vectorized,
@@ -12,7 +12,7 @@ from level_0 import (
     get_shape_and_targets,
     validate_predictions_list,
 )
-from level_2 import build_weight_matrix
+from layers.layer_0_core.level_2 import build_weight_matrix
 
 logger = get_logger(__name__)
 

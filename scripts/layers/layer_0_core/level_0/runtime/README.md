@@ -42,7 +42,7 @@ stdlib (subprocess, collections, os, logging, dataclasses, typing). Optional: to
 ## Usage Example
 
 ```python
-from level_0 import is_kaggle, setup_logging, run_command_stream
+from layers.layer_0_core.level_0 import is_kaggle, setup_logging, run_command_stream
 
 setup_logging(level="INFO")
 returncode, lines = run_command_stream(["python", "train.py"], keep_last_n=100)

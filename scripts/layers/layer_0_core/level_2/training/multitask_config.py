@@ -5,7 +5,7 @@ Multi-task / multi-head training configuration extensions.
 from dataclasses import dataclass
 from typing import Dict, Any, Optional
 
-from level_1 import TrainingConfig
+from layers.layer_0_core.level_1 import TrainingConfig
 
 
 @dataclass

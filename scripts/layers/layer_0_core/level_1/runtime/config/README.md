@@ -24,7 +24,7 @@ Configuration creation and section formatting for training, grid search, and eva
 
 ## Usage Example
 ```python
-from level_1.runtime.config import create_config, TrainingConfig, print_config_section
+from layers.layer_0_core.level_1.runtime.config import create_config, TrainingConfig, print_config_section
 
 config = create_config(args, runtime_config, training_schema)
 print_config_section("training", config)

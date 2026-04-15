@@ -24,7 +24,7 @@ Provides diagnostic functions for interpreting cross-validation results: identif
 ## Usage Example
 
 ```python
-from level_2.analysis import find_best_fold_from_scores, analyze_cv_test_gap
+from layers.layer_0_core.level_2.analysis import find_best_fold_from_scores, analyze_cv_test_gap
 
 fold_scores = [0.82, 0.85, 0.83, 0.81, 0.84]
 best_fold = find_best_fold_from_scores(fold_scores)

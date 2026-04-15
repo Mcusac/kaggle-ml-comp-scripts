@@ -5,8 +5,8 @@ import numpy as np
 from PIL import Image
 from typing import Tuple
 
-from level_0 import get_torch
-from level_3 import SigLIPExtractor
+from layers.layer_0_core.level_0 import get_torch
+from layers.layer_0_core.level_3 import SigLIPExtractor
 
 torch = get_torch()
 nn = torch.nn

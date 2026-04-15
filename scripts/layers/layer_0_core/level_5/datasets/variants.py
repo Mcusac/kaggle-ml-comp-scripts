@@ -2,7 +2,7 @@
 
 from typing import List, Tuple
 
-from level_0 import (
+from layers.layer_0_core.level_0 import (
     AVAILABLE_AUGMENTATION,
     AVAILABLE_PREPROCESSING,
     generate_power_set,

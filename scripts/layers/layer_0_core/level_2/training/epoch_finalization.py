@@ -2,8 +2,8 @@
 
 from typing import Any, Dict, List
 
-from level_0 import step_scheduler, create_history_entry
-from level_1 import log_epoch_progress
+from layers.layer_0_core.level_0 import step_scheduler, create_history_entry
+from layers.layer_0_core.level_1 import log_epoch_progress
 
 
 def finalize_epoch(

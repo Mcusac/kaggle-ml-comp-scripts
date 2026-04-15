@@ -4,7 +4,7 @@ Command builder for submission generation.
 
 from typing import Optional
 
-from level_0 import BaseCommandBuilder
+from layers.layer_0_core.level_0 import BaseCommandBuilder
 
 
 class SubmissionCommandBuilder(BaseCommandBuilder):

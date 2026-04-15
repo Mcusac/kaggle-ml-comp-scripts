@@ -26,7 +26,7 @@ Model save/load for PyTorch, scikit-learn, and generic pickle. Regression model 
 ## Usage Example
 
 ```python
-from level_5 import save_model, load_model, save_regression_model
+from layers.layer_0_core.level_5 import save_model, load_model, save_regression_model
 from pathlib import Path
 
 save_model(model, Path("output/model.pth"), metadata={"epoch": 10})

@@ -28,7 +28,7 @@ Training components: a timm vision model wrapper, OOM-retry execution engine, TT
 ## Usage Example
 
 ```python
-from level_3.training import TimmModel, create_regression_model, handle_oom_error_with_retry
+from layers.layer_0_core.level_3.training import TimmModel, create_regression_model, handle_oom_error_with_retry
 
 model = TimmModel(model_name="efficientnet_b2", num_classes=6, dataset_type="single")
 model.freeze_backbone()

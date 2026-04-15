@@ -4,8 +4,8 @@ import torchvision.transforms as transforms
 
 from typing import List, Optional, Tuple, Union
 
-from level_0 import get_logger, IMAGENET_MEAN, IMAGENET_STD
-from level_1 import get_resize_transform, get_normalize_transform
+from layers.layer_0_core.level_0 import get_logger, IMAGENET_MEAN, IMAGENET_STD
+from layers.layer_0_core.level_1 import get_resize_transform, get_normalize_transform
 
 logger = get_logger(__name__)
 

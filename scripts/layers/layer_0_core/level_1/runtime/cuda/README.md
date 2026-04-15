@@ -37,7 +37,7 @@ CUDA-specific memory management and GPU monitoring utilities. Provides cleanup o
 ## Usage Example
 
 ```python
-from level_1.runtime.cuda import print_gpu_memory_status, get_model_memory_usage, cleanup_gpu_memory
+from layers.layer_0_core.level_1.runtime.cuda import print_gpu_memory_status, get_model_memory_usage, cleanup_gpu_memory
 
 print_gpu_memory_status()
 used_mb = get_model_memory_usage()

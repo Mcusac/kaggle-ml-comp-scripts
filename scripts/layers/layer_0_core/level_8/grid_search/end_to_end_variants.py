@@ -3,8 +3,8 @@
 import copy
 from typing import Any, Dict, Optional, Tuple
 
-from level_0 import ConfigValidationError
-from level_7 import build_error_result, build_success_result
+from layers.layer_0_core.level_0 import ConfigValidationError
+from layers.layer_0_core.level_7 import build_error_result, build_success_result
 
 DEFAULT_BATCH_SIZE = 32
 

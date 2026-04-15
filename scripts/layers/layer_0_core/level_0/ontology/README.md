@@ -21,7 +21,7 @@ stdlib only. Optional: obonet (preferred when available).
 ## Usage Example
 
 ```python
-from level_0 import parse_obo_file
+from layers.layer_0_core.level_0 import parse_obo_file
 from pathlib import Path
 
 parents, children = parse_obo_file(Path("go-basic.obo"))

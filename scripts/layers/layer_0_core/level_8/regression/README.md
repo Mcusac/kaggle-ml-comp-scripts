@@ -32,7 +32,7 @@ Regression head support for grid search and inference: run a single CV fold on p
 ## Usage Example
 
 ```python
-from level_8 import run_regression_cv_fold, create_regression_ensemble_from_paths
+from layers.layer_0_core.level_8 import run_regression_cv_fold, create_regression_ensemble_from_paths
 
 score = run_regression_cv_fold(
     fold=0,

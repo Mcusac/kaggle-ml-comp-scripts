@@ -31,7 +31,7 @@ Exports are defined in `__init__.py` / `__all__`. Notable symbols:
 
 ```python
 import numpy as np
-from level_2 import weighted_average, build_weight_matrix
+from layers.layer_0_core.level_2 import weighted_average, build_weight_matrix
 
 predictions = np.stack([model1_preds, model2_preds, model3_preds], axis=0)
 weights = np.array([0.5, 0.3, 0.2])

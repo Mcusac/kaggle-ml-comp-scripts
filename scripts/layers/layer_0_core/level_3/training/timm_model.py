@@ -7,9 +7,9 @@
 
 from typing import Any, Literal, Optional, Tuple, Union
 
-from level_0 import get_logger, get_torch
-from level_1 import BaseVisionModel
-from level_2 import TimmWeightLoader
+from layers.layer_0_core.level_0 import get_logger, get_torch
+from layers.layer_0_core.level_1 import BaseVisionModel
+from layers.layer_0_core.level_2 import TimmWeightLoader
 
 logger = get_logger(__name__)
 torch = get_torch()

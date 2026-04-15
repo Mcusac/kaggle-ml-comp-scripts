@@ -1,4 +1,4 @@
-"""Feature extractors. BaseFeatureExtractor from level_1.features.extractors."""
+"""Feature extractors. BaseFeatureExtractor from layers.layer_0_core.level_1.features.extractors."""
 
 from .cache_io import (
     get_feature_cache_paths,

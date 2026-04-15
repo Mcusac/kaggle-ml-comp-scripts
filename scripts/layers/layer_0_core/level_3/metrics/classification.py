@@ -17,9 +17,9 @@ from sklearn.metrics import (
     accuracy_score,
 )
 
-from level_0 import Metric, get_logger
-from level_1 import register_metric
-from level_2 import validate_paired_arrays
+from layers.layer_0_core.level_0 import Metric, get_logger
+from layers.layer_0_core.level_1 import register_metric
+from layers.layer_0_core.level_2 import validate_paired_arrays
 
 logger = get_logger(__name__)
 

@@ -11,7 +11,7 @@ Level 6 provides ensembling methods, prediction pipelines, grid search infrastru
 | `ensembling/` | EnsemblingMethod implementations (simple, weighted, ranked, percentile, target-specific) |
 | `grid_search/` | Grid search base, result handlers, variant grid, focused parameter grid, cleanup |
 | `metadata/` | Combo and metadata lookup helpers |
-| `prediction/` | PredictPipeline and `create_streaming_test_dataloader` (CSV + streaming dataset; distinct from level_4 DataFrame factory) |
+| `prediction/` | PredictPipeline and `create_streaming_test_dataloader` (CSV + streaming dataset; distinct from layers.layer_0_core.level_4 DataFrame factory) |
 | `tabular/` | TabularTrainer, TabularPredictor, MLPModel |
 | `tabular_models/` | Linear and tree tabular model wrappers (LogisticRegression, Ridge, XGBoost, LightGBM) |
 | `vision/` | JSON-backed vision model registry (`get_vision_model_config`, `list_vision_models`) |
@@ -63,7 +63,7 @@ Level 6 provides ensembling methods, prediction pipelines, grid search infrastru
 ## Usage Example
 
 ```python
-from level_6 import (
+from layers.layer_0_core.level_6 import (
     MLPModel,
     LogisticRegressionModel,
     create_variant_specific_data,

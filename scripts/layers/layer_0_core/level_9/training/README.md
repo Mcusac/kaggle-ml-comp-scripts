@@ -34,7 +34,7 @@ import path_bootstrap
 
 path_bootstrap.prepend_framework_paths()
 
-from level_9 import CrossValidateWorkflow
+from layers.layer_0_core.level_9 import CrossValidateWorkflow
 
 wf = CrossValidateWorkflow(
     config=config,

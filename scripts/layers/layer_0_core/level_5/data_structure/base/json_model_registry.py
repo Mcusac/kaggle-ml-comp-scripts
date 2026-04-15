@@ -8,7 +8,7 @@ Used by vision and tabular model_config to avoid duplicated loading/caching logi
 from pathlib import Path
 from typing import Any, Callable, Dict, List
 
-from level_4 import load_json
+from layers.layer_0_core.level_4 import load_json
 
 
 def create_json_model_registry(config_path: Path) -> tuple[

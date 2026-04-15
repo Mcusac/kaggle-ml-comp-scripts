@@ -24,7 +24,7 @@ Provides ensembling, grid search infrastructure, export pipelines, dataset helpe
 All exports are aggregated from subpackages. Import from `level_5`:
 
 ```python
-from level_5 import (
+from layers.layer_0_core.level_5 import (
     # batch_loading
     load_csv_batch,
     load_image_batch,
@@ -104,8 +104,8 @@ from level_5 import (
 ```python
 from pathlib import Path
 
-from level_5 import load_and_validate_test_data, prepare_test_dataframe_with_dummy_targets
-from level_5 import find_metadata_dir, load_combo_metadata
+from layers.layer_0_core.level_5 import load_and_validate_test_data, prepare_test_dataframe_with_dummy_targets
+from layers.layer_0_core.level_5 import find_metadata_dir, load_combo_metadata
 
 df = load_and_validate_test_data(Path("test.csv"), image_path_column="image_path")
 df = prepare_test_dataframe_with_dummy_targets(df, "image_path", ["target_1"])

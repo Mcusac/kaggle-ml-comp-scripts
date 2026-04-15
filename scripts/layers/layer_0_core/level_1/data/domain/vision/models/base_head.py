@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from level_0 import (
+from layers.layer_0_core.level_0 import (
     get_nn_module_base_class,
     get_torch,
     get_vision_module_and_tensor_types,

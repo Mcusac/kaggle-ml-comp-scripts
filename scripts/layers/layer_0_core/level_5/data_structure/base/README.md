@@ -22,7 +22,7 @@ Configuration loading and JSON model registry for domain-specific model catalogs
 ## Usage Example
 
 ```python
-from level_5 import JSONConfigLoader, create_json_model_registry
+from layers.layer_0_core.level_5 import JSONConfigLoader, create_json_model_registry
 from pathlib import Path
 
 loader = JSONConfigLoader("training")

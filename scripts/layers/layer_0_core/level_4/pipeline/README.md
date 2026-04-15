@@ -30,7 +30,7 @@ Pipelines for evaluation and submission averaging. Evaluates predictions (vision
 ## Usage Example
 
 ```python
-from level_4 import EvaluatePipeline, SubmissionAveragingWorkflow, optimize_threshold
+from layers.layer_0_core.level_4 import EvaluatePipeline, SubmissionAveragingWorkflow, optimize_threshold
 
 pipeline = EvaluatePipeline(config, predictions=preds, ground_truth=y_true)
 result = pipeline.execute()

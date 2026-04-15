@@ -21,7 +21,7 @@ Torchvision-compatible augmentation transform factories. All factories accept ca
 
 ## Usage Example
 ```python
-from level_1.data.processing.augmentation import get_blur_transform, get_geometric_transform
+from layers.layer_0_core.level_1.data.processing.augmentation import get_blur_transform, get_geometric_transform
 blur = get_blur_transform(kernel_size=3, p=0.5)
 geom = get_geometric_transform(degrees=15, p=0.8)
 ```

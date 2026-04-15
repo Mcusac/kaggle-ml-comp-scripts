@@ -38,7 +38,7 @@ Level 7 provides grid search results detection, variant result builders, hyperpa
 ## Usage Example
 
 ```python
-from level_7 import (
+from layers.layer_0_core.level_7 import (
     create_tabular_model,
     create_ensembling_method,
     HyperparameterGridSearchBase,

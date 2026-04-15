@@ -26,7 +26,7 @@ Prediction combination and stacking ensemble for regression and classification.
 ## Usage Example
 
 ```python
-from level_5 import combine_with_fallback, StackingEnsemble
+from layers.layer_0_core.level_5 import combine_with_fallback, StackingEnsemble
 import numpy as np
 
 combined = combine_with_fallback(

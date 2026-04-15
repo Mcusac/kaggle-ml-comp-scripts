@@ -35,7 +35,7 @@ Ensures prediction arrays and lists are well-formed before downstream scoring or
 ## Usage Example
 
 ```python
-from level_0 import validate_predictions_list, verify_export_files
+from layers.layer_0_core.level_0 import validate_predictions_list, verify_export_files
 
 validate_predictions_list(predictions)
 result = verify_export_files("output/", model_type="end_to_end")

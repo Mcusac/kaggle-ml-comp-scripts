@@ -37,7 +37,7 @@ stdlib only (dataclasses, pathlib, enum, typing).
 ## Usage Example
 
 ```python
-from level_0 import BaseConfig, CompositeConfig, TrainingSchema, RuntimeConfig
+from layers.layer_0_core.level_0 import BaseConfig, CompositeConfig, TrainingSchema, RuntimeConfig
 
 runtime = RuntimeConfig(seed=0, device="cuda")
 ```

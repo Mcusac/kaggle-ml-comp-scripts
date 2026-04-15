@@ -25,7 +25,7 @@ Image preprocessing operations: resizing, normalization, contrast enhancement, n
 
 ## Usage Example
 ```python
-from level_1.data.processing.preprocessing import get_resize_transform, get_normalize_transform
+from layers.layer_0_core.level_1.data.processing.preprocessing import get_resize_transform, get_normalize_transform
 resize_t = get_resize_transform(224)
 norm_t = get_normalize_transform()
 ```

@@ -26,7 +26,7 @@ Model export pipeline and atomic operations for copying checkpoints and writing 
 ## Usage Example
 
 ```python
-from level_5 import ExportPipeline, find_trained_model_path, export_from_training_dir
+from layers.layer_0_core.level_5 import ExportPipeline, find_trained_model_path, export_from_training_dir
 from pathlib import Path
 
 path, fold = find_trained_model_path(Path("output/models/best_training"))

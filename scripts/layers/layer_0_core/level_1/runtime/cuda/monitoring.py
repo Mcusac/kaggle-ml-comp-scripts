@@ -1,6 +1,6 @@
 """Memory monitoring utilities."""
 
-from level_0 import get_logger, get_torch
+from layers.layer_0_core.level_0 import get_logger, get_torch
 
 logger = get_logger(__name__)
 

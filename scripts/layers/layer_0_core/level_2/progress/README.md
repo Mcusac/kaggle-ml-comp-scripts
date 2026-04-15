@@ -23,8 +23,8 @@ Provides tqdm-based progress bar lifecycle management and a timing/throughput tr
 ## Usage Example
 
 ```python
-from level_1 import ProgressConfig, ProgressVerbosity
-from level_2.progress import ProgressBarManager, ProgressMetrics
+from layers.layer_0_core.level_1 import ProgressConfig, ProgressVerbosity
+from layers.layer_0_core.level_2.progress import ProgressBarManager, ProgressMetrics
 
 config = ProgressConfig(verbosity=ProgressVerbosity.MODERATE)
 metrics = ProgressMetrics(config)

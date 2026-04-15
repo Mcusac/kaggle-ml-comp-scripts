@@ -32,7 +32,7 @@ Atomic vision/tabular training (`TrainPipeline`), robust CV split construction, 
 ## Usage Example
 
 ```python
-from level_8 import TrainPipeline, detect_train_export_mode
+from layers.layer_0_core.level_8 import TrainPipeline, detect_train_export_mode
 
 results_path = detect_train_export_mode(model_name="my_model", fresh_train=False)
 

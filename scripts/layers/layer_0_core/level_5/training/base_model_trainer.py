@@ -3,9 +3,9 @@
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-from level_0 import ensure_dir, get_logger, get_torch
-from level_1 import get_device, setup_mixed_precision
-from level_2 import (
+from layers.layer_0_core.level_0 import ensure_dir, get_logger, get_torch
+from layers.layer_0_core.level_1 import get_device, setup_mixed_precision
+from layers.layer_0_core.level_2 import (
     ModelCheckpointer,
     TrainingPhaseExecutor,
     ValidationPhaseExecutor,
@@ -16,7 +16,7 @@ from level_2 import (
     finalize_epoch,
     get_training_config_value,
 )
-from level_4 import create_vision_model
+from layers.layer_0_core.level_4 import create_vision_model
 
 logger = get_logger(__name__)
 torch = get_torch()

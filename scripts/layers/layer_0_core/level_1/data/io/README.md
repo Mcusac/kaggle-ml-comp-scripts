@@ -19,7 +19,7 @@ Generic file loading utilities: batch multi-file loading with error handling and
 
 ## Usage Example
 ```python
-from level_1.data.io import load_batch
+from layers.layer_0_core.level_1.data.io import load_batch
 import pandas as pd
 dataframes = load_batch(csv_paths, loader=pd.read_csv, item_name="CSV files")
 ```

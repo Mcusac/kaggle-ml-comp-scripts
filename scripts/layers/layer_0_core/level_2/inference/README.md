@@ -23,7 +23,7 @@ Provides `VisionPredictor`, which runs a PyTorch vision model over a DataLoader,
 
 ```python
 import torch
-from level_2.inference import VisionPredictor
+from layers.layer_0_core.level_2.inference import VisionPredictor
 
 device = torch.device("cuda")
 predictor = VisionPredictor(model=model, device=device, use_amp=True)

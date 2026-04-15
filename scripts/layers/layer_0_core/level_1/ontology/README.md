@@ -12,11 +12,11 @@ GO hierarchy propagation and ontology configuration resolution for protein funct
 - `OntologyConfigResolver` — Get ontology config for a given ontology name
 
 ## Dependencies
-- `level_0` — `parse_obo_file` (from level_0.ontology)
+- `level_0` — `parse_obo_file` (from layers.layer_0_core.level_0.ontology)
 
 ## Usage Example
 ```python
-from level_1.ontology import HierarchyPropagator
+from layers.layer_0_core.level_1.ontology import HierarchyPropagator
 
 propagator = HierarchyPropagator(parents_map, children_map, term_to_idx)
 propagator.load_from_obo("go-basic.obo")

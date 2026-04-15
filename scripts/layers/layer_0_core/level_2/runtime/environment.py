@@ -2,8 +2,8 @@
 
 from typing import Any, Dict
 
-from level_0 import get_logger, is_kaggle
-from level_1 import get_device_info
+from layers.layer_0_core.level_0 import get_logger, is_kaggle
+from layers.layer_0_core.level_1 import get_device_info
 
 logger = get_logger(__name__)
 

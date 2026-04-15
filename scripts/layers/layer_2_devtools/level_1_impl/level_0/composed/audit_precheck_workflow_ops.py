@@ -28,11 +28,11 @@ from layers.layer_2_devtools.level_1_impl.level_0.scan.special_scan_ops import (
     scan_special_tree_directory,
 )
 from layers.layer_2_devtools.level_0_infra.level_0.constants.import_patterns import LEVEL_DIR_RE
-from layers.layer_2_devtools.level_0_infra.level_0.format.audit_machine_emit_templates import (
+from layers.layer_2_devtools.level_0_infra.level_0 import (
     build_audit_markdown,
     build_inventory_markdown,
 )
-from layers.layer_2_devtools.level_0_infra.level_0.format.inventory_bootstrap_markdown import (
+from layers.layer_2_devtools.level_0_infra.level_0 import (
     bootstrap_markdown,
 )
 from layers.layer_2_devtools.level_0_infra.level_0.path.audit_paths import (

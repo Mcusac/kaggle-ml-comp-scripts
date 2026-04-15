@@ -25,7 +25,7 @@ Stacking ensemble that trains a meta-model on base model validation predictions.
 ## Usage Example
 
 ```python
-from level_4 import stacking_ensemble_with_validation
+from layers.layer_0_core.level_4 import stacking_ensemble_with_validation
 
 ensemble_preds = stacking_ensemble_with_validation(
     base_predictions_train=[pred_train_1, pred_train_2],

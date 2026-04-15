@@ -29,7 +29,7 @@ Provides the infrastructure for running hyperparameter and dataset grid searches
 ## Usage Example
 
 ```python
-from level_2.grid_search import setup_grid_search_environment, resolve_keyed_param_grid
+from layers.layer_0_core.level_2.grid_search import setup_grid_search_environment, resolve_keyed_param_grid
 
 device = setup_grid_search_environment(config)
 param_grid = resolve_keyed_param_grid(config, search_type="hyperparameter")

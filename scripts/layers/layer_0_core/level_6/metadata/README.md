@@ -23,7 +23,7 @@ Helpers for reading competition metadata and resolving identifiers from config (
 ## Usage Example
 
 ```python
-from level_6 import find_combo_id_from_config
+from layers.layer_0_core.level_6 import find_combo_id_from_config
 
 combo_id = find_combo_id_from_config(config)
 ```

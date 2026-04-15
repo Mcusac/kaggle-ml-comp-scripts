@@ -5,7 +5,7 @@ Depends on level_0 (errors, logging, paths), level_2 (validate_dataframe),
 and level_3 (validate_path_is_file).
 
 Example:
-    >>> from level_4 import load_csv, load_image, save_json
+    >>> from layers.layer_0_core.level_4 import load_csv, load_image, save_json
     >>> df = load_csv('data.csv', required_cols=['id', 'value'])
 """
 

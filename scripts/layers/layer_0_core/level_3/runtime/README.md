@@ -23,7 +23,7 @@ Runtime validation utilities for file paths and image paths in dataframes.
 ## Usage Example
 
 ```python
-from level_3.runtime import validate_image_paths_in_dataframe, validate_path_is_file
+from layers.layer_0_core.level_3.runtime import validate_image_paths_in_dataframe, validate_path_is_file
 
 validate_path_is_file("config.yaml", "config")
 validate_image_paths_in_dataframe(

@@ -4,8 +4,8 @@ import numpy as np
 
 from typing import Optional, Union
 
-from level_0 import get_logger
-from level_2 import (
+from layers.layer_0_core.level_0 import get_logger
+from layers.layer_0_core.level_2 import (
     get_gaussian_mixture,
     get_pca,
     get_pls_regression,

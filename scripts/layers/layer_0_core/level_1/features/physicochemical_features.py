@@ -7,7 +7,7 @@ from collections import Counter
 
 import numpy as np
 
-from level_0 import (
+from layers.layer_0_core.level_0 import (
     AA_GROUPS, AA_WEIGHTS, HYDROPATHY_VALUES
 )
 

@@ -26,7 +26,7 @@ Custom loss functions, a metric registry, and CV fold score analysis utilities.
 
 ## Usage Example
 ```python
-from level_1.evaluation import FocalLoss, calculate_fold_statistics
+from layers.layer_0_core.level_1.evaluation import FocalLoss, calculate_fold_statistics
 loss_fn = FocalLoss(gamma=2.0)
 stats = calculate_fold_statistics([0.82, 0.84, 0.81, 0.83, 0.85])
 ```

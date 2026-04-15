@@ -28,7 +28,7 @@ Metadata path resolution for Kaggle competitions and local mimic layouts (input/
 ```python
 from pathlib import Path
 
-from level_5 import find_metadata_dir, get_writable_metadata_dir, load_combo_metadata
+from layers.layer_0_core.level_5 import find_metadata_dir, get_writable_metadata_dir, load_combo_metadata
 
 meta_dir = find_metadata_dir("csiro-metadata")
 if meta_dir:

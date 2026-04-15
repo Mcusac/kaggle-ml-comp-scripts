@@ -5,8 +5,8 @@ import warnings
 from typing import Tuple, Optional, Union
 from transformers import Dinov2Model as HFDinov2Model
 
-from level_0 import get_logger, get_torch
-from level_1 import FiLM, BaseVisionModel
+from layers.layer_0_core.level_0 import get_logger, get_torch
+from layers.layer_0_core.level_1 import FiLM, BaseVisionModel
 
 logger = get_logger(__name__)
 torch = get_torch()

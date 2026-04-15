@@ -36,7 +36,7 @@ Grid search result persistence, checkpoint cleanup, result analysis, and variant
 ## Usage Example
 
 ```python
-from level_5 import (
+from layers.layer_0_core.level_5 import (
     load_results,
     save_results,
     load_checkpoint,

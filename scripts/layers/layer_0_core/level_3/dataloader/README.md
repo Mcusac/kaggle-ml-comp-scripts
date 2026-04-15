@@ -24,7 +24,7 @@ DataLoader factory for creating PyTorch training and validation dataloaders from
 ## Usage Example
 
 ```python
-from level_3.dataloader import create_train_dataloader, create_val_dataloader
+from layers.layer_0_core.level_3.dataloader import create_train_dataloader, create_val_dataloader
 
 train_loader = create_train_dataloader(
     train_data=train_df,

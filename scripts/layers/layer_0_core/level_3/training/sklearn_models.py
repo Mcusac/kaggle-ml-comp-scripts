@@ -4,7 +4,7 @@ Tabular/sklearn regression models for multi-output regression.
 Used for regression heads over tabular or vision-derived features (e.g. CSIRO biomass).
 """
 
-from level_2 import (
+from layers.layer_0_core.level_2 import (
     BaseMultiOutputRegressionModel,
     get_catboost,
     get_gradient_boosting_regressor,

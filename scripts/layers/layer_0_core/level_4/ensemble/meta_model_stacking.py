@@ -3,16 +3,16 @@
 Trains a meta-model on base model validation predictions to learn optimal
 combination weights per target. Lives at level_4 (requires level_3).
 
-Note: For equal-weight averaging use simple_average from level_2 — do not duplicate it here.
+Note: For equal-weight averaging use simple_average from layers.layer_0_core.level_2 — do not duplicate it here.
 """
 
 import numpy as np
 
 from typing import Any, Dict, List, Optional
 
-from level_0 import get_logger, DataValidationError, validate_targets
-from level_1 import validate_paired_predictions
-from level_3 import create_meta_model
+from layers.layer_0_core.level_0 import get_logger, DataValidationError, validate_targets
+from layers.layer_0_core.level_1 import validate_paired_predictions
+from layers.layer_0_core.level_3 import create_meta_model
 
 logger = get_logger(__name__)
 

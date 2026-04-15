@@ -17,7 +17,7 @@ from layers.layer_2_devtools.level_1_impl.level_0.composed.package_health_workfl
 )
 from layers.layer_2_devtools.level_0_infra.level_0.contracts.envelope import err
 from layers.layer_2_devtools.level_0_infra.level_0.contracts.envelope import ok
-from layers.layer_2_devtools.level_0_infra.level_0.format.health_report_views import (
+from layers.layer_2_devtools.level_0_infra.level_0 import (
     DEFAULT_COMPLEXITY_TARGET_NAMES,
     lines_complexity_targets,
     lines_duplication_summary,

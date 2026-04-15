@@ -17,7 +17,7 @@ All sub-package exports are re-exported from this package.
 
 ## Usage Example
 ```python
-from level_1.data.processing import compose_transform_pipeline, get_resize_transform, get_normalize_transform
+from layers.layer_0_core.level_1.data.processing import compose_transform_pipeline, get_resize_transform, get_normalize_transform
 pipeline = compose_transform_pipeline(
     pil_transforms=[get_resize_transform(224)],
     tensor_transforms=[get_normalize_transform()]

@@ -29,7 +29,7 @@ stdlib only (argparse, enum, typing).
 ## Usage Example
 
 ```python
-from level_0 import add_common_arguments, add_model_type_argument, dispatch_command
+from layers.layer_0_core.level_0 import add_common_arguments, add_model_type_argument, dispatch_command
 
 parser = argparse.ArgumentParser()
 add_common_arguments(parser)

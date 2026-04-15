@@ -29,7 +29,7 @@ Provides concrete metric functions and `Metric` subclasses for classification an
 ## Usage Example
 
 ```python
-from level_3.metrics import calculate_accuracy, calculate_rmse, RMSEMetric
+from layers.layer_0_core.level_3.metrics import calculate_accuracy, calculate_rmse, RMSEMetric
 
 acc = calculate_accuracy(y_true, y_pred)
 rmse = calculate_rmse(y_true, y_pred)

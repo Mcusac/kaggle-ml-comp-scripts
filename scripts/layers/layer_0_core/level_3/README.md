@@ -4,7 +4,7 @@
 
 Composed pipelines and higher-level components for ML competition workflows: dataloaders, feature extraction, metrics, ensemble methods, training models, and orchestration.
 
-**Dependency and import policy:** After `path_bootstrap.prepend_framework_paths()`, logic modules import only via **`from level_0 import …`**, **`from level_1 import …`**, and **`from level_2 import …`** (each level’s public API — no `layers.layer_0_core.level_*` paths in leaf modules). Only `__init__.py` files under `level_3` use relative imports (`from . …`) to aggregate sub-packages.
+**Dependency and import policy:** After `path_bootstrap.prepend_framework_paths()`, logic modules import only via **`from layers.layer_0_core.level_0 import …`**, **`from layers.layer_0_core.level_1 import …`**, and **`from layers.layer_0_core.level_2 import …`** (each level’s public API — no `layers.layer_0_core.level_*` paths in leaf modules). Only `__init__.py` files under `level_3` use relative imports (`from . …`) to aggregate sub-packages.
 
 ## Contents
 
@@ -42,7 +42,7 @@ Key exports by sub-package:
 ## Usage Example
 
 ```python
-from level_3 import (
+from layers.layer_0_core.level_3 import (
     create_train_dataloader,
     TimmModel,
     TTAPredictor,

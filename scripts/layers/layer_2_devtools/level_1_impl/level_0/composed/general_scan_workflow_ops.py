@@ -15,7 +15,7 @@ from layers.layer_2_devtools.level_1_impl.level_0.scan.general_scan_ops import (
 from layers.layer_2_devtools.level_0_infra.level_0.fix.violation_fix_bundle import (
     run_violation_fix_bundle,
 )
-from layers.layer_2_devtools.level_0_infra.level_0.format.scan_violation_summary import (
+from layers.layer_2_devtools.level_0_infra.level_0 import (
     format_scan_violation_summary_lines,
 )
 from layers.layer_2_devtools.level_0_infra.level_0.io.json_fs import (

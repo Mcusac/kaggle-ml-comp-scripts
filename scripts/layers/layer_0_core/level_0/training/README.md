@@ -28,7 +28,7 @@ Provides stateless utilities used inside training loops: building config dicts, 
 ## Usage Example
 
 ```python
-from level_0 import extract_batch_data, step_scheduler
+from layers.layer_0_core.level_0 import extract_batch_data, step_scheduler
 
 inputs, targets = extract_batch_data(batch, device="cuda")
 step_scheduler(scheduler, config, primary_metric_value=0.85, val_loss=0.12)

@@ -27,7 +27,7 @@ stdlib only (pathlib, typing).
 ## Usage Example
 
 ```python
-from level_0 import ensure_dir, normalize_path, ensure_file_dir
+from layers.layer_0_core.level_0 import ensure_dir, normalize_path, ensure_file_dir
 
 output = ensure_dir("output/models")
 path = normalize_path("~/data/../models")

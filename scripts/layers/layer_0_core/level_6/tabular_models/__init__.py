@@ -1,7 +1,7 @@
 """Tabular model implementations wrapping sklearn and boosting classifiers.
 
-Import from level_6:
-  from level_6 import LogisticRegressionModel, RidgeModel, XGBoostModel, LightGBMModel
+Import from layers.layer_0_core.level_6:
+  from layers.layer_0_core.level_6 import LogisticRegressionModel, RidgeModel, XGBoostModel, LightGBMModel
 """
 
 from .linear import LogisticRegressionModel, RidgeModel

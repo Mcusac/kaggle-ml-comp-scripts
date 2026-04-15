@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from level_0 import get_logger, get_nn_module_base_class, get_torch
+from layers.layer_0_core.level_0 import get_logger, get_nn_module_base_class, get_torch
 
 torch = get_torch()
 _NNModule = get_nn_module_base_class()

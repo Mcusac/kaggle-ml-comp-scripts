@@ -32,7 +32,7 @@ End-to-end hyperparameter grid search that runs full training for each variant. 
 ## Usage Example
 
 ```python
-from level_10 import hyperparameter_grid_search_pipeline
+from layers.layer_0_core.level_10 import hyperparameter_grid_search_pipeline
 
 hyperparameter_grid_search_pipeline(
     contest_context=my_contest_context,

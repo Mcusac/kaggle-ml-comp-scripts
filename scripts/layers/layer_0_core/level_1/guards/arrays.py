@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from level_0 import DataValidationError
+from layers.layer_0_core.level_0 import DataValidationError
 
 
 def check_array_finite(

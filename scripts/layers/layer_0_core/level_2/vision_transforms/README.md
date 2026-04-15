@@ -36,7 +36,7 @@ Assembles reusable transform pipelines from individual level_1 building blocks. 
 ## Usage Example
 
 ```python
-from level_2.vision_transforms import build_preprocessing_transforms, TTAVariant, build_tta_transforms
+from layers.layer_0_core.level_2.vision_transforms import build_preprocessing_transforms, TTAVariant, build_tta_transforms
 
 pipe = build_preprocessing_transforms((224, 224), normalize=True)
 tta_transforms = build_tta_transforms(

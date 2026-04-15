@@ -34,7 +34,7 @@ stdlib only (itertools, typing).
 ## Usage Example
 
 ```python
-from level_0 import calculate_total_combinations, generate_param_combinations, create_result_dict
+from layers.layer_0_core.level_0 import calculate_total_combinations, generate_param_combinations, create_result_dict
 
 grid = {"lr": [0.01, 0.1], "batch": [32, 64]}
 total = calculate_total_combinations(grid)  # 4

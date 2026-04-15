@@ -28,7 +28,7 @@ Averaging-based EnsemblingMethod implementations that wrap the functional averag
 ## Usage Example
 
 ```python
-from level_6 import WeightedAverageEnsemble
+from layers.layer_0_core.level_6 import WeightedAverageEnsemble
 
 ensemble = WeightedAverageEnsemble()
 combined = ensemble.combine(predictions_list, weights=cv_scores)

@@ -2,8 +2,8 @@
 
 from typing import Any, Tuple
 
-from level_0 import get_logger, get_torch
-from level_1 import train_one_epoch, run_supervised_batch
+from layers.layer_0_core.level_0 import get_logger, get_torch
+from layers.layer_0_core.level_1 import train_one_epoch, run_supervised_batch
 
 torch = get_torch()
 nn = torch.nn

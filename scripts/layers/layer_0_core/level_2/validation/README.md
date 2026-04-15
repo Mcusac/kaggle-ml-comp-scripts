@@ -33,7 +33,7 @@ Provides type-specific validation functions that raise `DataValidationError` on 
 
 ```python
 import numpy as np
-from level_2.validation import validate_array, validate_paired_arrays
+from layers.layer_0_core.level_2.validation import validate_array, validate_paired_arrays
 
 preds = np.array([0.1, 0.9, 0.5])
 targets = np.array([0, 1, 1])

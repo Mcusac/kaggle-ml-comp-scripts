@@ -23,8 +23,8 @@ Orchestration utilities for training and evaluation pipelines, including progres
 ## Usage Example
 
 ```python
-from level_3.workflows import train_test_pipeline, ProgressFormatter
-from level_1 import ProgressConfig, ProgressVerbosity
+from layers.layer_0_core.level_3.workflows import train_test_pipeline, ProgressFormatter
+from layers.layer_0_core.level_1 import ProgressConfig, ProgressVerbosity
 
 train_test_pipeline(
     contest_context=ctx,

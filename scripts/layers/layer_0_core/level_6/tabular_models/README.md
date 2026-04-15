@@ -29,7 +29,7 @@ Tabular model implementations wrapping sklearn and boosting classifiers for mult
 ## Usage Example
 
 ```python
-from level_6 import LogisticRegressionModel, XGBoostModel
+from layers.layer_0_core.level_6 import LogisticRegressionModel, XGBoostModel
 
 model = LogisticRegressionModel(random_state=42, max_iter=1000)
 model.fit(X_train, y_train)

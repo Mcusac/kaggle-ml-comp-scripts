@@ -24,7 +24,7 @@ Provides configuration loaders, JSON model registry, and tabular model base clas
 ## Usage Example
 
 ```python
-from level_5 import JSONConfigLoader, create_json_model_registry, BaseTabularModel
+from layers.layer_0_core.level_5 import JSONConfigLoader, create_json_model_registry, BaseTabularModel
 from pathlib import Path
 
 loader = JSONConfigLoader("model_config", config_dir="config")

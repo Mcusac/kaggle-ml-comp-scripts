@@ -2,10 +2,10 @@
 
 from typing import Optional, Tuple
 
-from level_0 import get_logger
-from level_1 import BaseVisionModel
-from level_2 import DINOv2Model
-from level_3 import TimmModel
+from layers.layer_0_core.level_0 import get_logger
+from layers.layer_0_core.level_1 import BaseVisionModel
+from layers.layer_0_core.level_2 import DINOv2Model
+from layers.layer_0_core.level_3 import TimmModel
 
 logger = get_logger(__name__)
 

@@ -28,7 +28,7 @@ Tabular model trainer, predictor, and MLP model implementation.
 ## Usage Example
 
 ```python
-from level_6 import TabularTrainer, TabularPredictor, MLPModel, LogisticRegressionModel
+from layers.layer_0_core.level_6 import TabularTrainer, TabularPredictor, MLPModel, LogisticRegressionModel
 
 model = LogisticRegressionModel(random_state=42)
 trainer = TabularTrainer(model, validation_split=0.2)

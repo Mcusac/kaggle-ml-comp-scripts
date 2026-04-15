@@ -22,7 +22,7 @@ Base classes for tabular models and sparse multi-label datasets.
 ## Usage Example
 
 ```python
-from level_5 import BaseTabularModel, SparseTabularDataset
+from layers.layer_0_core.level_5 import BaseTabularModel, SparseTabularDataset
 import numpy as np
 from scipy.sparse import csr_matrix
 

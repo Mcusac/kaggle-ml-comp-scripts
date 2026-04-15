@@ -29,7 +29,7 @@ Feature extraction pipelines for vision and protein sequence data, including Sig
 ## Usage Example
 
 ```python
-from level_3.features import SigLIPExtractor, extract_handcrafted_features_for_ids
+from layers.layer_0_core.level_3.features import SigLIPExtractor, extract_handcrafted_features_for_ids
 
 extractor = SigLIPExtractor(
     model_path="/models/siglip",

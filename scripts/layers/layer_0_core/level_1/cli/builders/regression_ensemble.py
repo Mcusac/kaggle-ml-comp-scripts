@@ -4,7 +4,7 @@ Command builder for regression ensemble execution.
 
 from typing import List
 
-from level_0 import BaseCommandBuilder
+from layers.layer_0_core.level_0 import BaseCommandBuilder
 
 
 class RegressionEnsembleCommandBuilder(BaseCommandBuilder):

@@ -33,7 +33,7 @@ Unified metric entry points for classification/regression and a configurable wei
 ## Usage Example
 
 ```python
-from level_4 import calculate_metrics, create_weighted_r2_calculator
+from layers.layer_0_core.level_4 import calculate_metrics, create_weighted_r2_calculator
 
 # Generic task-based dispatch
 metrics = calculate_metrics("regression", y_true, y_pred, target_names=["x", "y"])

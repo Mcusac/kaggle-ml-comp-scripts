@@ -28,7 +28,7 @@ Prediction pipeline for vision and tabular checkpoints, plus a streaming test Da
 ## Usage Example
 
 ```python
-from level_6 import PredictPipeline, create_streaming_test_dataloader
+from layers.layer_0_core.level_6 import PredictPipeline, create_streaming_test_dataloader
 
 pipeline = PredictPipeline(config, model_path="model.pkl", model_type="tabular", X_test=X_test)
 pipeline.setup()

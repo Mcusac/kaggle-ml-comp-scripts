@@ -4,7 +4,7 @@ Training component setup utilities.
 
 from typing import Any, Optional, Tuple
 
-from level_0 import get_logger, get_torch, get_config_value
+from layers.layer_0_core.level_0 import get_logger, get_torch, get_config_value
 
 logger = get_logger(__name__)
 

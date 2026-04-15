@@ -4,7 +4,7 @@ import torchvision.transforms as transforms
 
 from typing import Any, Tuple
 
-from level_0 import get_logger, get_torch, IMAGENET_MEAN, IMAGENET_STD
+from layers.layer_0_core.level_0 import get_logger, get_torch, IMAGENET_MEAN, IMAGENET_STD
 
 torch = get_torch()
 logger = get_logger(__name__)

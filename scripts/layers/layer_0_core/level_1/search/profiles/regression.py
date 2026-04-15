@@ -2,7 +2,7 @@
 
 from typing import Any, Dict, List
 
-from level_0 import build_parameter_grid, resolve_varied_params
+from layers.layer_0_core.level_0 import build_parameter_grid, resolve_varied_params
 
 
 # Maps the canonical model type name to its default hyperparameters.

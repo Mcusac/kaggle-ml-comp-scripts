@@ -4,8 +4,8 @@ from abc import ABC
 from itertools import product
 from typing import Any, Dict, List, Tuple
 
-from level_0 import get_logger
-from level_6 import GridSearchBase
+from layers.layer_0_core.level_0 import get_logger
+from layers.layer_0_core.level_6 import GridSearchBase
 
 logger = get_logger(__name__)
 

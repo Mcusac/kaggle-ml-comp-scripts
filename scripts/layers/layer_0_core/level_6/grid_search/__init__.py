@@ -1,6 +1,6 @@
 """Grid search infrastructure: base class, result handlers, variant grid."""
 
-from level_5 import (
+from layers.layer_0_core.level_5 import (
     analyze_results_for_focused_grid,
     cleanup_checkpoints,
     cleanup_grid_search_checkpoints_retroactive,

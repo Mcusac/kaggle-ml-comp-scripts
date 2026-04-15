@@ -1,4 +1,4 @@
-"""Merge utilities (level_5) — imports from level_4 to avoid same-level imports."""
+"""Merge utilities (level_5) — imports from layers.layer_0_core.level_4 to avoid same-level imports."""
 
 from .merge import (
     merge_json_from_input_and_working,

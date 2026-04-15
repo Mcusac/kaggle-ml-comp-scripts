@@ -34,7 +34,7 @@ Grid search pipelines for dataset variants, regression hyperparameters, and visi
 ## Usage Example
 
 ```python
-from level_9 import attach_paths_to_config, regression_grid_search_pipeline
+from layers.layer_0_core.level_9 import attach_paths_to_config, regression_grid_search_pipeline
 
 # Regression grid search (contest provides contest_context)
 regression_grid_search_pipeline(

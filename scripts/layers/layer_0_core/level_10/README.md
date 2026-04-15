@@ -36,7 +36,7 @@ Owns end-to-end hyperparameter grid search: for each variant it runs the full tr
 ## Usage Example
 
 ```python
-from level_10 import hyperparameter_grid_search_pipeline
+from layers.layer_0_core.level_10 import hyperparameter_grid_search_pipeline
 
 # Contest layer provides context and train pipeline
 hyperparameter_grid_search_pipeline(

@@ -14,7 +14,7 @@ Submission file formatting, sorting, and prediction limit enforcement for TSV su
 
 ## Usage Example
 ```python
-from level_1.io import TsvSubmissionFormatter
+from layers.layer_0_core.level_1.io import TsvSubmissionFormatter
 
 formatter = TsvSubmissionFormatter(score_min=0.0, score_max=1.0)
 formatter.sort_submission_external("raw.tsv", "sorted.tsv")

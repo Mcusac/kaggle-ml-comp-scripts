@@ -25,7 +25,7 @@ Contract:
 
 ## Usage Example
 ```python
-from level_1.guards import check_array_finite, validate_config_section_exists
+from layers.layer_0_core.level_1.guards import check_array_finite, validate_config_section_exists
 check_array_finite(features, name="train_features")
 validate_config_section_exists(config, "paths")
 ```

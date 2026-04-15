@@ -6,7 +6,7 @@ from pathlib import Path
 from PIL import Image
 from typing import Any, Optional, Callable, List, Union, Tuple
 
-from level_0 import get_logger, get_torch
+from layers.layer_0_core.level_0 import get_logger, get_torch
 
 torch = get_torch()
 _Dataset = torch.utils.data.Dataset if torch is not None else object

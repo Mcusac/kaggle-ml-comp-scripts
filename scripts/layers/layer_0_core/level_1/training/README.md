@@ -33,6 +33,6 @@ Framework-level training primitives: checkpoint persistence, epoch execution loo
 
 ## Usage Example
 ```python
-from level_1.training import save_checkpoint, load_model_checkpoint, train_one_epoch
+from layers.layer_0_core.level_1.training import save_checkpoint, load_model_checkpoint, train_one_epoch
 save_checkpoint(model, optimizer, scheduler, path=Path("ckpt.pth"), epoch=5, best_score=0.84, history=[])
 ```

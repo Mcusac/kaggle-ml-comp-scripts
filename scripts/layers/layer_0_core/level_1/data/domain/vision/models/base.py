@@ -5,7 +5,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Tuple, Union
 
-from level_0 import get_nn_module_base_class, get_torch
+from layers.layer_0_core.level_0 import get_nn_module_base_class, get_torch
 
 torch = get_torch()
 _NNModule = get_nn_module_base_class()

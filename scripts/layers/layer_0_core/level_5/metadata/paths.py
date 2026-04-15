@@ -3,8 +3,8 @@
 from pathlib import Path
 from typing import Optional
 
-from level_0 import ensure_dir, is_kaggle
-from level_4 import load_json
+from layers.layer_0_core.level_0 import ensure_dir, is_kaggle
+from layers.layer_0_core.level_4 import load_json
 
 
 def _find_project_input_root(from_file: str) -> Optional[Path]:

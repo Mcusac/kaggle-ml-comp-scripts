@@ -34,7 +34,7 @@ Training orchestration for reusable model-training workflows, including end-to-e
 ## Usage Example
 
 ```python
-from level_5 import BaseModelTrainer, VisionTrainer
+from layers.layer_0_core.level_5 import BaseModelTrainer, VisionTrainer
 
 base_trainer = BaseModelTrainer(config, model_name="resnet50")
 history = base_trainer.train(train_loader, val_loader, num_epochs=50, save_dir="output/models")

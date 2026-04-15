@@ -3,9 +3,9 @@
 from pathlib import Path
 from typing import Optional
 
-from level_0 import get_logger
-from level_1 import print_config_section
-from level_7 import auto_detect_grid_search_results
+from layers.layer_0_core.level_0 import get_logger
+from layers.layer_0_core.level_1 import print_config_section
+from layers.layer_0_core.level_7 import auto_detect_grid_search_results
 
 logger = get_logger(__name__)
 

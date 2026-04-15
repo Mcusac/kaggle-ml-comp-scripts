@@ -41,7 +41,7 @@ Provides image I/O, tiling, transform configuration, noise reduction, and model 
 ## Usage Example
 
 ```python
-from level_0 import load_image_pil, build_minimal_val_transform, TransformMode
+from layers.layer_0_core.level_0 import load_image_pil, build_minimal_val_transform, TransformMode
 
 transform = build_minimal_val_transform((224, 224))
 image = load_image_pil("photo.jpg")

@@ -30,7 +30,7 @@ Provides a named registry of augmentation transform builders and four preset aug
 ## Usage Example
 
 ```python
-from level_2.vision_transforms.augmentation import get_medium_augmentation, AugmentationPreset
+from layers.layer_0_core.level_2.vision_transforms.augmentation import get_medium_augmentation, AugmentationPreset
 
 pil_transform, tensor_transform = get_medium_augmentation()
 # Apply pil_transform before ToTensor, tensor_transform after

@@ -29,7 +29,7 @@ Dataset grid search over preprocessing/augmentation variants, plus end-to-end va
 ## Usage Example
 
 ```python
-from level_8 import DatasetGridSearch, extract_variant_config, create_end_to_end_variant_result
+from layers.layer_0_core.level_8 import DatasetGridSearch, extract_variant_config, create_end_to_end_variant_result
 
 grid_search = DatasetGridSearch(config=config, train_pipeline_fn=my_train_fn)
 # results = grid_search.run()  # per GridSearchBase API

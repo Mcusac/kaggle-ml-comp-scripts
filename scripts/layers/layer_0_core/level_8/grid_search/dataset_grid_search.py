@@ -2,15 +2,15 @@
 
 from typing import Any, Dict, List, Optional, Tuple
 
-from level_0 import GRID_SEARCH_TYPE_DATASET, RESULTS_FILE_GRIDSEARCH
-from level_1 import generate_variant_grid
-from level_6 import (
+from layers.layer_0_core.level_0 import GRID_SEARCH_TYPE_DATASET, RESULTS_FILE_GRIDSEARCH
+from layers.layer_0_core.level_1 import generate_variant_grid
+from layers.layer_0_core.level_6 import (
     GridSearchBase,
     create_variant_key,
     create_variant_key_from_result,
     get_default_hyperparameters,
 )
-from level_7 import run_single_variant
+from layers.layer_0_core.level_7 import run_single_variant
 
 
 class DatasetGridSearch(GridSearchBase):

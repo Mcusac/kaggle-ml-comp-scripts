@@ -34,7 +34,7 @@ Provides concrete feature extractors that operate on DataLoaders or raw data and
 
 ```python
 import torch
-from level_2.feature_extractors import FeatureExtractor
+from layers.layer_0_core.level_2.feature_extractors import FeatureExtractor
 
 model = ...  # pretrained PyTorch model
 device = torch.device("cuda")

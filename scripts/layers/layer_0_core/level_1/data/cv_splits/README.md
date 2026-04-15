@@ -18,7 +18,7 @@ K-fold cross-validation split assignment for both DataFrame rows and numpy featu
 
 ## Usage Example
 ```python
-from level_1.data.cv_splits import create_kfold_splits, get_fold_data
+from layers.layer_0_core.level_1.data.cv_splits import create_kfold_splits, get_fold_data
 df = create_kfold_splits(df, n_folds=5)
 train_df = get_fold_data(df, fold=0, train=True)
 val_df = get_fold_data(df, fold=0, train=False)

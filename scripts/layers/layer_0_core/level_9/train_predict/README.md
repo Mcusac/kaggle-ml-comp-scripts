@@ -26,7 +26,7 @@ Train-then-predict workflow that composes TrainPipeline and PredictPipeline for 
 ## Usage Example
 
 ```python
-from level_9 import TrainPredictWorkflow
+from layers.layer_0_core.level_9 import TrainPredictWorkflow
 
 workflow = TrainPredictWorkflow(
     config=config,

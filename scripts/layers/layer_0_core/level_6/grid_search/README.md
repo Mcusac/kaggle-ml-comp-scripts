@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Grid search infrastructure: base class, result handlers, and variant grid. Analysis, checkpoint cleanup, variant tracking helpers, and result persistence live in **level_5.grid_search**; this package re-exports those symbols via `from level_5 import ...` so `from level_6 import get_focused_parameter_grid` remains valid.
+Grid search infrastructure: base class, result handlers, and variant grid. Analysis, checkpoint cleanup, variant tracking helpers, and result persistence live in **level_5.grid_search**; this package re-exports those symbols via `from layers.layer_0_core.level_5 import ...` so `from layers.layer_0_core.level_6 import get_focused_parameter_grid` remains valid.
 
 ## Contents
 
@@ -20,15 +20,15 @@ Focused grid, cleanup, and variant helpers are implemented under [level_5/grid_s
 | `handle_hyperparameter_grid_search_result` | Handle hyperparameter grid search CLI result |
 | `handle_dataset_grid_search_result` | Handle dataset grid search CLI result |
 | `handle_regression_grid_search_result` | Handle regression grid search CLI result |
-| `get_focused_parameter_grid` | Focused grid from previous results (re-exported from level_5) |
+| `get_focused_parameter_grid` | Focused grid from previous results (re-exported from layers.layer_0_core.level_5) |
 | `create_variant_specific_data` | Create variant-specific data dict |
 | `create_variant_key` | Create variant key for deduplication |
 | `create_variant_key_from_result` | Create variant key from result dict |
 | `create_regression_variant_key_from_result` | Create regression variant key |
 | `get_default_hyperparameters` | Default transformer hyperparameters |
-| `cleanup_grid_search_checkpoints_retroactive`, `cleanup_checkpoints` | Checkpoint pruning (re-exported from level_5) |
-| `load_completed_variants_helper`, `get_next_variant_index`, `save_variant_result_helper` | Variant tracking (re-exported from level_5) |
-| `load_raw_results`, `extract_top_results`, `extract_parameter_ranges`, `analyze_results_for_focused_grid` | Result analysis (re-exported from level_5) |
+| `cleanup_grid_search_checkpoints_retroactive`, `cleanup_checkpoints` | Checkpoint pruning (re-exported from layers.layer_0_core.level_5) |
+| `load_completed_variants_helper`, `get_next_variant_index`, `save_variant_result_helper` | Variant tracking (re-exported from layers.layer_0_core.level_5) |
+| `load_raw_results`, `extract_top_results`, `extract_parameter_ranges`, `analyze_results_for_focused_grid` | Result analysis (re-exported from layers.layer_0_core.level_5) |
 
 Per-variant cleanup orchestration (`variant_cleanup_runner`) lives in **level_7.grid_search**.
 
@@ -42,7 +42,7 @@ Per-variant cleanup orchestration (`variant_cleanup_runner`) lives in **level_7.
 ## Usage Example
 
 ```python
-from level_6 import GridSearchBase, create_variant_key
+from layers.layer_0_core.level_6 import GridSearchBase, create_variant_key
 
 variant_key = create_variant_key(
     config, preprocessing_list, augmentation_list, hyperparameters
@@ -52,5 +52,5 @@ variant_key = create_variant_key(
 For focused grid or retroactive cleanup, prefer importing from **level_5** when the caller already depends on level_5:
 
 ```python
-from level_5 import get_focused_parameter_grid, cleanup_grid_search_checkpoints_retroactive
+from layers.layer_0_core.level_5 import get_focused_parameter_grid, cleanup_grid_search_checkpoints_retroactive
 ```

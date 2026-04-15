@@ -2,7 +2,7 @@
 
 from typing import Any, Callable, Dict, Tuple
 
-from level_1 import lazy_import
+from layers.layer_0_core.level_1 import lazy_import
 
 
 _SKLEARN_REGISTRY: Dict[str, Tuple[str, str, str, str]] = {
