@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from layers.layer_1_competition.level_0_infra.level_0.contest import ContestPaths
+from layers.layer_1_competition.level_0_infra.level_0.abstractions.paths import ContestPaths
 
 
 def contest_models_dir(paths: ContestPaths, contest_slug: str) -> Path:

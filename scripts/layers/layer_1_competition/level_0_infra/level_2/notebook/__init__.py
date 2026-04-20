@@ -1,12 +1,13 @@
-"""Shared notebook helpers: bootstrap, CLI streaming, contest command dispatch."""
+"""Shared notebook helpers: argv builders and dispatch for ``run.py`` notebook flows."""
 
 from .base_commands import build_run_py_base_command
-from .dispatch import (
+
+from layers.layer_1_competition.level_0_infra.level_0.dispatch import (
     get_notebook_commands_module,
     list_contests_with_notebook_commands,
     register_notebook_commands_module,
 )
-from .streaming import run_cli_streaming
+from layers.layer_1_competition.level_0_infra.level_0.streaming import run_cli_streaming
 
 __all__ = [
     "build_run_py_base_command",

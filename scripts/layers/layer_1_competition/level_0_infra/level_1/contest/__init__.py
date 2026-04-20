@@ -19,7 +19,7 @@ from .context import ContestContext, build_contest_context
 from .csv_io import load_training_csv
 from .splits import split_train_val
 from .data_loading import load_contest_data, load_contest_training_data
-from .argparse_builders import (
+from layers.layer_1_competition.level_0_infra.level_0.argparse_builders import (
     add_ensemble_weights_arg,
     add_max_targets_arg,
     add_models_arg,

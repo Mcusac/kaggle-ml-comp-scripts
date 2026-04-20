@@ -2,10 +2,12 @@
 
 from typing import Any, Callable, Optional
 
-from layers.layer_1_competition.level_0_infra.level_0 import (
+from layers.layer_1_competition.level_0_infra.level_0.context_types import (
     ContestGridSearchContext,
 )
-from layers.layer_1_competition.level_0_infra.level_1 import get_contest
+from layers.layer_1_competition.level_0_infra.level_1.registry.contest_registry import (
+    get_contest,
+)
 
 
 def build_grid_search_context(
