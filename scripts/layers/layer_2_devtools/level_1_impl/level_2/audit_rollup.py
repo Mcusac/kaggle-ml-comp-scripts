@@ -5,7 +5,9 @@ Build a skeleton comprehensive rollup markdown from an audit queue JSON.
 Optionally counts precheck JSON files per target for a given date. Does not
 replace human-written theme summaries.
 
-Run from scripts/:  python dev/scripts/audit_rollup.py ...
+From ``kaggle-ml-comp-scripts/scripts/``::
+
+  python -m layers.layer_2_devtools.level_1_impl.level_2.audit_rollup
 """
 
 import argparse

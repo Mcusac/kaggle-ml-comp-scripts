@@ -4,7 +4,7 @@
 
 ## Agent instructions
 
-1. **`Task(subagent_type="code-audit", …)`**, verbatim **`USER_REQUEST`**.
+1. Code-audit per `.cursor/rules/code-audit-delegation.mdc` (canonical: planner/auditor `Task`s; legacy: **`Task(code-audit)`**); verbatim **`USER_REQUEST`**.
 2. **`audit_profile: full`** (Phases 1–3 emphasis).
 3. Use `# CANDIDATE: decompose — ...` tags from [audit-pass-tags.md](audit-pass-tags.md).
 

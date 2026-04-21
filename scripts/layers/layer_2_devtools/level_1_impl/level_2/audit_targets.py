@@ -2,7 +2,9 @@
 """
 Emit deterministic audit target queues (orchestrator Step 1e).
 
-Run from scripts/:  python dev/scripts/audit_targets.py ...
+From ``kaggle-ml-comp-scripts/scripts/``::
+
+  python -m layers.layer_2_devtools.level_1_impl.level_2.audit_targets
 """
 
 import argparse

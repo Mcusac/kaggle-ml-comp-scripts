@@ -11,8 +11,8 @@ Catches:
 - SyntaxError (syntax issues)
 
 Usage:
-    python dev/scripts/validate_before_upload.py
-    python dev/scripts/validate_before_upload.py --verbose
+    python -m layers.layer_2_devtools.level_1_impl.level_2.validate_before_upload
+    python -m layers.layer_2_devtools.level_1_impl.level_2.validate_before_upload --verbose
 """
 
 import argparse
@@ -35,8 +35,8 @@ def main() -> int:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python dev/scripts/validate_before_upload.py
-  python dev/scripts/validate_before_upload.py --verbose
+  python -m layers.layer_2_devtools.level_1_impl.level_2.validate_before_upload
+  python -m layers.layer_2_devtools.level_1_impl.level_2.validate_before_upload --verbose
         """,
     )
     parser.add_argument(

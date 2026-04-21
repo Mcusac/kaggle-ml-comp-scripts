@@ -69,6 +69,8 @@ def run_general_full_precheck(
     payload = build_general_json_payload(reports, generated, core, workspace)
     payload["artifact"] = "precheck_general_stack"
     payload["level"] = level_name
+    payload["artifact_kind"] = "precheck"
+    payload["precheck_status"] = "ok"
     out_base = _build_output_base(workspace, "general", level_name, generated)
     return PrecheckRunResult(reports, markdown, payload, workspace, out_base)
 

@@ -4,7 +4,7 @@
 
 ## Agent instructions
 
-1. Delegate **`Task(subagent_type="code-audit", …)`** per `.cursor/rules/code-audit-delegation.mdc` with verbatim **`USER_REQUEST`**.
+1. Code-audit per `.cursor/rules/code-audit-delegation.mdc` (canonical: planner/auditor `Task`s; legacy: **`Task(code-audit)`**); verbatim **`USER_REQUEST`**.
 2. Use **`audit_profile: full`** unless the user overrides.
 3. In the auditor result and optional `REFERENCE_DOC` appendix, use the **(1)–(6)** legend and `# CANDIDATE:` / `# VIOLATION:` tags from [audit-pass-tags.md](audit-pass-tags.md).
 

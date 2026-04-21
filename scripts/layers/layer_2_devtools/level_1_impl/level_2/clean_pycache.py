@@ -3,8 +3,7 @@
 Remove __pycache__ directories and optional .pyc files under a root.
 
 Usage:
-  From scripts/:      python dev/scripts/clean_pycache.py [--root .] [--dry-run] [--pyc]
-  From project root: python scripts/dev/scripts/clean_pycache.py [--root scripts] [--dry-run] [--pyc]
+  From scripts/:       python -m layers.layer_2_devtools.level_1_impl.level_2.clean_pycache [--root .] [--dry-run] [--pyc]
 """
 
 import argparse

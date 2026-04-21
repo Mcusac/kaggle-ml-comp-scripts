@@ -95,6 +95,6 @@ When a pass compares **target** vs **lower** code:
 
 1. Copy preset paths from this file into your chat.
 2. Open the pass doc (e.g. [audit-pass-dependency.md](audit-pass-dependency.md)).
-3. Paste the filled **`USER_REQUEST`** template and delegate **`Task(subagent_type="code-audit", …)`** per `.cursor/rules/code-audit-delegation.mdc`.
+3. Paste the filled **`USER_REQUEST`** template and run code-audit per `.cursor/rules/code-audit-delegation.mdc` (canonical: planner/auditor `Task`s from the main assistant; see **code-audit-quick-reference.md**).
 
 This command will be available in chat with /audit-targets

@@ -4,7 +4,7 @@
 
 ## Agent instructions
 
-1. **`Task(subagent_type="code-audit", …)`** + verbatim **`USER_REQUEST`** per `code-audit-delegation.mdc`.
+1. Code-audit per `.cursor/rules/code-audit-delegation.mdc` (canonical: planner/auditor `Task`s; legacy: **`Task(code-audit)`**) + verbatim **`USER_REQUEST`**.
 2. Default **`audit_profile: full`**. If the user only needs import-level DRY signals, they may say **`profile imports`**.
 3. Auditor Phase 7b (DRY across levels) is central; ground-truth remains reading source in `layer_0_core` / infra as named in `USER_REQUEST`.
 4. Tag with `# VIOLATION: DRY — ...` from [audit-pass-tags.md](audit-pass-tags.md).

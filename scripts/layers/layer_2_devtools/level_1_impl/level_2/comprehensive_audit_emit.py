@@ -10,7 +10,7 @@ CI/skeleton experiments. May be removed in a future cleanup.
 
 Legacy: Step 2.7 (precheck) + emit for each row in an audit_targets manifest.
 
-Run from scripts/:  python dev/scripts/comprehensive_audit_emit.py --manifest <queue.json>
+Run from scripts/:  python -m layers.layer_2_devtools.level_1_impl.level_2.comprehensive_audit_emit --manifest <queue.json>
 """
 
 import argparse

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Compatibility wrapper for level_2 devtools validate_before_upload."""
+"""Thin wrapper; canonical: ``python -m ...level_2.validate_before_upload``."""
 
 import sys
 from pathlib import Path
 
-_SCRIPTS_ROOT = Path(__file__).resolve().parents[2]
+_SCRIPTS_ROOT = Path(__file__).resolve().parents[3]
 if str(_SCRIPTS_ROOT) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_ROOT))
 

@@ -4,7 +4,7 @@
 
 ## Agent instructions
 
-1. **`Task(subagent_type="code-audit", …)`**, verbatim **`USER_REQUEST`**.
+1. Code-audit per `.cursor/rules/code-audit-delegation.mdc` (canonical: planner/auditor `Task`s; legacy: **`Task(code-audit)`**); verbatim **`USER_REQUEST`**.
 2. Use **`profile imports`** first for fast regression on layering; add **`profile full`** if the user wants a full pass.
 3. **`recommendations only`** / **`no code edits`** required.
 4. Report **`# REGRESSION: ...`** tags from [audit-pass-tags.md](audit-pass-tags.md) when prior fixes appear undone.

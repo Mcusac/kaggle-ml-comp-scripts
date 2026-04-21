@@ -1,0 +1,8 @@
+{
+  "artifact_kind": "precheck",
+  "audit_scope": "contests_special",
+  "generated": "2026-04-21",
+  "level_name": "level_arc_agi_2_root",
+  "precheck_status": "skipped_machine_script",
+  "reason": "ModuleNotFoundError: No module named 'torchvision'"
+}

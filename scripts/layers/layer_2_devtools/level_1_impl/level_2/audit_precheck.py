@@ -3,7 +3,9 @@
 Run static import/layering precheck for one audit target; write markdown + JSON
 under .cursor/audit-results/<scope>/summaries/.
 
-Run from scripts/:  python dev/scripts/audit_precheck.py ...
+Run from ``kaggle-ml-comp-scripts/scripts/``::
+
+  python -m layers.layer_2_devtools.level_1_impl.level_2.audit_precheck
 
 Does not replace the planner/auditor; feeds machine findings for Phase 7 reconciliation.
 """
@@ -13,6 +15,7 @@ from dataclasses import dataclass
 from datetime import date as _date
 import io
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -21,10 +24,6 @@ _SCRIPTS_ROOT = _SCRIPT_DIR.parents[3]
 if str(_SCRIPTS_ROOT) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_ROOT))
 
-_PRECHECK_STUB_DIR = _SCRIPTS_ROOT / "dev" / "scripts"
-if str(_PRECHECK_STUB_DIR) not in sys.path:
-    sys.path.insert(0, str(_PRECHECK_STUB_DIR))
-
 try:
     import path_bootstrap
 
@@ -32,7 +31,9 @@ try:
 except Exception:
     pass
 
-from precheck_artifact_root import resolve_audit_artifact_root
+from layers.layer_2_devtools.level_1_impl.level_2.audit_artifact_bootstrap import (
+    get_resolve_audit_artifact_root,
+)
 
 
 @dataclass(frozen=True)
@@ -44,11 +45,18 @@ class _FallbackArgs:
     generated: str | None
 
 
-def _write_skipped_precheck(*, args: _FallbackArgs, reason: str) -> int:
+def _strict_from_env_and_flag(strict_flag: bool) -> bool:
+    if strict_flag:
+        return True
+    v = os.environ.get("AUDIT_MACHINE_STRICT", "").strip().lower()
+    return v in ("1", "true", "yes", "on")
+
+
+def _write_skipped_precheck(*, args: _FallbackArgs, reason: str, strict: bool) -> int:
     ws = (
         args.workspace_root.resolve()
         if args.workspace_root is not None
-        else resolve_audit_artifact_root(args.level_path or _SCRIPTS_ROOT)
+        else get_resolve_audit_artifact_root()(args.level_path or _SCRIPTS_ROOT)
     )
     gen = args.generated or _date.today().isoformat()
     out_base = (
@@ -107,6 +115,13 @@ def _write_skipped_precheck(*, args: _FallbackArgs, reason: str) -> int:
     print(f"[WARN] audit_precheck skipped: {reason}")
     print(f"[OK] Wrote {Path(str(out_base) + '.md')}")
     print(f"[OK] Wrote {Path(str(out_base) + '.json')}")
+    if strict:
+        print(
+            "[FAIL] Strict mode: precheck_status is skipped_machine_script — "
+            "exit 1 (install optional deps or omit --strict / AUDIT_MACHINE_STRICT)",
+            file=sys.stderr,
+        )
+        return 1
     return 0
 
 
@@ -173,7 +188,16 @@ def main() -> int:
             "contest package root / layer_Z-style tree"
         ),
     )
+    parser.add_argument(
+        "--strict",
+        action="store_true",
+        help=(
+            "Non-zero exit if the machine precheck stack cannot run (skip stub). "
+            "Also enabled when env AUDIT_MACHINE_STRICT is 1/true/yes/on (CI)."
+        ),
+    )
     args = parser.parse_args()
+    strict = _strict_from_env_and_flag(bool(args.strict))
     try:
         from layers.layer_2_devtools.level_1_impl.level_1.api_audit import (  # type: ignore
             run_audit_precheck_cli_complete,
@@ -187,7 +211,9 @@ def main() -> int:
             generated=args.date,
         )
         missing = str(exc)
-        return _write_skipped_precheck(args=fb, reason=f"ModuleNotFoundError: {missing}")
+        return _write_skipped_precheck(
+            args=fb, reason=f"ModuleNotFoundError: {missing}", strict=strict
+        )
 
     env = run_audit_precheck_cli_complete(
         {
@@ -200,6 +226,7 @@ def main() -> int:
             "json_only": args.json_only,
             "full_general_scan": args.full_general_scan,
             "precheck_kind": args.precheck_kind,
+            "strict": strict,
         }
     )
     if env["status"] != "ok":

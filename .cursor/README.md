@@ -17,5 +17,5 @@ This folder contains **repo/package-specific** Cursor artifacts for
 
 ### Workspace vs repo `.cursor/`
 
-- **Workspace root** `.cursor/` holds shared agents, global commands (e.g. `/code-audit`), and pointers for cross-repo tooling. **`kaggle-ml-comp-scripts` audit deliverables** (inventories, audits, prechecks, manifests) live under **`input/kaggle-ml-comp-scripts/.cursor/audit-results/`** — see that folder’s `README.md`.
+- **Workspace root** `.cursor/` holds shared agents, global commands (e.g. `/code-audit`), and pointers for cross-repo tooling. **`kaggle-ml-comp-scripts` audit deliverables** (inventories, audits, prechecks, manifests) live under **`input/kaggle-ml-comp-scripts/.cursor/audit-results/`** — see [audit-results/README.md](audit-results/README.md). Devtools index: [scripts/layers/layer_2_devtools/README.md](../scripts/layers/layer_2_devtools/README.md) (see also [scripts/dev/README.md](../scripts/dev/README.md) for a short redirect).
 - **This repo** may still host **package-scoped** command markdown under `.cursor/commands/` so audit workflows stay next to `scripts/layers/**` rules (Cursor discovers commands per project configuration).

@@ -4,7 +4,7 @@
 
 ## Agent instructions
 
-1. **`Task(subagent_type="code-audit", …)`** with verbatim **`USER_REQUEST`**.
+1. Code-audit per `.cursor/rules/code-audit-delegation.mdc` (canonical: planner/auditor `Task`s; legacy: **`Task(code-audit)`**); verbatim **`USER_REQUEST`**.
 2. **`USER_REQUEST` MUST include apply-fix language** so orchestrator sets **`run_mode: default`** (e.g. **`apply fixes`**, **`active overhaul`**, **`run_mode default`**) — see `.cursor/agents/code-audit-orchestrator-details.md` Step 1c.
 3. **`audit_profile: full`** unless the change set is import-only (`profile imports`).
 4. Orchestrator guardrails: do not delete/move files under `scripts/layers/` **unless** the user explicitly asked cleanup; follow auditor Phase 8 for caller updates when APIs change.

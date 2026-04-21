@@ -3,7 +3,7 @@
 Summarize SRP violations from a check_health JSON report.
 
 Usage:
-  From scripts/: python dev/scripts/report_srp.py path/to/health_report.json
+  From scripts/: python -m layers.layer_2_devtools.level_1_impl.level_2.report_srp path/to/health_report.json
 """
 
 import argparse

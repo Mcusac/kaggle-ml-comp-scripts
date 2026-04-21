@@ -9,9 +9,10 @@ Exit codes:
 - 1: Fatal violations
 - 2: Warnings only (strict mode)
 
-Usage:
-  From project root:  python scripts/dev/scripts/check_health_thresholds.py <report.json> [--config FILE] [--strict]
-  From scripts/:      python dev/scripts/check_health_thresholds.py <report.json> [--config FILE] [--strict]
+Usage (cwd ``kaggle-ml-comp-scripts/scripts/``)::
+  python -m layers.layer_2_devtools.level_1_impl.level_2.check_health_thresholds <report.json> [--config FILE] [--strict]
+
+Optional wrapper: ``python layers/layer_2_devtools/entrypoints/check_health_thresholds.py`` …
 """
 
 import argparse
@@ -19,7 +20,7 @@ import sys
 from pathlib import Path
 
 _SCRIPT_DIR = Path(__file__).resolve().parent
-_SCRIPTS_ROOT = _SCRIPT_DIR.parent.parent
+_SCRIPTS_ROOT = _SCRIPT_DIR.parents[3]
 if str(_SCRIPTS_ROOT) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_ROOT))
 

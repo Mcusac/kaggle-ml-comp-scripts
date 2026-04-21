@@ -2,11 +2,8 @@
 """
 Run a comprehensive code health analysis and summarize key findings.
 
-Typical usage (from project root):
-    python scripts/dev/scripts/health_summary.py --root scripts
-
-From within scripts/:
-    python dev/scripts/health_summary.py --root .
+Typical usage (cwd ``kaggle-ml-comp-scripts/scripts/``)::
+    python -m layers.layer_2_devtools.level_1_impl.level_2.health_summary --root .
 """
 
 import argparse
@@ -14,7 +11,7 @@ import sys
 from pathlib import Path
 
 _SCRIPT_DIR = Path(__file__).resolve().parent
-_SCRIPTS_ROOT = _SCRIPT_DIR.parent.parent
+_SCRIPTS_ROOT = _SCRIPT_DIR.parents[3]
 if str(_SCRIPTS_ROOT) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_ROOT))
 

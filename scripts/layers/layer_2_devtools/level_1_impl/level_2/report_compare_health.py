@@ -3,7 +3,7 @@
 Compare two check_health JSON reports and print key deltas.
 
 Usage:
-  From scripts/: python dev/scripts/report_compare_health.py pre.json post.json
+  From scripts/: python -m layers.layer_2_devtools.level_1_impl.level_2.report_compare_health pre.json post.json
 """
 
 import argparse

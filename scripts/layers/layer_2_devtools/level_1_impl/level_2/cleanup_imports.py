@@ -3,8 +3,8 @@
 Remove unused imports from Python files based on package health report.
 
 Usage:
-  python dev/scripts/cleanup_imports.py --report unused_imports_report.json --dry-run
-  python dev/scripts/cleanup_imports.py --report unused_imports_report.json
+  python -m layers.layer_2_devtools.level_1_impl.level_2.cleanup_imports --report unused_imports_report.json --dry-run
+  python -m layers.layer_2_devtools.level_1_impl.level_2.cleanup_imports --report unused_imports_report.json
 """
 
 import argparse

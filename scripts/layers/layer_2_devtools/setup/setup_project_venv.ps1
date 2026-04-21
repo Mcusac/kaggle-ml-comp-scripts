@@ -8,7 +8,7 @@ function Assert-LastExitCode {
 }
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$packageRoot = Resolve-Path (Join-Path $scriptDir "..\..\..")
+$packageRoot = Resolve-Path (Join-Path $scriptDir "..\..\..\..")
 
 $venvDir = Join-Path $packageRoot ".venv"
 $activate = Join-Path $venvDir "Scripts\Activate.ps1"

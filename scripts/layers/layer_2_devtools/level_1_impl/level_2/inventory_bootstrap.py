@@ -3,7 +3,9 @@
 Emit a machine-generated markdown fragment for the code-audit planner to merge
 under a \"Machine-generated (verify)\" section of INVENTORY_<level>.md.
 
-Run from scripts/:  python dev/scripts/inventory_bootstrap.py --level-path <dir> [--output path.md]
+From ``kaggle-ml-comp-scripts/scripts/``::
+
+  python -m layers.layer_2_devtools.level_1_impl.level_2.inventory_bootstrap
 """
 
 import argparse

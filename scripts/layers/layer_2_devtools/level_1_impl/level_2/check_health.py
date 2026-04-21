@@ -11,9 +11,10 @@ Reports:
 - SOLID: principle violation detection
 - Dead code: unused imports, unreachable code
 
-Usage:
-  From project root:  python scripts/dev/scripts/check_health.py [--root scripts] [--json] [--config FILE]
-  From scripts/:      python dev/scripts/check_health.py [--root .] [--json] [--config FILE]
+Usage (cwd ``kaggle-ml-comp-scripts/scripts/``)::
+  python -m layers.layer_2_devtools.level_1_impl.level_2.check_health [--root ..] [--json] [--config FILE]
+
+Optional wrapper: ``python layers/layer_2_devtools/entrypoints/check_health.py`` (adds ``scripts/`` to path).
 
 --root: Root of the tree to analyze (e.g. scripts when at project root to analyze only the framework).
 Defaults: --root . (current directory)

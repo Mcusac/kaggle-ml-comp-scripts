@@ -1,0 +1,60 @@
+{
+  "aggregate": {
+    "failed_steps": [],
+    "overall_exit_code": 0
+  },
+  "generated": "2026-01-15T12:00:00Z",
+  "generated_date": "2026-01-15",
+  "queue_json_bytes": 4200,
+  "queue_path": "/path/to/artifact_base/.cursor/audit-results/general/summaries/machine_runs/2026-01-15T120000Z/audit_queue.json",
+  "queue_stored": true,
+  "queue_summary": {
+    "by_audit_scope": {
+      "core": 2,
+      "contest_tier": 1
+    },
+    "target_count": 3
+  },
+  "run_id": "2026-01-15T120000Z",
+  "schema_version": "1",
+  "scripts_root": "/path/to/kaggle-ml-comp-scripts/scripts",
+  "steps": {
+    "audit_targets": {
+      "errors": [],
+      "layers_root": "/path/to/kaggle-ml-comp-scripts/scripts/layers",
+      "status": "ok",
+      "target_count": 3
+    },
+    "csiro_scan": {
+      "exit_code": 0,
+      "json_path": "/redacted/audit_csiro_level_csiro_2026-01-15.json",
+      "md_path": "/redacted/scan_csiro_level_csiro_2026-01-15.md",
+      "status": "ok",
+      "summary_line": "0 violation(s) found."
+    },
+    "general_stack_scan": {
+      "exit_code": 0,
+      "json_path": "/redacted/scan_level_violations_2026-01-15.json",
+      "md_path": "/redacted/scan_level_violations_2026-01-15.md",
+      "status": "ok",
+      "summary_line": "0 stack violation(s)."
+    },
+    "precheck": {
+      "max_targets": null,
+      "status": "ok",
+      "targets": [
+        {
+          "audit_scope": "core",
+          "exit_code": 0,
+          "level_name": "level_0",
+          "messages": [
+            "✅ precheck complete"
+          ],
+          "precheck_kind": "general_level",
+          "status": "ok"
+        }
+      ]
+    }
+  },
+  "workspace": "/path/to/artifact_base"
+}

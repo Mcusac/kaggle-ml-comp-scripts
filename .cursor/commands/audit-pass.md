@@ -1,6 +1,6 @@
 # audit-pass
 
-**Repo-local** focused audit passes for `input/kaggle-ml-comp-scripts`. Each pass delegates to the workspace **`code-audit`** subagent (`Task(subagent_type="code-audit", …)`); do not replace that pipeline with ad-hoc reviews.
+**Repo-local** focused audit passes for `input/kaggle-ml-comp-scripts`. Each pass follows the workspace code-audit pipeline (`.cursor/rules/code-audit-delegation.mdc`): **canonical** = main assistant + **`Task(code-audit-planner)`** then **`Task(code-audit-auditor)`** per target; **legacy** = **`Task(code-audit)`** if nested Tasks work. Do not replace that pipeline with ad-hoc reviews.
 
 ## Prerequisites (workspace root)
 

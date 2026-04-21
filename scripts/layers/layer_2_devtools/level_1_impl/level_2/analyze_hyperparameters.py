@@ -6,8 +6,7 @@ Analyzes grid search results to identify top performers, parameter trends,
 and generate focused grid search recommendations.
 
 Usage:
-  From project root:  python scripts/dev/scripts/analyze_hyperparameters.py --model-type lgbm [--metadata-dir PATH] [--top-n 20] [--json] [--output FILE]
-  From scripts/:      python dev/scripts/analyze_hyperparameters.py --model-type lgbm [--metadata-dir PATH] [--top-n 20] [--json] [--output FILE]
+  From scripts/:       python -m layers.layer_2_devtools.level_1_impl.level_2.analyze_hyperparameters --model-type lgbm [--metadata-dir PATH] [--top-n 20] [--json] [--output FILE]
 """
 
 import argparse

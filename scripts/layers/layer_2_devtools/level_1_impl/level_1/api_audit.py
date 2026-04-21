@@ -1,5 +1,6 @@
 """Public API: workspace resolution, stack scans, and audit precheck."""
 
+import importlib.util
 import json
 from datetime import date
 from pathlib import Path
@@ -38,6 +39,29 @@ from layers.layer_2_devtools.level_0_infra.level_0.contracts.envelope import par
 from layers.layer_2_devtools.level_0_infra.level_0.contracts.envelope import (
     parse_generated_optional as _parse_generated_optional,
 )
+
+_precheck_validate_fn: Any = None
+
+
+def _validate_precheck_json_file(data: dict[str, Any]) -> list[str]:
+    """Load ``precheck_json_contract`` by path (no ``from ...models`` import)."""
+    global _precheck_validate_fn
+    if _precheck_validate_fn is None:
+        contract = (
+            Path(__file__).resolve().parent.parent.parent
+            / "level_0_infra"
+            / "level_0"
+            / "models"
+            / "precheck_json_contract.py"
+        )
+        name = "precheck_json_contract_api_audit"
+        spec = importlib.util.spec_from_file_location(name, contract)
+        if spec is None or spec.loader is None:
+            return [f"cannot load precheck contract: {contract}"]
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        _precheck_validate_fn = mod.validate_precheck_json
+    return _precheck_validate_fn(data)
 
 
 def resolve_workspace(config: dict[str, Any]) -> dict[str, Any]:
@@ -469,6 +493,7 @@ def run_audit_precheck_cli_complete(config: dict[str, Any]) -> dict[str, Any]:
     """
     try:
         scripts_root = Path(config["scripts_root"])
+        strict_validate = bool(config.get("strict"))
         generated = _parse_generated_optional(config.get("generated")) or date.today()
         default_layer_core = scripts_root / "layers" / "layer_0_core"
         full_general = bool(config.get("full_general_scan", False))
@@ -534,6 +559,11 @@ def run_audit_precheck_cli_complete(config: dict[str, Any]) -> dict[str, Any]:
             return sj
         out_json.write_text(sj["data"]["json_text"], encoding="utf-8")
         messages.append(f"[OK] Wrote {out_json}")
+        if strict_validate:
+            parsed = json.loads(out_json.read_text(encoding="utf-8"))
+            v_errs = _validate_precheck_json_file(parsed)
+            if v_errs:
+                return _err([f"precheck JSON contract: {e}" for e in v_errs])
         ws = Path(result["workspace"])
         snap_sources: list[Path] = [out_json]
         if not json_only:

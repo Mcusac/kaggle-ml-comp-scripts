@@ -4,7 +4,7 @@
 
 ## Agent instructions
 
-1. Read `.cursor/rules/code-audit-delegation.mdc` and delegate with **`Task(subagent_type="code-audit", …)`**.
+1. Read `.cursor/rules/code-audit-delegation.mdc` and run the code-audit pipeline (canonical: main assistant + **`Task(code-audit-planner)`** then **`Task(code-audit-auditor)`** per target; legacy: **`Task(code-audit)`**).
 2. Embed the user’s **entire** chat message (including `@` paths) inside the Task prompt as a quoted **`USER_REQUEST`** block — verbatim.
 3. Tags for appended summaries: [audit-pass-tags.md](audit-pass-tags.md).
 

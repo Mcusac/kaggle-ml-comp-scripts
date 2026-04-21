@@ -1,11 +1,14 @@
 """Composed audit target discovery operations using level_0 primitives."""
 
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Literal
 
-from layers.layer_2_devtools.level_0_infra.level_0.constants.import_patterns import LEVEL_DIR_RE
+# Same pattern as ``level_0_infra.level_0.constants.import_patterns.LEVEL_DIR_RE``; inlined so this
+# module does not import ``level_0_infra`` (which can pull ``layer_0_core`` and optional torch deps).
+LEVEL_DIR_RE = re.compile(r"^level_(\d+)$")
 
 AuditScope = Literal["general", "competition_infra", "contests_special"]
 

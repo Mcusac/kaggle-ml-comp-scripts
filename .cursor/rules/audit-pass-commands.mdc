@@ -10,7 +10,7 @@ globs:
 When the user asks for a **multi-pass** audit, **focused audit pass** (dependency, classify, duplicate, wrappers, decompose, enforce, apply, validate), or a **reference journal** campaign under `.cursor/audit-results/<scope>/summaries/`:
 
 1. Point them at **`input/kaggle-ml-comp-scripts/.cursor/commands/audit-pass.md`** for the hub and tag taxonomy.
-2. Delegate structural audits with **`Task(subagent_type="code-audit", …)`** per **`.cursor/rules/code-audit-delegation.mdc`** (verbatim **`USER_REQUEST`**).
+2. Delegate structural audits per **`.cursor/rules/code-audit-delegation.mdc`** (canonical: main assistant + **`Task(code-audit-runner)`** for **`run_code_audit_pipeline`** when Step 1f applies + **`Task(code-audit-planner)`** / **`Task(code-audit-auditor)`**; legacy: **`Task(code-audit)`**); verbatim **`USER_REQUEST`**.
 3. Do **not** substitute `comprehensive_audit_emit.py` or skip **planner + auditor** unless `USER_REQUEST` opts into machine emit (workspace `code-audit-orchestrator-details.md` Step 0.8).
 
 Canonical artifacts remain under **`input/kaggle-ml-comp-scripts/.cursor/audit-results/<scope>/{inventories,audits,summaries}/`** (`artifact_base`).

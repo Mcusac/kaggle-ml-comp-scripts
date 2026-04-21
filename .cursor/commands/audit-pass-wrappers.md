@@ -4,7 +4,7 @@
 
 ## Agent instructions
 
-1. **`Task(subagent_type="code-audit", …)`** with verbatim **`USER_REQUEST`**.
+1. Code-audit per `.cursor/rules/code-audit-delegation.mdc` (canonical: planner/auditor `Task`s; legacy: **`Task(code-audit)`**); verbatim **`USER_REQUEST`**.
 2. Use **`profile barrels`** (primary). User may request **`profile full`** if wrappers live next to non-barrel issues.
 3. Enforce: `__init__.py` aggregation per `input/kaggle-ml-comp-scripts/.cursor/rules/python-import-surfaces.mdc` is **valid** — do not flag as `# VIOLATION: wrapper — no added value` unless policy is violated.
 4. Flag logic modules that only delegate with no added behavior using tags from [audit-pass-tags.md](audit-pass-tags.md).

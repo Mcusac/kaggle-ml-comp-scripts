@@ -12,45 +12,56 @@ concurrency:
   group: health-check-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  # Same value local devs should pass to --run-id for one-off parity checks, or use a new id per run.
+  PIPELINE_RUN_ID: ci-${{ github.run_id }}-${{ github.run_attempt }}
+
 jobs:
   health-check:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-    
+
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
         cache: 'pip'
-    
+
     - name: Install dependencies
       run: |
         pip install -r requirements.txt || true
-    
-    - name: Run health check
-      run: |
-        python scripts/dev/scripts/check_health.py \
-          --root input/kaggle-ml-comp-scripts \
-          --json > health_report.json
-    
-    - name: CSIRO contest tier imports
+
+    - name: Code audit machine pipeline (strict, fail on skipped)
       working-directory: scripts
       run: |
-        python dev/scan_csiro_level_violations.py
-    
-    - name: Check thresholds
+        python -m layers.layer_2_devtools.level_1_impl.level_2.run_code_audit_pipeline \
+          --workspace-root ".." \
+          --run-id "${{ env.PIPELINE_RUN_ID }}" \
+          --strict \
+          --fail-on-skipped
+
+    - name: Run health check
+      working-directory: scripts
       run: |
-        python scripts/dev/scripts/check_health_thresholds.py \
-          --report health_report.json
-    
+        python -m layers.layer_2_devtools.level_1_impl.level_2.check_health \
+          --root .. \
+          --json > ../health_report.json
+
+    - name: Check thresholds (strict)
+      working-directory: scripts
+      run: |
+        python -m layers.layer_2_devtools.level_1_impl.level_2.check_health_thresholds \
+          ../health_report.json \
+          --strict
+
     - name: Pretty print report
       if: always()
       run: |
         python -m json.tool health_report.json > health_report_pretty.json
-    
+
     - name: Upload health report artifacts
       uses: actions/upload-artifact@v4
       with:
@@ -60,7 +71,16 @@ jobs:
           health_report_pretty.json
         if-no-files-found: error
         compression-level: 6
-    
+
+    - name: Upload code audit manifest
+      if: success() || failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: code-audit-manifest
+        path: .cursor/audit-results/general/summaries/machine_runs/${{ env.PIPELINE_RUN_ID }}/
+        if-no-files-found: warn
+        compression-level: 6
+
     - name: Publish summary
       if: always()
       run: |

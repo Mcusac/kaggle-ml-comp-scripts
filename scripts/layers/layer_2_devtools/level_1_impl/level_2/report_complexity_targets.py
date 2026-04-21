@@ -3,7 +3,7 @@
 Report current complexity for a small set of named targets from a check_health report.
 
 Usage:
-  From scripts/: python dev/scripts/report_complexity_targets.py path/to/health_report.json
+  From scripts/: python -m layers.layer_2_devtools.level_1_impl.level_2.report_complexity_targets path/to/health_report.json
 """
 
 import argparse

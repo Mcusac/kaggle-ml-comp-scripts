@@ -1,30 +1,41 @@
-# Layer 2 devtools
+# Devtools (`layer_2_devtools`)
 
-Kaggle competition repo tooling: package health scans, audit precheck, import probes, hyperparameter helpers, and maintenance CLIs.
+**Working directory:** `kaggle-ml-comp-scripts/scripts/` (the package root that contains `layers/` on `sys.path`).
 
-## Packages
+## Canonical `python -m` entrypoints
 
-| Package | Role |
+Implementation modules live under [`level_1_impl/level_2/`](level_1_impl/level_2/). Prefer:
+
+`python -m layers.layer_2_devtools.level_1_impl.level_2.<module>`
+
+| Module | Role |
 |--------|------|
-| **`layer_0_infra`** | Reusable primitives and small compositions: paths, AST/JSON parse, scanners, format helpers, reporters. |
-| **`level_1_impl`** | Composed workflows (`level_0.composed`) and stable entry APIs (`level_1.api_*`), plus executable scripts in `level_2`. |
+| `audit_precheck` | Writes `precheck_*.md` / `.json` under `artifact_base/.cursor/audit-results/.../summaries/` |
+| `audit_artifact_schema_check` | Validates `*_audit.md` and optional `--precheck-summaries` |
+| `audit_targets` | Emits JSON queue for comprehensive orchestration |
+| `audit_rollup` | Rollup from queue JSON |
+| `run_code_audit_pipeline` | Machine runner: discovery + optional precheck/scans; writes [`code_audit_pipeline_manifest.v1.example.json`](level_1_impl/level_2/code_audit_pipeline_manifest.v1.example.json)–shaped `manifest.json` under `artifact_base/.cursor/audit-results/.../machine_runs/<run_id>/` |
+| `inventory_bootstrap` | Planner merge fragment |
+| `validate_before_upload` | Pre-upload checks |
+| `check_health` / `check_health_thresholds` | Health reports |
 
-Import examples:
+**CI parity:** [`.github/workflows/health-check.yml`](../../../../.github/workflows/health-check.yml) runs `run_code_audit_pipeline` with `--strict --fail-on-skipped` before `check_health` and `check_health_thresholds --strict` — use the same flags locally to match Actions.
 
-```python
-from layers.layer_2_devtools.level_0_infra.level_0 import FormattingHelpers
-from layers.layer_2_devtools.level_0_infra.level_1 import SectionFormatters
-from layers.layer_2_devtools.level_1_impl.level_1.api_audit import resolve_workspace
-```
-
-## Tests
-
-From the `scripts` directory (with `scripts` on `PYTHONPATH`, e.g. via `path_bootstrap`):
+**Example**
 
 ```text
-python -m pytest layers/layer_2_devtools/level_1_impl/tests -q
+cd input/kaggle-ml-comp-scripts/scripts
+python -m layers.layer_2_devtools.level_1_impl.level_2.audit_precheck --help
 ```
 
-## Further detail
+**Strict precheck (CI: fail on skip stub):** `AUDIT_MACHINE_STRICT=1` or `--strict` on `audit_precheck`.
 
-See [level_0_infra/README.md](level_0_infra/README.md) for infra tier boundaries (`level_0` → `level_1` → `level_2`).
+## Thin CLI wrappers (optional)
+
+Compatibility scripts under [`entrypoints/`](entrypoints/) add `scripts/` to `sys.path` and call the same `main()` as the `-m` modules. Prefer `python -m` for new scripts and docs.
+
+**Workspace / artifact root** (without importing the full `level_0_infra` package, so optional `torch`/`torchvision` are not required for skip-stub paths): `layers.layer_2_devtools.level_1_impl.level_2.audit_artifact_bootstrap` loads `path/workspace.py` from disk. Full-package imports: `...level_0.path.workspace` for use inside an environment where devtools inits are safe.
+
+**Setup (Windows):** [setup/setup_project_venv.ps1](setup/setup_project_venv.ps1) — venv and `requirements-dev.txt` at the `kaggle-ml-comp-scripts` package root.
+
+The legacy `scripts/dev/README.md` points here.

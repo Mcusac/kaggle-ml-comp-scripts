@@ -113,6 +113,8 @@ def build_precheck_json(
         "scope": meta.audit_scope,
         "level": meta.level_name,
         "artifact": meta.artifact,
+        "artifact_kind": "precheck",
+        "precheck_status": "ok",  # contract: precheck_json_contract.ALLOWED_PRECHECK_STATUSES
         "scan_root": str(meta.scan_root.resolve()),
         "violations": violations,
         "parse_errors": parse_errors,

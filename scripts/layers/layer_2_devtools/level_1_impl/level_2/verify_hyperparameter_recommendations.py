@@ -6,8 +6,8 @@ Checks for duplicates, validates parameter ranges, and ensures recommendations
 are properly formatted and don't conflict with existing tested values.
 
 Usage:
-  From project root:  python scripts/dev/scripts/verify_hyperparameter_recommendations.py --model-type lgbm --recommendations FILE [--metadata-dir PATH]
-  From scripts/:      python dev/scripts/verify_hyperparameter_recommendations.py --model-type lgbm --recommendations FILE [--metadata-dir PATH]
+  From scripts/:       python -m layers.layer_2_devtools.level_1_impl.level_2.verify_hyperparameter_recommendations --model-type lgbm --recommendations FILE [--metadata-dir PATH]
+  (Always run with cwd set to ``kaggle-ml-comp-scripts/scripts/`` for ``layers`` imports.)
 """
 
 import argparse
@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 
 _SCRIPT_DIR = Path(__file__).resolve().parent
-_SCRIPTS_ROOT = _SCRIPT_DIR.parent.parent
+_SCRIPTS_ROOT = _SCRIPT_DIR.parents[3]
 if str(_SCRIPTS_ROOT) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_ROOT))
 

@@ -2,7 +2,7 @@
 Bundled file operations for RELATIVE_IN_LOGIC cleanup (general stack).
 
 ``scripts_dev_dir`` is the directory that contained the legacy ``_violation_fix_bundle``
-script (typically ``.../scripts/dev``); relative patch paths are resolved under it.
+script (typically ``.../kaggle-ml-comp-scripts/scripts`` or devtools entrypoints); relative patch paths are resolved under it.
 """
 
 from pathlib import Path

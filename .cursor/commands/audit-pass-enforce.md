@@ -4,7 +4,7 @@
 
 ## Agent instructions
 
-1. **`Task(subagent_type="code-audit", …)`**, verbatim **`USER_REQUEST`**.
+1. Code-audit per `.cursor/rules/code-audit-delegation.mdc` (canonical: planner/auditor `Task`s; legacy: **`Task(code-audit)`**); verbatim **`USER_REQUEST`**.
 2. **`audit_profile: full`**. Ensure **`run_mode`** stays **recommendations-only** (user must not say apply fixes on this pass).
 3. Map findings to `# VIOLATION: infra-too-thick`, `# VIOLATION: inline-io`, `# VIOLATION: registry-duplication`, `# CANDIDATE: push-down-to-core` as appropriate — [audit-pass-tags.md](audit-pass-tags.md).
 
