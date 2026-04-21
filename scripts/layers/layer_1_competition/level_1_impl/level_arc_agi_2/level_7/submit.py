@@ -30,6 +30,9 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2 import (
     predict_grid_from_checkpoint,
 )
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2.pipelines.score_submission import (
+    log_local_evaluation_score_optional,
+)
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_6 import (
     predict_attempts_for_submit_strategy,
 )
@@ -192,6 +195,7 @@ def run_submission_pipeline(
     submission = ARC26PostProcessor().normalize_submission(submission)
     out_path = Path(output_json) if output_json else ARC26Paths().submission_output_path()
     save_json(submission, out_path)
+    log_local_evaluation_score_optional(data_root=str(root), submission_path=str(out_path))
     infer_artifact_final: dict[str, Any] | None = None
     if str(strategy or "").strip().lower() == "llm_tta_dfs" and str(llm_cfg.infer_artifact_dir or "").strip():
         try:

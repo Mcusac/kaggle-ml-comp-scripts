@@ -3,6 +3,7 @@
 from pathlib import Path
 from typing import Any
 
+from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_4 import load_json_raw
 
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
@@ -12,6 +13,8 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
     eval_score_submission_two_attempts,
 )
+
+logger = get_logger(__name__)
 
 
 def pipeline_run_score_submission(
@@ -54,3 +57,27 @@ def pipeline_run_score_submission(
         "solutions_path": str(sol_path),
         "submission_path": str(sub_path),
     }
+
+
+def log_local_evaluation_score_optional(*, data_root: str, submission_path: str) -> None:
+    """Best-effort public-eval score after ``submission.json`` is written; never raises.
+
+    Delegates to :func:`pipeline_run_score_submission`. On missing eval JSON, bad paths,
+    or parse errors, logs a warning and returns so submit always completes.
+    """
+    try:
+        out = pipeline_run_score_submission(
+            data_root=data_root,
+            submission_path=submission_path,
+            split="evaluation",
+        )
+    except Exception as exc:
+        logger.warning("⚠️ Local evaluation score skipped: %s", exc)
+        return
+    logger.info(
+        "✅ Local evaluation score (public eval, two-attempt weighting): %s | challenges=%s | solutions=%s | submission=%s",
+        out.get("score"),
+        out.get("challenges_path"),
+        out.get("solutions_path"),
+        out.get("submission_path"),
+    )
