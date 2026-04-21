@@ -58,10 +58,10 @@ def test_train_and_submit_returns_train_stage_when_train_raises(tmp_path: Path, 
         raise RuntimeError("train boom")
 
     monkeypatch.setattr(
-        "layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_5.stages.run_train_pipeline",
+        "layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4.stages.train.run_train_pipeline",
         _boom,
     )
-    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_6 import (
+    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_7 import (
         run_train_and_submit_pipeline_result,
     )
 

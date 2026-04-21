@@ -1,1 +1,8 @@
-"""Top tier for ARC-AGI-2 modules that depend on level_7 orchestration."""
+"""Auto-generated aggregation exports."""
+
+
+from . import handlers
+
+from .handlers import *
+
+__all__ = list(handlers.__all__)

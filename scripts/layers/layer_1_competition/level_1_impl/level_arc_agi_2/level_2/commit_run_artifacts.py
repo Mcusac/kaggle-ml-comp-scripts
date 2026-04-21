@@ -1,11 +1,4 @@
-"""Run-artifact commit helper.
-
-Consolidates the ``update_run_metadata`` + ``copy_artifact_into_run`` +
-``finalize_run_success``/``finalize_run_failure`` try/except idiom that
-``level_5/stages/{train,tune,submit}.py`` all repeat verbatim. Callers still
-build their own rich ``patch`` dict (shape differs per stage); only the
-boilerplate around the three lifecycle calls collapses here.
-"""
+"""Run-artifact commit helper (lives at ``level_2`` so imports use the level barrel)."""
 
 from pathlib import Path
 from typing import Any

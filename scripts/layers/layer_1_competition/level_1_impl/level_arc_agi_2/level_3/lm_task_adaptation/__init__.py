@@ -1,10 +1,12 @@
-"""Per-task Unsloth LoRA adaptation subpackage.
+"""Auto-generated package exports."""
 
-Public surface: ``run_unsloth_task_adaptation`` + ``build_task_training_rows``.
-Internal modules: ``training_rows`` (data prep), ``runner`` (trainer execution).
-"""
 
-from .runner import run_unsloth_task_adaptation
-from .training_rows import build_task_training_rows
+from .training_rows import (
+    build_task_training_rows,
+    resolve_collator_token_ids,
+)
 
-__all__ = ["run_unsloth_task_adaptation", "build_task_training_rows"]
+__all__ = [
+    "build_task_training_rows",
+    "resolve_collator_token_ids",
+]

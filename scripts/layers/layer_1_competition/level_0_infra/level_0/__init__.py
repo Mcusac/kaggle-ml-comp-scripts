@@ -4,9 +4,11 @@ from . import (
     abstractions,
     artifacts,
     cli,
+    lm,
     model,
     paths,
     pipeline,
+    run_tracking,
     submission,
 )
 
@@ -18,9 +20,11 @@ from .abstractions import *
 from .artifacts import *
 from .argv_command_builders import *
 from .cli import *
+from .lm import *
 from .model import *
 from .paths import *
 from .pipeline import *
+from .run_tracking import *
 from .submission import *
 
 __all__ = (
@@ -28,9 +32,11 @@ __all__ = (
     + list(artifacts.__all__)
     + list(argv_command_builders.__all__)
     + list(cli.__all__)
+    + list(lm.__all__)
     + list(model.__all__)
     + list(paths.__all__)
     + list(pipeline.__all__)
+    + list(run_tracking.__all__)
     + list(submission.__all__)
     + ["setup_handler_context"]
 )

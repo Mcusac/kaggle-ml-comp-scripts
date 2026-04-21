@@ -1,18 +1,25 @@
-"""LLM-TTA DFS orchestration subpackage.
+"""Auto-generated package exports."""
 
-Public surface preserved: ``predict_attempts_for_llm_tta_dfs`` re-exported so
-the direct-submodule import path ``...level_3.llm_tta_runner.predict_attempts_for_llm_tta_dfs``
-(used by tests under ``layer_2_devtools``) continues to resolve.
 
-Internal modules:
-- ``runtime_profile`` — budget/timing/profile helpers
-- ``backend_session`` — LM backend build + task-scoped cleanup
-- ``decode_branches`` — three per-augmentation decode strategies
-- ``artifacts`` — inference artifact layout + shard/intermediate writers
-- ``ranking`` — configured ranker + fallback attempt builders
-- ``runner`` — the thin orchestrator
-"""
+from .artifacts import (
+    logger,
+    prepare_artifact_layout,
+    write_decoded_shard,
+    write_intermediate_candidates,
+)
 
-from .runner import predict_attempts_for_llm_tta_dfs
+from .runtime_profile import (
+    build_runtime_profile,
+    per_task_adaptation_should_run,
+    turbo_wall_end_time,
+)
 
-__all__ = ["predict_attempts_for_llm_tta_dfs"]
+__all__ = [
+    "build_runtime_profile",
+    "logger",
+    "per_task_adaptation_should_run",
+    "prepare_artifact_layout",
+    "turbo_wall_end_time",
+    "write_decoded_shard",
+    "write_intermediate_candidates",
+]

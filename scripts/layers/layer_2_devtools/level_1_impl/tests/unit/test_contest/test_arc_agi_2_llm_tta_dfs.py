@@ -123,7 +123,7 @@ def test_submission_pipeline_llm_backend_mode_with_mock(tmp_path: Path) -> None:
 
 def test_llm_surrogate_mode_rejects_lm_only_flags() -> None:
     from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import LlmTtaDfsConfig
-    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3.llm_tta_runner import (
+    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4.llm_tta_runner import (
         predict_attempts_for_llm_tta_dfs,
     )
 
@@ -144,7 +144,7 @@ def test_llm_surrogate_mode_rejects_lm_only_flags() -> None:
 
 def test_llm_budget_forces_fallback() -> None:
     from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import LlmTtaDfsConfig
-    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3.llm_tta_runner import (
+    from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4.llm_tta_runner import (
         predict_attempts_for_llm_tta_dfs,
     )
 

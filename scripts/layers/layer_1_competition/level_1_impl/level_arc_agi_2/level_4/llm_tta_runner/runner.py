@@ -26,20 +26,21 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
     CandidatePrediction,
 )
-
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import (
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.llm_tta_runner import (
+    build_runtime_profile,
     prepare_artifact_layout,
     write_decoded_shard,
     write_intermediate_candidates,
 )
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import (
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2.ranking import (
     build_fallback_attempts,
     pick_ranked_attempts,
-    build_runtime_profile,
 )
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4 import (
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4.llm_tta_runner.backend_session import (
     build_lm_backend,
     restore_adapter_safely,
+)
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4.llm_tta_runner.decode_branches import (
     decode_with_cell_probs,
     decode_with_support_grids,
     decode_with_turbo_lm,

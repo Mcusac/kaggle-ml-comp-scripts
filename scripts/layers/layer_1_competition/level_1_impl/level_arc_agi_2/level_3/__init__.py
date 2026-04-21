@@ -1,23 +1,27 @@
-"""ARC level_3: composition tier (trainer registry, neural eval, LLM-TTA runner).
+"""Auto-generated aggregation exports."""
 
-Subpackages (by purpose):
-- ``trainer_registry/``     - ``NamedRegistry`` for training routines
-- ``neural_eval_score/``    - evaluation exact-match scoring vs held-out solutions
-- ``lm_peft_adapter/``      - lazy ``peft`` bindings for Unsloth / LoRA backends
-- ``llm_tta_runner/``       - LLM-TTA DFS orchestrator + decode branches + artifacts + ranking
-- ``lm_task_adaptation/``   - per-task Unsloth LoRA adaptation (row building + trainer runner)
 
-Public exports from this package: ``get_trainer``, ``list_available_models``,
-``predict_attempts_for_llm_tta_dfs``, ``score_neural_on_evaluation``.
-"""
+from . import (
+    lm,
+    lm_task_adaptation,
+    neural_eval_score,
+    orchestration,
+    scoring,
+    trainer_registry,
+)
 
-from .llm_tta_runner import predict_attempts_for_llm_tta_dfs
-from .neural_eval_score import score_neural_on_evaluation
-from .trainer_registry import get_trainer, list_available_models
+from .lm import *
+from .lm_task_adaptation import *
+from .neural_eval_score import *
+from .orchestration import *
+from .scoring import *
+from .trainer_registry import *
 
-__all__ = [
-    "get_trainer",
-    "list_available_models",
-    "predict_attempts_for_llm_tta_dfs",
-    "score_neural_on_evaluation",
-]
+__all__ = (
+    list(lm.__all__)
+    + list(lm_task_adaptation.__all__)
+    + list(neural_eval_score.__all__)
+    + list(orchestration.__all__)
+    + list(scoring.__all__)
+    + list(trainer_registry.__all__)
+)

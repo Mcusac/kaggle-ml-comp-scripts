@@ -8,8 +8,7 @@ from layers.layer_0_core.level_0 import get_logger
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     ArcLmAdaptationConfig,
 )
-
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import (
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2.token_helpers import (
     unsloth_available,
 )
 

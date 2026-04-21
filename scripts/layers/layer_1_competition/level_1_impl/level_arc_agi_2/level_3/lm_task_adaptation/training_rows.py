@@ -10,7 +10,7 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2 import (
 )
 
 
-def _resolve_collator_token_ids(tokenizer, formatter):
+def resolve_collator_token_ids(tokenizer, formatter):
     eos_ids = tokenizer.encode(str(formatter.im_end), add_special_tokens=False)
     if len(eos_ids) != 1:
         raise ValueError("im_end must encode to one token")

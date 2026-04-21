@@ -1,6 +1,14 @@
-"""Focused argparse registrars for ARC ``run.py`` contest subcommands.
+"""Auto-generated package exports."""
 
-Public entrypoint is ``extend_subparsers`` in the parent ``level_1.cli`` package.
-"""
 
-__all__: list[str] = []
+from .common import add_seed_and_run_context
+
+from .postprocess import add_postprocess_subparsers
+
+from .validate_data import add_validate_data_subparser
+
+__all__ = [
+    "add_postprocess_subparsers",
+    "add_seed_and_run_context",
+    "add_validate_data_subparser",
+]

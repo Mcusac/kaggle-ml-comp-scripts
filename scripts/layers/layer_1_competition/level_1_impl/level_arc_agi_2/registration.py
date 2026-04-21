@@ -29,6 +29,6 @@ register_notebook_commands_module(
 
 register_cli_handlers_module(
     "arc_agi_2",
-    "layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_7.handlers",
+    "layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_8.handlers",
 )
 

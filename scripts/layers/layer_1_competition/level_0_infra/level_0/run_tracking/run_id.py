@@ -1,4 +1,4 @@
-"""Run-id generation helpers for ARC-AGI-2 run folders."""
+"""Run-id generation helpers for run folders."""
 
 from datetime import datetime, timezone
 
@@ -16,3 +16,4 @@ def generate_run_id(stage: str, seed: int) -> str:
     """Generate a sortable run id. Includes stage + seed for quick scanning."""
     ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     return f"{ts}_{_safe_stage_slug(stage)}_seed{int(seed)}"
+

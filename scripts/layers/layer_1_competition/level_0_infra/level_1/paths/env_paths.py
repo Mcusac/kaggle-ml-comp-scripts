@@ -9,7 +9,7 @@ import os
 
 from pathlib import Path
 
-from layers.layer_1_competition.level_0_infra.level_1.registry import (
+from layers.layer_1_competition.level_0_infra.level_1.registry.contest_registry import (
     ContestRegistry,
     get_contest,
 )
@@ -56,3 +56,4 @@ def get_data_root_path() -> str:
     contest = get_contest(contest_name)
     paths_instance = contest["paths"]()
     return str(paths_instance.local_data_root)
+

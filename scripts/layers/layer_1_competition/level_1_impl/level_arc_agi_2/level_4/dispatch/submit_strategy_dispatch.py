@@ -9,7 +9,7 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     stack_raise_if_unsupported_strategy,
     LlmTtaDfsConfig,
 )
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import (
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4.llm_tta_runner import (
     predict_attempts_for_llm_tta_dfs,
 )
 

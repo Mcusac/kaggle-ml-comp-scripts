@@ -1,4 +1,7 @@
-"""Runtime budgeting and profile controls for ARC LM workflows."""
+"""Runtime budgeting and profile controls for LM workflows.
+
+Copied from ARC-AGI-2 contest implementation for reuse by other LM contests.
+"""
 
 import os
 import time
@@ -68,3 +71,4 @@ def build_budget(
         task_deadline_ts=(now + float(task_runtime_sec)) if float(task_runtime_sec) > 0.0 else 0.0,
         decode_deadline_ts=(now + float(decode_runtime_sec)) if float(decode_runtime_sec) > 0.0 else 0.0,
     )
+

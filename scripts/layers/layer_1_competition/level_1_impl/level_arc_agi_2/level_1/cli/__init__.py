@@ -1,11 +1,15 @@
-"""ARC CLI subpackage — argv command builders and contest subparser registration."""
+"""Auto-generated aggregation exports."""
 
-from .commands import build_submit_command, build_train_command, build_tune_command
-from .extend_subparsers import extend_subparsers
 
-__all__ = [
-    "build_submit_command",
-    "build_train_command",
-    "build_tune_command",
-    "extend_subparsers",
-]
+from . import (
+    commands,
+    parsers,
+)
+
+from .commands import *
+from .parsers import *
+
+__all__ = (
+    list(commands.__all__)
+    + list(parsers.__all__)
+)

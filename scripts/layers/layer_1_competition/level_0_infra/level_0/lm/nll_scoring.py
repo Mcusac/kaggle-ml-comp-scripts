@@ -1,8 +1,6 @@
 """Batched teacher-forced NLL core (reference ``calc_scores`` + chunking/aggregation).
 
-Ports NVARC notebook batching: pad with ``PAD_ID``, one forward with ``use_cache=True``,
-``logits.float().cpu().log_softmax(-1)``, then slice ``[query_len-1:query_len-1+answer_len]``
-and sum log-probs on gold answer tokens (return **NLL**, i.e. ``-sum(log p)``, per row).
+Copied from ARC-AGI-2 contest implementation for reuse by other LM contests.
 """
 
 from collections.abc import Sequence
@@ -58,7 +56,7 @@ def calc_scores(
     if not batch_lengths:
         return []
 
-    pad = _resolve_pad_id(tokenizer, pad_id)
+    pad = resolve_pad_id(tokenizer, pad_id)
     max_len = max(batch_lengths)
     padded_tokens = [tokens + [pad] * (max_len - len(tokens)) for tokens in batch_tokens]
     input_ids = torch.tensor(padded_tokens, device=device, dtype=torch.long)
@@ -132,3 +130,4 @@ def aggregate_scores_across_augmentations(
     if mode == "min":
         return float(min(seq))
     raise ValueError(f"Unknown mode={mode!r}.")
+

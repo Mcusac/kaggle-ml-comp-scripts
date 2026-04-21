@@ -8,6 +8,8 @@ from layers.layer_0_core.level_0 import get_logger
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     ArcLmAdaptationConfig,
     COMMON_PEFT_PARAMS,
+    get_peft_model_state_dict,
+    set_peft_model_state_dict,
 )
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2 import (
     load_adapter_state_dict,
@@ -49,10 +51,6 @@ class UnslothArcLmBackend(SharedTorchLmInference, ArcLmBackend):
     def load(self) -> None:
         if not self.is_available():
             raise RuntimeError("unsloth backend requires unsloth, peft, torch (and bitsandbytes for 4-bit).")
-        from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import (
-            lm_peft_adapter,
-        )
-
         torch = importlib.import_module("torch")
         unsloth = importlib.import_module("unsloth")
         FastLanguageModel = getattr(unsloth, "FastLanguageModel")
@@ -77,7 +75,7 @@ class UnslothArcLmBackend(SharedTorchLmInference, ArcLmBackend):
         lp = str(self._config.lora_path).strip() if self._config.lora_path else ""
         if lp:
             state = load_adapter_state_dict(lp, torch)
-            load_result = lm_peft_adapter.set_peft_model_state_dict(
+            load_result = set_peft_model_state_dict(
                 model,
                 state,
                 adapter_name="default",
@@ -90,7 +88,7 @@ class UnslothArcLmBackend(SharedTorchLmInference, ArcLmBackend):
 
         self._model = model
         self._tokenizer = tokenizer
-        state = lm_peft_adapter.get_peft_model_state_dict(model, adapter_name="default")
+        state = get_peft_model_state_dict(model, adapter_name="default")
         self._default_adapter_state = {k: v.detach().clone() for k, v in state.items()}
         self._loaded = True
 
@@ -107,7 +105,7 @@ class UnslothArcLmBackend(SharedTorchLmInference, ArcLmBackend):
             logger.warning("⚠️ Unsloth adapt_for_task: missing LoRA snapshot; skipping.")
             return {"status": "skipped", "reason": "no_adapter_snapshot", "backend": "unsloth"}
         cfg = adaptation if adaptation is not None else ArcLmAdaptationConfig(steps=1)
-        from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3.lm_task_adaptation import (
+        from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4.lm_task_adaptation import (
             run_unsloth_task_adaptation,
         )
 
@@ -126,11 +124,7 @@ class UnslothArcLmBackend(SharedTorchLmInference, ArcLmBackend):
     def restore_base_adapter_after_task(self) -> None:
         if not self._loaded or self._model is None or self._default_adapter_state is None:
             return
-        from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import (
-            lm_peft_adapter,
-        )
-
-        lm_peft_adapter.set_peft_model_state_dict(
+        set_peft_model_state_dict(
             self._model,
             self._default_adapter_state,
             adapter_name="default",

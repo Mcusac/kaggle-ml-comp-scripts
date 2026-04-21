@@ -1,4 +1,5 @@
-"""ARC evaluation utilities — submission scoring + ranker benchmarking."""
+"""Auto-generated package exports."""
+
 
 from .ranker_benchmark import (
     eval_benchmark_rankers,
@@ -6,7 +7,11 @@ from .ranker_benchmark import (
     eval_safe_mean_max,
     eval_summarize_correct_beam_stats,
 )
-from .submission_scoring import eval_count_tasks, eval_score_submission_two_attempts
+
+from .submission_scoring import (
+    eval_count_tasks,
+    eval_score_submission_two_attempts,
+)
 
 __all__ = [
     "eval_benchmark_rankers",

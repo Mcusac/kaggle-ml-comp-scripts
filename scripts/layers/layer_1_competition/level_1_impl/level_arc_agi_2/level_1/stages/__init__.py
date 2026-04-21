@@ -1,18 +1,27 @@
-"""Path-returning ARC pipeline stages (train / tune / submit).
+"""Auto-generated package exports."""
 
-Subpackage replaces the monolithic ``stages.py``. Re-exports the three public
-stage entry points so both direct imports (``from ...level_5.stages import
-run_train_pipeline``) and the ``test_arc_agi_2_validate_pipeline.py`` string
-mock target (``layers...level_5.stages.run_train_pipeline``) continue to
-resolve unchanged.
-"""
 
-from .submit import run_submission_pipeline
-from .train import run_train_pipeline
-from .tune import run_tune_pipeline
+from .llm_tta_config import build_llm_tta_config
+
+from .metadata_resolvers import (
+    default_chosen_params,
+    get_per_model_entry,
+    logger,
+    resolve_chosen_params_for_submit,
+    resolve_neural_paths_from_entry,
+)
+
+from .second_attempt import (
+    logger,
+    second_attempt_grid,
+)
 
 __all__ = [
-    "run_train_pipeline",
-    "run_tune_pipeline",
-    "run_submission_pipeline",
+    "build_llm_tta_config",
+    "default_chosen_params",
+    "get_per_model_entry",
+    "logger",
+    "resolve_chosen_params_for_submit",
+    "resolve_neural_paths_from_entry",
+    "second_attempt_grid",
 ]

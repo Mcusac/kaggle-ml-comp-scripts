@@ -5,6 +5,8 @@ Authoritative policy: workspace `.cursor/agents/code-audit-orchestrator-details.
 
 **Related:** [audit-pass.md](audit-pass.md) (focused passes) · [audit-targets.md](audit-targets.md) (`@` paths) · [audit-pass-tags.md](audit-pass-tags.md) (finding tags).
 
+**Apply phase (after audit):** [code-fix.md](code-fix.md) — tool-first fixes; summaries in `audit-results/<scope>/summaries/` as `FIX_RUN_*.md`.
+
 ---
 
 ## How to invoke
@@ -42,6 +44,22 @@ Add any of these inside your request:
 | Pin precheck report | `precheck path: <absolute-or-workspace path to precheck_*.md>` |
 | Pin precheck date | `precheck date YYYY-MM-DD` |
 | Incremental / skip replan | phrases in Step 0.7 of orchestrator-details (e.g. `incremental only`) |
+
+---
+
+## Follow-up: apply fixes (`/code-fix`)
+
+After **`/code-audit`** on a tree, run **`/code-fix`** with the same `@` path to apply **tool-first** changes (e.g. init regeneration) and record a **`FIX_RUN_<date>.md`** under `.cursor/audit-results/<scope>/summaries/`.
+
+```text
+/code-fix
+apply recommendations
+profile full
+
+@input/kaggle-ml-comp-scripts/scripts/layers/layer_1_competition/level_1_impl/level_arc_agi_2
+```
+
+**Lite** (you choose tools): e.g. add `tools: init regen` in your request (see `code-fix.md`).
 
 ---
 

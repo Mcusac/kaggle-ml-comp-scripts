@@ -12,9 +12,9 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
     per_task_adaptation_should_run,
 )
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2 import (
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import (
     ArcLmBackendConfig,
-    build_lm_backend,
+    build_lm_backend as build_arc_lm_backend,
 )
 
 
@@ -34,7 +34,7 @@ def build_lm_backend(
         disable_compile=bool(config.runtime_disable_compile),
         seed=int(config.seed or 0),
     )
-    backend = build_lm_backend(backend_cfg)
+    backend = build_arc_lm_backend(backend_cfg)
     backend.load()
     if per_task_adaptation_should_run(config):
         adapt_cfg = ArcLmAdaptationConfig(

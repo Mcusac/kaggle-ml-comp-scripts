@@ -1,7 +1,7 @@
 """Pair (query, reply) strings under :class:`AugmentationSpec` and score them.
 
 Uses the same forward/inverse grid transforms as TTA decoding, then delegates
-scoring to :mod:`.nll_core`.
+scoring to infra NLL helpers.
 """
 
 from collections.abc import Sequence
@@ -12,14 +12,13 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     apply_augmentation,
     invert_augmentation,
 )
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import ArcQwenGridChatFormatter
-
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2 import (
+from layers.layer_1_competition.level_0_infra.level_0.lm import (
     AggregateMode,
     aggregate_scores_across_augmentations,
     calc_scores,
     calc_scores_chunked,
 )
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import ArcQwenGridChatFormatter
 
 Grid = list[list[int]]
 
