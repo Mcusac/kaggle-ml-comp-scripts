@@ -11,7 +11,6 @@ from . import (
     level_6,
     level_7,
     level_8,
-    level_9,
 )
 
 from .level_0 import *
@@ -23,7 +22,6 @@ from .level_5 import *
 from .level_6 import *
 from .level_7 import *
 from .level_8 import *
-from .level_9 import *
 
 __all__ = (
     list(level_0.__all__)
@@ -35,5 +33,4 @@ __all__ = (
     + list(level_6.__all__)
     + list(level_7.__all__)
     + list(level_8.__all__)
-    + list(level_9.__all__)
 )

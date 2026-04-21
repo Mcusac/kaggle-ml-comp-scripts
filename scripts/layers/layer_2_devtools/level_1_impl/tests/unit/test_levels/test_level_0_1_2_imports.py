@@ -12,6 +12,9 @@ Run from ``scripts/``. If ``pytest`` is not on PATH, use:
 
 ``level_0`` imports the vision submodule, which requires ``torchvision`` at import time.
 Install with ``pip install torchvision`` (or the project's vision extra) for these tests to run.
+
+Note: Deeper utilities (e.g. ``load_csv``, ``validate_path_is_file``) live in ``level_3+``;
+these tests only assert the current ``level_1`` / ``level_2`` submodule layout.
 """
 
 from typing import Callable
@@ -51,18 +54,25 @@ def test_import_level_1(assert_module_under_layer_0_core: Callable[[object], Non
     import layers.layer_0_core.level_1 as level_1
 
     assert_module_under_layer_0_core(level_1)
-    assert level_1.batch_loading is not None
-    assert level_1.builders is not None
-    assert level_1.data_processing is not None
-    assert level_1.data_structure is not None
-    assert level_1.execution is not None
-    assert level_1.progress is not None
-    assert level_1.reporting is not None
-    assert level_1.runtime is not None
-    assert level_1.validation is not None
-    # Optional subpackages may be None
-    from layers.layer_0_core.level_1.validation import validate_path_is_file
-    assert callable(validate_path_is_file)
+    for name in (
+        "cli",
+        "data",
+        "evaluation",
+        "features",
+        "grid_search",
+        "guards",
+        "io",
+        "ontology",
+        "pipelines",
+        "protein",
+        "runtime",
+        "search",
+        "training",
+    ):
+        assert getattr(level_1, name, None) is not None, f"missing level_1.{name}"
+    from layers.layer_0_core.level_1.io import TsvSubmissionFormatter
+
+    assert TsvSubmissionFormatter is not None
 
 
 def test_import_level_2(assert_module_under_layer_0_core: Callable[[object], None]):
@@ -71,26 +81,36 @@ def test_import_level_2(assert_module_under_layer_0_core: Callable[[object], Non
     import layers.layer_0_core.level_2 as level_2
 
     assert_module_under_layer_0_core(level_2)
-    assert level_2.file_io is not None
-    assert level_2.progress_formatting is not None
-    assert level_2.metrics is not None
-    # Optional subpackages may be None if torch/etc. missing
-    assert hasattr(level_2, "load_csv")
-    assert hasattr(level_2, "ProgressFormatter")
-    assert hasattr(level_2, "calculate_accuracy")
+    for name in (
+        "analysis",
+        "dataloader",
+        "ensemble_strategies",
+        "feature_extractors",
+        "grid_search",
+        "inference",
+        "models",
+        "progress",
+        "runtime",
+        "training",
+        "validation",
+        "vision_transforms",
+    ):
+        assert getattr(level_2, name, None) is not None, f"missing level_2.{name}"
+    assert hasattr(level_2, "ProgressBarManager")
+    assert hasattr(level_2, "DINOv2Model")
 
 
 def test_level_1_depends_only_on_level_0():
     """level_1 can be used; it depends only on level_0 (no level_2)."""
     pytest.importorskip("torchvision", reason="level_0 loads vision at import")
-    from layers.layer_0_core.level_1 import validation
-    assert validation is not None
-    from layers.layer_0_core.level_1.validation import validate_path_is_file
-    assert callable(validate_path_is_file)
+    from layers.layer_0_core.level_1.io import TsvSubmissionFormatter
+
+    assert TsvSubmissionFormatter is not None
 
 
 def test_level_2_imports_level_0_and_level_1():
-    """level_2 file_io uses level_0 and level_1."""
+    """level_2 public API is reachable (implementation may import level_0 / level_1)."""
     pytest.importorskip("torchvision", reason="level_0 loads vision at import")
-    from layers.layer_0_core.level_2.file_io import load_csv
-    assert callable(load_csv)
+    from layers.layer_0_core.level_2.models import DINOv2Model
+
+    assert DINOv2Model is not None

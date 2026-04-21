@@ -7,11 +7,8 @@ from .chat_format import (
     arc_count_tokens,
 )
 
-from .collator import QwenDataCollatorForCompletionOnlyLM
-
 __all__ = [
     "ArcQwenGridChatFormatter",
     "Grid",
-    "QwenDataCollatorForCompletionOnlyLM",
     "arc_count_tokens",
 ]

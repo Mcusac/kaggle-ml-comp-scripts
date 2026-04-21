@@ -1,8 +1,6 @@
 """Auto-generated package exports."""
 
 
-from .common import add_common
-
 from .io import (
     add_ensemble,
     add_max_targets,
@@ -23,7 +21,6 @@ from .tuning import add_search_type
 
 __all__ = [
     "STRATEGY_CHOICES",
-    "add_common",
     "add_ensemble",
     "add_max_targets",
     "add_model",

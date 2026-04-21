@@ -14,6 +14,92 @@ Authoritative policy: workspace `.cursor/agents/code-audit-orchestrator-details.
 1. Chat: type **`/code-audit`**, then paste **one** block from below (or merge lines).
 2. Subagent: wrap the **same text** as a verbatim **`USER_REQUEST`** block per `code-audit-delegation.mdc`.
 
+---
+
+## Subagent `Task` templates (copy-paste)
+
+Replace placeholders: **`<TARGET>`** = full `@` path to a tree under `scripts/layers/...` (see sections below for examples). Keep **`@`** on its own token; do not paraphrase inside the `"""` block.
+
+### `code-audit` — recommendations-only (default)
+
+```text
+Delegate Task(subagent_type="code-audit") with:
+
+USER_REQUEST (verbatim):
+
+"""
+profile full
+recommendations only
+no code edits
+
+@<TARGET>
+"""
+```
+
+### `code-fix` — apply after an audit (same `<TARGET>`)
+
+```text
+Delegate Task(subagent_type="code-fix") with:
+
+USER_REQUEST (verbatim):
+
+"""
+apply recommendations
+profile full
+
+@<TARGET>
+"""
+```
+
+### `code-fix` — lite (tools only; edit the tools line)
+
+```text
+Delegate Task(subagent_type="code-fix") with:
+
+USER_REQUEST (verbatim):
+
+"""
+tools: init regen
+
+@<TARGET>
+"""
+```
+
+### Two-phase: audit then fix (two delegations, same `<TARGET>`)
+
+Run **audit first**; when it finishes, run **fix** (or paste both into a parent chat that executes sequentially).
+
+```text
+Delegate Task(subagent_type="code-audit") with:
+
+USER_REQUEST (verbatim):
+
+"""
+profile full
+recommendations only
+no code edits
+
+@<TARGET>
+"""
+```
+
+```text
+Delegate Task(subagent_type="code-fix") with:
+
+USER_REQUEST (verbatim):
+
+"""
+apply recommendations
+profile full
+
+@<TARGET>
+"""
+```
+
+**Rules:** `.cursor/rules/code-audit-delegation.mdc` · `.cursor/rules/code-fix-delegation.mdc`
+
+---
+
 **Defaults (if you omit them):**
 
 - **`profile`:** `full`
@@ -177,7 +263,9 @@ Uses the full segment queue (general → competition_infra → contests → …)
 
 ---
 
-## Subagent wrapper (minimal)
+## Subagent wrapper (competition infra example)
+
+Same pattern as **Subagent `Task` templates** above; this is a filled-in example:
 
 ```text
 Delegate Task(subagent_type="code-audit") with:

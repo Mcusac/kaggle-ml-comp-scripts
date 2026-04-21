@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import add_common
+from layers.layer_1_competition.level_0_infra.level_1 import add_common_contest_args
 
 
 def add_postprocess_subparsers(subparsers: Any) -> None:
@@ -10,7 +10,7 @@ def add_postprocess_subparsers(subparsers: Any) -> None:
         "score_submission",
         help="Score a submission CSV against reference solutions",
     )
-    add_common(score)
+    add_common_contest_args(score)
     score.add_argument(
         "--submission",
         type=str,
@@ -28,7 +28,7 @@ def add_postprocess_subparsers(subparsers: Any) -> None:
         "benchmark_rankers",
         help="Benchmark rankers from decoded artifact directory",
     )
-    add_common(bench)
+    add_common_contest_args(bench)
     bench.add_argument(
         "--decoded-dir",
         type=str,

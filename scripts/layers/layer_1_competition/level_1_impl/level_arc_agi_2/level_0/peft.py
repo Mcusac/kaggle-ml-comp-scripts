@@ -3,10 +3,8 @@
 Single import site for ``importlib.import_module("peft")`` so ``level_2`` LM code
 does not scatter third-party peft access.
 """
-
-from __future__ import annotations
-
 import importlib
+
 from typing import Any
 
 

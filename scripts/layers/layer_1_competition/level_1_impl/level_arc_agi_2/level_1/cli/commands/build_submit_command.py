@@ -10,13 +10,13 @@ from layers.layer_1_competition.level_0_infra.level_0 import (
     append_strategy,
     append_tuned_config,
     resolve_and_append_models,
+    append_llm_args,
 )
 from layers.layer_1_competition.level_0_infra.level_1 import build_run_py_base_command
 
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     CONTEST,
     append_common_args,
-    append_llm_args,
 )
 
 

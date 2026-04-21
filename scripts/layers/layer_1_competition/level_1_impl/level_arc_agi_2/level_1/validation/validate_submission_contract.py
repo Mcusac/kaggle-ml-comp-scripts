@@ -3,11 +3,11 @@
 from typing import Any
 
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0.validation.validate_grid_shape import (
-    _is_valid_grid,
+    is_valid_grid,
 )
 
 
-def _validate_submission_contract(challenges: dict[str, Any], submission: Any) -> None:
+def validate_submission_contract(challenges: dict[str, Any], submission: Any) -> None:
     if not isinstance(submission, dict):
         raise ValueError("Submission JSON must be a dict keyed by task id.")
     challenge_task_ids = set(challenges.keys())
@@ -32,5 +32,5 @@ def _validate_submission_contract(challenges: dict[str, Any], submission: Any) -
                 raise ValueError(f"Submission[{task_id!r}] entries must be dicts.")
             if "attempt_1" not in item or "attempt_2" not in item:
                 raise ValueError(f"Submission[{task_id!r}] entries must include attempt_1 and attempt_2.")
-            if not _is_valid_grid(item["attempt_1"]) or not _is_valid_grid(item["attempt_2"]):
+            if not is_valid_grid(item["attempt_1"]) or not is_valid_grid(item["attempt_2"]):
                 raise ValueError(f"Submission[{task_id!r}] contains invalid attempt grid.")

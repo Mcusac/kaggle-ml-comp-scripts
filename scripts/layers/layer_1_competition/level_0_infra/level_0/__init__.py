@@ -8,6 +8,8 @@ from . import (
     model,
     paths,
     pipeline,
+    pipeline_logging,
+    runner,
     run_tracking,
     submission,
 )
@@ -24,6 +26,8 @@ from .lm import *
 from .model import *
 from .paths import *
 from .pipeline import *
+from .pipeline_logging import *
+from .runner import *
 from .run_tracking import *
 from .submission import *
 
@@ -36,6 +40,8 @@ __all__ = (
     + list(model.__all__)
     + list(paths.__all__)
     + list(pipeline.__all__)
+    + list(pipeline_logging.__all__)
+    + list(runner.__all__)
     + list(run_tracking.__all__)
     + list(submission.__all__)
     + ["setup_handler_context"]

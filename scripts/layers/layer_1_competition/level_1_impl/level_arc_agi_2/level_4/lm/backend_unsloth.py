@@ -5,20 +5,20 @@ from typing import Any
 
 from layers.layer_0_core.level_0 import get_logger
 
+from layers.layer_1_competition.level_0_infra.level_0 import (
+    load_adapter_state_dict,
+    torch_dtype_from_config,
+    unsloth_available,
+)
+from layers.layer_1_competition.level_0_infra.level_3 import LmBackend, LmBackendConfig
+
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     ArcLmAdaptationConfig,
     COMMON_PEFT_PARAMS,
     get_peft_model_state_dict,
     set_peft_model_state_dict,
 )
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2 import (
-    load_adapter_state_dict,
-    torch_dtype_from_config,
-    unsloth_available,
-)
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import (
-    ArcLmBackend,
-    ArcLmBackendConfig,
     SharedTorchLmInference,
 )
 
@@ -26,7 +26,7 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import (
 logger = get_logger(__name__)
 
 
-class UnslothArcLmBackend(SharedTorchLmInference, ArcLmBackend):
+class UnslothArcLmBackend(SharedTorchLmInference, LmBackend):
     """Unsloth FastLanguageModel + PEFT LoRA loading (reference notebook parity).
 
     Mirrors NVARC reference: ``FastLanguageModel.from_pretrained`` with 4-bit,
@@ -34,7 +34,7 @@ class UnslothArcLmBackend(SharedTorchLmInference, ArcLmBackend):
     from ``lora_path``, then ``FastLanguageModel.for_inference``.
     """
 
-    def __init__(self, config: ArcLmBackendConfig) -> None:
+    def __init__(self, config: LmBackendConfig) -> None:
         self._config = config
         self._loaded = False
         self._torch = None

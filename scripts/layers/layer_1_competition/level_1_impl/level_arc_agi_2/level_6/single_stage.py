@@ -9,10 +9,8 @@ from layers.layer_1_competition.level_0_infra.level_0 import (
     capture_config_paths,
     capture_submission_paths,
 )
+from layers.layer_1_competition.level_0_infra.level_1 import RunContext
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2 import (
-    RunContext,
-)
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import (
     run_validate_data_pipeline,
 )

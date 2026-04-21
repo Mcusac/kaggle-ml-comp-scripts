@@ -1,4 +1,6 @@
-"""Training-row construction + collator token ID resolution for per-task LoRA adaptation."""
+"""Training-row construction for per-task LoRA adaptation."""
+
+from layers.layer_1_competition.level_0_infra.level_0 import resolve_collator_token_ids
 
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     apply_augmentation,
@@ -8,24 +10,6 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2 import (
     train_trim_task_train_pairs_to_token_budget,
 )
-
-
-def resolve_collator_token_ids(tokenizer, formatter):
-    eos_ids = tokenizer.encode(str(formatter.im_end), add_special_tokens=False)
-    if len(eos_ids) != 1:
-        raise ValueError("im_end must encode to one token")
-
-    eos_id = int(eos_ids[0])
-
-    u = tokenizer.encode(formatter.im_user, add_special_tokens=False)
-    a = tokenizer.encode(formatter.im_assistant, add_special_tokens=False)
-
-    if int(u[0]) == int(a[0]):
-        user_tid, assistant_tid = int(u[1]), int(a[1])
-    else:
-        user_tid, assistant_tid = int(u[0]), int(a[0])
-
-    return user_tid, assistant_tid, eos_id
 
 
 def build_task_training_rows(

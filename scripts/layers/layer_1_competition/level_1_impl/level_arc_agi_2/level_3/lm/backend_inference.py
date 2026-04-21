@@ -9,12 +9,14 @@ from typing import Any
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     arc_grid_to_text_lines,
     eval_teacher_forced_neg_sum_logprob,
+    REFERENCE_INNER_LOOP_WALL_SEC,
+    inference_turbo_dfs,
 )
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
     ArcQwenGridChatFormatter,
 )
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import (
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2 import (
     resolve_arc_digit_token_ids,
     resolve_newline_token_id,
     resolve_turbo_arc_token_table,
@@ -46,11 +48,6 @@ class SharedTorchLmInference:
         """Run ``inference_turbo_dfs`` for batch row 0; returns ``[(beam_nll, token_ids), ...]`` sorted by NLL."""
         if not self._loaded or self._model is None or self._tokenizer is None:
             raise RuntimeError("LM backend not loaded; call load() before turbo_dfs_beams().")
-
-        from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0.decoding.llm_decoding import (
-            REFERENCE_INNER_LOOP_WALL_SEC,
-            inference_turbo_dfs,
-        )
 
         fmt = ArcQwenGridChatFormatter(tokenizer=self._tokenizer)
         arc_tokens, pad_id, eos_id = resolve_turbo_arc_token_table(self._tokenizer, fmt)

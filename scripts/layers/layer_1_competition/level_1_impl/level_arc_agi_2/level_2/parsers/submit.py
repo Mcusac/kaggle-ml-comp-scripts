@@ -2,10 +2,11 @@
 
 from typing import Any
 
+from layers.layer_1_competition.level_0_infra.level_0 import add_llm_tta_args
+from layers.layer_1_competition.level_0_infra.level_1 import add_common_contest_args
+
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
-    add_common,
     add_ensemble,
-    add_llm_tta_args,
     add_max_targets,
     add_model,
     add_output,
@@ -19,7 +20,7 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
 
 def add_submit_subparser(subparsers: Any) -> None:
     p = subparsers.add_parser("submit", help="Generate submission")
-    add_common(p)
+    add_common_contest_args(p)
     add_strategy(p, default="single")
     add_model(p, default="baseline_approx")
     p.add_argument("--train-mode", default="end_to_end")

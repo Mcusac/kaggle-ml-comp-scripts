@@ -16,10 +16,10 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0.arc_paths.e
     arc_find_first_existing_file,
 )
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.validation.validate_challenges import (
-    _validate_challenges,
+    validate_challenges,
 )
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.validation.validate_submission_contract import (
-    _validate_submission_contract,
+    validate_submission_contract,
 )
 
 logger = get_logger(__name__)
@@ -64,13 +64,13 @@ def validate_arc_inputs(data_root: str, max_targets: int = 0) -> None:
     eval_data = _read_json_file(eval_challenges)
     test_data = _read_json_file(test_challenges)
 
-    _validate_challenges(train_data, max_targets=max_targets)
-    _validate_challenges(eval_data, max_targets=max_targets)
-    _validate_challenges(test_data, max_targets=max_targets)
+    validate_challenges(train_data, max_targets=max_targets)
+    validate_challenges(eval_data, max_targets=max_targets)
+    validate_challenges(test_data, max_targets=max_targets)
 
     if sample_submission.exists():
         sample_data = _read_json_file(sample_submission)
-        _validate_submission_contract(test_data, sample_data)
+        validate_submission_contract(test_data, sample_data)
 
     logger.info("ARC inputs validated")
     logger.info("  train tasks: %d", len(train_data))

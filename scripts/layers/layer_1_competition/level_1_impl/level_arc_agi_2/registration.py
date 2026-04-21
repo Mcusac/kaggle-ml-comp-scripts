@@ -5,9 +5,7 @@ from layers.layer_1_competition.level_0_infra.level_1 import (
     register_notebook_commands_module,
 )
 from layers.layer_1_competition.level_0_infra.level_2 import register_cli_handlers_module
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0.arc_paths import (
-    ARC26Paths,
-)
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.paths import ARC26Paths
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0.config import (
     ARC26Config,
     ARC26DataSchema,

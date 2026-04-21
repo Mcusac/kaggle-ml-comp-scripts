@@ -2,19 +2,15 @@
 
 from typing import Any, Mapping
 
+from layers.layer_1_competition.level_0_infra.level_0 import (
+    empty_grid_like,
+    llm_tta_augment_seed,
+    llm_tta_grid_hw,
+)
+
 Grid = list[list[int]]
 
-
-def llm_tta_grid_hw(grid: Grid) -> tuple[int, int]:
-    """Return ``(rows, cols)`` for ``grid``; ``(0, 0)`` when empty."""
-    if not grid:
-        return 0, 0
-    return len(grid), len(grid[0])
-
-
-def empty_arc_grid_like(grid: Grid) -> Grid:
-    """Zero-filled grid with the same shape as ``grid``."""
-    return [[0 for _ in row] for row in grid]
+empty_arc_grid_like = empty_grid_like
 
 
 def coerce_arc_grid(grid: Any, fallback: Grid) -> Grid:
@@ -72,8 +68,3 @@ def build_cell_probs_from_support_grids(
             total = float(sum(counts))
             probs[r][c] = [float(v / total) for v in counts]
     return probs
-
-
-def llm_tta_augment_seed(task_id: str, test_index: int, base_seed: int) -> int:
-    """Deterministic per-task augmentation seed derived from ``task_id`` and ``test_index``."""
-    return int(base_seed) + sum(ord(ch) for ch in str(task_id)) + int(test_index) * 9973

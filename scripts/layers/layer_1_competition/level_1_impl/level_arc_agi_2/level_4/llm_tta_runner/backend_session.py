@@ -12,17 +12,14 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
     per_task_adaptation_should_run,
 )
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import (
-    ArcLmBackendConfig,
-    build_lm_backend as build_arc_lm_backend,
-)
+from ..lm.backend_config import ArcLmBackendConfig, build_arc_lm_backend
 
 
 
 logger = get_logger(__name__)
 
 
-def build_lm_backend(
+def prepare_llm_tta_backend(
     config: LlmTtaDfsConfig,
     task_payload: Mapping[str, Any] | None,
     budget_expired: Callable[[], bool],

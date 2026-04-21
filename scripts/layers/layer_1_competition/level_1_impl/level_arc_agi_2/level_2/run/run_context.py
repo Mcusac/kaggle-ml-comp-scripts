@@ -1,44 +1,24 @@
-"""ARC-AGI-2 RunContext + run-metadata lifecycle helpers.
-
-Holds the dataclass + the four lifecycle ops (init, update, success, failure)
-plus the artifact-copy helper. Run-id and run-dir resolution live in sibling
-modules (`run_id.py`, `run_dir.py`) to keep this file SRP-focused on the
-per-run lifecycle.
-"""
+"""ARC-AGI-2 run initialization; generic run types live in competition infra."""
 
 import os
 import platform
-import shutil
 import sys
 import time
 
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Optional
 
 from layers.layer_0_core.level_0 import ensure_dir, get_logger, is_kaggle
-from layers.layer_0_core.level_4 import load_json_raw, save_json
+from layers.layer_0_core.level_4 import save_json
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
-    ARC26Paths,
-    utc_now_iso,
+from layers.layer_1_competition.level_0_infra.level_1 import RunContext
+from layers.layer_1_competition.level_0_infra.level_0 import (
     generate_run_id,
+    utc_now_iso,
 )
-
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import resolve_run_dir
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import resolve_run_dir, ARC26Paths
 
 logger = get_logger(__name__)
-
-
-def _merge_dict(dst: dict[str, Any], patch: dict[str, Any]) -> dict[str, Any]:
-    """Shallow+recursive merge for dict values only."""
-    out = dict(dst)
-    for k, v in patch.items():
-        if isinstance(v, dict) and isinstance(out.get(k), dict):
-            out[k] = _merge_dict(out[k], v)  # type: ignore[arg-type]
-        else:
-            out[k] = v
-    return out
 
 
 def _try_get_gpu_name() -> Optional[str]:
@@ -50,34 +30,6 @@ def _try_get_gpu_name() -> Optional[str]:
     except Exception:
         return None
     return None
-
-
-@dataclass(frozen=True)
-class RunContext:
-    run_id: str
-    run_dir: Path
-    stage: str
-    seed: int
-    data_root: str
-    argv: list[str]
-    started_utc: str
-    start_time: float
-
-    @property
-    def artifacts_dir(self) -> Path:
-        return self.run_dir / "artifacts"
-
-    @property
-    def logs_dir(self) -> Path:
-        return self.run_dir / "logs"
-
-    @property
-    def manifest_path(self) -> Path:
-        return self.run_dir / "run_metadata.json"
-
-    @property
-    def commands_path(self) -> Path:
-        return self.run_dir / "commands.txt"
 
 
 def init_run_context(
@@ -159,7 +111,6 @@ def init_run_context(
         "notes": {"measured": [], "observed": [], "hypotheses": []},
     }
 
-    # Best-effort runtime device capture (non-fatal)
     gpu_name = _try_get_gpu_name()
     if gpu_name:
         payload["runtime"]["device"] = "cuda"
@@ -171,42 +122,3 @@ def init_run_context(
     ctx.commands_path.write_text(payload["commands"]["raw"] + "\n", encoding="utf-8")
     logger.info("Initialized ARC run folder: %s", ctx.run_dir)
     return ctx
-
-
-def update_run_metadata(run: RunContext, patch: dict[str, Any]) -> None:
-    """Merge a patch into `run_metadata.json`."""
-    current = load_json_raw(run.manifest_path) if run.manifest_path.exists() else {}
-    merged = _merge_dict(current, patch)
-    save_json(merged, run.manifest_path)
-
-
-def finalize_run_success(run: RunContext) -> None:
-    duration = max(0.0, time.time() - float(run.start_time))
-    update_run_metadata(
-        run,
-        {
-            "status": "success",
-            "runtime": {"duration_sec": duration},
-        },
-    )
-
-
-def finalize_run_failure(run: RunContext, error: Exception) -> None:
-    duration = max(0.0, time.time() - float(run.start_time))
-    update_run_metadata(
-        run,
-        {
-            "status": "failed",
-            "runtime": {"duration_sec": duration},
-            "errors": [repr(error)],
-        },
-    )
-
-
-def copy_artifact_into_run(run: RunContext, *, src: Path, dest_name: str) -> Path:
-    """Copy a file into `run_dir/artifacts/<dest_name>` and record it."""
-    dest = run.artifacts_dir / dest_name
-    ensure_dir(dest.parent)
-    shutil.copy2(src, dest)
-    update_run_metadata(run, {"artifacts": {dest_name: str(dest.relative_to(run.run_dir))}})
-    return dest

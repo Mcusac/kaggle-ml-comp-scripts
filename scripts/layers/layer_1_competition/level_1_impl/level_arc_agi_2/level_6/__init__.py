@@ -1,14 +1,8 @@
-"""Auto-generated package exports."""
+"""Auto-generated aggregation exports."""
 
 
-from .single_stage import (
-    run_submission_pipeline_result,
-    run_train_pipeline_result,
-    run_tune_pipeline_result,
-)
+from . import dispatch
 
-__all__ = [
-    "run_submission_pipeline_result",
-    "run_train_pipeline_result",
-    "run_tune_pipeline_result",
-]
+from .dispatch import *
+
+__all__ = list(dispatch.__all__)
