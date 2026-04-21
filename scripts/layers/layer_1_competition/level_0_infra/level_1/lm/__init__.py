@@ -1,4 +1,5 @@
-"""Level-1 LM orchestration helpers shared across contests."""
+"""Auto-generated package exports."""
+
 
 from .runtime_profile import (
     build_runtime_profile,

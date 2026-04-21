@@ -1,5 +1,12 @@
-"""Contest-agnostic local runner helpers."""
+"""Auto-generated package exports."""
 
-from .local_multi_gpu_worker import make_local_worker
 
-__all__ = ["make_local_worker"]
+from .local_multi_gpu_worker import (
+    make_local_worker,
+    torch,
+)
+
+__all__ = [
+    "make_local_worker",
+    "torch",
+]

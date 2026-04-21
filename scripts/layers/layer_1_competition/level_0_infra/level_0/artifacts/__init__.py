@@ -1,7 +1,5 @@
-"""Artifact IO helpers shared across contest implementations.
+"""Auto-generated package exports."""
 
-This package is infra-only and must not import from `level_1_impl`.
-"""
 
 from .schema import (
     ArtifactKeys,

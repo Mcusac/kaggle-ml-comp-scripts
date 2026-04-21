@@ -1,12 +1,15 @@
-"""Competition infra tier 4: fold orchestration for CV."""
+"""Auto-generated aggregation exports."""
 
-from . import trainer
+
+from . import (
+    fold_orchestration,
+    trainer,
+)
+
+from .fold_orchestration import *
 from .trainer import *
 
-from . import fold_orchestration
-from .fold_orchestration import *
-
 __all__ = (
-    list(trainer.__all__)
-    + list(fold_orchestration.__all__)
+    list(fold_orchestration.__all__)
+    + list(trainer.__all__)
 )

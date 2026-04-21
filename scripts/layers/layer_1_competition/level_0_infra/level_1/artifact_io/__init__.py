@@ -1,4 +1,5 @@
-"""Contest-agnostic inference artifact directory and shard I/O."""
+"""Auto-generated package exports."""
+
 
 from .layout import (
     logger,
@@ -6,6 +7,7 @@ from .layout import (
     write_decoded_shard,
     write_intermediate_candidates,
 )
+
 from .store import (
     DecodedStore,
     GuessDict,
@@ -21,8 +23,6 @@ from .store import (
 __all__ = [
     "DecodedStore",
     "GuessDict",
-    "logger",
-    "prepare_artifact_layout",
     "infer_ensure_run_layout",
     "infer_eval_basekey",
     "infer_finalize_artifact_root",
@@ -30,6 +30,8 @@ __all__ = [
     "infer_save_decoded_result_shard",
     "infer_save_intermediate_candidates",
     "infer_shard_basename",
+    "logger",
+    "prepare_artifact_layout",
     "write_decoded_shard",
     "write_intermediate_candidates",
 ]

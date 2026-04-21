@@ -1,7 +1,18 @@
-"""Trainer subpackage: `FeatureExtractionTrainer` for two-stage contest pipelines."""
+"""Auto-generated package exports."""
 
-from .feature_extraction import FeatureExtractionTrainer
+
+from .feature_extraction import (
+    DataLoader,
+    FeatureExtractionTrainer,
+    logger,
+    nn,
+    torch,
+)
 
 __all__ = [
+    "DataLoader",
     "FeatureExtractionTrainer",
+    "logger",
+    "nn",
+    "torch",
 ]

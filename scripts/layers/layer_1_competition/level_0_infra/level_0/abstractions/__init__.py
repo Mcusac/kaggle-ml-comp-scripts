@@ -1,31 +1,42 @@
-"""Contest protocols (on-disk: ``infra/level_0/abstractions``; import via ``layers.layer_1_competition.level_0_infra.level_0``)."""
+"""Auto-generated package exports."""
+
+
+from .config import ContestConfig
 
 from .contest_abstractions import (
     ContestInputValidator,
     ContestMetric,
     ContestPipelineProtocol,
 )
-from .run_paths_protocol import ContestRunPathsProtocol
 
-from .config import ContestConfig
 from .data_schema import ContestDataSchema
-from .paths import ContestPaths
-from .post_processor import ContestPostProcessor, ClipRangePostProcessor
-from .ontology import ContestOntologySystem
+
 from .hierarchy import ContestHierarchy
+
+from .ontology import ContestOntologySystem
+
 from .path_config import ContestPathConfig
 
+from .paths import ContestPaths
+
+from .post_processor import (
+    ClipRangePostProcessor,
+    ContestPostProcessor,
+)
+
+from .run_paths_protocol import ContestRunPathsProtocol
+
 __all__ = [
+    "ClipRangePostProcessor",
     "ContestConfig",
     "ContestDataSchema",
-    "ContestPaths",
-    "ContestPostProcessor",
-    "ClipRangePostProcessor",
-    "ContestOntologySystem",
     "ContestHierarchy",
-    "ContestPathConfig",
     "ContestInputValidator",
     "ContestMetric",
+    "ContestOntologySystem",
+    "ContestPathConfig",
+    "ContestPaths",
     "ContestPipelineProtocol",
+    "ContestPostProcessor",
     "ContestRunPathsProtocol",
 ]

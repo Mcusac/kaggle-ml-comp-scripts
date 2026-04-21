@@ -1,30 +1,56 @@
-"""Infra LM helpers (token scoring, budgeting, runtime profiles)."""
+"""Auto-generated package exports."""
+
 
 from .collator_token_ids import resolve_collator_token_ids
+
 from .completion_collator import (
     QwenDataCollatorForCompletionOnlyLM,
     REFERENCE_ASSISTANT_TOKEN_ID,
     REFERENCE_EOS_ID,
     REFERENCE_USER_TOKEN_ID,
 )
+
 from .ddp_utils import ddp_safe_loss
+
+from .llm_tta_config import (
+    LlmTtaDfsConfig,
+    validate_llm_tta_dfs_config,
+)
+
 from .llm_tta_grid_shape import (
+    Grid,
     empty_grid_like,
     llm_tta_augment_seed,
     llm_tta_grid_hw,
 )
-from .lm_adaptation import LmAdaptationConfig, run_task_adaptation
-from .lm_budget import ArcLmBudget, ArcLmRuntimeProfile, apply_runtime_profile, build_budget
-from .llm_tta_config import LlmTtaDfsConfig, validate_llm_tta_dfs_config
+
+from .lm_adaptation import (
+    LmAdaptationConfig,
+    run_task_adaptation,
+)
+
+from .lm_budget import (
+    ArcLmBudget,
+    ArcLmRuntimeProfile,
+    apply_runtime_profile,
+    build_budget,
+)
+
 from .nll_scoring import (
     AggregateMode,
+    Grid,
     aggregate_scores_across_augmentations,
     calc_scores,
     calc_scores_chunked,
     concat_calc_score_batches,
     resolve_pad_id,
 )
-from .peft_defaults import COMMON_PEFT_PARAMS, COMMON_TRAIN_ARGS
+
+from .peft_defaults import (
+    COMMON_PEFT_PARAMS,
+    COMMON_TRAIN_ARGS,
+)
+
 from .tokenizer_utils import (
     resolve_digit_token_ids,
     resolve_newline_token_id,
@@ -32,7 +58,13 @@ from .tokenizer_utils import (
     resolve_turbo_token_table,
     token_id_for_single_text,
 )
-from .torch_utils import load_adapter_state_dict, torch_dtype_from_config, unsloth_available
+
+from .torch_utils import (
+    load_adapter_state_dict,
+    logger,
+    torch_dtype_from_config,
+    unsloth_available,
+)
 
 __all__ = [
     "AggregateMode",
@@ -40,8 +72,9 @@ __all__ = [
     "ArcLmRuntimeProfile",
     "COMMON_PEFT_PARAMS",
     "COMMON_TRAIN_ARGS",
-    "LmAdaptationConfig",
+    "Grid",
     "LlmTtaDfsConfig",
+    "LmAdaptationConfig",
     "QwenDataCollatorForCompletionOnlyLM",
     "REFERENCE_ASSISTANT_TOKEN_ID",
     "REFERENCE_EOS_ID",
@@ -54,9 +87,10 @@ __all__ = [
     "concat_calc_score_batches",
     "ddp_safe_loss",
     "empty_grid_like",
-    "load_adapter_state_dict",
     "llm_tta_augment_seed",
     "llm_tta_grid_hw",
+    "load_adapter_state_dict",
+    "logger",
     "resolve_collator_token_ids",
     "resolve_digit_token_ids",
     "resolve_newline_token_id",
@@ -69,4 +103,3 @@ __all__ = [
     "unsloth_available",
     "validate_llm_tta_dfs_config",
 ]
-

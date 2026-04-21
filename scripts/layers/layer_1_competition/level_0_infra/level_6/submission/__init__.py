@@ -1,8 +1,12 @@
-"""Submission orchestration that depends on infra level_5 submission helpers."""
+"""Auto-generated package exports."""
 
-from .regression_submission import create_regression_submission
+
+from .regression_submission import (
+    create_regression_submission,
+    logger,
+)
 
 __all__ = [
     "create_regression_submission",
+    "logger",
 ]
-

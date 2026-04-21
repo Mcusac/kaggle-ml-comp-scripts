@@ -1,7 +1,17 @@
-"""Model metadata, feature-extraction config helpers, and export verification."""
+"""Auto-generated package exports."""
 
-from .embeddings import load_embedding_data, load_structured_features
-from .feature_catalog import register_features
+
+from .embeddings import (
+    load_embedding_data,
+    load_structured_features,
+    logger,
+)
+
+from .feature_catalog import (
+    logger,
+    register_features,
+)
+
 from .model_constants import (
     MODEL_ID_MAP,
     get_model_image_size,
@@ -17,6 +27,7 @@ __all__ = [
     "get_pretrained_weights_path",
     "load_embedding_data",
     "load_structured_features",
-    "register_model_id_map",
+    "logger",
     "register_features",
+    "register_model_id_map",
 ]
