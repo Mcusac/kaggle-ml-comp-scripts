@@ -8,14 +8,16 @@ from contextlib import redirect_stderr, redirect_stdout
 
 from layers.layer_0_core.level_0 import get_logger
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import UnslothFixedTrainer
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
-    ArcQwenGridChatFormatter,
+from layers.layer_1_competition.level_0_infra.level_0 import (
     QwenDataCollatorForCompletionOnlyLM,
+    resolve_collator_token_ids,
 )
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import (
-    resolve_collator_token_ids,
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
+    ArcQwenGridChatFormatter,
+)
+
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3.lm_task_adaptation.training_rows import (
     build_task_training_rows,
 )
 
@@ -41,6 +43,10 @@ def run_unsloth_task_adaptation(
     unsloth = importlib.import_module("unsloth")
     peft = importlib.import_module("peft")
     datasets = importlib.import_module("datasets")
+
+    from layers.layer_1_competition.level_0_infra.level_0.lm.unsloth_trainers import (
+        UnslothFixedTrainer,
+    )
 
     FastLanguageModel = unsloth.FastLanguageModel
     UnslothTrainingArguments = unsloth.UnslothTrainingArguments
@@ -74,12 +80,12 @@ def run_unsloth_task_adaptation(
     )
 
     collator = QwenDataCollatorForCompletionOnlyLM(
-            tokenizer,
-            mlm=False,
-            user_token_id=user_id,
-            assistant_token_id=assistant_id,
-            eos_token_id=eos_id,
-        )
+        tokenizer,
+        mlm=False,
+        user_token_id=user_id,
+        assistant_token_id=assistant_id,
+        eos_token_id=eos_id,
+    )
 
     ds = datasets.Dataset.from_list(rows)
 

@@ -9,10 +9,12 @@ from layers.layer_0_core.level_4 import save_json
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     CANVAS_SIZE,
     NUM_CHANNELS,
+)
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
     ArcSameShapeGridDataset,
     collect_same_shape_train_pairs,
 )
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import TinyGridCNN
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.model import TinyGridCNN
 
 logger = get_logger(__name__)
 

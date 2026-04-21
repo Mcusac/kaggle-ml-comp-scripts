@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.validation.validate_task_pair import (
     validate_task_pair,
 )
 

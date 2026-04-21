@@ -3,8 +3,11 @@
 
 from . import (
     abstractions,
+    argparse_builders,
     artifacts,
     cli,
+    grid_ops,
+    handler_context,
     llm_tta_args,
     lm,
     model,
@@ -16,8 +19,11 @@ from . import (
 )
 
 from .abstractions import *
+from .argparse_builders import *
 from .artifacts import *
 from .cli import *
+from .grid_ops import *
+from .handler_context import *
 from .llm_tta_args import *
 from .lm import *
 from .model import *
@@ -29,8 +35,11 @@ from .submission import *
 
 __all__ = (
     list(abstractions.__all__)
+    + list(argparse_builders.__all__)
     + list(artifacts.__all__)
     + list(cli.__all__)
+    + list(grid_ops.__all__)
+    + list(handler_context.__all__)
     + list(llm_tta_args.__all__)
     + list(lm.__all__)
     + list(model.__all__)

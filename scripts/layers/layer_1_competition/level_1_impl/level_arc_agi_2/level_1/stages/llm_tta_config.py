@@ -2,9 +2,7 @@
 
 from typing import Optional
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
-    LlmTtaDfsConfig,
-)
+from layers.layer_1_competition.level_0_infra.level_0 import LlmTtaDfsConfig
 
 
 def build_llm_tta_config(

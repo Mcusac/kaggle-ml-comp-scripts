@@ -2,7 +2,7 @@
 
 from typing import List, Optional
 
-from layers.layer_1_competition.level_0_infra.level_0 import (
+from layers.layer_1_competition.level_0_infra.level_0.argv_command_builders import (
     append_run_args,
     append_strategy,
     append_train_mode,

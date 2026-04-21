@@ -1,6 +1,14 @@
-"""Per-grid scoring primitives (cell match + exact match + per-task parsing)."""
+"""Per-grid scoring: ARC eval JSON parsing plus generic cell/exact-match metrics."""
 
 from typing import Any
+
+from layers.layer_1_competition.level_0_infra.level_0 import (
+    cell_match_counts as _cell_match_counts,
+    score_grid_exact_match as _score_grid_exact_match,
+)
+
+cell_match_counts = _cell_match_counts
+score_grid_exact_match = _score_grid_exact_match
 
 
 def eval_solution_grids_for_task(
@@ -27,25 +35,3 @@ def eval_solution_grids_for_task(
                 return grids[:n_tests]
             return [v[:]] + [None] * (n_tests - 1) if n_tests > 1 else [v[:]]  # type: ignore[list-item]
     return [None] * n_tests
-
-
-def cell_match_counts(
-    pred: list[list[int]],
-    truth: list[list[int]],
-) -> tuple[int, int]:
-    """Return (total_cells_compared, correct_cells)."""
-    if pred == truth:
-        t = sum(len(r) for r in truth)
-        return t, t
-    total = correct = 0
-    for pr, tr in zip(pred, truth):
-        for pc, tc in zip(pr, tr):
-            total += 1
-            if pc == tc:
-                correct += 1
-    return total, correct
-
-
-def score_grid_exact_match(pred: list[list[int]], truth: list[list[int]]) -> bool:
-    """Return True only when both grids match exactly."""
-    return pred == truth

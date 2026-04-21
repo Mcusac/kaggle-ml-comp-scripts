@@ -15,11 +15,13 @@ from layers.layer_1_competition.level_0_infra.level_1 import (
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     read_submit_max_tasks_env,
 )
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.paths import ARC26Paths
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.stages import (
     default_chosen_params,
     get_per_model_entry,
     resolve_neural_paths_from_entry,
-    ARC26Paths,
+)
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.validation import (
     require_data_root,
 )
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import (

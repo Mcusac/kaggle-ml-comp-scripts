@@ -1,4 +1,4 @@
-"""Constrained DFS/beam decoder for ARC color-token grids."""
+"""Constrained DFS/beam decoder for cell-wise discrete distributions (e.g. 10-way colors)."""
 
 from dataclasses import dataclass
 from math import log
@@ -30,19 +30,16 @@ def decode_grid_candidates(
     max_candidates: int = 8,
     max_neg_log_score: float = 200.0,
 ) -> list[GridCandidate]:
-    """Decode color grids from per-cell distributions.
-
-    Args:
-        cell_color_probs: shape [H][W][10], where each distribution is a color probability vector.
-    """
+    """Decode grids from per-cell probability vectors (shape ``[H][W][K]``)."""
     if not cell_color_probs:
         return [GridCandidate(grid=[], score=0.0)]
     h = len(cell_color_probs)
     w = len(cell_color_probs[0]) if h else 0
     if any(len(row) != w for row in cell_color_probs):
         raise ValueError("cell_color_probs rows must share width.")
-    if any(len(cell) != 10 for row in cell_color_probs for cell in row):
-        raise ValueError("Each cell distribution must contain 10 color probabilities.")
+    k_vocab = len(cell_color_probs[0][0]) if h and w else 0
+    if any(len(cell) != k_vocab for row in cell_color_probs for cell in row):
+        raise ValueError("Each cell distribution must have the same vocabulary size.")
 
     expanded: list[list[tuple[int, float]]] = []
     for r in range(h):
@@ -68,3 +65,9 @@ def decode_grid_candidates(
         rows = [flat[i * w : (i + 1) * w] for i in range(h)]
         candidates.append(GridCandidate(grid=rows, score=float(score)))
     return candidates
+
+
+__all__ = [
+    "GridCandidate",
+    "decode_grid_candidates",
+]

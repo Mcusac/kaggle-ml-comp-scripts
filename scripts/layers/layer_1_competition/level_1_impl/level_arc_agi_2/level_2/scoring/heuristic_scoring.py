@@ -7,12 +7,9 @@ from layers.layer_0_core.level_4 import load_json_raw
 
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     arc_find_first_existing_file,
-    predict_attempts_for_heuristic,
     cell_match_counts,
-)
-
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
     eval_solution_grids_for_task,
+    predict_attempts_for_heuristic,
     score_grid_exact_match,
 )
 

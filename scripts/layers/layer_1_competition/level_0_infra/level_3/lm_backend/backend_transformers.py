@@ -1,20 +1,21 @@
-"""Hugging Face Transformers-backed ARC LM backend with conservative defaults."""
+"""Hugging Face Transformers-backed LM backend with conservative defaults."""
 
 import importlib
-
 from typing import Any
 
-from layers.layer_1_competition.level_0_infra.level_3 import LmBackend, LmBackendConfig
-    
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import ArcLmAdaptationConfig
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import SharedTorchLmInference
+from layers.layer_1_competition.level_0_infra.level_0 import LmAdaptationConfig
+from layers.layer_1_competition.level_0_infra.level_3.lm_backend.protocol import LmBackend, LmBackendConfig
+
+from .shared_hooks import SharedTorchLmHooks
+from .shared_inference import SharedTorchLmInference
 
 
-class TransformersArcLmBackend(SharedTorchLmInference, LmBackend):
+class TransformersLmBackend(SharedTorchLmInference, LmBackend):
     """Transformers-backed backend with conservative optional behavior."""
 
-    def __init__(self, config: LmBackendConfig) -> None:
+    def __init__(self, config: LmBackendConfig, *, torch_hooks: SharedTorchLmHooks) -> None:
         self._config = config
+        self._torch_lm_hooks = torch_hooks
         self._loaded = False
         self._transformers = None
         self._torch = None
@@ -58,6 +59,9 @@ class TransformersArcLmBackend(SharedTorchLmInference, LmBackend):
         task_payload: dict[str, Any],
         budget_expired: callable,
         *,
-        adaptation: ArcLmAdaptationConfig | None = None,
+        adaptation: LmAdaptationConfig | None = None,
     ) -> dict[str, Any]:
         return {"status": "skipped", "reason": "adaptation_not_unsloth_backend", "backend": "transformers"}
+
+
+__all__ = ["TransformersLmBackend"]

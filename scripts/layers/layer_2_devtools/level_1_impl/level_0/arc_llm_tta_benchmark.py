@@ -24,17 +24,34 @@ def _load_module(name: str, path: Path):
 
 
 def main() -> None:
-    level1 = (
+    arc_root = (
         _SCRIPTS_ROOT
         / "layers"
         / "layer_1_competition"
         / "level_1_impl"
         / "level_arc_agi_2"
-        / "level_1"
     )
-    aug = _load_module("arc_aug_bench", level1 / "augmentations.py")
-    dec = _load_module("arc_dec_bench", level1 / "decoder_dfs.py")
-    score = _load_module("arc_score_bench", level1 / "candidate_scoring.py")
+    infra_dec = (
+        _SCRIPTS_ROOT
+        / "layers"
+        / "layer_1_competition"
+        / "level_0_infra"
+        / "level_1"
+        / "decoding"
+        / "cell_prob_decoder.py"
+    )
+    infra_rank = (
+        _SCRIPTS_ROOT
+        / "layers"
+        / "layer_1_competition"
+        / "level_0_infra"
+        / "level_1"
+        / "ranking"
+        / "candidate_ranking.py"
+    )
+    aug = _load_module("arc_aug_bench", arc_root / "level_0" / "ranking" / "augmentations.py")
+    dec = _load_module("arc_dec_bench", infra_dec)
+    score = _load_module("arc_score_bench", infra_rank)
 
     input_grid = [[1, 0], [0, 1]]
     expected = [[1, 1], [1, 1]]

@@ -2,7 +2,7 @@
 
 from typing import List, Optional
 
-from layers.layer_1_competition.level_0_infra.level_0 import (
+from layers.layer_1_competition.level_0_infra.level_0.argv_command_builders import (
     append_ensemble_weights,
     append_max_targets,
     append_no_validation_stacking,

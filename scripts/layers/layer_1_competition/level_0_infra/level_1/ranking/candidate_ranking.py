@@ -1,10 +1,9 @@
-"""Rank ARC candidate grids using model confidence + augmentation consistency."""
+"""Merge and rank candidate grids using model scores + augmentation consistency."""
 
 from collections import defaultdict
 from dataclasses import dataclass
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import grid_int_hash_key
-
+from layers.layer_1_competition.level_0_infra.level_0 import grid_int_hash_key
 
 Grid = list[list[int]]
 
@@ -71,3 +70,11 @@ def rank_candidate_grids(
         reverse=True,
     )
     return ranked
+
+
+__all__ = [
+    "CandidatePrediction",
+    "Grid",
+    "RankedCandidate",
+    "rank_candidate_grids",
+]

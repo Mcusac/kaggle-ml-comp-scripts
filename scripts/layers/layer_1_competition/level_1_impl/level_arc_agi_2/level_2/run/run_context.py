@@ -16,7 +16,8 @@ from layers.layer_1_competition.level_0_infra.level_0 import (
     generate_run_id,
     utc_now_iso,
 )
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import resolve_run_dir, ARC26Paths
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.paths import ARC26Paths
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.run import resolve_run_dir
 
 logger = get_logger(__name__)
 

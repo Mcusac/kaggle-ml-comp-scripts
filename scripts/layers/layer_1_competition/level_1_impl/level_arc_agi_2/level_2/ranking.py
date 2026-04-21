@@ -5,16 +5,21 @@ from typing import Any, Mapping
 
 from layers.layer_0_core.level_0 import get_logger
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
+from layers.layer_1_competition.level_0_infra.level_0 import (
     ArcLmBudget,
-    CandidatePrediction,
     LlmTtaDfsConfig,
+)
+from layers.layer_1_competition.level_0_infra.level_1 import (
+    CandidatePrediction,
+    rank_candidate_grids,
+)
+
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     coerce_arc_grid,
     empty_arc_grid_like,
     predict_attempts_from_chosen_params,
-    rank_candidate_grids,
 )
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.ensemble_prediction_bridge import (
     ensemble_rank_predictions_reference,
 )
 

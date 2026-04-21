@@ -6,10 +6,10 @@ Shares argv primitives with ``level_1/cli/commands/build_train_command.py`` via
 
 from typing import List, Optional
 
-from layers.layer_1_competition.level_0_infra.level_0 import (
+from layers.layer_1_competition.level_0_infra.level_0.argv_command_builders import (
     append_run_args,
-    resolve_and_append_models,
     append_train_mode,
+    resolve_and_append_models,
 )
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     base_cmd,

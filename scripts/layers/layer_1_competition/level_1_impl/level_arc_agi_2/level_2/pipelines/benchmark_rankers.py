@@ -5,10 +5,13 @@ from typing import Any
 
 from layers.layer_0_core.level_4 import load_json_raw
 
+from layers.layer_1_competition.level_0_infra.level_1.artifact_io import (
+    infer_load_decoded_results_from_dir,
+)
+
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     arc_find_first_existing_file,
     eval_build_basekey_truth_map,
-    infer_load_decoded_results_from_dir,
 )
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
     eval_benchmark_rankers,

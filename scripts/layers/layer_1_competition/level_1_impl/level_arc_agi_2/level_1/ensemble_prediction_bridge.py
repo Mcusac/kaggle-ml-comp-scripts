@@ -2,8 +2,9 @@
 
 from typing import Any
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
-    CandidatePrediction,
+from layers.layer_1_competition.level_0_infra.level_1 import CandidatePrediction
+
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.ranking import (
     ENSEMBLE_REFERENCE_RANKERS,
     Grid,
 )

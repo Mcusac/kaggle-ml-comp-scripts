@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from layers.layer_1_competition.level_0_infra.level_1 import build_run_py_base_command
+from layers.layer_1_competition.level_0_infra.level_2 import build_run_py_base_command
 
 _CONTEST = "arc_agi_2"
 

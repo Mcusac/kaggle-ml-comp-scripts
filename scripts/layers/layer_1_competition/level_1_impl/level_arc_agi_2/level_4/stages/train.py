@@ -12,10 +12,12 @@ from layers.layer_1_competition.level_0_infra.level_1 import (
     commit_run_artifacts,
 )
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
-    require_data_root,
-    ARC26Paths,
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.paths import ARC26Paths
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.stages import (
     default_chosen_params,
+)
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.validation import (
+    require_data_root,
 )
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import (
     get_trainer,

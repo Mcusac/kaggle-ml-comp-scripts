@@ -1,15 +1,17 @@
-"""Neural checkpoint scoring vs evaluation solutions (composition tier: imports level_2 inference)."""
+"""Neural checkpoint scoring vs evaluation solutions (composition tier: level_2 barrel)."""
 
 from pathlib import Path
 
 from layers.layer_0_core.level_4 import load_json_raw
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import arc_find_first_existing_file
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
+    arc_find_first_existing_file,
     eval_solution_grids_for_task,
     score_grid_exact_match,
 )
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2 import predict_grid_from_checkpoint
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2 import (
+    predict_grid_from_checkpoint,
+)
 
 
 def score_neural_on_evaluation(

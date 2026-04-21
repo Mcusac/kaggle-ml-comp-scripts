@@ -119,3 +119,9 @@ def find_feature_filename_from_ensemble_metadata(
     raise ValueError(
         "Cannot determine feature_filename from ensemble model metadata"
     )
+
+
+__all__ = [
+    "extract_test_features_from_model",
+    "find_feature_filename_from_ensemble_metadata",
+]

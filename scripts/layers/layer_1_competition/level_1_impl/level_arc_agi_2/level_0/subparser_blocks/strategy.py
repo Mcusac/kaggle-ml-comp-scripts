@@ -1,6 +1,6 @@
 from typing import Any
 
-from layers.layer_1_competition.level_0_infra.level_1 import add_strategy_arg
+from layers.layer_1_competition.level_0_infra.level_0 import add_strategy_arg
 
 
 STRATEGY_CHOICES = (

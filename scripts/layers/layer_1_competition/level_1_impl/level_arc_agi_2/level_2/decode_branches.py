@@ -8,18 +8,24 @@ downstream behavior (post-decode inversion + scoring + ranking).
 
 from typing import Any, Mapping
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
+from layers.layer_1_competition.level_0_infra.level_0 import (
     ArcLmBudget,
     LlmTtaDfsConfig,
+)
+
+from layers.layer_1_competition.level_0_infra.level_1 import (
+    decode_grid_candidates,
+    turbo_wall_end_time,
+)
+
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     apply_augmentation,
     build_cell_probs_from_support_grids,
     collect_llm_tta_support_grids,
-    decode_grid_candidates,
     decode_tokens_to_grids,
 )
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
     ArcQwenGridChatFormatter,
-    turbo_wall_end_time,
 )
 
 

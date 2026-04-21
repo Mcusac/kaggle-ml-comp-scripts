@@ -2,9 +2,7 @@
 
 from typing import Any
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
-    arc_grids_equal,
-)
+from layers.layer_1_competition.level_0_infra.level_0 import arc_grids_equal
 
 
 def eval_score_submission_two_attempts(

@@ -10,7 +10,7 @@ from layers.layer_0_core.level_3 import (
     create_val_dataloader,
 )
 
-from layers.layer_1_competition.level_0_infra.level_4 import create_trainer
+from layers.layer_1_competition.level_0_infra.level_4.trainer import create_trainer
 
 logger = get_logger(__name__)
 

@@ -2,13 +2,13 @@
 
 from typing import List, Optional
 
-from layers.layer_1_competition.level_0_infra.level_0 import (
+from layers.layer_1_competition.level_0_infra.level_0.argv_command_builders import (
     append_max_targets,
     append_tune_args,
 )
-from layers.layer_1_competition.level_0_infra.level_1 import build_run_py_base_command
+from layers.layer_1_competition.level_0_infra.level_2 import build_run_py_base_command
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.cli.append_common_args import (
     CONTEST,
     append_common_args,
 )

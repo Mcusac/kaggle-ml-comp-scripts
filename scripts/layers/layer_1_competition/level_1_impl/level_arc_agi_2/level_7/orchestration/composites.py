@@ -4,12 +4,15 @@ from typing import Optional
 
 from layers.layer_0_core.level_0 import PipelineResult
 
-from layers.layer_1_competition.level_0_infra.level_0 import ArtifactKeys
-from layers.layer_1_competition.level_0_infra.level_1 import (
+from layers.layer_0_core.level_1.pipelines import (
     TwoStageValidateFirstPipelineResultShell,
-    ValidateTrainSubmitPipelineResultShell,
     run_two_stage_pipeline_result_with_validation_first,
-    RunContext,
+)
+
+from layers.layer_1_competition.level_0_infra.level_0 import ArtifactKeys
+from layers.layer_1_competition.level_0_infra.level_1 import RunContext
+from layers.layer_1_competition.level_0_infra.level_1.pipelines import (
+    ValidateTrainSubmitPipelineResultShell,
 )
 
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import (

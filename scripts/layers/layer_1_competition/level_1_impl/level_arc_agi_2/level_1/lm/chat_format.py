@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from typing import Any
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0.grid import (
     MAX_ARC_GRID_DIM,
     arc_grid_to_text_lines,
     arc_text_lines_to_grid,

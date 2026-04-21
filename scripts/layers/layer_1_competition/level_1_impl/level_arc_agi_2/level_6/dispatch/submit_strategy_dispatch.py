@@ -4,10 +4,11 @@ from typing import Any, Mapping
 
 from layers.layer_0_core.level_0 import get_logger
 
+from layers.layer_1_competition.level_0_infra.level_0 import LlmTtaDfsConfig
+
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     predict_attempts_from_chosen_params,
     stack_raise_if_unsupported_strategy,
-    LlmTtaDfsConfig,
 )
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_5 import (
     predict_attempts_for_llm_tta_dfs,
