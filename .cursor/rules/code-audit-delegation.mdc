@@ -1,0 +1,141 @@
+---
+description: Code-audit delegation — preserve USER_REQUEST; main agent orchestrates; focused planner/auditor Tasks
+globs:
+  - .cursor/agents/code-audit*.md
+  - .cursor/agents/code-verify-runner.md
+  - .cursor/agents/code-audit-orchestrator-details.md
+  - .cursor/audit-results/**/*
+---
+
+# Code-audit delegation
+
+## Orchestration owner (canonical)
+
+- **`/code-audit` in chat** (or any assistant run that follows `.cursor/agents/code-audit.md`): the **main chat assistant** performs orchestration (Steps 0–2.7, Step 4) and delegates **focused** subagent `Task`s for Step 3: **`code-audit-planner`** then **`code-audit-auditor`** per target, using slots in `.cursor/audit-templates/task-prompt-templates.md`.
+- **Focused subagents:** Multiple `Task` delegations per target are **expected** (planner → auditor). For the **unified machine pipeline** (`run_code_audit_pipeline`), delegate **`code-audit-runner`** — not ad-hoc **`shell`** + `audit_targets.py` for the same handoff. Optional **`code-audit-analyzer`:** after a manifest exists, the main agent may delegate **`Task(code-audit-analyzer, …)`** to summarize **inline** `manifest.json` (v1) into structured, layer-grouped findings; **manifest-only** — it does not replace **Step 2.7** / **Step 3** or read `queue_path` / scan sidecars. After fixes or to gate CI, optional **`code-verify-runner`:** re-run the pipeline with **flag parity** to a **baseline** manifest path, write a **new** manifest at a new `run_id`, and **deterministically compare** v1 JSON (regression if `overall_exit_code` rises or new `failed_steps` appear) — no planning, no source edits. Optional **`shell`** remains for non-audit commands that are not covered by the runner. The **main agent** holds queue order, `USER_REQUEST`, `context_store`, `prior_level_apis`, and explicit handoffs (precheck path → planner/auditor; inventory path → auditor).
+- **Nesting:** A **`Task(subagent_type="code-audit")`** subagent **often cannot** spawn nested `Task(code-audit-planner)` / `Task(code-audit-auditor)` in this environment. Do **not** treat a single `Task(code-audit)` as sufficient for a spec-compliant pipeline; see **Legacy** below.
+
+When handling **`/code-audit`** flows or delegated audit work:
+
+1. **Embed the user’s full message** inside prompts as a quoted **`USER_REQUEST`** block. Do not replace it with a shorter paraphrase that drops `@` paths, level names, or scope.
+
+2. **Append only** (if helpful): workspace root, pointers to
+   **`.cursor/agents/code-audit-reference.md`** (read in full for discovery / Step 1b / Step 1e / handoff),
+   **`.cursor/agents/code-audit-orchestrator-details.md`** (read in full for Steps 0–2.7, 1c/1d/1f, Step 4, guardrails, machine fast path),
+   **`.cursor/agents/code-audit.md`** (Step **3** delegation contract),
+   **`.cursor/audit-templates/task-prompt-templates.md`** (copy planner/auditor/orchestrator
+   slots instead of rewriting prompts), and instruction to follow **Step 0**,
+   **Step 0.5**, **Step 0.6** (precheck mode), **Step 0.7** (default **regenerate**:
+   always 3a+3b per target, overwrite canonical artifacts; **incremental_only** only
+   if `USER_REQUEST` matches phrases in `code-audit-orchestrator-details.md` — do **not** instruct
+   “verify only if files exist” unless the user asked), **Step 0.8** (real
+   **code-audit-planner** + **code-audit-auditor** per target; **no**
+   `comprehensive_audit_emit.py` unless user says `machine emit only` / `use emit script`
+   / `skeleton inventory only`), **Step 1f** (**required** for
+   comprehensive all-scopes / default layers sweep: canonical machine handoff =
+   **`Task(code-audit-runner)`** → `run_code_audit_pipeline` (see **Step 1f** in
+   `code-audit-orchestrator-details.md`); iterate the queue JSON — do not hand-enumerate dozens of targets in chat), **Step 2.7**
+   (`audit_precheck.py` unless skip or `pin_path`; default `--precheck-kind auto`
+   for `contests_special`), then **Step 3a → 3b** per target. For
+   **`audit_preset: comprehensive`**, the JSON queue from **Step 1f** is the
+   authority for order and paths; reference Step 1e is the semantic spec if the
+   script fails.
+
+3. **Optional explicit knobs** (only if the user asked or you are mirroring their
+   exact words — do not override `USER_REQUEST`):
+   - `audit_profile`: `full` | `imports` | `barrels` | `docs` (defaults per
+     `code-audit-orchestrator-details.md` Step 0.5 if omitted from the user message)
+   - `audit_preset`: `single` | `comprehensive`
+
+   **Example `USER_REQUEST` lines** (verbatim patterns the orchestrator parses):
+   - `audit level_2 profile imports` (general stack: `layer_0_core/level_2/`)
+   - `comprehensive audit all scopes profile full`
+   - `preset comprehensive profile barrels`
+   - `audit level_0_infra/level_0` or legacy `audit level_C0` (competition infra: on-disk
+     `level_0_infra/level_0/`, import `layers.layer_1_competition.level_0_infra.level_0`;
+     `audit_preset` stays `single` unless they ask for comprehensive)
+   - `skip precheck` / `no precheck` — orchestrator does not run `audit_precheck.py`
+   - `precheck path: <file.md>` or a path to `precheck_*.md` — use that file, do not re-run
+   - `precheck date 2026-03-23` — pass `--date` when running `audit_precheck.py`
+   - `artifact_root: package` | `artifact_root: workspace` — force where `.cursor/audit-results/` resolves (default: **package** `input/kaggle-ml-comp-scripts` when targets are under it)
+   - `resume from level_3` | `resume from level_csiro_level_0` — start the queue there when `incremental_only` previously skipped work due to path mismatch
+
+   **Default documentation-first:** The orchestrator **defaults** to
+   `run_mode: recommendations-only` (findings without applying edits). When the
+   user wants **code changes applied**, they should add e.g. **`apply fixes`**,
+   **`active overhaul`**, or **`run_mode default`** (see `code-audit-orchestrator-details.md` Step **1c**).
+
+4. **Do not inject** constraints the user did not ask for, including:
+   - **`run_mode: default`** (active overhaul / edits) unless `USER_REQUEST`
+     matches apply-fix phrases in `code-audit-orchestrator-details.md` Step **1c**
+   - Custom output locations under `.cursor/audit-results/` **without** a
+     `scope` folder (`general`, `competition_infra`, `contests_special`) and artifact
+     type (`inventories`, `audits`, `summaries`)
+
+5. **Canonical paths** are defined in `.cursor/agents/code-audit-reference.md` Step 1b and
+   **`input/kaggle-ml-comp-scripts/.cursor/audit-results/README.md`** (spec: **`artifact_base`** = that package directory). **Competition infra:** `audit_scope`
+   `competition_infra`, artifact `level_name` = on-disk `level_N`; Python import
+   `layers.layer_1_competition.level_0_infra.level_N`. Legacy user token `level_CK` maps to
+   the same `level_0_infra/level_K/` directory.
+
+6. **Machine precheck (default on):** The orchestrator **must** run
+   `python -m layers.layer_2_devtools.level_1_impl.level_2.audit_precheck` per target (cwd `scripts/`)
+   before Step 3a unless `USER_REQUEST` opts out or pins a file (**Step 0.6** in
+   `code-audit-orchestrator-details.md`). Pass `precheck_report_path` to planner and auditor when available.
+   If the script cannot run, the audit **continues** without it (orchestrator logs a warning).
+   For `contests_special`, `audit_precheck.py` uses **`--precheck-kind auto`** by default
+   (contest tier vs contest root vs `layer_Z_unsorted`). Prefer resolving targets from
+   **`Task(code-audit-runner)`** / **Step 1f** queue output in `code-audit-orchestrator-details.md` so discovery
+   matches Step 1e without re-deriving it in chat.
+
+7. **Orchestrator guardrails:** Do not delete or move files under
+   `scripts/layers/` during an audit unless the user explicitly requested cleanup.
+   Do not place generator scripts under `.cursor/audit-results/*/inventories/`.
+   Reusable Task prompt slots live under `.cursor/audit-templates/` (copy into
+   `Task(subagent_type=…)` prompts; do not paraphrase away `USER_REQUEST` or paths).
+
+8. **Token efficiency:** For comprehensive runs, the **main agent** may delegate
+   **`Task(subagent_type="code-audit-runner", …)`** to run
+   `python -m layers.layer_2_devtools.level_1_impl.level_2.run_code_audit_pipeline`
+   (cwd `kaggle-ml-comp-scripts/scripts/`) with **`--no-precheck --no-general-scan --no-csiro-scan`**
+   when the main flow will still run **Step 2.7** + **Step 3** (avoids duplicating precheck/scans). The runner returns **manifest path** + **queue path** (`audit_queue.json` next to `manifest.json` unless overridden). Run orchestration **in the main assistant** (not nested inside `Task(code-audit)`). **This does not
+   waive Step 3:** still run **code-audit-planner**
+   and **code-audit-auditor** per target unless `USER_REQUEST` sets
+   **`artifact_policy: incremental_only`** (Step **0.7**) or machine-emit opt-in
+   (Step **0.8**). **Do not** suggest `comprehensive_audit_emit.py` as a substitute
+   for planner/auditor unless the user explicitly opted into machine emit.
+
+## Copy-paste Task templates
+
+Replace **`<TARGET>`** with your `@` path under `scripts/layers/...`. Verbatim **`USER_REQUEST`** only.
+
+### A — Preferred (main agent orchestration + planner/auditor per target)
+
+Run orchestration yourself (read `.cursor/agents/code-audit-orchestrator-details.md`, normalize targets, Step 2.7, then for each target):
+
+0. **Comprehensive / Step 1f (machine queue + manifest):** **`Task(subagent_type="code-audit-runner", …)`** — fill placeholders from `.cursor/audit-templates/task-prompt-templates.md` (Runner block). Then iterate the returned queue JSON for Step 2.7 and Step 3.
+
+1. **`Task(subagent_type="code-audit-planner", …)`** — fill placeholders from `.cursor/audit-templates/task-prompt-templates.md` (Planner block).
+2. **`Task(subagent_type="code-audit-auditor", …)`** — fill placeholders (Auditor block).
+
+Pass the same **`USER_REQUEST`** context into your orchestration preamble so scope and paths are preserved.
+
+### B — Legacy (single `Task(code-audit)` — avoid for full compliance)
+
+`Task(subagent_type="code-audit")` may be unable to invoke nested planner/auditor Tasks; spec-compliant Step 3 often **fails** or must not be simulated in-process. Prefer **A**.
+
+```text
+Delegate Task(subagent_type="code-audit") with:
+
+USER_REQUEST (verbatim):
+
+"""
+profile full
+recommendations only
+no code edits
+
+@<TARGET>
+"""
+```
+
+More examples and a **two-phase** audit→fix pair: `input/kaggle-ml-comp-scripts/.cursor/commands/code-audit-quick-reference.md` (*Subagent `Task` templates*).

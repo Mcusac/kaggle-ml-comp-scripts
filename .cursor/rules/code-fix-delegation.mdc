@@ -1,0 +1,59 @@
+---
+description: Delegation rules for Task(code-fix) — preserve USER_REQUEST; tool-first fixes; FIX_RUN summaries
+globs:
+  - .cursor/agents/code-fix*.md
+  - input/kaggle-ml-comp-scripts/.cursor/audit-results/**/*
+---
+
+# Code-fix delegation
+
+When invoking `Task(subagent_type="code-fix", …)` (or `/code-fix` flows):
+
+1. **Embed the user’s full message** as a quoted **`USER_REQUEST`** block. Do not paraphrase away `@` paths or tool lines. Optionally add a second block with **`analyzer_findings`** (structured output from **`code-audit-analyzer`**) to help **`code-fix-planner`** prioritize work after a machine run; it does not replace `*_audit.md` when the user wanted formal **apply recommendations**.
+
+2. **Read in order:**
+   - **`.cursor/agents/code-fix.md`** (orchestrator)
+   - **`.cursor/agents/code-fix-planner.md`** (read-only planning; no tools, no shell)
+   - **`.cursor/agents/code-fix-runner.md`** (applies the plan, per-tranche `verifier` / `tester`, no ad-hoc scan, no `tempfile`)
+   - *Legacy pointer:* **`.cursor/agents/code-fix-doer.md`** (superseded by **code-fix-runner**)
+
+3. **Tool-first:** For `__init__.py` / barrel drift, prefer `regenerate_package_inits.py` from `input/kaggle-ml-comp-scripts/scripts` (see `code-fix.md` for cwd and paths). The **planner** only emits steps as text; the **runner** runs commands. Manual edits only for what tools cannot cover.
+
+4. **Artifacts:** Write **`FIX_RUN_<slug>_<YYYY-MM-DD>.md`** under  
+   `input/kaggle-ml-comp-scripts/.cursor/audit-results/<scope>/summaries/`  
+   with `audit_scope` resolved per `code-audit-reference.md` Step 1b.
+
+5. **Do not** treat `/code-fix` as a substitute for **`code-audit-planner` + `code-audit-auditor`** for formal audit markdown.
+
+## Copy-paste `Task` template
+
+Replace **`<TARGET>`** with the workspace `@` path. Verbatim `USER_REQUEST` only.
+
+```text
+Delegate Task(subagent_type="code-fix") with:
+
+USER_REQUEST (verbatim):
+
+"""
+apply recommendations
+profile full
+
+@<TARGET>
+"""
+```
+
+Lite (edit `tools:` line as needed):
+
+```text
+Delegate Task(subagent_type="code-fix") with:
+
+USER_REQUEST (verbatim):
+
+"""
+tools: init regen
+
+@<TARGET>
+"""
+```
+
+See also: `input/kaggle-ml-comp-scripts/.cursor/commands/code-audit-quick-reference.md` (Subagent `Task` templates).

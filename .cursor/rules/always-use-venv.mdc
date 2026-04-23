@@ -1,0 +1,17 @@
+---
+description: Always run Python commands inside the project venv
+alwaysApply: true
+---
+
+# Always use the project venv
+
+When running any Python command (including `python -m ...`, pytest, tooling, or scripts), **always use the project virtual environment**:
+
+- Default venv: `input/kaggle-ml-comp-scripts/.venv`
+
+## Requirements
+
+- Use the venv interpreter for all runs (do not use system Python).
+- If a command fails due to a missing package, **do not assume the dependency is absent** until you’ve verified the active interpreter is the venv.
+- When reporting failures, include which Python executable was used (venv vs system).
+

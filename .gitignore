@@ -25,6 +25,7 @@ venv/
 .venv/
 ENV/
 env/
+.venv/
 
 # IDE
 .vscode/
@@ -69,6 +70,9 @@ outputs/
 logs/
 cache/
 submissions/
+
+# Cursor (repo-local)
+# Keep `.cursor/` tracked for repo-specific rules/commands/agents.
 
 # Keep source package feature cache modules tracked (this is code, not output cache)
 !scripts/layers/layer_0_core/level_1/features/cache/

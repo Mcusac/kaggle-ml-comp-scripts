@@ -1,0 +1,79 @@
+---
+description: Kaggle ML competition scripts — imports, shells, audit artifacts
+globs:
+  - input/kaggle-ml-comp-scripts/scripts/**/*.py
+  - input/kaggle-ml-comp-scripts/docs/automation_ideas.md
+  - input/kaggle-ml-comp-scripts/.cursor/commands/devtools-inventory.md
+  - input/kaggle-ml-comp-scripts/.cursor/rules/devtools-automation-usage.mdc
+  - .cursor/agents/code-audit*.md
+  - .cursor/agents/code-fix*.md
+  - .cursor/agents/code-verify-runner.md
+  - .cursor/agents/code-audit-orchestrator-details.md
+  - .cursor/audit-results/**/*
+  - .cursor/rules/code-audit-delegation.mdc
+  - .cursor/rules/code-fix-delegation.mdc
+---
+
+# Kaggle ML scripts
+
+- **Import surfaces** (allowed paths, `__init__.py` vs logic files, competition infra + contests): `python-import-surfaces.mdc`.
+- **Import order** (blank lines and groups at top of file): `python-import-order.mdc`.
+- **Automation inventory** (which devtools exist vs planned): `input/kaggle-ml-comp-scripts/docs/automation_ideas.md`. Quick invocations: `input/kaggle-ml-comp-scripts/.cursor/commands/devtools-inventory.md`. Subagent guardrail: `input/kaggle-ml-comp-scripts/.cursor/rules/devtools-automation-usage.mdc`.
+
+## Shell (Windows)
+
+- Do **not** use bash-style `&&` or `||` in **Windows PowerShell 5.x** (parse errors).
+- One command per line; use separate tool calls or PowerShell-native
+  `if ($LASTEXITCODE -ne 0) { ... }`.
+
+## Audit outputs
+
+Canonical **`artifact_base`** for this repo is **`input/kaggle-ml-comp-scripts`**.
+Paths are relative to **`artifact_base/.cursor/audit-results/`**:
+
+- Inventories: `<scope>/inventories/`
+- Audits: `<scope>/audits/`
+- Summaries: `<scope>/summaries/`
+- Run snapshots (machine scripts): `<scope>/runs/<YYYY-MM-DD>/<level_name>/`
+
+Scopes: `general` (level_0–10), `competition_infra`, `contests_special`. See
+`input/kaggle-ml-comp-scripts/.cursor/audit-results/README.md` (workspace-root
+`.cursor/audit-results/README.md` is only a pointer for other repos).
+
+For code-audit, follow `.cursor/rules/code-audit-delegation.mdc`: the **main
+assistant** orchestrates (preserve `USER_REQUEST`, no unsolicited report-only or
+flat `audit-results/` root), delegates **`Task(code-audit-runner)`** for **`run_code_audit_pipeline`**
+(Step 1f / machine queue + manifest when comprehensive), may delegate **`Task(code-audit-analyzer)`** to summarize
+a v1 **manifest** only (no tools; no `audit_queue` / scan file reads; does not replace Step 3), and delegates **`Task(code-audit-planner)`** then
+**`Task(code-audit-auditor)`** per target for Step 3. Optional **`Task(code-verify-runner)`** to re-run **`run_code_audit_pipeline`** against a **baseline** manifest and **fail** on regression (deterministic v1 JSON compare; see **`.cursor/agents/code-verify-runner.md`**). Chat shortcut: **`/code-audit`**
+(`.cursor/commands/code-audit.md`). A single **`Task(code-audit)`** alone is
+legacy and may not satisfy nested planner/auditor delegation.
+
+When delegating **`Task(subagent_type="code-fix")`**, follow
+`.cursor/rules/code-fix-delegation.mdc` (tool-first apply phase; **`FIX_RUN_*.md`**
+under `<scope>/summaries/`; **`code-fix-planner`** may consume **code-audit-analyzer** triage before **`code-fix-runner`**, which runs per-tranche **verifier** / **tester** and avoids ad-hoc scan + `tempfile` per spec). Chat shortcut: **`/code-fix`**
+(`.cursor/commands/code-fix.md`).
+
+### Context from artifacts
+
+- Before non-trivial work in a level package, or when the layout is unfamiliar,
+  read the matching `INVENTORY_*.md` and the latest audit for that scope/level
+  (use `summaries/` only when you need a cross-level overview).
+- Treat inventories as a map of modules and surfaces; treat audits as known
+  issues and prior findings — not as live truth for behavior.
+- Always open and verify the actual source for any file you edit; if an
+  artifact disagrees with the repo, follow the code (or refresh via audit).
+- Pick the correct `scope` folder for the tree you are in; when unsure, use
+  `input/kaggle-ml-comp-scripts/.cursor/audit-results/README.md`.
+
+New markdown files must include **generated** date (and pass number if repeat).
+
+## Audit automation (dev)
+
+- **Precheck:** from `kaggle-ml-comp-scripts/scripts/`, `python -m layers.layer_2_devtools.level_1_impl.level_2.audit_precheck` — writes
+  `precheck_<level>_<date>.{md,json}` under `artifact_base/.cursor/audit-results/<scope>/summaries/` (and copies under `runs/<date>/<level>/`).
+- **Inventory fragment:** `python -m layers.layer_2_devtools.level_1_impl.level_2.inventory_bootstrap` (cwd `scripts/`) — planner-mergeable tree/imports/`__all__` snippet.
+- **General stack scan:** `python -m layers.layer_2_devtools.level_1_impl.level_2.scan_level_violations --json` (cwd `scripts/`) — `general/audits/level_violations_scan_*.json`.
+- **Layer dependency report:** `python -m layers.layer_2_devtools.level_1_impl.level_2.validate_layer_dependencies` (cwd `scripts/`) — paths printed; JSON+MD under `artifact_base/.cursor/audit-results/` (see run output).
+- **Machine pipeline (manifest):** `python -m layers.layer_2_devtools.level_1_impl.level_2.run_code_audit_pipeline` (cwd `scripts/`) — `general/summaries/machine_runs/<run_id>/` (and CI parity flags in `input/kaggle-ml-comp-scripts/.github/workflows/health-check.yml`).
+- Orchestration: `.cursor/agents/code-audit.md` (**Step 3** delegation), `.cursor/agents/code-audit-orchestrator-details.md` (**Step 0.6** precheck mode + **Step 2.7** run script by default, policies, Step 4), and `.cursor/agents/code-audit-reference.md` (discovery, Step 1e, handoff). Details: `.cursor/audit-results/README.md`.
