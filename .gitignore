@@ -73,6 +73,8 @@ submissions/
 
 # Cursor (repo-local)
 # Keep `.cursor/` tracked for repo-specific rules/commands/agents.
+.cursor/audit-results/
+.cursor/audit-results/**
 
 # Keep source package feature cache modules tracked (this is code, not output cache)
 !scripts/layers/layer_0_core/level_1/features/cache/
