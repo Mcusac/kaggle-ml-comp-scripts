@@ -1,0 +1,63 @@
+name: CI Warnings (non-blocking)
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+concurrency:
+  group: ci-warnings-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  warnings:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Dead symbols (report-only)
+      working-directory: scripts
+      run: |
+        python -m layers.layer_2_devtools.level_1_impl.level_2.dead_symbol_detector \
+          --root "layers/layer_0_core" \
+          --json
+
+    - name: Promotion/demotion suggestions (report-only)
+      working-directory: scripts
+      run: |
+        python -m layers.layer_2_devtools.level_1_impl.level_2.promotion_demotion_suggestions_orchestrate \
+          --scripts-dir "." \
+          --scope general \
+          --json
+
+    - name: Deep nesting (report-only)
+      working-directory: scripts
+      run: |
+        python -m layers.layer_2_devtools.level_1_impl.level_2.deep_nesting_detector \
+          --root ".." \
+          --json
+
+    - name: Upload warning artifacts
+      if: success() || failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ci-warnings-artifacts
+        path: |
+          .cursor/audit-results/**/audits/*.md
+          .cursor/audit-results/**/audits/*.json
+        if-no-files-found: warn
+        compression-level: 6
+

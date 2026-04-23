@@ -12,9 +12,9 @@ from layers.layer_0_core.level_2 import (
     build_preprocessing_transforms,
 )
 
-torch = get_torch()
-DataLoader = torch.utils.data.DataLoader
-logger = get_logger(__name__)
+_torch = get_torch()
+_DataLoader = _torch.utils.data.DataLoader
+_logger = get_logger(__name__)
 
 
 # ---------------------------------------------------------------------------
@@ -89,7 +89,7 @@ def _build_dataloader(
     target_cols: Optional[list],
     image_path_column: str,
     **kwargs,
-) -> DataLoader:
+) -> _DataLoader:
     """Construct a dataset and wrap it in a DataLoader."""
     DatasetClass = StreamingSplitDataset if dataset_type == 'split' else StreamingDataset
     dataset = DatasetClass(
@@ -100,7 +100,7 @@ def _build_dataloader(
         shuffle=shuffle,
         image_path_column=image_path_column,
     )
-    return DataLoader(
+    return _DataLoader(
         dataset,
         batch_size=batch_size,
         shuffle=False,  # Shuffle is handled inside IterableDataset
@@ -123,7 +123,7 @@ def _create_dataloader_from_config(
     num_workers: Optional[int],
     pin_memory: Optional[bool],
     **kwargs,
-) -> DataLoader:
+) -> _DataLoader:
     """
     Shared implementation for train and validation dataloader creation.
 
@@ -187,7 +187,7 @@ def create_train_dataloader(
     train_transform: Optional[Callable] = None,
     augmentation: AugmentationPreset = 'light',
     **kwargs,
-) -> DataLoader:
+) -> _DataLoader:
     """
     Create a training DataLoader from config.
 
@@ -221,7 +221,7 @@ def create_train_dataloader(
         pin_memory=pin_memory,
         **kwargs,
     )
-    logger.info(f"Created training dataloader: {len(loader)} batches, batch_size={loader.batch_size}")
+    _logger.info(f"Created training dataloader: {len(loader)} batches, batch_size={loader.batch_size}")
     return loader
 
 
@@ -236,7 +236,7 @@ def create_val_dataloader(
     pin_memory: Optional[bool] = None,
     val_transform: Optional[Callable] = None,
     **kwargs,
-) -> DataLoader:
+) -> _DataLoader:
     """
     Create a validation DataLoader from config.
 
@@ -267,5 +267,5 @@ def create_val_dataloader(
         pin_memory=pin_memory,
         **kwargs,
     )
-    logger.info(f"Created validation dataloader: {len(loader)} batches, batch_size={loader.batch_size}")
+    _logger.info(f"Created validation dataloader: {len(loader)} batches, batch_size={loader.batch_size}")
     return loader

@@ -6,7 +6,7 @@ from typing import Tuple
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def split_features_by_fold(
@@ -44,5 +44,5 @@ def split_features_by_fold(
     val_features = all_features[val_mask]
     train_targets = all_targets[train_mask]
     val_targets = all_targets[val_mask]
-    logger.debug(f"Split features for fold {current_fold}: train {train_features.shape}, val {val_features.shape}")
+    _logger.debug(f"Split features for fold {current_fold}: train {train_features.shape}, val {val_features.shape}")
     return train_features, val_features, train_targets, val_targets

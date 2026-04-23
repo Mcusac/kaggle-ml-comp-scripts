@@ -18,10 +18,10 @@ from layers.layer_0_core.level_2 import (
 )
 from layers.layer_0_core.level_4 import create_vision_model
 
-logger = get_logger(__name__)
-torch = get_torch()
-nn = torch.nn
-DataLoader = torch.utils.data.DataLoader
+_logger = get_logger(__name__)
+_torch = get_torch()
+_nn = _torch.nn
+_DataLoader = _torch.utils.data.DataLoader
 
 
 class BaseModelTrainer:
@@ -91,9 +91,9 @@ class BaseModelTrainer:
             )
         model = model.to(self.device)
         model = self._apply_multi_gpu(model)
-        logger.info(f"Model ready: {self.model_name}")
+        _logger.info(f"Model ready: {self.model_name}")
         if self.image_size:
-            logger.info(f"Input size: {self.image_size}")
+            _logger.info(f"Input size: {self.image_size}")
         return model
 
     def _apply_multi_gpu(self, model: Any) -> Any:
@@ -104,9 +104,9 @@ class BaseModelTrainer:
         elif isinstance(self.config, dict):
             use_multi_gpu = self.config.get('use_multi_gpu', False)
 
-        if use_multi_gpu and self.device.type == 'cuda' and torch.cuda.device_count() > 1:
-            model = nn.DataParallel(model)
-            logger.info(f"DataParallel enabled across {torch.cuda.device_count()} GPUs")
+        if use_multi_gpu and self.device.type == 'cuda' and _torch.cuda.device_count() > 1:
+            model = _nn.DataParallel(model)
+            _logger.info(f"DataParallel enabled across {_torch.cuda.device_count()} GPUs")
         return model
 
     def _build_criterion_optimizer_scheduler(self) -> Tuple[Any, Any, Any]:
@@ -135,11 +135,11 @@ class BaseModelTrainer:
     # Public single-step interface
     # ------------------------------------------------------------------
 
-    def train_epoch(self, train_loader: DataLoader) -> float:
+    def train_epoch(self, train_loader: _DataLoader) -> float:
         """Run one training pass. Returns mean training loss."""
         return self.training_helper.train_epoch(train_loader)
 
-    def validate(self, val_loader: DataLoader) -> Tuple[float, float, Any]:
+    def validate(self, val_loader: _DataLoader) -> Tuple[float, float, Any]:
         """Run one validation pass. Returns (val_loss, metric_value, per_target_scores)."""
         return self.validation_helper.validate(val_loader)
 
@@ -151,8 +151,8 @@ class BaseModelTrainer:
         self,
         epoch: int,
         num_epochs: int,
-        train_loader: DataLoader,
-        val_loader: DataLoader,
+        train_loader: _DataLoader,
+        val_loader: _DataLoader,
     ) -> Tuple[float, float, float]:
         """
         Execute one full epoch: train, validate, step scheduler, log, record history.
@@ -212,8 +212,8 @@ class BaseModelTrainer:
 
     def train(
         self,
-        train_loader: DataLoader,
-        val_loader: DataLoader,
+        train_loader: _DataLoader,
+        val_loader: _DataLoader,
         num_epochs: Optional[int] = None,
         save_dir: Optional[Union[str, Path]] = None,
         resume: bool = True,
@@ -251,7 +251,7 @@ class BaseModelTrainer:
             self.history = resume_info['history']
 
         epochs_without_improvement = 0
-        logger.info(f"Training for {num_epochs} epochs from epoch {start_epoch}")
+        _logger.info(f"Training for {num_epochs} epochs from epoch {start_epoch}")
 
         try:
             for epoch in range(start_epoch, num_epochs):
@@ -263,16 +263,16 @@ class BaseModelTrainer:
                     epochs_without_improvement += 1
 
                 if epochs_without_improvement >= patience:
-                    logger.info(f"Early stopping after {patience} epochs without improvement")
+                    _logger.info(f"Early stopping after {patience} epochs without improvement")
                     break
 
         except KeyboardInterrupt:
-            logger.info("Training interrupted by user")
+            _logger.info("Training interrupted by user")
         except Exception as e:
-            logger.error(f"Training failed: {e}")
+            _logger.error(f"Training failed: {e}")
             raise
 
-        logger.info(
+        _logger.info(
             f"Training complete. Best weighted R²: {self.best_score:.4f} at epoch {self.best_epoch}"
         )
         return self.history

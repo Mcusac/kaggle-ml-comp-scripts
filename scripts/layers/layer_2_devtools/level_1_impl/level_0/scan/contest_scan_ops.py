@@ -9,17 +9,12 @@ from layers.layer_2_devtools.level_0_infra.level_0.constants.import_patterns imp
 )
 from layers.layer_2_devtools.level_0_infra.level_0.models.audit_models import FileReport, Violation
 from layers.layer_2_devtools.level_0_infra.level_0.parse.ast.ast_utils import parse_file
+from layers.layer_2_devtools.level_0_infra.level_0.parse.barrel_names import load_static_barrel_names
 
 
 def load_level_barrel_names(level_j_dir: Path) -> set[str]:
     """Load static public names from a contest level barrel."""
-    init_py = level_j_dir / "__init__.py"
-    if not init_py.is_file():
-        return set()
-    tree = parse_file(init_py)
-    if tree is None or not isinstance(tree, ast.Module):
-        return set()
-    return _static_all_names(tree) | _reexport_names_from_init(tree)
+    return load_static_barrel_names(level_j_dir)
 
 
 def scan_contest_package_file(
@@ -176,31 +171,6 @@ def _deep_path_violation(
         f"layers.layer_1_competition.level_1_impl.{contest_slug}.level_{import_tier} "
         f"barrel if re-exported (heuristic; verify dynamic __all__)",
     )
-
-
-def _static_all_names(tree: ast.Module) -> set[str]:
-    names: set[str] = set()
-    for node in tree.body:
-        if not isinstance(node, ast.Assign):
-            continue
-        for target in node.targets:
-            if isinstance(target, ast.Name) and target.id == "__all__":
-                value = node.value
-                if isinstance(value, (ast.List, ast.Tuple)):
-                    for elt in value.elts:
-                        if isinstance(elt, ast.Constant) and isinstance(elt.value, str):
-                            names.add(elt.value)
-    return names
-
-
-def _reexport_names_from_init(tree: ast.Module) -> set[str]:
-    names: set[str] = set()
-    for node in tree.body:
-        if isinstance(node, ast.ImportFrom) and node.level == 1 and node.module:
-            for alias in node.names:
-                if alias.name != "*":
-                    names.add(alias.name if alias.asname is None else alias.asname)
-    return names
 
 
 def _read_parse_error(path: Path) -> str:

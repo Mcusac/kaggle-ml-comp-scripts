@@ -13,7 +13,7 @@ from typing import Tuple, Optional, Dict, Any
 from layers.layer_0_core.level_0 import get_logger, DataLoadError, DataProcessingError, DataValidationError, ensure_dir
 from layers.layer_0_core.level_3 import validate_path_is_file
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 # Default threshold for using memmap (2GB)
 MEMMAP_THRESHOLD_MB = 2048.0
@@ -69,7 +69,7 @@ def create_memmap(
         path = Path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
         memmap = np.memmap(path, dtype=dtype, mode=mode, shape=shape)
-        logger.debug(f"Created memmap: {path} (shape={shape}, dtype={dtype})")
+        _logger.debug(f"Created memmap: {path} (shape={shape}, dtype={dtype})")
         return memmap
     except Exception as e:
         raise DataProcessingError(f"Failed to create memmap {path}: {e}")
@@ -160,7 +160,7 @@ def save_memmap_with_metadata(
         with open(metadata_path, 'w', encoding='utf-8') as f:
             json.dump(metadata, f, indent=2)
         
-        logger.debug(
+        _logger.debug(
             f"Saved memmap with metadata: {path} "
             f"(shape={array.shape}, {metadata['size_mb']:.1f}MB)"
         )
@@ -227,7 +227,7 @@ def load_memmap_with_metadata(
         # Load memmap
         memmap = np.memmap(path_obj, dtype=dtype, mode=mode, shape=shape)
 
-        logger.debug(
+        _logger.debug(
             f"Loaded memmap with metadata: {path_obj} "
             f"(shape={shape}, {metadata.get('size_mb', 0):.1f}MB)"
         )

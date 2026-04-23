@@ -17,7 +17,7 @@ from layers.layer_1_competition.level_1_impl.level_csiro.level_1 import (
 )
 from layers.layer_1_competition.level_1_impl.level_csiro.level_6 import train_and_export_pipeline
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _validate_multi_variant_inputs(
@@ -53,9 +53,9 @@ def _setup_multi_variant_config(
     if data_manipulation_combo:
         try:
             apply_combo_to_config(config, data_manipulation_combo)
-            logger.info(f"Applied data manipulation combo: {data_manipulation_combo}")
+            _logger.info(f"Applied data manipulation combo: {data_manipulation_combo}")
         except Exception as e:
-            logger.warning(f"Could not load data manipulation combo {data_manipulation_combo}: {e}")
+            _logger.warning(f"Could not load data manipulation combo {data_manipulation_combo}: {e}")
 
     # Generate feature filename
     model_id = get_model_id(feature_extraction_model)
@@ -79,20 +79,20 @@ def _train_single_model_variant(
     **kwargs
 ) -> bool:
     """Train a single model variant and return whether features were extracted."""
-    logger.info("\n" + "-" * 60)
-    logger.info(f"Model {model_idx + 1}/{total_models}: model_id {model_id}")
-    logger.info("-" * 60)
+    _logger.info("\n" + "-" * 60)
+    _logger.info(f"Model {model_idx + 1}/{total_models}: model_id {model_id}")
+    _logger.info("-" * 60)
 
     try:
         # Get variant_id, feature_filename from model_id
         variant_id, model_feature_filename, cv_score = get_variant_info_from_model_id(
             regression_model_type, model_id
         )
-        logger.info(f"  Model ID: {model_id}")
-        logger.info(f"  Variant ID: {variant_id}")
-        logger.info(f"  Feature filename: {model_feature_filename}")
+        _logger.info(f"  Model ID: {model_id}")
+        _logger.info(f"  Variant ID: {variant_id}")
+        _logger.info(f"  Feature filename: {model_feature_filename}")
         if cv_score is not None:
-            logger.info(f"  CV score: {cv_score:.6f}")
+            _logger.info(f"  CV score: {cv_score:.6f}")
 
         # Set up directories
         export_dir = export_base / f"best_model_{model_id}"
@@ -102,18 +102,18 @@ def _train_single_model_variant(
         ensure_dir(model_dir)
 
         if fresh_train and model_dir.exists():
-            logger.info(f"  Deleting existing training directory for fresh training")
+            _logger.info(f"  Deleting existing training directory for fresh training")
             shutil.rmtree(model_dir)
 
         # Determine if we should extract features
         should_extract = extract_features and not features_extracted
 
         if should_extract:
-            logger.info(f"  Extracting features from scratch...")
+            _logger.info(f"  Extracting features from scratch...")
         elif features_extracted:
-            logger.info(f"  Reusing features from previous model...")
+            _logger.info(f"  Reusing features from previous model...")
         else:
-            logger.info(f"  Loading features from cache...")
+            _logger.info(f"  Loading features from cache...")
 
         # Train and export
         train_and_export_pipeline(
@@ -133,14 +133,14 @@ def _train_single_model_variant(
             **kwargs
         )
 
-        logger.info(f"  Training and export complete for model_id {model_id}")
-        logger.info(f"     Export directory: {export_dir}")
+        _logger.info(f"  Training and export complete for model_id {model_id}")
+        _logger.info(f"     Export directory: {export_dir}")
 
         return should_extract
 
     except Exception as e:
-        logger.error(f"  Failed to train model_id {model_id}: {e}")
-        logger.exception("Full error traceback:")
+        _logger.error(f"  Failed to train model_id {model_id}: {e}")
+        _logger.exception("Full error traceback:")
         return False
 
 
@@ -190,15 +190,15 @@ def multi_variant_regression_training_pipeline(
     _validate_multi_variant_inputs(model_ids, feature_extraction_model, regression_model_type)
 
     # Log pipeline start
-    logger.info("=" * 60)
-    logger.info("Multi-Variant Regression Training Pipeline")
-    logger.info("=" * 60)
-    logger.info(f"  Regression model type: {regression_model_type}")
-    logger.info(f"  Feature extraction model: {feature_extraction_model}")
-    logger.info(f"  Data manipulation combo: {data_manipulation_combo or 'combo_00 (default)'}")
-    logger.info(f"  Model IDs to train: {model_ids}")
-    logger.info(f"  Extract features: {extract_features}")
-    logger.info(f"  Fresh train: {fresh_train}")
+    _logger.info("=" * 60)
+    _logger.info("Multi-Variant Regression Training Pipeline")
+    _logger.info("=" * 60)
+    _logger.info(f"  Regression model type: {regression_model_type}")
+    _logger.info(f"  Feature extraction model: {feature_extraction_model}")
+    _logger.info(f"  Data manipulation combo: {data_manipulation_combo or 'combo_00 (default)'}")
+    _logger.info(f"  Model IDs to train: {model_ids}")
+    _logger.info(f"  Extract features: {extract_features}")
+    _logger.info(f"  Fresh train: {fresh_train}")
 
     # Setup config and get feature filename
     feature_filename = _setup_multi_variant_config(
@@ -214,9 +214,9 @@ def multi_variant_regression_training_pipeline(
     features_extracted = False
 
     # Train each model
-    logger.info("\n" + "=" * 60)
-    logger.info("Training Regression Models per Model ID")
-    logger.info("=" * 60)
+    _logger.info("\n" + "=" * 60)
+    _logger.info("Training Regression Models per Model ID")
+    _logger.info("=" * 60)
 
     for model_idx, model_id in enumerate(model_ids):
         extracted = _train_single_model_variant(
@@ -227,8 +227,8 @@ def multi_variant_regression_training_pipeline(
         if extracted:
             features_extracted = True
 
-    logger.info("\n" + "=" * 60)
-    logger.info("Multi-Variant Regression Training Pipeline Complete")
-    logger.info("=" * 60)
-    logger.info(f"  Trained {len(model_ids)} models")
-    logger.info(f"  Export base directory: {export_base}")
+    _logger.info("\n" + "=" * 60)
+    _logger.info("Multi-Variant Regression Training Pipeline Complete")
+    _logger.info("=" * 60)
+    _logger.info(f"  Trained {len(model_ids)} models")
+    _logger.info(f"  Export base directory: {export_base}")

@@ -14,7 +14,7 @@ from layers.layer_1_competition.level_0_infra.level_1.export.metadata_builders i
     build_regression_metadata,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def handle_just_trained_model(

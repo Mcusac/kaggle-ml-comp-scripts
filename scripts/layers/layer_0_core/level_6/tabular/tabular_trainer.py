@@ -10,7 +10,7 @@ from layers.layer_0_core.level_2 import get_train_test_split
 from layers.layer_0_core.level_4 import calculate_metrics
 from layers.layer_0_core.level_5 import BaseTabularModel
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class TabularTrainer:
@@ -39,7 +39,7 @@ class TabularTrainer:
         **kwargs,
     ) -> Dict[str, Any]:
         """Train the model."""
-        logger.info("Training tabular model...")
+        _logger.info("Training tabular model...")
 
         if isinstance(X, pd.DataFrame):
             X = X.values
@@ -62,7 +62,7 @@ class TabularTrainer:
                 "classification", y_val, val_pred, y_pred_proba=val_proba
             )
 
-            logger.info(f"Validation metrics: {val_metrics}")
+            _logger.info(f"Validation metrics: {val_metrics}")
 
             return {
                 "success": True,

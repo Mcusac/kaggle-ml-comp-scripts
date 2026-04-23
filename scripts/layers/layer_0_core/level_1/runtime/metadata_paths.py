@@ -4,7 +4,7 @@ from pathlib import Path
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def find_metadata_candidates(model_path: Path) -> list[Path]:

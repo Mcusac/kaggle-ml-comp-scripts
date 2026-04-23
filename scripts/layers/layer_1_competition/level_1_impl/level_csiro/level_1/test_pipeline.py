@@ -19,7 +19,7 @@ from layers.layer_1_competition.level_0_infra.level_5 import (
 
 from layers.layer_1_competition.level_1_impl.level_csiro.level_0 import load_model_from_checkpoint
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def test_pipeline(
@@ -50,7 +50,7 @@ def test_pipeline(
     device = get_device('auto')
 
     if model_path:
-        logger.info(f"Loading model from checkpoint: {model_path}")
+        _logger.info(f"Loading model from checkpoint: {model_path}")
 
         checkpoint_preview = torch.load(model_path, map_location=device, weights_only=False)
         if model_name is None:
@@ -88,7 +88,7 @@ def test_pipeline(
         num_workers=0
     )
 
-    logger.info("Running inference...")
+    _logger.info("Running inference...")
     all_predictions = []
 
     with torch.no_grad():
@@ -110,7 +110,7 @@ def test_pipeline(
     del model
     cleanup_gpu_memory()
 
-    logger.info("Expanding predictions to submission format...")
+    _logger.info("Expanding predictions to submission format...")
     submission_df = expand_predictions_to_submission_format(
         predictions=predictions,
         test_csv_path=test_csv_path,
@@ -122,6 +122,6 @@ def test_pipeline(
     output_path = str(paths.get_output_dir() / 'submission.csv')
     save_submission_csv(submission_df, output_path=output_path)
 
-    logger.info(f"✅ Inference complete. Submission saved to {output_path}")
+    _logger.info(f"✅ Inference complete. Submission saved to {output_path}")
 
     return submission_df

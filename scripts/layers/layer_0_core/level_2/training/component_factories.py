@@ -10,30 +10,30 @@ from layers.layer_0_core.level_1 import (
     LabelSmoothingBCEWithLogitsLoss,
 )
 
-torch = get_torch()
-nn = torch.nn
-optim = torch.optim
-logger = get_logger(__name__)
+_torch = get_torch()
+_nn = _torch.nn
+_optim = _torch.optim
+_logger = get_logger(__name__)
 
 # Registry of all available loss functions.
 # Keyed by normalised lowercase name (underscores and spaces stripped).
 # Accepts both class-name keys ("mseloss") and short keys ("mse").
 # To add a loss without modifying this file, pass a custom registry
 # to create_loss_function().
-_DEFAULT_LOSS_REGISTRY: Dict[str, Type[nn.Module]] = {
+_DEFAULT_LOSS_REGISTRY: Dict[str, Type[_nn.Module]] = {
     # PyTorch built-ins — class-name keys
-    "smoothl1loss":         nn.SmoothL1Loss,
-    "mseloss":              nn.MSELoss,
-    "l1loss":               nn.L1Loss,
-    "crossentropyloss":     nn.CrossEntropyLoss,
-    "bcewithlogitsloss":    nn.BCEWithLogitsLoss,
+    "smoothl1loss":         _nn.SmoothL1Loss,
+    "mseloss":              _nn.MSELoss,
+    "l1loss":               _nn.L1Loss,
+    "crossentropyloss":     _nn.CrossEntropyLoss,
+    "bcewithlogitsloss":    _nn.BCEWithLogitsLoss,
     # PyTorch built-ins — short keys
-    "mse":                  nn.MSELoss,
-    "mae":                  nn.L1Loss,
-    "l1":                   nn.L1Loss,
-    "huber":                nn.SmoothL1Loss,
-    "smoothl1":             nn.SmoothL1Loss,
-    "bce":                  nn.BCEWithLogitsLoss,
+    "mse":                  _nn.MSELoss,
+    "mae":                  _nn.L1Loss,
+    "l1":                   _nn.L1Loss,
+    "huber":                _nn.SmoothL1Loss,
+    "smoothl1":             _nn.SmoothL1Loss,
+    "bce":                  _nn.BCEWithLogitsLoss,
     # Custom losses — class-name keys
     "focalloss":                        FocalLoss,
     "weightedbceloss":                  WeightedBCELoss,
@@ -60,13 +60,13 @@ def _get_param_or_config(
 
 
 def create_optimizer(
-    model: nn.Module,
+    model: _nn.Module,
     config: Union[Any, Dict[str, Any]],
     learning_rate: Optional[float] = None,
     weight_decay: Optional[float] = None,
     optimizer: Optional[str] = None,
     **kwargs,
-) -> optim.Optimizer:
+) -> _optim.Optimizer:
     """
     Create an optimizer from config or explicit parameters.
 
@@ -86,21 +86,21 @@ def create_optimizer(
     wd = _get_param_or_config(weight_decay, config, "training.weight_decay", 1e-4)
 
     if opt_type == "AdamW":
-        result = optim.AdamW(model.parameters(), lr=lr, weight_decay=wd, **kwargs)
+        result = _optim.AdamW(model.parameters(), lr=lr, weight_decay=wd, **kwargs)
     elif opt_type == "Adam":
-        result = optim.Adam(model.parameters(), lr=lr, weight_decay=wd, **kwargs)
+        result = _optim.Adam(model.parameters(), lr=lr, weight_decay=wd, **kwargs)
     elif opt_type == "SGD":
         momentum = kwargs.pop("momentum", 0.9)
-        result = optim.SGD(model.parameters(), lr=lr, weight_decay=wd, momentum=momentum, **kwargs)
+        result = _optim.SGD(model.parameters(), lr=lr, weight_decay=wd, momentum=momentum, **kwargs)
     else:
         raise ValueError(f"Unknown optimizer: {opt_type!r}. Valid: AdamW, Adam, SGD")
 
-    logger.info("Created optimizer: %s (lr=%s, wd=%s)", opt_type, lr, wd)
+    _logger.info("Created optimizer: %s (lr=%s, wd=%s)", opt_type, lr, wd)
     return result
 
 
 def create_scheduler(
-    optimizer: optim.Optimizer,
+    optimizer: _optim.Optimizer,
     config: Union[Any, Dict[str, Any]],
     scheduler: Optional[str] = None,
     num_epochs: Optional[int] = None,
@@ -108,7 +108,7 @@ def create_scheduler(
     scheduler_factor: Optional[float] = None,
     scheduler_patience: Optional[int] = None,
     **kwargs,
-) -> Optional[optim.lr_scheduler._LRScheduler]:
+) -> Optional[_optim.lr_scheduler._LRScheduler]:
     """
     Create a learning rate scheduler from config or explicit parameters.
 
@@ -132,25 +132,25 @@ def create_scheduler(
     patience = _get_param_or_config(scheduler_patience, config, "training.scheduler_patience", 5)
 
     if sched_type == "ReduceLROnPlateau":
-        result = optim.lr_scheduler.ReduceLROnPlateau(
+        result = _optim.lr_scheduler.ReduceLROnPlateau(
             optimizer, mode=mode, factor=factor, patience=patience, verbose=False, **kwargs
         )
     elif sched_type == "CosineAnnealingLR":
-        result = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs, **kwargs)
+        result = _optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs, **kwargs)
     else:
-        logger.info("No scheduler configured (type: %s)", sched_type)
+        _logger.info("No scheduler configured (type: %s)", sched_type)
         return None
 
-    logger.info("Created scheduler: %s", sched_type)
+    _logger.info("Created scheduler: %s", sched_type)
     return result
 
 
 def create_loss_function(
     config: Union[Any, Dict[str, Any]],
     loss_function: Optional[str] = None,
-    registry: Optional[Dict[str, Type[nn.Module]]] = None,
+    registry: Optional[Dict[str, Type[_nn.Module]]] = None,
     **kwargs,
-) -> nn.Module:
+) -> _nn.Module:
     """
     Create a loss function from config or an explicit name.
 

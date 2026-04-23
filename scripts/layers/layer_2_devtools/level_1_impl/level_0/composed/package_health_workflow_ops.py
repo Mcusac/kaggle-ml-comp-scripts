@@ -18,6 +18,7 @@ from layers.layer_2_devtools.level_0_infra.level_1 import (
     CohesionAnalyzer,
     ComplexityAnalyzer,
     DeadCodeFinder,
+    DeepNestingAnalyzer,
     DependencyRuleAnalyzer,
     DuplicationDetector,
     FileMetricsAnalyzer,
@@ -63,6 +64,9 @@ def collect_health_results(opts: PackageHealthRunOptions) -> dict[str, Any]:
 
     print("📝 Checking type annotations...")
     results["type_annotations"] = TypeAnnotationChecker(root).analyze()
+
+    print("📁 Analyzing directory nesting...")
+    results["deep_nesting"] = DeepNestingAnalyzer(root).analyze()
 
     print("🎯 Analyzing package cohesion...")
     results["cohesion"] = CohesionAnalyzer(root).analyze()

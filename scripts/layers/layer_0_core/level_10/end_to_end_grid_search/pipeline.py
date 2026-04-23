@@ -15,7 +15,7 @@ from layers.layer_0_core.level_7 import HyperparameterGridSearchBase
 from layers.layer_0_core.level_8 import create_end_to_end_variant_result, extract_variant_config
 from layers.layer_0_core.level_9 import attach_paths_to_config
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class EndToEndGridSearch(HyperparameterGridSearchBase):
@@ -102,7 +102,7 @@ class EndToEndGridSearch(HyperparameterGridSearchBase):
             return result
 
         except Exception as e:
-            logger.error(f"Error training variant {variant_id}: {e}", exc_info=True)
+            _logger.error(f"Error training variant {variant_id}: {e}", exc_info=True)
 
             result = create_end_to_end_variant_result(
                 variant_index,
@@ -154,7 +154,7 @@ def hyperparameter_grid_search_pipeline(
 
     variant_grid = grid_search._generate_variant_grid()
     total_variants = len(variant_grid)
-    logger.info(f"Total hyperparameter variants to test: {total_variants}")
+    _logger.info(f"Total hyperparameter variants to test: {total_variants}")
 
     result = grid_search.execute()
 
@@ -170,11 +170,11 @@ def hyperparameter_grid_search_pipeline(
         best_hyperparameters_file,
     )
 
-    logger.info("=" * 60)
-    logger.info("Hyperparameter grid search complete!")
-    logger.info(f"Best score: {result.get('best_score', -float('inf')):.4f}")
-    logger.info(f"Results saved to: {grid_search.results_file}")
-    logger.info(f"Best hyperparameters saved to: {best_hyperparameters_file}")
-    logger.info("=" * 60)
+    _logger.info("=" * 60)
+    _logger.info("Hyperparameter grid search complete!")
+    _logger.info(f"Best score: {result.get('best_score', -float('inf')):.4f}")
+    _logger.info(f"Results saved to: {grid_search.results_file}")
+    _logger.info(f"Best hyperparameters saved to: {best_hyperparameters_file}")
+    _logger.info("=" * 60)
 
     grid_search.cleanup()

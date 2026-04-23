@@ -14,8 +14,8 @@ from layers.layer_0_core.level_1 import (
 )
 from layers.layer_0_core.level_2 import save_features
 
-torch = get_torch()
-logger = get_logger(__name__)
+_torch = get_torch()
+_logger = get_logger(__name__)
 
 ModelResolver = Callable[[str], Tuple[str, Optional[str]]]
 
@@ -40,12 +40,12 @@ def _resolve_model_identity(
 
 def _load_siglip_components(
     model_path: str,
-    device: torch.device,
+    device: _torch.device,
     AutoModel: type,
     AutoImageProcessor: type,
 ) -> Tuple[Any, Any]:
     """Load SigLIP model and processor from local checkpoint."""
-    logger.info(f"Loading SigLIP model: {model_path}")
+    _logger.info(f"Loading SigLIP model: {model_path}")
     model = AutoModel.from_pretrained(
         model_path, local_files_only=True
     ).eval().to(device)
@@ -76,7 +76,7 @@ class SigLIPExtractor(BaseFeatureExtractor):
         model_name: Optional[str] = None,
         model_id: Optional[str] = None,
         model_resolver: Optional[ModelResolver] = None,
-        device: Optional[torch.device] = None,
+        device: Optional[_torch.device] = None,
         patch_size: int = 520,
         overlap: int = 16,
     ):
@@ -156,7 +156,7 @@ class SigLIPExtractor(BaseFeatureExtractor):
 
         patch_images = [Image.fromarray(p) for p in patches]
 
-        with torch.no_grad():
+        with _torch.no_grad():
             inputs = self.processor(images=patch_images, return_tensors="pt").to(self.device)
             features = self.model.get_image_features(**inputs)
             avg_embed = features.mean(dim=0).cpu().numpy()
@@ -197,7 +197,7 @@ class SigLIPExtractor(BaseFeatureExtractor):
             try:
                 embeddings.append(self.extract_from_image(img))
             except Exception as e:
-                logger.error(f"Image failed: {e}")
+                _logger.error(f"Image failed: {e}")
                 embeddings.append(np.zeros(self.embedding_dim))
 
         return np.stack(embeddings)

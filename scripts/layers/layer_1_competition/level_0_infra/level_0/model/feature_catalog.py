@@ -7,7 +7,7 @@ Registers biological embedding and handcrafted features.
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_1 import FEATURE_PRESETS, INDIVIDUAL_FEATURES
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def register_features() -> None:
@@ -82,7 +82,7 @@ def register_features() -> None:
         }
     )
 
-    logger.info(
+    _logger.info(
         "Registered %d features and %d presets",
         len(INDIVIDUAL_FEATURES),
         len(FEATURE_PRESETS),

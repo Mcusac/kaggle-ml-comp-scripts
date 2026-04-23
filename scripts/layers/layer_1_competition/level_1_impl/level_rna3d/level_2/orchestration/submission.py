@@ -23,7 +23,7 @@ from layers.layer_1_competition.level_1_impl.level_rna3d.level_1 import (
 from layers.layer_1_competition.level_0_infra.level_1.contest import ValidateFirstRunner
 from layers.layer_1_competition.level_0_infra.level_0.submission import validate_strategy_models
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _predict_baseline_approx(
@@ -119,8 +119,8 @@ def submit_pipeline(
         else:
             resolved_configs = model_configs
 
-        logger.info("Submission strategy: %s", strategy)
-        logger.info("  Models: %s", models)
+        _logger.info("Submission strategy: %s", strategy)
+        _logger.info("  Models: %s", models)
         validate_strategy_models(strategy, models)
 
         if strategy == "single":
@@ -210,7 +210,7 @@ def submit_pipeline(
             output_csv=output_csv,
         )
 
-        logger.info("Wrote submission: %s", out_path)
+        _logger.info("Wrote submission: %s", out_path)
         return out_path
 
     if validate_first:

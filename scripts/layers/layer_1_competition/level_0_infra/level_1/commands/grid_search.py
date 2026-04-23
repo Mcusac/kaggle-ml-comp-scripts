@@ -9,7 +9,7 @@ from layers.layer_0_core.level_9 import HyperparameterGridSearch
 
 from layers.layer_1_competition.level_0_infra.level_0 import setup_handler_context
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def make_handler(builder: Any) -> Callable[[argparse.Namespace], None]:
@@ -21,7 +21,7 @@ def make_handler(builder: Any) -> Callable[[argparse.Namespace], None]:
         }
         grid_search = HyperparameterGridSearch(config=config, param_grid=param_grid, model_type=model_type)
         results = grid_search.run()
-        logger.info("Grid search complete: %s", results["success"])
+        _logger.info("Grid search complete: %s", results["success"])
 
     return _handle_grid_search
 

@@ -26,6 +26,28 @@ def file_to_module(file_path: Path, root: Path) -> str | None:
     return ".".join(parts) if parts else None
 
 
+def module_to_file_path(*, root: Path, module: str) -> Path | None:
+    """Resolve a dotted module to an on-disk file path under root.
+
+    `check_health` module names are produced by `file_to_module()`:
+    - packages: `a.b` (for `a/b/__init__.py`)
+    - modules:  `a.b.c` (for `a/b/c.py`)
+    """
+    if not module:
+        return None
+    parts = [p for p in module.split(".") if p]
+    if not parts:
+        return None
+    base = root / Path(*parts)
+    py = base.with_suffix(".py")
+    if py.exists() and py.is_file():
+        return py
+    init = base / "__init__.py"
+    if init.exists() and init.is_file():
+        return init
+    return None
+
+
 def current_package(file_path: Path, root: Path) -> str:
     """Package name for a file (parent package for non-__init__ modules)."""
     mod = file_to_module(file_path, root)

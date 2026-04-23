@@ -9,7 +9,7 @@ from typing import Dict, Any, Optional, Callable, Tuple
 from layers.layer_0_core.level_0 import get_logger, get_config_value
 from layers.layer_0_core.level_2 import is_oom_error as _is_oom_error, recover_from_oom
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 # Defaults aligned with level_1.runtime.config.grid_search.GridSearchConfig
 _DEFAULT_MIN_BATCH_SIZE = 4
@@ -42,13 +42,13 @@ def _should_skip_retry(
 ) -> bool:
     """Return True if we should skip retry (exhausted retries or at min batch size)."""
     if oom_retry_count >= max_oom_retries:
-        logger.warning(
+        _logger.warning(
             "Skipping OOM retry for %s: max retries (%d) reached",
             variant_id, max_oom_retries,
         )
         return True
     if current_batch_size <= min_batch_size:
-        logger.warning(
+        _logger.warning(
             "Skipping OOM retry for %s: batch_size %d <= min_batch_size %d",
             variant_id, current_batch_size, min_batch_size,
         )

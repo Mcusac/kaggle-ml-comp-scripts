@@ -25,7 +25,7 @@ from layers.layer_1_competition.level_1_impl.level_csiro.level_2 import (
     initialize_working_metadata_files,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def find_best_regression_variant(
@@ -47,15 +47,15 @@ def find_best_regression_variant(
     valid_variants = [r for r in results if r.get("cv_score") is not None]
 
     if not valid_variants:
-        logger.warning("No variants with valid cv_score found for %s", regression_model_type)
+        _logger.warning("No variants with valid cv_score found for %s", regression_model_type)
         if feature_filename:
-            logger.warning("  Filtered by feature_filename: %s", feature_filename)
+            _logger.warning("  Filtered by feature_filename: %s", feature_filename)
         return None
 
     best_variant = max(valid_variants, key=lambda x: x.get("cv_score", -float("inf")))
 
     cv_score = best_variant.get("cv_score")
-    logger.info(
+    _logger.info(
         "Found best regression variant: %s (CV score: %.4f)",
         best_variant.get("variant_id"),
         cv_score,
@@ -123,7 +123,7 @@ def get_or_create_regression_variant_id(
     }
     working_variants.append(new_entry)
     save_json(working_variants, working_metadata_file)
-    logger.info(
+    _logger.info(
         "Added new regression variant to working metadata.json: %s (variant_index=%s)",
         new_variant_id,
         next_index,
@@ -153,7 +153,7 @@ def load_regression_variant_from_metadata(
 
     hyperparameters = variant.get("hyperparameters", {})
     if not hyperparameters:
-        logger.warning("Variant %s has no hyperparameters in metadata", variant_id)
+        _logger.warning("Variant %s has no hyperparameters in metadata", variant_id)
 
     cv_score = None
     fold_scores = None
@@ -183,7 +183,7 @@ def _validate_variant_hyperparameters(
     hyperparameters: Dict[str, Any],
 ) -> None:
     if hyperparameters is None or not hyperparameters:
-        logger.warning(
+        _logger.warning(
             "hyperparameters is empty or None. "
             "Variant validation will be skipped."
         )
@@ -196,7 +196,7 @@ def _validate_variant_hyperparameters(
         )
         variant_hyperparams = variant_info.get("hyperparameters", {})
         if variant_hyperparams and variant_hyperparams != hyperparameters:
-            logger.warning(
+            _logger.warning(
                 "Hyperparameters mismatch for variant %s. "
                 "Metadata has: %s, "
                 "Provided: %s. "
@@ -205,9 +205,9 @@ def _validate_variant_hyperparameters(
                 variant_hyperparams,
                 hyperparameters,
             )
-        logger.info("Variant ID validated: %s exists in metadata.json", variant_id)
+        _logger.info("Variant ID validated: %s exists in metadata.json", variant_id)
     except (FileNotFoundError, ValueError) as e:
-        logger.warning(
+        _logger.warning(
             "Could not validate variant_id %s in metadata.json: %s. "
             "Proceeding with save anyway.",
             variant_id,
@@ -236,7 +236,7 @@ def _load_and_merge_gridsearch_results(
         file_type="Regression gridsearch metadata JSON",
     )
     if results and input_gridsearch_file and input_gridsearch_file.exists():
-        logger.debug("Loaded %s results from input and working", len(results))
+        _logger.debug("Loaded %s results from input and working", len(results))
     return results
 
 
@@ -288,14 +288,14 @@ def _create_or_update_result(
         existing_model_index = results[existing_idx].get("model_index")
         new_model_index = result_entry.get("model_index")
         if existing_model_index is not None and existing_model_index != new_model_index:
-            logger.warning(
+            _logger.warning(
                 "Updating result with different model_index: "
                 "existing=%s, new=%s. "
                 "Using new model_index.",
                 existing_model_index,
                 new_model_index,
             )
-        logger.info(
+        _logger.info(
             "Updating existing grid search result: model_id=%s, %s on %s",
             result_entry.get("model_id"),
             variant_id,
@@ -304,7 +304,7 @@ def _create_or_update_result(
         results[existing_idx] = result_entry
     else:
         results.append(result_entry)
-        logger.info(
+        _logger.info(
             "Added new grid search result: model_id=%s, %s on %s (cv_score: %.4f)",
             result_entry.get("model_id"),
             variant_id,
@@ -357,7 +357,7 @@ def save_regression_gridsearch_result(
     _create_or_update_result(results, existing_idx, result_entry, variant_id, feature_filename)
 
     save_json(results, gridsearch_file)
-    logger.info("Saved grid search result to %s", gridsearch_file)
+    _logger.info("Saved grid search result to %s", gridsearch_file)
 
 
 def load_specific_variant_from_metadata(
@@ -382,16 +382,16 @@ def load_specific_variant_from_metadata(
                 break
 
     if variant_info.get("cv_score") is None:
-        logger.warning(
+        _logger.warning(
             "Variant %s has no cv_score in metadata. "
             "This may indicate the variant hasn't been trained yet.",
             variant_id,
         )
 
-    logger.info("✅ Using SPECIFIED regression variant: %s", variant_id)
+    _logger.info("✅ Using SPECIFIED regression variant: %s", variant_id)
     cv_score = variant_info.get("cv_score")
     if cv_score is not None:
-        logger.info("   (CV score: %.4f)", cv_score)
+        _logger.info("   (CV score: %.4f)", cv_score)
 
     return {
         "variant": variant_info.get("variant", {}),
@@ -409,7 +409,7 @@ def load_variant_from_gridsearch_fallback(
     metadata_dir: Optional[Path],
 ) -> Dict[str, Any]:
     """Load variant from gridsearch metadata as fallback when metadata.json fails."""
-    logger.warning(
+    _logger.warning(
         "Could not load variant from metadata, falling back to gridsearch_metadata.json..."
     )
     results = load_gridsearch_metadata(regression_model_type, metadata_dir)
@@ -432,10 +432,10 @@ def load_variant_from_gridsearch_fallback(
     if variant.get("cv_score") is None:
         raise ValueError(f"Regression variant {variant_id} has no valid cv_score (may have failed)")
 
-    logger.info("✅ Using SPECIFIED regression variant from gridsearch: %s", variant_id)
+    _logger.info("✅ Using SPECIFIED regression variant from gridsearch: %s", variant_id)
     cv_score = variant.get("cv_score")
     if cv_score is not None:
-        logger.info("   (CV score: %.4f)", cv_score)
+        _logger.info("   (CV score: %.4f)", cv_score)
 
     return {
         "variant": variant,
@@ -471,12 +471,12 @@ def find_best_variant_info(
     hyperparameters = variant.get("hyperparameters", {})
     variant_feature_filename = variant.get("feature_filename")
 
-    logger.info("✅ Using BEST regression variant: %s", variant_id)
-    logger.info("   (Highest CV score: %.4f)", cv_score)
-    logger.info("  Variant ID: %s", variant_id)
-    logger.info("  CV Score: %.4f", cv_score)
-    logger.info("  Hyperparameters: %s", hyperparameters)
-    logger.info("  Feature Filename: %s", variant_feature_filename)
+    _logger.info("✅ Using BEST regression variant: %s", variant_id)
+    _logger.info("   (Highest CV score: %.4f)", cv_score)
+    _logger.info("  Variant ID: %s", variant_id)
+    _logger.info("  CV Score: %.4f", cv_score)
+    _logger.info("  Hyperparameters: %s", hyperparameters)
+    _logger.info("  Feature Filename: %s", variant_feature_filename)
 
     return {
         "variant": variant,

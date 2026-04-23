@@ -2,7 +2,7 @@
 
 from layers.layer_0_core.level_0 import get_torch
 
-torch = get_torch()
+_torch = get_torch()
 
 CANVAS_SIZE = 32
 NUM_CHANNELS = 10
@@ -20,10 +20,10 @@ def pad_grid_to_canvas(grid: list[list[int]], canvas: int = CANVAS_SIZE, fill: i
 def grid_to_one_hot_tensor(
     grid: list[list[int]],
     canvas: int = CANVAS_SIZE,
-) -> torch.Tensor:
+) -> _torch.Tensor:
     """Float tensor shape ``(NUM_CHANNELS, canvas, canvas)``."""
     padded = pad_grid_to_canvas(grid, canvas=canvas)
-    t = torch.zeros(NUM_CHANNELS, canvas, canvas, dtype=torch.float32)
+    t = _torch.zeros(NUM_CHANNELS, canvas, canvas, dtype=_torch.float32)
     for i, row in enumerate(padded):
         for j, v in enumerate(row):
             if 0 <= int(v) < NUM_CHANNELS:
@@ -32,7 +32,7 @@ def grid_to_one_hot_tensor(
 
 
 def logits_to_grid(
-    logits: torch.Tensor,
+    logits: _torch.Tensor,
     orig_h: int,
     orig_w: int,
 ) -> list[list[int]]:

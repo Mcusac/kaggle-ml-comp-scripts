@@ -5,7 +5,7 @@ from typing import Any, Callable, Optional
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_2 import is_oom_error, recover_from_oom
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def handle_oom_error_with_retry(
@@ -87,7 +87,7 @@ def handle_oom_error_with_retry(
                 raise
 
             if retry_count >= max_retries or current_batch_size <= min_batch_size:
-                logger.error(
+                _logger.error(
                     "⚠️ Persistent CUDA OOM after %s retries with batch_size=%s",
                     retry_count,
                     current_batch_size,
@@ -108,15 +108,15 @@ def handle_oom_error_with_retry(
                 int(current_batch_size * reduction_factor),
             )
 
-            logger.warning(
+            _logger.warning(
                 "⚠️ CUDA OOM detected with batch_size=%s (retry %s/%s)",
                 current_batch_size,
                 retry_count,
                 max_retries,
             )
 
-            logger.info("   Retrying with reduced batch_size=%s", new_batch_size)
-            logger.info("   Performing OOM recovery...")
+            _logger.info("   Retrying with reduced batch_size=%s", new_batch_size)
+            _logger.info("   Performing OOM recovery...")
 
             recover_from_oom(
                 model=None,

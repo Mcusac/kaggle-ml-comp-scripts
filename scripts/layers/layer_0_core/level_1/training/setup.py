@@ -6,7 +6,7 @@ from typing import Any, Optional, Tuple
 
 from layers.layer_0_core.level_0 import get_logger, get_torch, get_config_value
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def setup_mixed_precision(
@@ -33,9 +33,9 @@ def setup_mixed_precision(
     if use_mixed_precision and device.type == "cuda":
         try:
             scaler = torch.amp.GradScaler()
-            logger.info("Mixed precision (FP16) training enabled")
+            _logger.info("Mixed precision (FP16) training enabled")
         except Exception:
-            logger.warning(
+            _logger.warning(
                 "Mixed precision requested but not available"
             )
             use_mixed_precision = False

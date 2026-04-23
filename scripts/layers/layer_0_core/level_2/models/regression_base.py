@@ -7,7 +7,7 @@ from sklearn.multioutput import MultiOutputRegressor
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_1 import check_array_finite
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class BaseMultiOutputRegressionModel:
@@ -23,7 +23,7 @@ class BaseMultiOutputRegressionModel:
         default_params = self._get_default_params()
         default_params.update(params)
         self.model = MultiOutputRegressor(model_class(**default_params))
-        logger.info(
+        _logger.info(
             f"Created {self._get_model_name()} regression model with MultiOutputRegressor"
         )
 
@@ -37,11 +37,11 @@ class BaseMultiOutputRegressionModel:
         """
         check_array_finite(X, name="X")
         check_array_finite(y, name="y")
-        logger.info(
+        _logger.info(
             f"Training {self._get_model_name()} regression model on {X.shape[0]} samples"
         )
         self.model.fit(X, y)
-        logger.info("Training complete")
+        _logger.info("Training complete")
         return self
 
     def predict(self, X: np.ndarray) -> np.ndarray:

@@ -7,7 +7,7 @@ from layers.layer_0_core.level_0 import calculate_total_combinations, get_logger
 from layers.layer_0_core.level_1 import get_transformer_hyperparameter_grid, resolve_environment_path
 from layers.layer_0_core.level_5 import get_focused_parameter_grid
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def calculate_focused_grid_size(
@@ -53,7 +53,7 @@ def auto_detect_grid_search_results(model_name: Optional[str] = None) -> str:
             metadata_file = model_specific_dir / "metadata.json"
             checked_paths.append(str(metadata_file))
             if metadata_file.exists():
-                logger.info(
+                _logger.info(
                     "Found model metadata in model-specific folder: %s",
                     metadata_file,
                 )
@@ -67,13 +67,13 @@ def auto_detect_grid_search_results(model_name: Optional[str] = None) -> str:
         checked_paths.append(str(working_unified_hyperparam))
         checked_paths.append(str(working_unified_dataset))
         if working_unified_hyperparam.exists():
-            logger.info(
+            _logger.info(
                 "Found in-progress unified hyperparameter grid search: %s",
                 working_unified_hyperparam,
             )
             return str(working_unified_hyperparam)
         if working_unified_dataset.exists():
-            logger.info(
+            _logger.info(
                 "Found in-progress unified dataset grid search: %s",
                 working_unified_dataset,
             )
@@ -88,13 +88,13 @@ def auto_detect_grid_search_results(model_name: Optional[str] = None) -> str:
         checked_paths.append(str(unified_hyperparam_file))
         checked_paths.append(str(unified_dataset_file))
         if unified_hyperparam_file.exists():
-            logger.info(
+            _logger.info(
                 "Found unified hyperparameter grid search results: %s",
                 unified_hyperparam_file,
             )
             return str(unified_hyperparam_file)
         if unified_dataset_file.exists():
-            logger.info(
+            _logger.info(
                 "Found unified dataset grid search results: %s",
                 unified_dataset_file,
             )

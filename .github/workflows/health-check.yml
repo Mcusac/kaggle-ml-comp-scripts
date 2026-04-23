@@ -32,35 +32,17 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install -r requirements.txt || true
+        pip install -r requirements.txt
 
-    - name: Code audit machine pipeline (strict, fail on skipped)
+    - name: CI runner (pipeline + scans + health + thresholds)
       working-directory: scripts
       run: |
-        python -m layers.layer_2_devtools.level_1_impl.level_2.run_code_audit_pipeline \
+        python -m layers.layer_2_devtools.level_1_impl.level_2.ci_runner \
           --workspace-root ".." \
           --run-id "${{ env.PIPELINE_RUN_ID }}" \
           --strict \
-          --fail-on-skipped
-
-    - name: Run health check
-      working-directory: scripts
-      run: |
-        python -m layers.layer_2_devtools.level_1_impl.level_2.check_health \
-          --root .. \
-          --json > ../health_report.json
-
-    - name: Check thresholds (strict)
-      working-directory: scripts
-      run: |
-        python -m layers.layer_2_devtools.level_1_impl.level_2.check_health_thresholds \
-          ../health_report.json \
-          --strict
-
-    - name: Pretty print report
-      if: always()
-      run: |
-        python -m json.tool health_report.json > health_report_pretty.json
+          --fail-on-skipped \
+          --github-summary
 
     - name: Upload health report artifacts
       uses: actions/upload-artifact@v4
@@ -84,7 +66,4 @@ jobs:
     - name: Publish summary
       if: always()
       run: |
-        echo "## Code Health Report" >> $GITHUB_STEP_SUMMARY
-        echo '```json' >> $GITHUB_STEP_SUMMARY
-        cat health_report.json >> $GITHUB_STEP_SUMMARY
-        echo '```' >> $GITHUB_STEP_SUMMARY
+        echo "CI runner writes job summary via --github-summary." >> $GITHUB_STEP_SUMMARY

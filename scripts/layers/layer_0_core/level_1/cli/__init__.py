@@ -1,4 +1,5 @@
-"""CLI package: command-line interface utilities."""
+"""Auto-generated mixed exports."""
+
 
 from . import builders
 
@@ -8,5 +9,7 @@ from .subparsers import setup_framework_subparsers
 
 __all__ = (
     list(builders.__all__)
-     + ["setup_framework_subparsers"]
+    + [
+        "setup_framework_subparsers",
+    ]
 )

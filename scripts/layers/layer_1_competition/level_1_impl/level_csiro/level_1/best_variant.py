@@ -9,7 +9,7 @@ from layers.layer_0_core.level_4 import load_json
 
 from layers.layer_1_competition.level_1_impl.level_csiro.level_0 import find_metadata_dir, extract_preprocessing_augmentation_from_variant
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def load_results_json(results_file: Path) -> List[Dict]:
@@ -40,7 +40,7 @@ def find_best_variant(results: List[Dict]) -> Optional[Dict]:
     valid_variants = [r for r in results if r.get('cv_score') is not None]
 
     if not valid_variants:
-        logger.warning("No variants with valid cv_score found")
+        _logger.warning("No variants with valid cv_score found")
         return None
 
     best_variant = max(valid_variants, key=lambda x: x.get('cv_score', -float('inf')))
@@ -138,11 +138,11 @@ def get_best_variant_info(
             preprocessing_list, augmentation_list = extract_preprocessing_augmentation_from_variant(
                 variant, metadata_dir
             )
-            logger.debug(f"Resolved variant {variant.get('variant_id', 'unknown')} to preprocessing={preprocessing_list}, augmentation={augmentation_list}")
+            _logger.debug(f"Resolved variant {variant.get('variant_id', 'unknown')} to preprocessing={preprocessing_list}, augmentation={augmentation_list}")
         else:
-            logger.warning(f"Metadata directory not found, cannot resolve combo_id for variant {variant.get('variant_id', 'unknown')}")
+            _logger.warning(f"Metadata directory not found, cannot resolve combo_id for variant {variant.get('variant_id', 'unknown')}")
     except (ValueError, FileNotFoundError, ImportError) as e:
-        logger.warning(f"Failed to resolve data_manipulation for variant {variant.get('variant_id', 'unknown')}: {e}")
+        _logger.warning(f"Failed to resolve data_manipulation for variant {variant.get('variant_id', 'unknown')}: {e}")
         # Try to get from variant directly if available
         if 'preprocessing_list' in variant:
             preprocessing_list = variant.get('preprocessing_list', [])

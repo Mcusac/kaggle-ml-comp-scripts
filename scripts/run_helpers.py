@@ -3,10 +3,11 @@
 import argparse
 import importlib
 import os
+
 from typing import Any, Dict, FrozenSet, Optional, Tuple
 
-from level_0 import get_logger, setup_environment, setup_logging
-from level_1 import create_config, set_seed
+from layers.layer_0_core.level_0 import get_logger, setup_environment, setup_logging
+from layers.layer_0_core.level_1 import create_config, set_seed
 
 from layers.layer_1_competition.level_0_infra.level_1.contest.data_loading import (
     load_contest_data,
@@ -17,7 +18,7 @@ from layers.layer_1_competition.level_0_infra.level_1.registry import (
 )
 from layers.layer_1_competition.level_0_infra.level_2 import get_cli_handlers_module
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 _KNOWN_CONTEST_SLUGS = ("arc_agi_2", "cafa", "csiro", "rna3d")
 
@@ -223,17 +224,17 @@ def load_contest_handlers(contest_name: str, subparsers: argparse._SubParsersAct
         if get_h is not None:
             contest_handlers = get_h() or {}
     except ValueError as e:
-        logger.warning(
+        _logger.warning(
             "Contest CLI for %r has no registered handlers module: %s",
             contest_name, e,
         )
     except ImportError as e:
-        logger.warning(
+        _logger.warning(
             "Contest CLI for %r could not be loaded; contest subcommands will not be available: %s",
             contest_name, e, exc_info=True
         )
     except AttributeError as e:
-        logger.warning(
+        _logger.warning(
             "Contest CLI for %r is missing extend_subparsers or get_handlers: %s",
             contest_name, e, exc_info=True
         )

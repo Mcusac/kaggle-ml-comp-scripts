@@ -14,7 +14,7 @@ from layers.layer_0_core.level_2 import (
     weighted_average,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 # ---------------------------------------------------------------------------
@@ -52,7 +52,7 @@ def _align_predictions(
         for pred in predictions_list
     ]
 
-    logger.info(
+    _logger.info(
         f"Aligned {len(predictions_list)} predictions to shape {tuple(max_dims)} "
         f"(padding: {padding_strategy})"
     )
@@ -147,7 +147,7 @@ def blend_predictions(
 
     shapes = [p.shape for p in predictions_list]
     if len(set(shapes)) > 1:
-        logger.warning(f"Shape mismatch {shapes} — padding with strategy '{padding_strategy}'")
+        _logger.warning(f"Shape mismatch {shapes} — padding with strategy '{padding_strategy}'")
         predictions_list = _align_predictions(predictions_list, padding_strategy)
 
     if method == 'weighted_average':
@@ -252,7 +252,7 @@ def _learn_weights_via_regression(
 
     avg = np.mean(all_weights, axis=0)
     normalised = avg / avg.sum()
-    logger.info(f"Learned blending weights ({method}): {normalised.tolist()}")
+    _logger.info(f"Learned blending weights ({method}): {normalised.tolist()}")
     return normalised.tolist()
 
 
@@ -284,5 +284,5 @@ def _learn_weights_via_optimisation(
         bounds=[(0.0, 1.0)] * n_models,
     )
     normalised = result.x / result.x.sum()
-    logger.info(f"Optimised blending weights: {normalised.tolist()}")
+    _logger.info(f"Optimised blending weights: {normalised.tolist()}")
     return normalised.tolist()

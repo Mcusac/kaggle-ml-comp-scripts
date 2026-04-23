@@ -7,13 +7,13 @@ from typing import Tuple
 from layers.layer_0_core.level_0 import get_torch
 from layers.layer_0_core.level_2 import FeatureExtractor
 
-torch = get_torch()
-DataLoader = torch.utils.data.DataLoader
+_torch = get_torch()
+_DataLoader = _torch.utils.data.DataLoader
 
 
 def extract_all_features(
     feature_extractor: FeatureExtractor,
-    all_loader: DataLoader,
+    all_loader: _DataLoader,
     dataset_type: str,
 ) -> Tuple[np.ndarray, np.ndarray]:
     """
@@ -39,7 +39,7 @@ def extract_all_features(
 
 
 def _extract_targets(
-    dataloader: DataLoader,
+    dataloader: _DataLoader,
     dataset_type: str,
 ) -> np.ndarray:
     """

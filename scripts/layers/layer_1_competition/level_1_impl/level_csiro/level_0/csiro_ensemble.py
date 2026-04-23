@@ -21,7 +21,7 @@ from layers.layer_0_core.level_3 import PerTargetWeightedEnsemble
 from layers.layer_0_core.level_6 import TargetSpecificEnsemble
 
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 # =============================================================================
 # CSIRO-SPECIFIC CONSTANTS
@@ -75,7 +75,7 @@ class CSIROTargetSpecificEnsemble(EnsemblingMethod):
         # Validate that all target names are valid CSIRO targets
         for target_name in target_selection.keys():
             if target_name not in CSIRO_TARGET_NAMES:
-                logger.warning(
+                _logger.warning(
                     f"Target '{target_name}' is not a known CSIRO target. "
                     f"Known targets: {CSIRO_TARGET_NAMES}"
                 )
@@ -143,7 +143,7 @@ class CSIROPerTargetWeightedEnsemble(EnsemblingMethod):
         # Validate that all target names are valid CSIRO targets
         for target_name in per_target_weights.keys():
             if target_name not in CSIRO_TARGET_NAMES:
-                logger.warning(
+                _logger.warning(
                     f"Target '{target_name}' is not a known CSIRO target. "
                     f"Known targets: {CSIRO_TARGET_NAMES}"
                 )

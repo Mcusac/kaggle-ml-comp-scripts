@@ -7,7 +7,7 @@ from layers.layer_0_core.level_6 import GridSearchBase
 
 from layers.layer_1_competition.level_0_infra.level_1.registry import get_contest
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class ContestGridSearchBase(GridSearchBase):

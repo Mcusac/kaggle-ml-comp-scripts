@@ -24,7 +24,7 @@ from layers.layer_1_competition.level_1_impl.level_csiro.level_3 import (
     load_features_for_regression,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def hybrid_stacking_pipeline(
@@ -60,13 +60,13 @@ def hybrid_stacking_pipeline(
     meta_model_alpha = hybrid_stacking_config.get('meta_model_alpha', 10.0)
     n_folds = hybrid_stacking_config.get('n_folds', 5)
 
-    logger.info("=" * 60)
-    logger.info("Hybrid Stacking Pipeline")
-    logger.info("=" * 60)
-    logger.info(f"  Regression ensembles: {len(regression_ensembles)}")
-    logger.info(f"  End-to-end ensembles: {len(end_to_end_ensembles)}")
-    logger.info(f"  Meta-model alpha: {meta_model_alpha}")
-    logger.info(f"  CV folds: {n_folds}")
+    _logger.info("=" * 60)
+    _logger.info("Hybrid Stacking Pipeline")
+    _logger.info("=" * 60)
+    _logger.info(f"  Regression ensembles: {len(regression_ensembles)}")
+    _logger.info(f"  End-to-end ensembles: {len(end_to_end_ensembles)}")
+    _logger.info(f"  Meta-model alpha: {meta_model_alpha}")
+    _logger.info(f"  CV folds: {n_folds}")
 
     if not regression_ensembles and not end_to_end_ensembles:
         raise ValueError("At least one regression or end-to-end ensemble must be provided")
@@ -112,7 +112,7 @@ def hybrid_stacking_pipeline(
         ensemble_test_preds, meta_models, n_targets
     )
 
-    logger.info("Expanding predictions to submission format...")
+    _logger.info("Expanding predictions to submission format...")
     submission_df = expand_predictions_to_submission_format(
         predictions=final_predictions,
         test_csv_path=str(test_csv_path),
@@ -124,13 +124,13 @@ def hybrid_stacking_pipeline(
     output_path = str(paths.get_output_dir() / 'submission.csv')
     save_submission_csv(submission_df, output_path=output_path)
 
-    logger.info("=" * 60)
-    logger.info("Hybrid Stacking Pipeline Complete")
-    logger.info("=" * 60)
-    logger.info(f"  Regression ensembles: {len(regression_ensembles)}")
-    logger.info(f"  End-to-end ensembles: {len(end_to_end_ensembles)}")
+    _logger.info("=" * 60)
+    _logger.info("Hybrid Stacking Pipeline Complete")
+    _logger.info("=" * 60)
+    _logger.info(f"  Regression ensembles: {len(regression_ensembles)}")
+    _logger.info(f"  End-to-end ensembles: {len(end_to_end_ensembles)}")
     if all_targets is not None and meta_models:
-        logger.info(f"  OOF score: {oof_score:.4f}")
-    logger.info(f"  Output: {output_path}")
+        _logger.info(f"  OOF score: {oof_score:.4f}")
+    _logger.info(f"  Output: {output_path}")
 
     return submission_df

@@ -6,8 +6,7 @@ from layers.layer_0_core.level_0 import get_torch
 
 from .ddp_utils import ddp_safe_loss
 
-torch = get_torch()
-
+_torch = get_torch()
 
 class UnslothFixedTrainer(UnslothTrainer):
     """v1: ``label_smoother`` path with Unsloth ``shift_labels`` detection."""
@@ -49,7 +48,7 @@ class UnslothV2FixedTrainer(UnslothTrainer):
             shift_logits = logits[..., :-1, :].contiguous()
             shift_labels = labels[..., 1:].contiguous()
 
-            loss_fct = torch.nn.CrossEntropyLoss()
+            loss_fct = _torch.nn.CrossEntropyLoss()
             loss = loss_fct(
                 shift_logits.view(-1, shift_logits.size(-1)),
                 shift_labels.view(-1),
@@ -59,9 +58,3 @@ class UnslothV2FixedTrainer(UnslothTrainer):
 
         loss = ddp_safe_loss(loss, self.accelerator)
         return (loss, outputs) if return_outputs else loss
-
-
-__all__ = [
-    "UnslothFixedTrainer",
-    "UnslothV2FixedTrainer",
-]

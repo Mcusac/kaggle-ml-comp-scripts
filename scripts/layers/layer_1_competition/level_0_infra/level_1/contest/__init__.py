@@ -15,15 +15,11 @@ from .context import (
     build_contest_context,
 )
 
-from .csv_io import (
-    load_training_csv,
-    logger,
-)
+from .csv_io import load_training_csv
 
 from .data_loading import (
     load_contest_data,
     load_contest_training_data,
-    logger,
 )
 
 from .splits import split_train_val
@@ -35,7 +31,6 @@ __all__ = [
     "load_contest_data",
     "load_contest_training_data",
     "load_training_csv",
-    "logger",
     "parse_models_csv",
     "parse_optional_float_list",
     "parse_weights_csv",

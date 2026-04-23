@@ -9,7 +9,7 @@ from pathlib import Path
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _require_columns(df: pd.DataFrame, required: set[str], name: str) -> None:
@@ -57,7 +57,7 @@ def validate_rna3d_inputs(data_root: str, max_targets: int = 0) -> None:
             raise ValueError("test_sequences.csv is empty")
 
     # NOTE: Keep logs ASCII-safe for Windows consoles (cp1252).
-    logger.info("RNA3D inputs look OK")
-    logger.info("   train_sequences: %d rows", len(train_seqs))
-    logger.info("   test_sequences: %d rows", len(test_seqs))
-    logger.info("   train_labels: %d rows", len(train_labels))
+    _logger.info("RNA3D inputs look OK")
+    _logger.info("   train_sequences: %d rows", len(train_seqs))
+    _logger.info("   test_sequences: %d rows", len(test_seqs))
+    _logger.info("   train_labels: %d rows", len(train_labels))

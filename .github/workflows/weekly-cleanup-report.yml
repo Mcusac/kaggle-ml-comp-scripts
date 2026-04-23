@@ -1,0 +1,55 @@
+name: Weekly Cleanup Report
+
+on:
+  schedule:
+    - cron: '0 5 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: weekly-cleanup-report
+  cancel-in-progress: true
+
+jobs:
+  weekly-cleanup-report:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Write health report JSON
+      working-directory: scripts
+      run: |
+        python -m layers.layer_2_devtools.level_1_impl.level_2.write_health_report \
+          --root ".." \
+          --output "../health_report.json"
+
+    - name: Cleanup imports (dry-run)
+      working-directory: scripts
+      run: |
+        python -m layers.layer_2_devtools.level_1_impl.level_2.cleanup_imports \
+          --report "../health_report.json" \
+          --root ".." \
+          --dry-run
+
+    - name: Upload cleanup artifacts
+      if: success() || failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: weekly-cleanup-report-artifacts
+        path: |
+          health_report.json
+          .cursor/audit-results/**/*
+        if-no-files-found: warn
+        compression-level: 6
+

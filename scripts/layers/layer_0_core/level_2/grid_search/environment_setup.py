@@ -6,7 +6,7 @@ from typing import Tuple, Any, Union, Dict
 from layers.layer_0_core.level_0 import ensure_dir, ConfigValidationError, get_logger
 from layers.layer_0_core.level_1 import get_device, get_device_info
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def setup_grid_search_environment(
@@ -37,7 +37,7 @@ def setup_grid_search_environment(
     # Device setup
     device = get_device('auto')
     device_info = get_device_info()
-    logger.info(f"Device info: {device_info}")
+    _logger.info(f"Device info: {device_info}")
 
     # Call grid_search_type_fn ONCE
     grid_search_type = grid_search_type_fn()
@@ -68,19 +68,19 @@ def apply_memory_optimizations(config: Union[Any, Dict[str, Any]]) -> None:
     if isinstance(config, dict):
         if config.get('reduce_workers_for_memory', False):
             config['num_workers'] = 0
-            logger.info("Memory optimization: Reduced num_workers to 0")
+            _logger.info("Memory optimization: Reduced num_workers to 0")
         if config.get('disable_pin_memory_for_memory', False):
             config['pin_memory'] = False
-            logger.info("Memory optimization: Disabled pin_memory")
+            _logger.info("Memory optimization: Disabled pin_memory")
 
     elif hasattr(config, 'device'):
         if getattr(config.device, 'reduce_workers_for_memory', False):
             config.device.num_workers = 0
-            logger.info("Memory optimization: Reduced num_workers to 0")
+            _logger.info("Memory optimization: Reduced num_workers to 0")
 
         if getattr(config.device, 'disable_pin_memory_for_memory', False):
             config.device.pin_memory = False
-            logger.info("Memory optimization: Disabled pin_memory")
+            _logger.info("Memory optimization: Disabled pin_memory")
 
 
 def normalize_base_model_dir(
@@ -96,7 +96,7 @@ def normalize_base_model_dir(
     # Check if base_model_dir ends with grid_search_type
     if base_model_dir.name == grid_search_type:
         base_model_dir = base_model_dir.parent
-        logger.info(
+        _logger.info(
             f"Normalized base model directory: {base_model_dir} "
             f"(removed trailing '{grid_search_type}')"
         )

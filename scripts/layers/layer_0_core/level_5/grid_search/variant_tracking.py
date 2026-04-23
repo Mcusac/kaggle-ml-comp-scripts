@@ -6,7 +6,7 @@ from typing import Any, Callable, Dict, List, Optional, Set, Tuple
 from layers.layer_0_core.level_0 import extract_results_list, get_logger
 from layers.layer_0_core.level_4 import load_json, save_json
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def load_completed_variants_helper(
@@ -32,13 +32,13 @@ def load_completed_variants_helper(
     if not results_file or not results_file.exists():
         return completed_variants, skipped_variants, top_variants, 0
 
-    logger.info(f"Loading completed variant keys from {results_file}")
+    _logger.info(f"Loading completed variant keys from {results_file}")
 
     try:
         data = load_json(results_file)
         all_results = extract_results_list(data)
     except Exception as e:
-        logger.warning(f"Failed to load results file: {e}")
+        _logger.warning(f"Failed to load results file: {e}")
         return completed_variants, skipped_variants, top_variants, 0
 
     successful_count = 0
@@ -63,13 +63,13 @@ def load_completed_variants_helper(
 
     starting_index = get_next_variant_index(all_results)
 
-    logger.info(f"Found {successful_count} successfully completed variants")
+    _logger.info(f"Found {successful_count} successfully completed variants")
     if skipped_count > 0:
-        logger.info(f"Found {skipped_count} skipped variants (persistent OOM - can retry later)")
+        _logger.info(f"Found {skipped_count} skipped variants (persistent OOM - can retry later)")
     if failed_count > 0:
-        logger.info(f"Found {failed_count} failed variants (will be retried)")
-    logger.info(f"Tracking top {len(top_variants)} variant metadata in memory")
-    logger.info(f"Starting variant_index from {starting_index} (ensuring sequential numbering)")
+        _logger.info(f"Found {failed_count} failed variants (will be retried)")
+    _logger.info(f"Tracking top {len(top_variants)} variant metadata in memory")
+    _logger.info(f"Starting variant_index from {starting_index} (ensuring sequential numbering)")
 
     return completed_variants, skipped_variants, top_variants, starting_index
 
@@ -119,6 +119,6 @@ def save_variant_result_helper(result: Dict[str, Any], results_file: Path) -> No
 
     variant_id = result.get('variant_id', result.get('combination_id', 'unknown'))
     variant_index = result.get('variant_index', result.get('combination_index', 'unknown'))
-    logger.info(
+    _logger.info(
         f"Results saved incrementally to {results_file} (variant {variant_id}, index {variant_index})"
     )

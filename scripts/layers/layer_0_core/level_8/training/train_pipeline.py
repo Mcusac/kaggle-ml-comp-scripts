@@ -10,7 +10,7 @@ from layers.layer_0_core.level_4 import create_dataloaders, create_vision_model,
 from layers.layer_0_core.level_5 import VisionTrainer
 from layers.layer_0_core.level_7 import create_tabular_model
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class TrainPipeline(BasePipeline):
@@ -38,7 +38,7 @@ class TrainPipeline(BasePipeline):
 
     def setup(self) -> None:
         """Setup training pipeline."""
-        logger.info("🔧 Setting up training pipeline...")
+        _logger.info("🔧 Setting up training pipeline...")
         validate_config_section_exists(self.config, 'training')
         validate_config_section_exists(self.config, 'paths')
         if hasattr(self.config.paths, 'output_dir'):
@@ -46,11 +46,11 @@ class TrainPipeline(BasePipeline):
             ensure_dir(output_dir)
             ensure_dir(output_dir / 'checkpoints')
             ensure_dir(output_dir / 'logs')
-        logger.info("✅ Training pipeline setup complete")
+        _logger.info("✅ Training pipeline setup complete")
 
     def execute(self) -> Dict[str, Any]:
         """Execute training pipeline."""
-        logger.info("🏋️ Starting model training...")
+        _logger.info("🏋️ Starting model training...")
         if self.model_type == 'vision':
             return self._train_vision()
         elif self.model_type == 'tabular':
@@ -61,7 +61,7 @@ class TrainPipeline(BasePipeline):
     def _train_vision(self) -> Dict[str, Any]:
         """Train vision model."""
         device = get_device(self.config.device if hasattr(self.config, 'device') else 'auto')
-        logger.info(f"Creating vision model: {self.config.model.name}")
+        _logger.info(f"Creating vision model: {self.config.model.name}")
         self.model = create_vision_model(
             model_name=self.config.model.name,
             num_classes=self.config.model.num_classes,
@@ -108,7 +108,7 @@ class TrainPipeline(BasePipeline):
         )
         model_path = Path(checkpoint_dir) / 'final_model.pth'
         self.trainer.save_checkpoint(str(model_path))
-        logger.info(f"✅ Training complete. Model saved to {model_path}")
+        _logger.info(f"✅ Training complete. Model saved to {model_path}")
         return {
             'success': True,
             'model_path': str(model_path),
@@ -122,7 +122,7 @@ class TrainPipeline(BasePipeline):
         y_train = self.kwargs.get('y_train')
         if X_train is None or y_train is None:
             raise ValueError("X_train and y_train are required for tabular training")
-        logger.info(f"Creating tabular model: {self.config.model.type}")
+        _logger.info(f"Creating tabular model: {self.config.model.type}")
         self.model = create_tabular_model(
             model_type=self.config.model.type,
             input_dim=X_train.shape[1],
@@ -135,7 +135,7 @@ class TrainPipeline(BasePipeline):
             self.model.save(str(model_path))
         else:
             save_pickle(self.model, model_path)
-        logger.info(f"✅ Training complete. Model saved to {model_path}")
+        _logger.info(f"✅ Training complete. Model saved to {model_path}")
         return {'success': True, 'model_path': str(model_path), 'metrics': {}}
 
     def cleanup(self) -> None:

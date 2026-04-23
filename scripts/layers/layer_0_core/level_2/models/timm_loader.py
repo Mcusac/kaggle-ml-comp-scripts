@@ -10,7 +10,7 @@ from layers.layer_0_core.level_1 import (
     resolve_offline_weight_cache,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 _NETWORK_ERROR_KEYWORDS = [
     "connection", "network", "timeout", "resolve", "failed to resolve",
@@ -55,14 +55,14 @@ class TimmWeightLoader:
         try:
             backbone = _create_timm_model(model_name, num_classes, pretrained=True)
             self._pretrained_loaded = True
-            logger.info("Loaded pretrained weights for %s", model_name)
+            _logger.info("Loaded pretrained weights for %s", model_name)
             return backbone
 
         except Exception as e:
             if _is_network_error(e):
                 return self._try_offline_cache(model_name, num_classes, e)
 
-            logger.error(
+            _logger.error(
                 "Unexpected failure loading pretrained weights for %s: %s",
                 model_name,
                 e,
@@ -81,23 +81,23 @@ class TimmWeightLoader:
         Returns the model on success, None if no offline weights are found
         or loading fails again.
         """
-        logger.warning("Network/download error loading pretrained weights: %s", original_error)
+        _logger.warning("Network/download error loading pretrained weights: %s", original_error)
 
         cache_path, _ = resolve_offline_weight_cache()
         if cache_path is None:
-            logger.warning("No offline weight cache found")
+            _logger.warning("No offline weight cache found")
             return None
 
-        logger.info("Retrying with offline cache: %s", cache_path)
+        _logger.info("Retrying with offline cache: %s", cache_path)
         configure_huggingface_cache(cache_path)
 
         try:
             backbone = _create_timm_model(model_name, num_classes, pretrained=True)
             self._pretrained_loaded = True
-            logger.info("Loaded pretrained weights from offline cache for %s", model_name)
+            _logger.info("Loaded pretrained weights from offline cache for %s", model_name)
             return backbone
         except Exception as e:
-            logger.warning("Offline cache retry failed: %s", e)
+            _logger.warning("Offline cache retry failed: %s", e)
             return None
 
     def load_weights(self, model_name: str, num_classes: int, pretrained: bool = True) -> object:
@@ -119,14 +119,14 @@ class TimmWeightLoader:
         """
         if not pretrained:
             self._pretrained_loaded = False
-            logger.info("Created non-pretrained model: %s", model_name)
+            _logger.info("Created non-pretrained model: %s", model_name)
             return _create_timm_model(model_name, num_classes, pretrained=False)
 
         cache_path, has_internet = resolve_offline_weight_cache()
         if cache_path:
-            logger.info("Offline weight cache available: %s", cache_path)
+            _logger.info("Offline weight cache available: %s", cache_path)
         elif not has_internet:
-            logger.warning(
+            _logger.warning(
                 "No internet and no offline weights — will fall back to "
                 "non-pretrained if download fails"
             )
@@ -135,6 +135,6 @@ class TimmWeightLoader:
         if backbone is not None:
             return backbone
 
-        logger.warning("Falling back to non-pretrained model for %s", model_name)
+        _logger.warning("Falling back to non-pretrained model for %s", model_name)
         self._pretrained_loaded = False
         return _create_timm_model(model_name, num_classes, pretrained=False)

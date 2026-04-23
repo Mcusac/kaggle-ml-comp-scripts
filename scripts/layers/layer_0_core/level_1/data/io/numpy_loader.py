@@ -6,7 +6,7 @@ from pathlib import Path
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def build_embedding_error_message(
@@ -71,11 +71,11 @@ def load_embeddings_file(
 
     if use_memmap:
         embeds = np.load(embeddings_path, mmap_mode='r')
-        logger.info(f"Loaded {embedding_type} {datatype} as memmap: {embeds.shape} (dtype: {embeds.dtype})")
+        _logger.info(f"Loaded {embedding_type} {datatype} as memmap: {embeds.shape} (dtype: {embeds.dtype})")
     else:
         embeds = np.load(embeddings_path)
         if embeds.dtype != np.float32:
             embeds = embeds.astype(np.float32)
-        logger.info(f"Loaded {embedding_type} {datatype}: {embeds.shape} (dtype: {embeds.dtype})")
+        _logger.info(f"Loaded {embedding_type} {datatype}: {embeds.shape} (dtype: {embeds.dtype})")
 
     return embeds

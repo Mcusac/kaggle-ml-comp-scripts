@@ -1,0 +1,50 @@
+name: Nightly Full Audit
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: nightly-audit
+  cancel-in-progress: true
+
+env:
+  AUDIT_RUN_ID: nightly-${{ github.run_id }}-${{ github.run_attempt }}
+
+jobs:
+  nightly-audit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Audit orchestrator (manifest v2)
+      working-directory: scripts
+      run: |
+        python -m layers.layer_2_devtools.level_1_impl.level_2.audit_orchestrator \
+          --workspace-root ".." \
+          --run-id "${{ env.AUDIT_RUN_ID }}" \
+          --fail-on-skipped
+
+    - name: Upload audit artifacts
+      if: success() || failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: nightly-audit-artifacts
+        path: |
+          .cursor/audit-results/**/*
+        if-no-files-found: warn
+        compression-level: 6
+

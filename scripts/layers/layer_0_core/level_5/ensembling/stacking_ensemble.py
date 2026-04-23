@@ -10,7 +10,7 @@ from layers.layer_0_core.level_2 import get_kfold, get_ridge
 from layers.layer_0_core.level_3 import create_regression_model
 from layers.layer_0_core.level_4 import load_pickle
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class StackingEnsemble:
@@ -61,7 +61,7 @@ class StackingEnsemble:
 
     def _load_models(self) -> None:
         """Load all base regression models from disk."""
-        logger.info(f"Loading {len(self.model_paths)} base models for stacking...")
+        _logger.info(f"Loading {len(self.model_paths)} base models for stacking...")
 
         for idx, model_path in enumerate(self.model_paths):
             model_path_obj = Path(model_path)
@@ -76,12 +76,12 @@ class StackingEnsemble:
             self.models.append(load_pickle(model_file))
             self.model_names.append(self._infer_model_name(idx, model_path))
 
-            logger.info(
+            _logger.info(
                 f"  Loaded {self.model_names[-1]} "
                 f"({idx + 1}/{len(self.model_paths)}): {model_file}"
             )
 
-        logger.info(f"All {len(self.models)} base models loaded")
+        _logger.info(f"All {len(self.models)} base models loaded")
 
     def _infer_model_name(self, idx: int, model_path: str) -> str:
         """Infer a human-readable model name from config metadata or path string."""
@@ -121,7 +121,7 @@ class StackingEnsemble:
         Returns:
             (oof_preds, test_preds) where each maps model_name -> ndarray.
         """
-        logger.info(f"Generating OOF predictions ({self.n_folds}-fold CV)...")
+        _logger.info(f"Generating OOF predictions ({self.n_folds}-fold CV)...")
 
         n_train, n_targets = X_train.shape[0], y_train.shape[1]
         n_test = X_test.shape[0]
@@ -133,7 +133,7 @@ class StackingEnsemble:
         kf = KFold(n_splits=self.n_folds, shuffle=True, random_state=self.random_state)
 
         for fold, (train_idx, val_idx) in enumerate(kf.split(X_train, y_train)):
-            logger.info(f"  Fold {fold + 1}/{self.n_folds}")
+            _logger.info(f"  Fold {fold + 1}/{self.n_folds}")
             X_tr, X_val = X_train[train_idx], X_train[val_idx]
             y_tr = y_train[train_idx]
 
@@ -151,7 +151,7 @@ class StackingEnsemble:
                     self._to_2d(fold_model.predict(X_test)), 0, None
                 ) / self.n_folds
 
-        logger.info("OOF predictions generated successfully")
+        _logger.info("OOF predictions generated successfully")
         return oof_preds, test_preds
 
     # ------------------------------------------------------------------
@@ -170,7 +170,7 @@ class StackingEnsemble:
             oof_preds: Dict model_name -> OOF predictions (N_train, num_targets).
             y_train: True targets (N_train, num_targets).
         """
-        logger.info("Fitting Ridge meta-models per target...")
+        _logger.info("Fitting Ridge meta-models per target...")
         Ridge = get_ridge()
 
         for target_idx in range(y_train.shape[1]):
@@ -185,9 +185,9 @@ class StackingEnsemble:
                 f"{name}: {coef:.3f}"
                 for name, coef in zip(self.model_names, meta_model.coef_)
             )
-            logger.info(f"  Target {target_idx} -> {weights}")
+            _logger.info(f"  Target {target_idx} -> {weights}")
 
-        logger.info(f"Fitted {len(self.meta_models)} meta-models")
+        _logger.info(f"Fitted {len(self.meta_models)} meta-models")
 
     def predict(self, test_preds: Dict[str, np.ndarray]) -> np.ndarray:
         """

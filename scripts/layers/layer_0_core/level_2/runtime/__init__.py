@@ -1,4 +1,5 @@
-"""Runtime package for pipeline execution."""
+"""Auto-generated package exports."""
+
 
 from .environment import setup_runtime_environment
 

@@ -1,4 +1,5 @@
-"""Inference package for model inference."""
+"""Auto-generated package exports."""
+
 
 from .vision_predictor import VisionPredictor
 

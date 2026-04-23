@@ -16,7 +16,7 @@ from layers.layer_0_core.level_3 import (
     calculate_roc_auc,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class EvaluatePipeline(BasePipeline):
@@ -61,7 +61,7 @@ class EvaluatePipeline(BasePipeline):
     
     def setup(self) -> None:
         """Setup evaluation pipeline."""
-        logger.info("🔧 Setting up evaluation pipeline...")
+        _logger.info("🔧 Setting up evaluation pipeline...")
         
         # Validate config
         validate_config_section_exists(self.config, 'paths')
@@ -73,7 +73,7 @@ class EvaluatePipeline(BasePipeline):
             if not self.predictions_path.exists():
                 raise FileNotFoundError(f"Predictions file not found: {self.predictions_path}")
             self.predictions = np.load(self.predictions_path)
-            logger.info(f"Loaded predictions from {self.predictions_path}")
+            _logger.info(f"Loaded predictions from {self.predictions_path}")
         
         # Load ground truth if not provided
         if self.ground_truth is None:
@@ -82,7 +82,7 @@ class EvaluatePipeline(BasePipeline):
             if not self.ground_truth_path.exists():
                 raise FileNotFoundError(f"Ground truth file not found: {self.ground_truth_path}")
             self.ground_truth = np.load(self.ground_truth_path)
-            logger.info(f"Loaded ground truth from {self.ground_truth_path}")
+            _logger.info(f"Loaded ground truth from {self.ground_truth_path}")
         
         # Validate shapes
         if self.predictions.shape != self.ground_truth.shape:
@@ -97,7 +97,7 @@ class EvaluatePipeline(BasePipeline):
             ensure_dir(output_dir)
             ensure_dir(output_dir / 'evaluation')
         
-        logger.info("✅ Evaluation pipeline setup complete")
+        _logger.info("✅ Evaluation pipeline setup complete")
     
     def execute(self) -> Dict[str, Any]:
         """
@@ -109,7 +109,7 @@ class EvaluatePipeline(BasePipeline):
             - 'metrics': dict (computed metrics)
             - 'output_path': str (path to saved metrics)
         """
-        logger.info("📊 Computing evaluation metrics...")
+        _logger.info("📊 Computing evaluation metrics...")
         
         if self.model_type == 'vision':
             return self._evaluate_vision()
@@ -123,9 +123,9 @@ class EvaluatePipeline(BasePipeline):
         ensure_dir(output_path.parent)
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(self.metrics, f, indent=2)
-        logger.info("✅ Evaluation complete")
-        logger.info(f"  Metrics: {self.metrics}")
-        logger.info(f"  Saved to {output_path}")
+        _logger.info("✅ Evaluation complete")
+        _logger.info(f"  Metrics: {self.metrics}")
+        _logger.info(f"  Saved to {output_path}")
 
     def _evaluate_vision(self) -> Dict[str, Any]:
         """Evaluate vision model."""

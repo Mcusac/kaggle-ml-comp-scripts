@@ -11,7 +11,7 @@ from layers.layer_0_core.level_2 import resolve_keyed_param_grid
 
 from layers.layer_1_competition.level_1_impl.level_cafa.level_0 import validate_ontology
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def resolve_cafa_param_grid(
@@ -52,16 +52,16 @@ def get_ontology_param_grid(ontology: str, config: Any) -> Dict[str, List]:
     if hasattr(config, "param_grids"):
         param_grids = config.param_grids
         if isinstance(param_grids, dict) and ontology in param_grids:
-            logger.info("Using per-ontology grid for %s ontology", ontology)
+            _logger.info("Using per-ontology grid for %s ontology", ontology)
             return param_grids[ontology]
 
     if isinstance(config, dict):
         if "param_grids" in config and isinstance(config["param_grids"], dict):
             if ontology in config["param_grids"]:
-                logger.info("Using per-ontology grid for %s ontology", ontology)
+                _logger.info("Using per-ontology grid for %s ontology", ontology)
                 return config["param_grids"][ontology]
 
-    logger.info("Using default parameter grid for %s ontology", ontology)
+    _logger.info("Using default parameter grid for %s ontology", ontology)
     return get_default_param_grid(config)
 
 
@@ -84,7 +84,7 @@ def get_default_param_grid(config: Any) -> Dict[str, List]:
     if isinstance(config, dict) and "param_grid" in config:
         return config["param_grid"]
 
-    logger.warning("No parameter grid found in config, using minimal default grid")
+    _logger.warning("No parameter grid found in config, using minimal default grid")
     return {
         "learning_rate": [1e-3],
         "batch_size": [32],

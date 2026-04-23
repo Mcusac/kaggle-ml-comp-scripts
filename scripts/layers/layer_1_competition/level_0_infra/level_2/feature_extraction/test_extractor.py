@@ -13,7 +13,7 @@ from layers.layer_0_core.level_6 import create_streaming_test_dataloader
 
 from layers.layer_1_competition.level_0_infra.level_1 import create_feature_extraction_model
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 _DEFAULT_IMAGE_SIZE: Tuple[int, int] = (224, 224)
 _DEFAULT_BATCH_SIZE: int = 32
@@ -47,7 +47,7 @@ def extract_test_features_from_model(
     Returns:
         Test features array (n_samples, n_features)
     """
-    logger.info("Extracting test features...")
+    _logger.info("Extracting test features...")
     device = get_device("auto")
 
     feature_model = create_feature_extraction_model(
@@ -80,7 +80,7 @@ def extract_test_features_from_model(
     test_features = feature_extractor.extract_features(
         test_loader, dataset_type=dataset_type
     )
-    logger.info(f"Extracted test features shape: {test_features.shape}")
+    _logger.info(f"Extracted test features shape: {test_features.shape}")
 
     del feature_model, feature_extractor, test_loader
     cleanup_gpu_memory()
@@ -119,9 +119,3 @@ def find_feature_filename_from_ensemble_metadata(
     raise ValueError(
         "Cannot determine feature_filename from ensemble model metadata"
     )
-
-
-__all__ = [
-    "extract_test_features_from_model",
-    "find_feature_filename_from_ensemble_metadata",
-]

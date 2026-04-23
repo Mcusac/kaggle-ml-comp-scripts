@@ -5,10 +5,10 @@ from typing import Any, Dict, List, Optional
 
 from layers.layer_0_core.level_0 import ensure_dir, get_logger, get_torch
 
-torch = get_torch()
-nn = torch.nn if torch is not None else None
-optim = torch.optim if torch is not None else None
-logger = get_logger(__name__)
+_torch = get_torch()
+_nn = _torch.nn if _torch is not None else None
+_optim = _torch.optim if _torch is not None else None
+_logger = get_logger(__name__)
 
 
 # ---------------------------------------------------------------------------
@@ -39,9 +39,9 @@ def _strip_module_prefix(state_dict: Dict[str, Any]) -> Dict[str, Any]:
 # ---------------------------------------------------------------------------
 
 def save_checkpoint(
-    model: nn.Module,
-    optimizer: optim.Optimizer,
-    scheduler: Optional[optim.lr_scheduler._LRScheduler],
+    model: _nn.Module,
+    optimizer: _optim.Optimizer,
+    scheduler: Optional[_optim.lr_scheduler._LRScheduler],
     path: Path,
     epoch: int,
     best_score: float,
@@ -63,7 +63,7 @@ def save_checkpoint(
     """
     raw_state = (
         model.module.state_dict()
-        if isinstance(model, nn.DataParallel)
+        if isinstance(model, _nn.DataParallel)
         else model.state_dict()
     )
     # Always save without the prefix so checkpoints are portable.
@@ -82,16 +82,16 @@ def save_checkpoint(
 
     path = Path(path)
     ensure_dir(path.parent)
-    torch.save(checkpoint, path)
-    logger.debug("Saved checkpoint to %s", path)
+    _torch.save(checkpoint, path)
+    _logger.debug("Saved checkpoint to %s", path)
 
 
 def load_model_checkpoint(
     checkpoint_path: Path,
-    model: torch.nn.Module,
-    optimizer: Optional[torch.optim.Optimizer] = None,
-    scheduler: Optional[torch.optim.lr_scheduler._LRScheduler] = None,
-    device: Optional[torch.device] = None,
+    model: _nn.Module,
+    optimizer: Optional[_optim.Optimizer] = None,
+    scheduler: Optional[_optim.lr_scheduler._LRScheduler] = None,
+    device: Optional[_torch.device] = None,
 ) -> Dict[str, Any]:
     """Load a training checkpoint into a model.
 
@@ -116,11 +116,11 @@ def load_model_checkpoint(
     if not checkpoint_path.exists():
         raise FileNotFoundError(f"Checkpoint not found: {checkpoint_path}")
 
-    checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=True)
+    checkpoint = _torch.load(checkpoint_path, map_location=device, weights_only=True)
 
     state_dict = _strip_module_prefix(checkpoint["model_state_dict"])
 
-    target = model.module if isinstance(model, torch.nn.DataParallel) else model
+    target = model.module if isinstance(model, _nn.DataParallel) else model
     target.load_state_dict(state_dict)
 
     if optimizer is not None and "optimizer_state_dict" in checkpoint:
@@ -133,5 +133,5 @@ def load_model_checkpoint(
     ):
         scheduler.load_state_dict(checkpoint["scheduler_state_dict"])
 
-    logger.info("Loaded checkpoint from %s", checkpoint_path)
+    _logger.info("Loaded checkpoint from %s", checkpoint_path)
     return checkpoint

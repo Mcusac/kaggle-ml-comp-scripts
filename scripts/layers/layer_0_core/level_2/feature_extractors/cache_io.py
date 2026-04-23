@@ -14,7 +14,7 @@ from layers.layer_0_core.level_1 import (
     parse_feature_filename
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 # Tracks files saved in the current process session for priority lookup.
 _session_saved_paths: Dict[str, Path] = {}
@@ -51,16 +51,16 @@ def find_feature_cache(filename: str) -> Optional[Path]:
     if filename in _session_saved_paths:
         saved_path = _session_saved_paths[filename]
         if saved_path.exists():
-            logger.info(f"Found feature cache from this session: {saved_path}")
+            _logger.info(f"Found feature cache from this session: {saved_path}")
             return saved_path
         del _session_saved_paths[filename]
     if input_path.exists():
-        logger.info(f"Found feature cache in input directory: {input_path}")
+        _logger.info(f"Found feature cache in input directory: {input_path}")
         return input_path
     if working_path.exists():
-        logger.info(f"Found feature cache in working directory: {working_path}")
+        _logger.info(f"Found feature cache in working directory: {working_path}")
         return working_path
-    logger.debug(f"No feature cache found for filename: {filename}")
+    _logger.debug(f"No feature cache found for filename: {filename}")
     return None
 
 
@@ -121,8 +121,8 @@ def save_features(
                 isinstance(e, OSError) and getattr(e, "errno", None) == 30
             ) or isinstance(e, PermissionError)
             if is_readonly:
-                logger.warning(f"Cannot write to input directory (read-only): {input_path}")
-                logger.info(f"Falling back to working directory: {working_path}")
+                _logger.warning(f"Cannot write to input directory (read-only): {input_path}")
+                _logger.info(f"Falling back to working directory: {working_path}")
             else:
                 raise
 
@@ -155,7 +155,7 @@ def load_features(cache_path: Path) -> Tuple[np.ndarray, np.ndarray, np.ndarray,
             f"Cache file is not an all-features cache (cache_type: {cache_type!r}). "
             "Only all-features caches are supported."
         )
-    logger.info(f"Loaded all-features cache: {cache_path}")
+    _logger.info(f"Loaded all-features cache: {cache_path}")
     return data["all_features"], data["all_targets"], data["fold_assignments"], metadata
 
 
@@ -191,7 +191,7 @@ def resolve_extraction_info(feature_filename: str) -> Dict[str, Any]:
                         augmentation_list = combo.get("augmentation_list", [])
                         break
     except Exception as e:
-        logger.debug(f"Could not load combo metadata: {e}. Using empty lists.")
+        _logger.debug(f"Could not load combo metadata: {e}. Using empty lists.")
 
     return {
         "model_name": model_name,
@@ -245,4 +245,4 @@ def _write_npz(
         fold_assignments=fold_assignments,
         metadata=json.dumps(metadata),
     )
-    logger.info(f"Saved all-features cache: {save_path}")
+    _logger.info(f"Saved all-features cache: {save_path}")

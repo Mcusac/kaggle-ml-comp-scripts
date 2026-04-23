@@ -1,11 +1,21 @@
-"""Vision config and models."""
+"""Auto-generated mixed exports."""
+
 
 from . import models
 
-from .config import VisionConfig, VisionDataConfig, VisionModelConfig
 from .models import *
+
+from .config import (
+    VisionConfig,
+    VisionDataConfig,
+    VisionModelConfig,
+)
 
 __all__ = (
     list(models.__all__)
-    + ["VisionModelConfig", "VisionDataConfig", "VisionConfig"]
+    + [
+        "VisionConfig",
+        "VisionDataConfig",
+        "VisionModelConfig",
+    ]
 )

@@ -56,6 +56,7 @@ from .nll_scoring import (
 from .peft_bindings import (
     get_peft_model_state_dict,
     peft_module,
+    restore_peft_adapter_state_dict,
     set_peft_model_state_dict,
 )
 
@@ -74,20 +75,14 @@ from .tokenizer_utils import (
 
 from .torch_utils import (
     load_adapter_state_dict,
-    logger,
     torch_dtype_from_config,
     unsloth_available,
 )
 
-try:
-    from .unsloth_trainers import (
-        UnslothFixedTrainer,
-        UnslothV2FixedTrainer,
-    )
-except ImportError:
-    _unsloth_trainer_exports: tuple[str, ...] = ()
-else:
-    _unsloth_trainer_exports = ("UnslothFixedTrainer", "UnslothV2FixedTrainer")
+from .unsloth_trainers import (
+    UnslothFixedTrainer,
+    UnslothV2FixedTrainer,
+)
 
 __all__ = [
     "AggregateMode",
@@ -96,15 +91,14 @@ __all__ = [
     "COMMON_PEFT_PARAMS",
     "COMMON_TRAIN_ARGS",
     "Grid",
-    "get_peft_model_state_dict",
-    "install_repeat_interleave_attention",
-    "install_sdpa_attention",
     "LlmTtaDfsConfig",
     "LmAdaptationConfig",
     "QwenDataCollatorForCompletionOnlyLM",
     "REFERENCE_ASSISTANT_TOKEN_ID",
     "REFERENCE_EOS_ID",
     "REFERENCE_USER_TOKEN_ID",
+    "UnslothFixedTrainer",
+    "UnslothV2FixedTrainer",
     "aggregate_scores_across_augmentations",
     "apply_runtime_profile",
     "build_budget",
@@ -115,10 +109,12 @@ __all__ = [
     "empty_grid_like",
     "eval_teacher_forced_neg_sum_logprob",
     "eval_teacher_forced_neg_sum_logprob_batch",
+    "get_peft_model_state_dict",
+    "install_repeat_interleave_attention",
+    "install_sdpa_attention",
     "llm_tta_augment_seed",
     "llm_tta_grid_hw",
     "load_adapter_state_dict",
-    "logger",
     "peft_module",
     "resolve_collator_token_ids",
     "resolve_digit_token_ids",
@@ -126,11 +122,11 @@ __all__ = [
     "resolve_pad_id",
     "resolve_turbo_eos_id",
     "resolve_turbo_token_table",
+    "restore_peft_adapter_state_dict",
     "run_task_adaptation",
     "set_peft_model_state_dict",
     "token_id_for_single_text",
     "torch_dtype_from_config",
     "unsloth_available",
     "validate_llm_tta_dfs_config",
-    *list(_unsloth_trainer_exports),
 ]

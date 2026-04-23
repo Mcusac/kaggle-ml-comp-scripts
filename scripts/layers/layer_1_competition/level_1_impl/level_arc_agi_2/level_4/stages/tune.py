@@ -30,7 +30,7 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import (
 
 
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def run_tune_pipeline(
@@ -47,7 +47,7 @@ def run_tune_pipeline(
     out_dir = contest_models_dir(ARC26Paths(), "arc_agi_2") / str(model_name)
     ensure_dir(out_dir)
     tune_path = out_dir / "best_config.json"
-    logger.warning(
+    _logger.warning(
         "select_best_heuristic was never implemented; Run 12 replaced the "
         "tune selection with default chosen_params and empty tune_scores"
     )
@@ -81,7 +81,7 @@ def run_tune_pipeline(
     if neural_eval_exact_match is not None:
         result["neural_eval_exact_match"] = float(neural_eval_exact_match)
     save_json(result, tune_path)
-    logger.info("Wrote ARC tuning metadata: %s (chosen=%s)", tune_path, chosen_params)
+    _logger.info("Wrote ARC tuning metadata: %s (chosen=%s)", tune_path, chosen_params)
     if run_ctx is not None:
         commit_run_artifacts(
             run_ctx,

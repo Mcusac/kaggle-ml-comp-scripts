@@ -7,7 +7,7 @@ from layers.layer_0_core.level_1 import BaseVisionModel
 from layers.layer_0_core.level_2 import DINOv2Model
 from layers.layer_0_core.level_3 import TimmModel
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def create_vision_model(
@@ -42,7 +42,7 @@ def create_vision_model(
     """
     model_name_lower = model_name.lower()
 
-    logger.info(f"Creating vision model: {model_name} (num_classes={num_classes}, pretrained={pretrained})")
+    _logger.info(f"Creating vision model: {model_name} (num_classes={num_classes}, pretrained={pretrained})")
 
     # DINOv2 models (HuggingFace format)
     if 'dinov2' in model_name_lower:
@@ -58,7 +58,7 @@ def create_vision_model(
         else:
             hf_model_name = model_name
 
-        logger.info(f"Using HuggingFace DINOv2 model: {hf_model_name}")
+        _logger.info(f"Using HuggingFace DINOv2 model: {hf_model_name}")
 
         return DINOv2Model(
             model_name=hf_model_name,
@@ -70,7 +70,7 @@ def create_vision_model(
 
     # Timm models (covers EfficientNet, ResNet, ViT, etc.)
     else:
-        logger.info(f"Using timm model: {model_name}")
+        _logger.info(f"Using timm model: {model_name}")
 
         return TimmModel(
             model_name=model_name,

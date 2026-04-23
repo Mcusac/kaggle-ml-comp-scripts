@@ -20,7 +20,7 @@ from layers.layer_1_competition.level_1_impl.level_cafa.level_0 import (
 )
 from layers.layer_1_competition.level_1_impl.level_cafa.level_3 import OntologyDataPreparer
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class PerOntologyTrainWorkflow:
@@ -94,7 +94,7 @@ class PerOntologyTrainWorkflow:
             - GPU cleanup between ontologies prevents memory overflow
             - Sequential training recommended for limited GPU memory
         """
-        logger.info("Starting per-ontology training for all ontologies...")
+        _logger.info("Starting per-ontology training for all ontologies...")
         start_time = time.time()
 
         results = {}
@@ -102,29 +102,29 @@ class PerOntologyTrainWorkflow:
         if sequential:
             # Sequential training with GPU cleanup
             for ont_code in self.ontologies:
-                logger.info(f"Training {ont_code} ontology...")
+                _logger.info(f"Training {ont_code} ontology...")
                 ont_start = time.time()
 
                 try:
                     result = self.run_train_single_ontology(ont_code)
                     results[ont_code] = result
                     ont_time = time.time() - ont_start
-                    logger.info(f"✓ {ont_code} training complete: {ont_time:.1f}s")
+                    _logger.info(f"✓ {ont_code} training complete: {ont_time:.1f}s")
                 except Exception as e:
-                    logger.error(f"❌ {ont_code} training failed: {e}")
+                    _logger.error(f"❌ {ont_code} training failed: {e}")
                     results[ont_code] = {'success': False, 'error': str(e)}
 
                 # GPU cleanup between ontologies
                 if ont_code != self.ontologies[-1]:  # Don't cleanup after last
                     cleanup_gpu_memory()
-                    logger.debug("GPU memory cleaned up after ontology")
+                    _logger.debug("GPU memory cleaned up after ontology")
         else:
             # Parallel training
             results = self.run_train_parallel_ontologies(self.ontologies)
 
         total_time = time.time() - start_time
-        logger.info(f"Per-ontology training complete: {total_time:.1f}s")
-        logger.info(f"Trained {len([r for r in results.values() if r.get('success', False)])} ontologies")
+        _logger.info(f"Per-ontology training complete: {total_time:.1f}s")
+        _logger.info(f"Trained {len([r for r in results.values() if r.get('success', False)])} ontologies")
 
         return results
 
@@ -153,7 +153,7 @@ class PerOntologyTrainWorkflow:
         if ontology not in self.ontologies:
             raise ValueError(f"Invalid ontology: {ontology}. Must be one of {self.ontologies}")
 
-        logger.info(f"Training {ontology} ontology model...")
+        _logger.info(f"Training {ontology} ontology model...")
         start_time = time.time()
 
         # Get per-ontology hyperparameters
@@ -164,11 +164,11 @@ class PerOntologyTrainWorkflow:
         data_schema = self._data_schema_factory() if callable(self._data_schema_factory) else self._data_schema_factory
 
         # Load training data for this ontology
-        logger.info(f"Loading training data for {ontology} ontology...")
+        _logger.info(f"Loading training data for {ontology} ontology...")
         train_data = self.data_loader.load_training_data(ontology, paths, data_schema)
 
         if train_data is None or len(train_data) == 0:
-            logger.warning(f"No training data found for {ontology} ontology")
+            _logger.warning(f"No training data found for {ontology} ontology")
             return {
                 'success': False,
                 'ontology': ontology,
@@ -184,7 +184,7 @@ class PerOntologyTrainWorkflow:
         )
 
         if X_train is None or X_train.shape[0] == 0:
-            logger.warning(f"No valid training samples for {ontology} ontology")
+            _logger.warning(f"No valid training samples for {ontology} ontology")
             return {
                 'success': False,
                 'ontology': ontology,
@@ -194,7 +194,7 @@ class PerOntologyTrainWorkflow:
                 'error': 'No valid training samples'
             }
 
-        logger.info(f"Training data: {X_train.shape[0]} samples, {X_train.shape[1]} features, {y_train.shape[1]} targets")
+        _logger.info(f"Training data: {X_train.shape[0]} samples, {X_train.shape[1]} features, {y_train.shape[1]} targets")
 
         # Create model with ontology-specific hyperparameters
         model = self.model_manager.create_model(
@@ -202,7 +202,7 @@ class PerOntologyTrainWorkflow:
         )
 
         # Train model
-        logger.info(f"Training {ontology} model...")
+        _logger.info(f"Training {ontology} model...")
         training_metrics = self.model_manager.train_model(model, X_train, y_train, ontology_config)
 
         # Save model
@@ -220,7 +220,7 @@ class PerOntologyTrainWorkflow:
             'time': time.time() - start_time
         }
 
-        logger.info(f"✓ {ontology} training complete: {result['time']:.1f}s")
+        _logger.info(f"✓ {ontology} training complete: {result['time']:.1f}s")
 
         return result
 
@@ -245,23 +245,23 @@ class PerOntologyTrainWorkflow:
         if ontologies is None:
             ontologies = self.ontologies
 
-        logger.info(f"Starting parallel training for {len(ontologies)} ontologies...")
+        _logger.info(f"Starting parallel training for {len(ontologies)} ontologies...")
         start_time = time.time()
 
         max_workers = min(len(ontologies), cpu_count())
-        logger.info(f"Using {max_workers} workers for parallel training")
+        _logger.info(f"Using {max_workers} workers for parallel training")
 
         results = {}
 
         def train_ontology_worker(ont_code: str) -> tuple:
             """Worker function for parallel training."""
             try:
-                logger.info(f"[Parallel] Starting {ont_code}...")
+                _logger.info(f"[Parallel] Starting {ont_code}...")
                 result = self.run_train_single_ontology(ont_code)
-                logger.info(f"[Parallel] ✓ Completed {ont_code}")
+                _logger.info(f"[Parallel] ✓ Completed {ont_code}")
                 return (ont_code, result)
             except Exception as e:
-                logger.error(f"[Parallel] ❌ Error training {ont_code}: {e}")
+                _logger.error(f"[Parallel] ❌ Error training {ont_code}: {e}")
                 return (ont_code, {'success': False, 'error': str(e)})
 
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
@@ -278,11 +278,11 @@ class PerOntologyTrainWorkflow:
                     result_ont_code, result = future.result()
                     results[result_ont_code] = result
                 except Exception as e:
-                    logger.error(f"{ont_code} training failed: {e}")
+                    _logger.error(f"{ont_code} training failed: {e}")
                     results[ont_code] = {'success': False, 'error': str(e)}
 
         total_time = time.time() - start_time
-        logger.info(f"Parallel training complete: {total_time:.1f}s")
-        logger.info(f"Trained {len([r for r in results.values() if r.get('success', False)])} ontologies")
+        _logger.info(f"Parallel training complete: {total_time:.1f}s")
+        _logger.info(f"Trained {len([r for r in results.values() if r.get('success', False)])} ontologies")
 
         return results

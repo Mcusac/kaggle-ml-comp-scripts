@@ -7,7 +7,7 @@ from layers.layer_0_core.level_1 import BasePipeline
 from layers.layer_0_core.level_5 import ExportPipeline
 from layers.layer_0_core.level_8 import TrainPipeline
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class TrainAndExportWorkflow(BasePipeline):
@@ -44,7 +44,7 @@ class TrainAndExportWorkflow(BasePipeline):
 
     def setup(self) -> None:
         """Setup workflow."""
-        logger.info("🔧 Setting up train-and-export workflow...")
+        _logger.info("🔧 Setting up train-and-export workflow...")
 
         # Validate required data
         if self.model_type == 'vision':
@@ -54,7 +54,7 @@ class TrainAndExportWorkflow(BasePipeline):
             if 'X_train' not in self.kwargs or 'y_train' not in self.kwargs:
                 raise ValueError("X_train and y_train required for tabular training")
 
-        logger.info("✅ Train-and-export workflow setup complete")
+        _logger.info("✅ Train-and-export workflow setup complete")
 
     def execute(self) -> Dict[str, Any]:
         """
@@ -63,12 +63,12 @@ class TrainAndExportWorkflow(BasePipeline):
         Returns:
             Dictionary with combined results from training and export.
         """
-        logger.info("🚀 Starting train-and-export workflow...")
+        _logger.info("🚀 Starting train-and-export workflow...")
 
         # Step 1: Train
-        logger.info("=" * 60)
-        logger.info("STEP 1: Training Model")
-        logger.info("=" * 60)
+        _logger.info("=" * 60)
+        _logger.info("STEP 1: Training Model")
+        _logger.info("=" * 60)
 
         train_pipeline = TrainPipeline(
             config=self.config,
@@ -82,9 +82,9 @@ class TrainAndExportWorkflow(BasePipeline):
             raise RuntimeError("Training failed")
 
         # Step 2: Export
-        logger.info("=" * 60)
-        logger.info("STEP 2: Exporting Model")
-        logger.info("=" * 60)
+        _logger.info("=" * 60)
+        _logger.info("STEP 2: Exporting Model")
+        _logger.info("=" * 60)
 
         export_pipeline = ExportPipeline(
             config=self.config,
@@ -102,7 +102,7 @@ class TrainAndExportWorkflow(BasePipeline):
         if not self.export_results['success']:
             raise RuntimeError("Export failed")
 
-        logger.info("✅ Train-and-export workflow complete")
+        _logger.info("✅ Train-and-export workflow complete")
 
         return {
             'success': True,

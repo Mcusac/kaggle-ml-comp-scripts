@@ -1,9 +1,15 @@
-"""Tabular model base class and PyTorch datasets for dense and sparse label spaces."""
+"""Auto-generated package exports."""
+
 
 from .base import BaseTabularModel
-from .sparse_tabular_dataset import SparseTabularDataset
+
+from .sparse_tabular_dataset import (
+    Dataset,
+    SparseTabularDataset,
+)
 
 __all__ = [
     "BaseTabularModel",
+    "Dataset",
     "SparseTabularDataset",
 ]

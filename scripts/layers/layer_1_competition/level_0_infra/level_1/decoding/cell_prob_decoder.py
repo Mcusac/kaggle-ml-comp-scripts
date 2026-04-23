@@ -1,5 +1,6 @@
 """Constrained DFS/beam decoder for cell-wise discrete distributions (e.g. 10-way colors)."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from math import log
 
@@ -67,7 +68,51 @@ def decode_grid_candidates(
     return candidates
 
 
-__all__ = [
-    "GridCandidate",
-    "decode_grid_candidates",
-]
+def decode_grid_candidates_from_provider(
+    h: int,
+    w: int,
+    token_probs_provider: Callable[[list[int]], dict[int, float]],
+    *,
+    beam_width: int = 16,
+    max_candidates: int = 8,
+    max_neg_log_score: float = 200.0,
+) -> list[GridCandidate]:
+    """Beam search over an ``h``×``w`` grid using per-prefix class probabilities.
+
+    Row-major order matches :func:`decode_grid_candidates` on a fixed ``[H][W][K]`` tensor
+    when ``token_probs_provider(prefix)`` returns the same distribution as the cell at
+    index ``len(prefix)``.
+    """
+    if h <= 0 or w <= 0:
+        return [GridCandidate(grid=[], score=0.0)]
+    length = h * w
+    top_k = max(2, beam_width // 4)
+    beam: list[tuple[list[int], float]] = [([], 0.0)]
+    for _ in range(length):
+        next_beam: list[tuple[list[int], float]] = []
+        for prefix, score in beam:
+            probs = token_probs_provider(prefix)
+            if not probs:
+                continue
+            items = sorted(probs.items(), key=lambda kv: kv[1], reverse=True)[
+                : max(1, int(top_k))
+            ]
+            for color, prob in items:
+                safe = max(1e-9, min(1.0, float(prob)))
+                logp = float(log(safe))
+                new_score = score + logp
+                if -new_score > float(max_neg_log_score):
+                    continue
+                next_beam.append((prefix + [int(color)], new_score))
+        if not next_beam:
+            break
+        next_beam.sort(key=lambda kv: kv[1], reverse=True)
+        beam = next_beam[: max(1, int(beam_width or 1))]
+
+    candidates: list[GridCandidate] = []
+    for flat, score in beam[: max(1, int(max_candidates or 1))]:
+        if len(flat) < length:
+            flat = flat + [0] * (length - len(flat))
+        rows = [flat[i * w : (i + 1) * w] for i in range(h)]
+        candidates.append(GridCandidate(grid=rows, score=float(score)))
+    return candidates

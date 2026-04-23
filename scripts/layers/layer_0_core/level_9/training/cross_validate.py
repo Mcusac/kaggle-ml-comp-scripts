@@ -13,7 +13,7 @@ from layers.layer_0_core.level_4 import EvaluatePipeline
 from layers.layer_0_core.level_6 import PredictPipeline
 from layers.layer_0_core.level_8 import TrainPipeline
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class CrossValidateWorkflow(BasePipeline):
@@ -62,7 +62,7 @@ class CrossValidateWorkflow(BasePipeline):
 
     def setup(self) -> None:
         """Setup cross-validation workflow."""
-        logger.info("🔧 Setting up cross-validation workflow...")
+        _logger.info("🔧 Setting up cross-validation workflow...")
 
         # Validate required data
         if self.model_type == 'vision':
@@ -72,8 +72,8 @@ class CrossValidateWorkflow(BasePipeline):
             if 'X' not in self.kwargs or 'y' not in self.kwargs:
                 raise ValueError("X and y required for tabular cross-validation")
 
-        logger.info(f"  CV Configuration: {self.n_folds} folds, shuffle={self.shuffle}")
-        logger.info("✅ Cross-validation workflow setup complete")
+        _logger.info(f"  CV Configuration: {self.n_folds} folds, shuffle={self.shuffle}")
+        _logger.info("✅ Cross-validation workflow setup complete")
 
     def execute(self) -> Dict[str, Any]:
         """
@@ -86,7 +86,7 @@ class CrossValidateWorkflow(BasePipeline):
             - 'fold_scores': list (scores for each fold)
             - 'fold_results': list (detailed results for each fold)
         """
-        logger.info("🚀 Starting cross-validation workflow...")
+        _logger.info("🚀 Starting cross-validation workflow...")
 
         if self.model_type == 'vision':
             return self._cv_vision()
@@ -109,9 +109,9 @@ class CrossValidateWorkflow(BasePipeline):
         fold_scores = []
 
         for fold_idx, (train_idx, val_idx) in enumerate(kf.split(unique_ids)):
-            logger.info("=" * 60)
-            logger.info(f"FOLD {fold_idx + 1}/{self.n_folds}")
-            logger.info("=" * 60)
+            _logger.info("=" * 60)
+            _logger.info(f"FOLD {fold_idx + 1}/{self.n_folds}")
+            _logger.info("=" * 60)
 
             # Split data
             train_ids = unique_ids[train_idx]
@@ -149,11 +149,11 @@ class CrossValidateWorkflow(BasePipeline):
         """Aggregate fold scores and log summary."""
         cv_score = np.mean(fold_scores)
         cv_std = np.std(fold_scores)
-        logger.info("=" * 60)
-        logger.info("CROSS-VALIDATION RESULTS")
-        logger.info("=" * 60)
-        logger.info(f"  Mean CV Score: {cv_score:.4f} ± {cv_std:.4f}")
-        logger.info(f"  Fold Scores: {fold_scores}")
+        _logger.info("=" * 60)
+        _logger.info("CROSS-VALIDATION RESULTS")
+        _logger.info("=" * 60)
+        _logger.info(f"  Mean CV Score: {cv_score:.4f} ± {cv_std:.4f}")
+        _logger.info(f"  Fold Scores: {fold_scores}")
         return {
             'success': True,
             'cv_score': cv_score,
@@ -180,9 +180,9 @@ class CrossValidateWorkflow(BasePipeline):
         fold_scores = []
 
         for fold_idx, (train_idx, val_idx) in enumerate(splits):
-            logger.info("=" * 60)
-            logger.info(f"FOLD {fold_idx + 1}/{self.n_folds}")
-            logger.info("=" * 60)
+            _logger.info("=" * 60)
+            _logger.info(f"FOLD {fold_idx + 1}/{self.n_folds}")
+            _logger.info("=" * 60)
 
             # Split data
             X_train_fold = X[train_idx]

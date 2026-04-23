@@ -7,7 +7,7 @@ from layers.layer_0_core.level_1 import BasePipeline
 from layers.layer_0_core.level_6 import PredictPipeline
 from layers.layer_0_core.level_8 import TrainPipeline
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class TrainPredictWorkflow(BasePipeline):
@@ -44,7 +44,7 @@ class TrainPredictWorkflow(BasePipeline):
 
     def setup(self) -> None:
         """Setup workflow."""
-        logger.info("🔧 Setting up train-predict workflow...")
+        _logger.info("🔧 Setting up train-predict workflow...")
 
         # Validate required data
         if self.model_type == 'vision':
@@ -58,7 +58,7 @@ class TrainPredictWorkflow(BasePipeline):
             if 'X_test' not in self.kwargs:
                 raise ValueError("X_test required for prediction")
 
-        logger.info("✅ Train-predict workflow setup complete")
+        _logger.info("✅ Train-predict workflow setup complete")
 
     def execute(self) -> Dict[str, Any]:
         """
@@ -67,12 +67,12 @@ class TrainPredictWorkflow(BasePipeline):
         Returns:
             Dictionary with combined results from training and prediction.
         """
-        logger.info("🚀 Starting train-predict workflow...")
+        _logger.info("🚀 Starting train-predict workflow...")
 
         # Step 1: Train
-        logger.info("=" * 60)
-        logger.info("STEP 1: Training Model")
-        logger.info("=" * 60)
+        _logger.info("=" * 60)
+        _logger.info("STEP 1: Training Model")
+        _logger.info("=" * 60)
 
         train_pipeline = TrainPipeline(
             config=self.config,
@@ -86,9 +86,9 @@ class TrainPredictWorkflow(BasePipeline):
             raise RuntimeError("Training failed")
 
         # Step 2: Predict
-        logger.info("=" * 60)
-        logger.info("STEP 2: Generating Predictions")
-        logger.info("=" * 60)
+        _logger.info("=" * 60)
+        _logger.info("STEP 2: Generating Predictions")
+        _logger.info("=" * 60)
 
         predict_pipeline = PredictPipeline(
             config=self.config,
@@ -103,7 +103,7 @@ class TrainPredictWorkflow(BasePipeline):
         if not self.predict_results['success']:
             raise RuntimeError("Prediction failed")
 
-        logger.info("✅ Train-predict workflow complete")
+        _logger.info("✅ Train-predict workflow complete")
 
         return {
             'success': True,

@@ -9,6 +9,9 @@ class Violation:
     kind: str
     line: int
     detail: str
+    file_level: int | None = None
+    imported_level: int | None = None
+    suggested_min_level: int | None = None
 
 
 @dataclass

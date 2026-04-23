@@ -1,5 +1,15 @@
-"""Concrete LM backend implementations (level_4 optional deps)."""
+"""Auto-generated package exports."""
 
-from .backend_unsloth import UnslothLmBackend
 
-__all__ = ["UnslothLmBackend"]
+from .backend_unsloth import (
+    TaskAdaptationFn,
+    UnslothLmBackend,
+)
+
+from .unsloth_adaptation_loop import unsloth_train_completion_lm
+
+__all__ = [
+    "TaskAdaptationFn",
+    "UnslothLmBackend",
+    "unsloth_train_completion_lm",
+]

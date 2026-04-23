@@ -9,7 +9,7 @@ from layers.layer_0_core.level_4 import EvaluatePipeline
 from layers.layer_0_core.level_6 import GridSearchBase, PredictPipeline
 from layers.layer_0_core.level_8 import TrainPipeline
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class HyperparameterGridSearch(GridSearchBase):
@@ -55,8 +55,8 @@ class HyperparameterGridSearch(GridSearchBase):
         param_values = list(self.param_grid.values())
         self.all_combinations = list(product(*param_values))
 
-        logger.info(f"  Parameter grid: {self.param_names}")
-        logger.info(f"  Total combinations: {len(self.all_combinations):,}")
+        _logger.info(f"  Parameter grid: {self.param_names}")
+        _logger.info(f"  Total combinations: {len(self.all_combinations):,}")
 
     def _generate_variant_grid(self) -> List[Tuple]:
         """Generate the grid of hyperparameter combinations."""
@@ -82,7 +82,7 @@ class HyperparameterGridSearch(GridSearchBase):
         # Create hyperparameter dict
         hyperparameters = dict(zip(self.param_names, variant))
 
-        logger.info(f"Testing hyperparameters: {hyperparameters}")
+        _logger.info(f"Testing hyperparameters: {hyperparameters}")
 
         # Apply hyperparameters to config
         modified_config = self._apply_hyperparameters(hyperparameters)
@@ -147,7 +147,7 @@ class HyperparameterGridSearch(GridSearchBase):
             }
 
         except Exception as e:
-            logger.error(f"Variant failed: {str(e)}")
+            _logger.error(f"Variant failed: {str(e)}")
             return {
                 'success': False,
                 'score': -float('inf'),

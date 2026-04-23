@@ -5,7 +5,7 @@ from typing import Any, Dict, Optional
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class BasePipeline(ABC):
@@ -86,13 +86,13 @@ class BasePipeline(ABC):
             Pipeline results dictionary.
         """
         try:
-            logger.info("🚀 Starting pipeline: %s", self.__class__.__name__)
+            _logger.info("🚀 Starting pipeline: %s", self.__class__.__name__)
             self.setup()
             self.results = self.execute()
             self.cleanup()
-            logger.info("✅ Pipeline completed: %s", self.__class__.__name__)
+            _logger.info("✅ Pipeline completed: %s", self.__class__.__name__)
             return self.results
         except Exception as e:
-            logger.error("❌ Pipeline failed: %s", self.__class__.__name__)
-            logger.error("  Error: %s", str(e))
+            _logger.error("❌ Pipeline failed: %s", self.__class__.__name__)
+            _logger.error("  Error: %s", str(e))
             raise

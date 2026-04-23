@@ -10,7 +10,15 @@ from layers.layer_2_devtools.level_0_infra.level_0.constants.import_patterns imp
 )
 from layers.layer_2_devtools.level_0_infra.level_0.models.audit_models import FileReport, Violation
 from layers.layer_2_devtools.level_0_infra.level_0.parse.ast.ast_utils import parse_file
+from layers.layer_2_devtools.level_0_infra.level_0.parse.barrel_names import load_static_barrel_names
 from layers.layer_2_devtools.level_0_infra.level_0.path.level_paths import infra_tier_from_level_dir
+
+
+def _find_level_0_infra_root(path: Path) -> Path | None:
+    for p in path.parents:
+        if p.name == "level_0_infra" and (p / "level_0").is_dir():
+            return p
+    return None
 
 
 def scan_infra_file(path: Path, tier_k: int) -> FileReport:
@@ -34,6 +42,7 @@ def scan_infra_file(path: Path, tier_k: int) -> FileReport:
         infra_match = INFRA_LAYER_IMPORT_RE.match(node.module)
         if infra_match:
             imported_tier = int(infra_match.group(1))
+            sub = infra_match.group(2)
             if is_logic and imported_tier > tier_k:
                 report.violations.append(
                     Violation(
@@ -42,6 +51,20 @@ def scan_infra_file(path: Path, tier_k: int) -> FileReport:
                         f"{node.module!r} (file in infra/level_{tier_k})",
                     )
                 )
+            elif is_logic and sub:
+                root = _find_level_0_infra_root(path)
+                if root is not None:
+                    level_dir = root / f"level_{imported_tier}"
+                    barrel = load_static_barrel_names(level_dir)
+                    imported_names = [a.name for a in node.names if a.name != "*"]
+                    for name in imported_names:
+                        if name in barrel:
+                            report.violations.append(
+                                _infra_barrel_deep_violation(
+                                    node.module, line, imported_tier, name
+                                )
+                            )
+                            break
             continue
         if DEEP_LEVEL_RE.match(node.module):
             if is_logic:
@@ -79,6 +102,18 @@ def scan_infra_level_directory(level_dir: Path) -> list[FileReport]:
     if tier is None:
         return []
     return [scan_infra_file(path, tier) for path in iter_infra_py_files(level_dir)]
+
+
+def _infra_barrel_deep_violation(
+    module_name: str, line: int, import_tier: int, name: str
+) -> Violation:
+    return Violation(
+        "INFRA_BARREL_DEEP",
+        line,
+        f"{module_name!r} import {name!r} — prefer "
+        f"from layers.layer_1_competition.level_0_infra.level_{import_tier} import {name!r} "
+        f"when re-exported at package root (heuristic; verify dynamic __all__)",
+    )
 
 
 def _relative_import_violation(node: ast.ImportFrom, line: int) -> Violation:

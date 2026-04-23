@@ -1,9 +1,18 @@
-"""Filesystem primitives."""
+"""Auto-generated package exports."""
+
 
 from .pycache_cleanup import (
-    SKIP_DIRS,
     CleanResult,
+    SKIP_DIRS,
     clean_pycache,
+    count_pyc_files_under,
+    handle_rmtree_readonly,
 )
 
-__all__ = ["SKIP_DIRS", "CleanResult", "clean_pycache"]
+__all__ = [
+    "CleanResult",
+    "SKIP_DIRS",
+    "clean_pycache",
+    "count_pyc_files_under",
+    "handle_rmtree_readonly",
+]

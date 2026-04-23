@@ -6,6 +6,11 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
+from layers.layer_2_devtools.level_0_infra.level_0.graph.import_graph import (
+    build_internal_import_graph as _build_internal_import_graph,
+)
+from layers.layer_2_devtools.level_0_infra.level_0.graph.scc import find_cycles as _find_cycles
+
 from layers.layer_2_devtools.level_1_impl.level_0.composed.audit_precheck_workflow_ops import (
     dumps_precheck_payload as _dumps_precheck_payload,
 )
@@ -38,6 +43,36 @@ from layers.layer_2_devtools.level_0_infra.level_0.contracts.envelope import ok 
 from layers.layer_2_devtools.level_0_infra.level_0.contracts.envelope import parse_generated as _parse_generated
 from layers.layer_2_devtools.level_0_infra.level_0.contracts.envelope import (
     parse_generated_optional as _parse_generated_optional,
+)
+from layers.layer_2_devtools.level_0_infra.level_0.formatting.file_level_suggestions_markdown import (
+    build_file_level_suggestions_markdown as _build_file_level_suggestions_markdown,
+)
+from layers.layer_2_devtools.level_0_infra.level_0.formatting.promotion_demotion_suggestions_markdown import (
+    build_promotion_demotion_suggestions_markdown as _build_promotion_demotion_suggestions_markdown,
+)
+from layers.layer_2_devtools.level_0_infra.level_0.formatting.health_report_views import (
+    lines_oversized_modules as _lines_oversized_modules,
+)
+from layers.layer_2_devtools.level_0_infra.level_1.health_analyzers.file_level_suggestion_analyzer import (
+    FileLevelSuggestionAnalyzer as _FileLevelSuggestionAnalyzer,
+    ScopeConfig as _ScopeConfig,
+)
+from layers.layer_2_devtools.level_0_infra.level_1.health_analyzers.file_metrics import (
+    FileMetricsAnalyzer as _FileMetricsAnalyzer,
+)
+from layers.layer_2_devtools.level_0_infra.level_1.health_analyzers.promotion_demotion_suggestion_analyzer import (
+    PromotionDemotionScopeConfig as _PromotionDemotionScopeConfig,
+    PromotionDemotionSuggestionAnalyzer as _PromotionDemotionSuggestionAnalyzer,
+)
+from layers.layer_2_devtools.level_0_infra.level_0.placement.file_level_suggestions import (
+    LevelPolicy as _LevelPolicy,
+)
+from layers.layer_2_devtools.level_0_infra.level_0.placement.promotion_demotion_suggestions import (
+    HeavyReusePolicy,
+)
+from layers.layer_2_devtools.level_0_infra.level_0.health_thresholds import ThresholdConfig
+from layers.layer_2_devtools.level_1_impl.level_1.api_validation import (
+    run_validate_package_boundaries_complete,
 )
 
 _precheck_validate_fn: Any = None
@@ -291,7 +326,8 @@ def run_general_stack_scan_with_artifacts(config: dict[str, Any]) -> dict[str, A
 
     Returns:
         Envelope; ``data`` includes ``md_path``, optional ``json_path``, ``summary_line``,
-        ``exit_code`` (0).
+        ``exit_code`` (0), ``payload`` (scan dict, including ``schema`` and violation rows),
+        ``violation_count``, ``parse_error_count``.
     """
     try:
         sd = config.get("scripts_dir")
@@ -324,13 +360,14 @@ def run_general_stack_scan_with_artifacts(config: dict[str, Any]) -> dict[str, A
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(md, encoding="utf-8")
 
+        payload = result["payload"]
         data: dict[str, Any] = {
             "md_path": str(out_path),
             "exit_code": 0,
+            "payload": payload,
         }
         if config.get("write_json"):
             json_path = out_path.with_suffix(".json")
-            payload = result["payload"]
             json_path.write_text(
                 json.dumps(payload, indent=2, sort_keys=True) + "\n",
                 encoding="utf-8",
@@ -339,6 +376,8 @@ def run_general_stack_scan_with_artifacts(config: dict[str, Any]) -> dict[str, A
 
         total_v = sum(len(r.violations) for r in reports)
         pe = sum(1 for r in reports if r.parse_error)
+        data["violation_count"] = total_v
+        data["parse_error_count"] = pe
         data["summary_line"] = (
             f"[SUMMARY] Files scanned: {len(files)} | "
             f"Violations: {total_v} | Parse errors: {pe}"
@@ -549,6 +588,7 @@ def run_audit_precheck_cli_complete(config: dict[str, Any]) -> dict[str, Any]:
         out_base = result["output_base"]
         out_dir = out_base.parent
         out_dir.mkdir(parents=True, exist_ok=True)
+        out_md: Path | None = None
         if not json_only:
             out_md = Path(str(out_base) + ".md")
             out_md.write_text(md, encoding="utf-8")
@@ -567,7 +607,8 @@ def run_audit_precheck_cli_complete(config: dict[str, Any]) -> dict[str, Any]:
         ws = Path(result["workspace"])
         snap_sources: list[Path] = [out_json]
         if not json_only:
-            snap_sources.insert(0, Path(str(out_base) + ".md"))
+            assert out_md is not None
+            snap_sources.insert(0, out_md)
         copied = _mirror_files_to_run_snapshot(
             workspace=ws,
             audit_scope=audit_scope,
@@ -577,7 +618,16 @@ def run_audit_precheck_cli_complete(config: dict[str, Any]) -> dict[str, Any]:
         )
         for p in copied:
             messages.append(f"[OK] Run snapshot {p}")
-        return _ok({"exit_code": 0, "messages": messages})
+        return _ok(
+            {
+                "exit_code": 0,
+                "messages": messages,
+                "md_path": (str(out_md) if out_md is not None else None),
+                "json_path": str(out_json),
+                "snapshot_paths": [str(p) for p in copied],
+                "output_base": str(out_base),
+            }
+        )
     except (OSError, TypeError, ValueError) as exc:
         return _err([str(exc)])
 
@@ -609,5 +659,621 @@ def run_csiro_level_violations_cli_api(config: dict[str, Any]) -> dict[str, Any]
             "write_json": bool(config.get("write_json", False)),
         }
         return run_contest_tier_scan_with_artifacts(merged)
+    except (OSError, TypeError, ValueError) as exc:
+        return _err([str(exc)])
+
+
+def run_barrel_enforcement_with_artifacts(config: dict[str, Any]) -> dict[str, Any]:
+    """Merge general, contest, and competition-infra scans; write ``barrel_enforcement_scan_*`` artifacts.
+
+    Config: ``scripts_dir`` (Path, folder containing ``layers/``), ``generated`` (date or str),
+        optional ``layer_0_core`` (default ``<scripts_dir>/layers/layer_0_core``),
+        ``contest_root`` / ``contest_slug`` (CSIRO-style defaults like :func:`run_csiro_level_violations_cli_api`),
+        ``infra_level_0`` (default ``.../level_0_infra/level_0``),
+        optional ``output_dir``, ``write_json`` (bool), ``run_general`` / ``run_contest`` / ``run_infra`` (bool),
+        optional ``workspace_root``.
+
+    Returns:
+        Envelope; ``data`` has ``md_path``, optional ``json_path``, ``summary_line``,
+        ``violation_count``, ``parse_error_count``, ``payload`` (merged v1 including ``by_scope``),
+        ``exit_code`` (0).
+    """
+    try:
+        from layers.layer_2_devtools.level_1_impl.level_0.composed.barrel_enforcement_workflow_ops import (
+            run_barrel_enforcement_workflow,
+        )
+
+        scripts_dir = Path(config["scripts_dir"]).resolve()
+        gen = _parse_generated_optional(config.get("generated")) or date.today()
+        layer_0_core = Path(
+            config.get("layer_0_core")
+            or (scripts_dir / "layers" / "layer_0_core")
+        ).resolve()
+        contest_slug = str(config.get("contest_slug", "level_csiro"))
+        cr = config.get("contest_root")
+        contest_root = (
+            Path(cr).resolve()
+            if cr
+            else (
+                scripts_dir
+                / "layers"
+                / "layer_1_competition"
+                / "level_1_impl"
+                / contest_slug
+            ).resolve()
+        )
+        ir = config.get("infra_level_0")
+        infra_level_0 = (
+            Path(ir).resolve()
+            if ir
+            else (
+                scripts_dir
+                / "layers"
+                / "layer_1_competition"
+                / "level_0_infra"
+                / "level_0"
+            ).resolve()
+        )
+        out_dir_arg = config.get("output_dir")
+        run = run_barrel_enforcement_workflow(
+            layer_0_core=layer_0_core,
+            scripts_root=scripts_dir,
+            generated=gen,
+            contest_root=contest_root,
+            contest_slug=contest_slug,
+            infra_level_0=infra_level_0,
+            run_general=bool(config.get("run_general", True)),
+            run_contest=bool(config.get("run_contest", True)),
+            run_infra=bool(config.get("run_infra", True)),
+            workspace_root=Path(config["workspace_root"]) if config.get("workspace_root") else None,
+        )
+        workspace = run.workspace
+        out_dir: Path
+        if out_dir_arg is not None:
+            out_dir = Path(out_dir_arg).resolve()
+        else:
+            out_dir = workspace / ".cursor" / "audit-results" / "general" / "audits"
+        out_dir.mkdir(parents=True, exist_ok=True)
+        stem = f"barrel_enforcement_scan_{gen.isoformat()}"
+        md_path = out_dir / f"{stem}.md"
+        md_path.write_text(run.markdown, encoding="utf-8")
+        payload = run.merged
+        vcount = int(payload.get("violation_count", 0))
+        pec = int(payload.get("parse_error_count", 0))
+        data: dict[str, Any] = {
+            "md_path": str(md_path),
+            "summary_line": (
+                f"[SUMMARY] violations={vcount} | parse_errors={pec} | by_scope={payload.get('by_scope', {})!r}"
+            ),
+            "violation_count": vcount,
+            "parse_error_count": pec,
+            "payload": payload,
+            "exit_code": 0,
+        }
+        if config.get("write_json"):
+            json_path = out_dir / f"{stem}.json"
+            json_path.write_text(
+                json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+            )
+            data["json_path"] = str(json_path)
+        return _ok(data)
+    except (OSError, TypeError, ValueError) as exc:
+        return _err([str(exc)])
+
+
+def _cycle_chain_for_component(
+    *, component: list[str], graph: dict[str, list[str]]
+) -> list[str]:
+    nodes = sorted(component)
+    allowed = set(nodes)
+    subgraph = {n: sorted([d for d in graph.get(n, []) if d in allowed]) for n in nodes}
+
+    if len(nodes) == 1:
+        n = nodes[0]
+        if n in subgraph.get(n, []):
+            return [n, n]
+        return [n]
+
+    for start in nodes:
+        stack: list[str] = []
+        in_stack: set[str] = set()
+
+        def dfs(v: str) -> list[str] | None:
+            stack.append(v)
+            in_stack.add(v)
+            for w in subgraph.get(v, []):
+                if w == start and len(stack) >= 2:
+                    return [*stack, start]
+                if w not in in_stack:
+                    found = dfs(w)
+                    if found is not None:
+                        return found
+            in_stack.remove(v)
+            stack.pop()
+            return None
+
+        found = dfs(start)
+        if found is not None:
+            return found
+
+    return [nodes[0], nodes[0]]
+
+
+def run_circular_deps_scan_with_artifacts(config: dict[str, Any]) -> dict[str, Any]:
+    """Run circular dependency scan and write MD (and optional JSON) artifacts.
+
+    Config:
+      - root: Path-like (required) root to scan for Python modules
+      - generated: date or YYYY-MM-DD str (optional; default today)
+      - include_tests: bool (optional; default False)
+      - write_json: bool (optional; default False)
+      - output_dir: Path-like (optional; default workspace/.cursor/audit-results/general/audits)
+
+    Returns:
+      Envelope; ``data`` includes ``md_path``, optional ``json_path``,
+      ``cycle_count``, ``parse_error_count``, ``summary_line``, ``exit_code`` (0).
+    """
+    try:
+        root_raw = config.get("root")
+        if root_raw is None:
+            return _err(["root is required"])
+        root = Path(root_raw).resolve()
+        if not root.is_dir():
+            return _err([f"root is not a directory: {root}"])
+
+        gen = _parse_generated_optional(config.get("generated")) or date.today()
+        include_tests = bool(config.get("include_tests", False))
+        write_json = bool(config.get("write_json", False))
+
+        wenv = resolve_workspace({"start": root, "explicit_root": config.get("workspace_root")})
+        if wenv["status"] != "ok":
+            return wenv
+        workspace: Path = wenv["data"]["workspace"]
+
+        out_dir_arg = config.get("output_dir")
+        out_dir = (
+            Path(out_dir_arg).resolve()
+            if out_dir_arg is not None
+            else (workspace / ".cursor" / "audit-results" / "general" / "audits")
+        )
+        out_dir.mkdir(parents=True, exist_ok=True)
+
+        res = _build_internal_import_graph(root=root, include_tests=include_tests)
+        graph = dict(res.graph)
+        parse_error_count = int(res.parse_error_count)
+        components = _find_cycles(graph)
+        findings = [
+            {"nodes": sorted(comp), "chain": _cycle_chain_for_component(component=comp, graph=graph)}
+            for comp in components
+        ]
+        findings.sort(key=lambda c: (len(c["nodes"]), c["nodes"]))
+
+        payload: dict[str, Any] = {
+            "schema": "circular_deps_scan.v1",
+            "generated": gen.isoformat(),
+            "workspace": workspace.as_posix(),
+            "root": root.resolve().as_posix(),
+            "include_tests": bool(include_tests),
+            "parse_error_count": parse_error_count,
+            "cycle_count": int(len(findings)),
+            "cycles": findings,
+        }
+
+        stem = f"circular_deps_scan_{gen.isoformat()}"
+        md_path = out_dir / f"{stem}.md"
+
+        lines: list[str] = [
+            "---",
+            f"generated: {gen.isoformat()}",
+            "artifact: circular_deps_scan",
+            "schema: circular_deps_scan.v1",
+            f"root: {root.resolve().as_posix()}",
+            "---",
+            "",
+            "# Circular dependency scan",
+            "",
+            f"- Root: `{root.resolve().as_posix()}`",
+            f"- Files with parse errors: {parse_error_count}",
+            f"- Cycle components: {len(findings)}",
+            "",
+        ]
+        if not findings:
+            lines.append("✅ No circular dependencies detected.")
+            lines.append("")
+        else:
+            lines.append("## Cycles")
+            lines.append("")
+            for idx, c in enumerate(findings, start=1):
+                chain = " -> ".join(c["chain"])
+                nodes = ", ".join(c["nodes"])
+                lines.append(f"{idx}. **{len(c['nodes'])} modules**")
+                lines.append(f"   - Chain: `{chain}`")
+                lines.append(f"   - Nodes: `{nodes}`")
+            lines.append("")
+
+        md_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+        data: dict[str, Any] = {
+            "md_path": str(md_path),
+            "payload": payload,
+            "cycle_count": int(payload["cycle_count"]),
+            "parse_error_count": int(payload["parse_error_count"]),
+            "summary_line": (
+                f"[SUMMARY] parse_errors={payload['parse_error_count']} cycles={payload['cycle_count']}"
+            ),
+            "exit_code": 0,
+        }
+        if write_json:
+            json_path = out_dir / f"{stem}.json"
+            json_path.write_text(
+                json.dumps(payload, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+            data["json_path"] = str(json_path)
+
+        return _ok(data)
+    except (OSError, TypeError, ValueError, KeyError, json.JSONDecodeError) as exc:
+        return _err([str(exc)])
+
+
+def run_oversized_module_scan_with_artifacts(config: dict[str, Any]) -> dict[str, Any]:
+    """Run oversized-module scan (file-metrics driven) and write MD/JSON artifacts.
+
+    Config:
+      - scripts_dir: Path-like, directory containing `layers/` (used for workspace resolution)
+      - root: Path-like, root to analyze (defaults to scripts_dir)
+      - generated: date or YYYY-MM-DD str (optional; default today)
+      - threshold_config_path: optional Path-like JSON for ThresholdConfig.from_dict()
+      - max_file_lines: optional int override
+      - top: optional int (default 50)
+      - include_suggestions: bool (default True)
+      - write_json: bool (default False)
+      - output_dir: Path-like (optional; default workspace/.cursor/audit-results/general/audits)
+    """
+    try:
+        scripts_dir = Path(config["scripts_dir"]).resolve()
+        root = Path(config.get("root") or scripts_dir).resolve()
+        gen = _parse_generated_optional(config.get("generated")) or date.today()
+        top = int(config.get("top", 50))
+        include_suggestions = bool(config.get("include_suggestions", True))
+        write_json = bool(config.get("write_json", False))
+
+        wenv = resolve_workspace(
+            {
+                "start": scripts_dir / "layers",
+                "explicit_root": config.get("workspace_root"),
+            }
+        )
+        if wenv["status"] != "ok":
+            return wenv
+        workspace: Path = wenv["data"]["workspace"]
+
+        tc_path = (
+            Path(config["threshold_config_path"]).resolve()
+            if config.get("threshold_config_path")
+            else None
+        )
+        tc = ThresholdConfig()
+        if tc_path and tc_path.is_file():
+            tc = ThresholdConfig.from_dict(json.loads(tc_path.read_text(encoding="utf-8")))
+        max_file_lines = (
+            int(config["max_file_lines"])
+            if config.get("max_file_lines") is not None
+            else int(getattr(tc, "max_file_lines", 500))
+        )
+
+        metrics = _FileMetricsAnalyzer(root).analyze()
+        report_data: dict[str, Any] = {"root": str(root.resolve()), "file_metrics": metrics}
+        oversized = [
+            r
+            for r in (metrics.get("long_files") or [])
+            if isinstance(r, dict) and int(r.get("lines", 0) or 0) > max_file_lines
+        ]
+        oversized_count = len(oversized)
+
+        out_dir_arg = config.get("output_dir")
+        out_dir = (
+            Path(out_dir_arg).resolve()
+            if out_dir_arg is not None
+            else (workspace / ".cursor" / "audit-results" / "general" / "audits")
+        )
+        out_dir.mkdir(parents=True, exist_ok=True)
+        stem = f"oversized_module_scan_{gen.isoformat()}"
+        md_path = out_dir / f"{stem}.md"
+
+        body_lines = _lines_oversized_modules(
+            report_data,
+            report_path=md_path,
+            max_file_lines=max_file_lines,
+            top=top,
+            include_suggestions=include_suggestions,
+        )
+
+        header = [
+            "---",
+            f"generated: {gen.isoformat()}",
+            "artifact: oversized_module_scan",
+            "schema: oversized_module_scan.v1",
+            f"root: {root.resolve().as_posix()}",
+            f"max_file_lines: {max_file_lines}",
+            f"oversized_count: {oversized_count}",
+            f"threshold_config_path: {(tc_path.as_posix() if tc_path else None)}",
+            "---",
+            "",
+            "# Oversized module scan",
+            "",
+        ]
+        md_path.write_text(
+            "\n".join([*header, *body_lines]).rstrip("\n") + "\n",
+            encoding="utf-8",
+        )
+
+        data: dict[str, Any] = {
+            "md_path": str(md_path),
+            "oversized_count": oversized_count,
+            "max_file_lines": max_file_lines,
+            "exit_code": 0,
+            "summary_line": (
+                f"[SUMMARY] oversized={oversized_count} max_file_lines={max_file_lines}"
+            ),
+            "payload": {
+                "schema": "oversized_module_scan.v1",
+                "generated": gen.isoformat(),
+                "workspace": workspace.as_posix(),
+                "root": root.resolve().as_posix(),
+                "max_file_lines": max_file_lines,
+                "oversized_count": oversized_count,
+                "oversized": [
+                    {"module": str(r.get('module') or 'unknown'), "lines": int(r.get('lines', 0) or 0)}
+                    for r in oversized[:200]
+                    if isinstance(r, dict)
+                ],
+            },
+        }
+        if write_json:
+            json_path = out_dir / f"{stem}.json"
+            json_path.write_text(
+                json.dumps(data["payload"], indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+            data["json_path"] = str(json_path)
+
+        return _ok(data)
+    except (OSError, TypeError, ValueError, KeyError, json.JSONDecodeError) as exc:
+        return _err([str(exc)])
+
+
+def run_file_level_suggestions_with_artifacts(config: dict[str, Any]) -> dict[str, Any]:
+    """Run file level suggestion analysis and write MD (and optional JSON).
+
+    Config:
+      - scripts_dir: Path-like, directory containing `layers/`
+      - scope: general|contests|infra
+      - root: Path-like (scope root containing level_N dirs)
+      - generated: date or YYYY-MM-DD str (optional; default today)
+      - include: optional list of Path-like include roots (relative or absolute)
+      - exclude: optional list of Path-like exclude roots
+      - write_json: bool (optional)
+      - output_dir: Path-like (optional; default workspace/.cursor/audit-results/<scope>/audits)
+      - strict: bool (optional) -> exit_code 1 if any conflict rows
+      - policy: optional dict {min_level_delta_for_outgoing, max_level_delta_for_incoming}
+      - import_prefixes: optional list[str]
+    """
+    try:
+        scripts_dir = Path(config["scripts_dir"]).resolve()
+        scope = str(config.get("scope", "general"))
+        root = Path(config["root"]).resolve()
+        gen = _parse_generated_optional(config.get("generated")) or date.today()
+        include = tuple(Path(p).resolve() for p in (config.get("include") or []))
+        exclude = tuple(Path(p).resolve() for p in (config.get("exclude") or []))
+        write_json = bool(config.get("write_json", False))
+        strict = bool(config.get("strict", False))
+        import_prefixes = tuple(str(s) for s in (config.get("import_prefixes") or ()))
+
+        pol = config.get("policy") or {}
+        policy = _LevelPolicy(
+            min_level_delta_for_outgoing=int(pol.get("min_level_delta_for_outgoing", 1)),
+            max_level_delta_for_incoming=int(pol.get("max_level_delta_for_incoming", -1)),
+        )
+
+        wenv = resolve_workspace(
+            {
+                "start": scripts_dir / "layers",
+                "explicit_root": config.get("workspace_root"),
+            }
+        )
+        if wenv["status"] != "ok":
+            return wenv
+        workspace: Path = wenv["data"]["workspace"]
+
+        analyzer = _FileLevelSuggestionAnalyzer(
+            root,
+            config=_ScopeConfig(
+                scope=scope,
+                root=root,
+                include=include,
+                exclude=exclude,
+                import_prefixes=import_prefixes,
+                policy=policy,
+            ),
+        )
+        analyzed = analyzer.analyze()
+        payload: dict[str, Any] = {
+            "generated": gen.isoformat(),
+            "artifact": "file_level_suggestions",
+            "schema": "file_level_suggestions.v1",
+            **analyzed,
+        }
+        md = _build_file_level_suggestions_markdown(payload)
+
+        out_dir_arg = config.get("output_dir")
+        out_dir = (
+            Path(out_dir_arg).resolve()
+            if out_dir_arg is not None
+            else (workspace / ".cursor" / "audit-results" / scope / "audits")
+        )
+        out_dir.mkdir(parents=True, exist_ok=True)
+        stem = f"file_level_suggestions_{scope}_{gen.isoformat()}"
+        md_path = out_dir / f"{stem}.md"
+        md_path.write_text(md, encoding="utf-8")
+
+        data: dict[str, Any] = {
+            "md_path": str(md_path),
+            "payload": payload,
+            "summary_line": f"[SUMMARY] scope={scope} rows={len(payload.get('rows', []))} counts={payload.get('counts', {})!r}",
+            "exit_code": 0,
+        }
+        if write_json:
+            json_path = out_dir / f"{stem}.json"
+            json_path.write_text(
+                json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+            )
+            data["json_path"] = str(json_path)
+
+        conflict_count = int((payload.get("counts") or {}).get("conflict", 0))
+        if strict and conflict_count > 0:
+            data["exit_code"] = 1
+
+        return _ok(data)
+    except (OSError, TypeError, ValueError, KeyError) as exc:
+        return _err([str(exc)])
+
+
+def run_promotion_demotion_suggestions_with_artifacts(config: dict[str, Any]) -> dict[str, Any]:
+    """Run promotion/demotion suggestion analysis and write MD (and optional JSON).
+
+    Config:
+      - scripts_dir: Path-like, directory containing `layers/`
+      - scope: general|contests|infra
+      - root: Path-like (scope root containing level_N dirs)
+      - generated: date or YYYY-MM-DD str (optional; default today)
+      - include: optional list of Path-like include roots (relative or absolute)
+      - exclude: optional list of Path-like exclude roots
+      - write_json: bool (optional)
+      - output_dir: Path-like (optional; default workspace/.cursor/audit-results/<scope>/audits)
+      - strict: bool (optional) -> exit_code 1 if any ok rows exist (promotion or demotion)
+      - heavy_reuse_policy: optional dict {min_total_inbound, min_distinct_importers, min_distinct_levels}
+      - top_importers_limit: optional int
+      - import_prefixes: optional list[str]
+    """
+    try:
+        scripts_dir = Path(config["scripts_dir"]).resolve()
+        scope = str(config.get("scope", "general"))
+        root = Path(config["root"]).resolve()
+        gen = _parse_generated_optional(config.get("generated")) or date.today()
+        include = tuple(Path(p).resolve() for p in (config.get("include") or []))
+        exclude = tuple(Path(p).resolve() for p in (config.get("exclude") or []))
+        write_json = bool(config.get("write_json", False))
+        strict = bool(config.get("strict", False))
+        import_prefixes = tuple(str(s) for s in (config.get("import_prefixes") or ()))
+
+        hr = config.get("heavy_reuse_policy") or {}
+        heavy_policy = HeavyReusePolicy(
+            min_total_inbound=int(hr.get("min_total_inbound", 10)),
+            min_distinct_importers=int(hr.get("min_distinct_importers", 5)),
+            min_distinct_levels=int(hr.get("min_distinct_levels", 2)),
+        )
+        top_importers_limit = int(config.get("top_importers_limit", 10))
+
+        wenv = resolve_workspace(
+            {
+                "start": scripts_dir / "layers",
+                "explicit_root": config.get("workspace_root"),
+            }
+        )
+        if wenv["status"] != "ok":
+            return wenv
+        workspace: Path = wenv["data"]["workspace"]
+
+        analyzer = _PromotionDemotionSuggestionAnalyzer(
+            root,
+            config=_PromotionDemotionScopeConfig(
+                scope=scope,
+                root=root,
+                include=include,
+                exclude=exclude,
+                import_prefixes=import_prefixes,
+                heavy_reuse_policy=heavy_policy,
+                top_importers_limit=top_importers_limit,
+            ),
+        )
+        analyzed = analyzer.analyze()
+        payload: dict[str, Any] = {
+            "generated": gen.isoformat(),
+            "artifact": "promotion_demotion_suggestions",
+            "schema": "promotion_demotion_suggestions.v1",
+            **analyzed,
+        }
+        md = _build_promotion_demotion_suggestions_markdown(payload)
+
+        out_dir_arg = config.get("output_dir")
+        out_dir = (
+            Path(out_dir_arg).resolve()
+            if out_dir_arg is not None
+            else (workspace / ".cursor" / "audit-results" / scope / "audits")
+        )
+        out_dir.mkdir(parents=True, exist_ok=True)
+        stem = f"promotion_demotion_suggestions_{scope}_{gen.isoformat()}"
+        md_path = out_dir / f"{stem}.md"
+        md_path.write_text(md, encoding="utf-8")
+
+        data: dict[str, Any] = {
+            "md_path": str(md_path),
+            "payload": payload,
+            "summary_line": (
+                f"[SUMMARY] scope={scope} "
+                f"promotion_ok={int((payload.get('counts', {}).get('promotion', {}) or {}).get('ok', 0))} "
+                f"demotion_ok={int((payload.get('counts', {}).get('demotion', {}) or {}).get('ok', 0))}"
+            ),
+            "exit_code": 0,
+        }
+        if write_json:
+            json_path = out_dir / f"{stem}.json"
+            json_path.write_text(
+                json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+            )
+            data["json_path"] = str(json_path)
+
+        if strict:
+            promo_ok = int((payload.get("counts", {}).get("promotion", {}) or {}).get("ok", 0))
+            demo_ok = int((payload.get("counts", {}).get("demotion", {}) or {}).get("ok", 0))
+            if promo_ok > 0 or demo_ok > 0:
+                data["exit_code"] = 1
+
+        return _ok(data)
+    except (OSError, TypeError, ValueError, KeyError) as exc:
+        return _err([str(exc)])
+
+
+def run_package_boundary_validation_with_artifacts(config: dict[str, Any]) -> dict[str, Any]:
+    """Run package boundary validation and write JSON/MD artifacts.
+
+    Config: ``scripts_root`` (required), optional ``workspace_root``, ``scope_root``,
+    ``generated`` (date or str), ``include_dev`` (bool; default True).
+    """
+    try:
+        sr = config.get("scripts_root")
+        if sr is None:
+            return _err(["scripts_root is required"])
+        env = run_validate_package_boundaries_complete(
+            {
+                "scripts_root": Path(sr),
+                "workspace_root": config.get("workspace_root"),
+                "scope_root": config.get("scope_root"),
+                "generated": config.get("generated"),
+                "include_dev": bool(config.get("include_dev", True)),
+                "output_base": None,
+            }
+        )
+        if env["status"] != "ok":
+            return env
+        data = env["data"]
+        return _ok(
+            {
+                "md_path": data.get("md_path"),
+                "json_path": data.get("json_path"),
+                "summary_line": data.get("summary_line"),
+            }
+        )
     except (OSError, TypeError, ValueError) as exc:
         return _err([str(exc)])

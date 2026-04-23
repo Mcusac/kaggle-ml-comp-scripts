@@ -10,7 +10,7 @@ from typing import Dict, Optional, Tuple, Union, Any
 from layers.layer_0_core.level_0 import get_logger, get_config_value
 from layers.layer_0_core.level_1 import setup_mixed_precision
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def get_required_config_value(

@@ -9,7 +9,7 @@ from pathlib import Path
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_7 import create_tabular_model
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _create_placeholder_model(output_dim: int) -> Any:
@@ -62,7 +62,7 @@ class OntologyModelManager:
                 **hyperparams
             )
         except ImportError:
-            logger.warning("Tabular models not available, using placeholder")
+            _logger.warning("Tabular models not available, using placeholder")
             return _create_placeholder_model(output_dim)
     
     def train_model(
@@ -88,14 +88,14 @@ class OntologyModelManager:
             if hasattr(model, 'fit'):
                 model.fit(X_train, y_train, **ontology_config.get('fit_kwargs', {}))
             else:
-                logger.warning("Model does not have fit method")
+                _logger.warning("Model does not have fit method")
 
             return {
                 'training_samples': X_train.shape[0],
                 'num_targets': y_train.shape[1] if y_train.ndim > 1 else 1
             }
         except Exception as e:
-            logger.error(f"Error training model: {e}")
+            _logger.error(f"Error training model: {e}")
             return {'error': str(e)}
     
     def save_model(self, model: Any, ontology: str, paths: Any) -> Path:
@@ -123,8 +123,8 @@ class OntologyModelManager:
                 with open(model_path, 'wb') as f:
                     pickle.dump(model, f)
             
-            logger.info(f"Saved {ontology} model to {model_path}")
+            _logger.info(f"Saved {ontology} model to {model_path}")
             return model_path
         except Exception as e:
-            logger.error(f"Error saving model for {ontology}: {e}")
+            _logger.error(f"Error saving model for {ontology}: {e}")
             raise

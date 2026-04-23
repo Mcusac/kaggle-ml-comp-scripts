@@ -9,7 +9,7 @@ from layers.layer_0_core.level_6 import create_regression_variant_key_from_resul
 from layers.layer_0_core.level_7 import HyperparameterGridSearchBase
 from layers.layer_0_core.level_8 import create_regression_variant_result, run_regression_cv_fold
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class RegressionGridSearch(HyperparameterGridSearchBase):
@@ -134,10 +134,10 @@ class RegressionGridSearch(HyperparameterGridSearchBase):
 
             # Calculate average CV score
             cv_score = np.mean(fold_scores)
-            logger.info("=" * 60)
-            logger.info(f"Average CV Score: {cv_score:.4f}")
-            logger.info(f"Fold scores: {[f'{s:.4f}' for s in fold_scores]}")
-            logger.info("=" * 60)
+            _logger.info("=" * 60)
+            _logger.info(f"Average CV Score: {cv_score:.4f}")
+            _logger.info(f"Fold scores: {[f'{s:.4f}' for s in fold_scores]}")
+            _logger.info("=" * 60)
 
             # Create result
             result = create_regression_variant_result(
@@ -162,7 +162,7 @@ class RegressionGridSearch(HyperparameterGridSearchBase):
             return result
 
         except Exception as e:
-            logger.error(f"Error training variant {variant_id}: {e}", exc_info=True)
+            _logger.error(f"Error training variant {variant_id}: {e}", exc_info=True)
 
             # Create error result
             variant_specific_data = create_variant_specific_data(
@@ -237,9 +237,9 @@ def regression_grid_search_pipeline(
             f"Please extract features first."
         )
 
-    logger.info(f"Loading features from cache: {cache_path}")
+    _logger.info(f"Loading features from cache: {cache_path}")
     all_features, all_targets, fold_assignments, cache_metadata = loader.load_features(cache_path)
-    logger.info(f"Loaded features: {all_features.shape}, targets: {all_targets.shape}")
+    _logger.info(f"Loaded features: {all_features.shape}, targets: {all_targets.shape}")
 
     get_param_grid = contest_context.get_parameter_grid_fn()
     param_grid = get_param_grid(
@@ -261,16 +261,16 @@ def regression_grid_search_pipeline(
     # Generate variant grid
     variant_grid = grid_search._generate_variant_grid()
     total_variants = len(variant_grid)
-    logger.info(f"Total regression hyperparameter variants to test: {total_variants}")
+    _logger.info(f"Total regression hyperparameter variants to test: {total_variants}")
 
     # Execute grid search
     result = grid_search.execute()
 
-    logger.info("=" * 60)
-    logger.info("Regression grid search complete!")
-    logger.info(f"Best score: {result.get('best_score', -float('inf')):.4f}")
-    logger.info(f"Results saved to: {grid_search.results_file}")
-    logger.info("=" * 60)
+    _logger.info("=" * 60)
+    _logger.info("Regression grid search complete!")
+    _logger.info(f"Best score: {result.get('best_score', -float('inf')):.4f}")
+    _logger.info(f"Results saved to: {grid_search.results_file}")
+    _logger.info("=" * 60)
 
     # Cleanup
     grid_search.cleanup()

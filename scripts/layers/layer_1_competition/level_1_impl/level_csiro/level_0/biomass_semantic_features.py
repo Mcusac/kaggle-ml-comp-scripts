@@ -11,7 +11,7 @@ from typing import Any, Optional, Union
 from layers.layer_0_core.level_0 import get_torch
 from layers.layer_0_core.level_2 import SemanticFeatureExtractor
 
-torch = get_torch()
+_torch = get_torch()
 
 BIOMASS_CONCEPT_GROUPS = {
     "bare":   ["bare soil", "dirt ground", "sparse vegetation", "exposed earth"],
@@ -45,7 +45,7 @@ class BiomassSemanticFeatureExtractor(SemanticFeatureExtractor):
     def __init__(
         self,
         model_path: str,
-        device: Optional[torch.device] = None,
+        device: Optional[_torch.device] = None,
     ):
         super().__init__(
             model_path=model_path,
@@ -77,7 +77,7 @@ class BiomassSemanticFeatureExtractor(SemanticFeatureExtractor):
 
     def extract_features(
         self,
-        image_embeddings: Union[np.ndarray, torch.Tensor],
+        image_embeddings: Union[np.ndarray, _torch.Tensor],
         include_ratios: bool = True,
         **kwargs: Any,
     ) -> np.ndarray:
@@ -102,7 +102,7 @@ class BiomassSemanticFeatureExtractor(SemanticFeatureExtractor):
 def generate_biomass_semantic_features(
     image_embeddings: np.ndarray,
     model_path: str,
-    device: Optional[torch.device] = None,
+    device: Optional[_torch.device] = None,
     include_ratios: bool = True,
 ) -> np.ndarray:
     """

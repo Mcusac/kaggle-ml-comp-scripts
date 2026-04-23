@@ -22,7 +22,7 @@ from layers.layer_0_core.level_1 import validate_predictions_for_ensemble
 from layers.layer_0_core.level_2 import model_rank_weights, simple_average
 from layers.layer_0_core.level_5 import combine_with_fallback
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class SimpleAverageEnsemble(EnsemblingMethod):
@@ -114,7 +114,7 @@ class PercentileAverageEnsemble(EnsemblingMethod):
         )
         percentile_weights = calculate_percentile_weights(np.array(weights, dtype=np.float32))
         if np.all(percentile_weights == percentile_weights[0]):
-            logger.info("PercentileAverageEnsemble: all scores identical, falling back to simple average.")
+            _logger.info("PercentileAverageEnsemble: all scores identical, falling back to simple average.")
             return simple_average(predictions_list)
         return combine_with_fallback(
             stacked, percentile_weights, predictions_list, ensemble_name="percentile average"
@@ -211,7 +211,7 @@ class TargetSpecificEnsemble(EnsemblingMethod):
 
         for target_name, model_idx in self.target_selection.items():
             if target_name not in target_names:
-                logger.warning(
+                _logger.warning(
                     "Target '%s' not found in predictions, skipping",
                     target_name,
                 )
@@ -220,7 +220,7 @@ class TargetSpecificEnsemble(EnsemblingMethod):
             target_col = target_names.index(target_name)
 
             if model_idx < 0 or model_idx >= len(predictions_list):
-                logger.warning(
+                _logger.warning(
                     "Model index %s out of range for target '%s', skipping",
                     model_idx,
                     target_name,
@@ -228,9 +228,9 @@ class TargetSpecificEnsemble(EnsemblingMethod):
                 continue
 
             result[:, target_col] = predictions_list[model_idx][:, target_col]
-            logger.info("Target '%s': using model %s", target_name, model_idx)
+            _logger.info("Target '%s': using model %s", target_name, model_idx)
 
-        logger.info(
+        _logger.info(
             "Combined %s predictions using target-specific ensemble",
             len(predictions_list),
         )

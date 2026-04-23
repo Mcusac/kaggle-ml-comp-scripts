@@ -8,14 +8,14 @@ from typing import Any, Callable, Optional
 
 from layers.layer_0_core.level_0 import get_torch
 
-torch = get_torch()
-DataLoader = torch.utils.data.DataLoader if torch is not None else None
+_torch = get_torch()
+_DataLoader = _torch.utils.data.DataLoader if _torch is not None else None
 
 
 def train_one_epoch(
-    train_loader: DataLoader,
+    train_loader: _DataLoader,
     batch_processor: Callable[[Any], "torch.Tensor"],
-    optimizer: torch.optim.Optimizer,
+    optimizer: _torch.optim.Optimizer,
     scaler: Optional[Any] = None,
     use_tqdm: bool = False,
     tqdm_desc: Optional[str] = None,
@@ -47,7 +47,7 @@ def train_one_epoch(
     for batch in iterator:
         loss = batch_processor(batch)
 
-        if torch.isnan(loss):
+        if _torch.isnan(loss):
             raise RuntimeError("NaN loss detected during training")
 
         optimizer.zero_grad()

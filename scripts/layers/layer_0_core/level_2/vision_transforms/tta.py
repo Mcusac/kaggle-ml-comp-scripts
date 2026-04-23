@@ -8,7 +8,7 @@ from enum import Enum
 from layers.layer_0_core.level_0 import get_logger, IMAGENET_MEAN, IMAGENET_STD
 from layers.layer_0_core.level_1 import get_resize_transform, get_normalize_transform, compose_transform_pipeline
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class TTAVariant(Enum):
@@ -32,11 +32,11 @@ def _convert_variants_to_enums(
             try:
                 result.append(TTAVariant(v))
             except ValueError:
-                logger.warning(f"Unknown TTA variant: {v}, skipping")
+                _logger.warning(f"Unknown TTA variant: {v}, skipping")
         elif isinstance(v, TTAVariant):
             result.append(v)
         else:
-            logger.warning(f"Invalid TTA variant type: {type(v)}, skipping")
+            _logger.warning(f"Invalid TTA variant type: {type(v)}, skipping")
     return result
 
 
@@ -94,9 +94,9 @@ def build_tta_transforms(
         tta_transform_list.append(
             _build_variant_transform(variant, base_pil_transforms, tensor_transforms)
         )
-        logger.debug(f"Built TTA variant: {variant.value}")
+        _logger.debug(f"Built TTA variant: {variant.value}")
 
-    logger.info(f"Built {len(tta_transform_list)} TTA transform variants")
+    _logger.info(f"Built {len(tta_transform_list)} TTA transform variants")
     return tta_transform_list
 
 

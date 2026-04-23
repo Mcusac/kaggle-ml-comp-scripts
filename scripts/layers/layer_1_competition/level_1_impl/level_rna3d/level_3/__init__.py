@@ -1,6 +1,8 @@
-"""RNA3D level_3: training orchestration."""
+"""Auto-generated aggregation exports."""
+
 
 from . import training
+
 from .training import *
 
-__all__ = tuple(list(training.__all__))
+__all__ = list(training.__all__)

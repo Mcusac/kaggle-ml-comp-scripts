@@ -6,9 +6,9 @@ from typing import Any, Optional, Tuple
 
 from layers.layer_0_core.level_0 import get_torch
 
-torch = get_torch()
-_Dataset = torch.utils.data.Dataset if torch is not None else object
-TensorT = torch.Tensor if torch is not None else Any
+_torch = get_torch()
+_Dataset = _torch.utils.data.Dataset if _torch is not None else object
+TensorT = _torch.Tensor if _torch is not None else Any
 
 
 class TabularDataset(_Dataset):
@@ -22,8 +22,8 @@ class TabularDataset(_Dataset):
             X: Feature matrix of shape (n_samples, n_features).
             y: Optional target matrix of shape (n_samples, n_targets).
         """
-        self.X = torch.FloatTensor(X)
-        self.y = torch.FloatTensor(y) if y is not None else None
+        self.X = _torch.FloatTensor(X)
+        self.y = _torch.FloatTensor(y) if y is not None else None
 
     def __len__(self) -> int:
         return len(self.X)

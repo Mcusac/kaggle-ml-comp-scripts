@@ -7,7 +7,7 @@ import numpy as np
 from layers.layer_0_core.level_0 import ensure_file_dir, get_logger
 from layers.layer_0_core.level_4 import load_pickle, save_pickle
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class BaseTabularModel(ABC):
@@ -114,12 +114,12 @@ class BaseTabularModel(ABC):
         """Helper for pickle-based model persistence. Uses level_4 save_pickle."""
         ensure_file_dir(path)
         save_pickle(model_data, path)
-        logger.info(f"✅ Saved {model_name} model to {path}")
+        _logger.info(f"✅ Saved {model_name} model to {path}")
 
     def _load_from_pickle(self, path: str, model_name: str) -> Dict[str, Any]:
         """Helper for pickle-based model loading. Uses level_4 load_pickle."""
         data = load_pickle(path)
-        logger.info(f"✅ Loaded {model_name} model from {path}")
+        _logger.info(f"✅ Loaded {model_name} model from {path}")
         return data
 
     def get_params(self) -> Dict[str, Any]:

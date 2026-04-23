@@ -96,7 +96,14 @@ def run_target_precheck(
         files = sorted(root.rglob("*.py")) if root.is_dir() else []
         reports = [scan_general_stack_file(file_path, layer_core) for file_path in files]
         meta = PrecheckMeta(generated, "general", level_name, "precheck", root.resolve())
-        kinds = ["WRONG_LEVEL", "UPWARD", "DEEP_PATH", "RELATIVE_IN_LOGIC", "PARSE_ERROR"]
+        kinds = [
+            "LAYER0_CORE_MIXED_IMPORT_STYLE",
+            "WRONG_LEVEL",
+            "UPWARD",
+            "DEEP_PATH",
+            "RELATIVE_IN_LOGIC",
+            "PARSE_ERROR",
+        ]
         markdown = build_precheck_markdown(
             reports, meta, workspace, "Precheck: general level package", kinds
         )
@@ -108,6 +115,7 @@ def run_target_precheck(
         meta = PrecheckMeta(generated, "competition_infra", level_name, "precheck", root.resolve())
         kinds = [
             "INFRA_TIER_UPWARD",
+            "INFRA_BARREL_DEEP",
             "INFRA_GENERAL_LEVEL",
             "DEEP_PATH",
             "RELATIVE_IN_LOGIC",

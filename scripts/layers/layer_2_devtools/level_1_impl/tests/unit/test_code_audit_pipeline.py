@@ -17,6 +17,7 @@ def test_code_audit_pipeline_manifest_schema(tmp_path: Path) -> None:
             "max_targets": 1,
             "run_precheck": False,
             "run_general_stack_scan": False,
+            "run_oversized_module_scan": False,
             "run_csiro_scan": False,
         }
     )
@@ -30,6 +31,7 @@ def test_code_audit_pipeline_manifest_schema(tmp_path: Path) -> None:
     assert man["aggregate"]["overall_exit_code"] == 0
     assert man["steps"]["precheck"]["status"] == "skipped"
     assert man["steps"]["general_stack_scan"]["status"] == "skipped"
+    assert man["steps"]["oversized_module_scan"]["status"] == "skipped"
     assert man["steps"]["csiro_scan"]["status"] == "skipped"
     qfile = tmp_path / "audit_queue.json"
     assert qfile.is_file()
@@ -46,6 +48,7 @@ def test_code_audit_pipeline_fail_on_skipped(tmp_path: Path) -> None:
             "max_targets": 1,
             "run_precheck": False,
             "run_general_stack_scan": False,
+            "run_oversized_module_scan": False,
             "run_csiro_scan": False,
             "fail_on_skipped": True,
         }
@@ -56,4 +59,5 @@ def test_code_audit_pipeline_fail_on_skipped(tmp_path: Path) -> None:
     fs = man["aggregate"]["failed_steps"]
     assert any(s.startswith("skipped:precheck") for s in fs)
     assert any(s.startswith("skipped:general_stack_scan") for s in fs)
+    assert any(s.startswith("skipped:oversized_module_scan") for s in fs)
     assert any(s.startswith("skipped:csiro_scan") for s in fs)

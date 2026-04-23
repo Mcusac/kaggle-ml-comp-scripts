@@ -1,4 +1,5 @@
-"""Ensemble utilities."""
+"""Auto-generated package exports."""
+
 
 from .meta_model_stacking import stacking_ensemble_with_validation
 

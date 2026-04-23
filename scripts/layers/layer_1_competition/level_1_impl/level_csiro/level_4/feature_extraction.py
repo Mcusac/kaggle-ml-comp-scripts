@@ -23,7 +23,7 @@ from layers.layer_1_competition.level_1_impl.level_csiro.level_2 import (
 from layers.layer_1_competition.level_1_impl.level_csiro.level_3 import get_regression_variant_info
 
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def setup_feature_extraction_mode(
@@ -38,9 +38,9 @@ def setup_feature_extraction_mode(
     Returns:
         Tuple of (regression_model_hyperparameters, regression_variant_info)
     """
-    logger.info("=" * 60)
-    logger.info("Loading regression model hyperparameters")
-    logger.info("=" * 60)
+    _logger.info("=" * 60)
+    _logger.info("Loading regression model hyperparameters")
+    _logger.info("=" * 60)
 
     initialize_working_metadata_files(regression_model_type)
 
@@ -53,7 +53,7 @@ def setup_feature_extraction_mode(
     regression_variant_info = None
 
     if not feature_filename:
-        logger.warning(
+        _logger.warning(
             "Could not resolve feature_filename. "
             "Best variant selection requires feature_filename. "
             "Will use default hyperparameters."
@@ -69,31 +69,31 @@ def setup_feature_extraction_mode(
             regression_model_hyperparameters = regression_variant_info.get("hyperparameters", {})
 
             if regression_model_variant_id:
-                logger.info("Loaded SPECIFIED regression variant: %s", regression_model_variant_id)
+                _logger.info("Loaded SPECIFIED regression variant: %s", regression_model_variant_id)
             else:
-                logger.info(
+                _logger.info(
                     "Loaded BEST regression variant: %s",
                     regression_variant_info.get("variant_id"),
                 )
                 cv_score = regression_variant_info.get("cv_score")
                 if cv_score is not None:
-                    logger.info("   (Highest CV score: %.4f)", cv_score)
+                    _logger.info("   (Highest CV score: %.4f)", cv_score)
                 else:
-                    logger.info(
+                    _logger.info(
                         "   (CV score: N/A - variant not yet trained for this feature file)"
                     )
 
-            logger.info("   Variant ID: %s", regression_variant_info.get("variant_id"))
+            _logger.info("   Variant ID: %s", regression_variant_info.get("variant_id"))
             cv_score = regression_variant_info.get("cv_score")
             if cv_score is not None:
-                logger.info("   CV Score: %.4f", cv_score)
+                _logger.info("   CV Score: %.4f", cv_score)
             else:
-                logger.info("   CV Score: N/A (variant not yet trained for this feature file)")
-            logger.info("   Hyperparameters: %s", regression_model_hyperparameters)
-            logger.info("   Feature Filename: %s", regression_variant_info.get("feature_filename"))
+                _logger.info("   CV Score: N/A (variant not yet trained for this feature file)")
+            _logger.info("   Hyperparameters: %s", regression_model_hyperparameters)
+            _logger.info("   Feature Filename: %s", regression_variant_info.get("feature_filename"))
 
         except (FileNotFoundError, ValueError) as e:
-            logger.warning(
+            _logger.warning(
                 "Could not load regression variant: %s. "
                 "Will use default hyperparameters for regression model.",
                 e,
@@ -101,12 +101,12 @@ def setup_feature_extraction_mode(
             regression_variant_info = None
 
     if not regression_model_hyperparameters:
-        logger.warning(
+        _logger.warning(
             "No regression model hyperparameters loaded. "
             "Will use default hyperparameters for regression model."
         )
 
-    logger.info("=" * 60 + "\n")
+    _logger.info("=" * 60 + "\n")
     return regression_model_hyperparameters, regression_variant_info
 
 
@@ -119,16 +119,16 @@ def extract_features_from_scratch(
     regression_model_hyperparameters: Optional[Dict[str, Any]],
 ) -> Tuple[Any, Any, Any]:
     """Extract features from scratch and return features, targets, and fold assignments."""
-    logger.info("=" * 60)
-    logger.info("EXTRACTING FEATURES FROM SCRATCH")
-    logger.info("=" * 60)
+    _logger.info("=" * 60)
+    _logger.info("EXTRACTING FEATURES FROM SCRATCH")
+    _logger.info("=" * 60)
 
     device = get_device("auto")
     train_csv_path = Path(data_root) / "train.csv"
     if not train_csv_path.exists():
         raise FileNotFoundError(f"Train CSV not found: {train_csv_path}")
 
-    logger.info("Loading train data from %s", train_csv_path)
+    _logger.info("Loading train data from %s", train_csv_path)
     agg_train_df = aggregate_train_csv(train_csv_path)
 
     if "fold" not in agg_train_df.columns:
@@ -157,7 +157,7 @@ def extract_features_from_scratch(
         batch_size=32,
     )
 
-    logger.info("Extracting features from all images...")
+    _logger.info("Extracting features from all images...")
     all_features, all_targets = feature_trainer.extract_all_features(all_loader)
     fold_assignments = agg_train_df["fold"].values
 
@@ -165,7 +165,7 @@ def extract_features_from_scratch(
     if hasattr(contest_config, "data") and hasattr(contest_config.data, "preprocessing_list"):
         preprocessing_list = contest_config.data.preprocessing_list
 
-    logger.info("Saving features to cache (filename: %s)...", feature_filename)
+    _logger.info("Saving features to cache (filename: %s)...", feature_filename)
     save_features(
         all_features=all_features,
         all_targets=all_targets,
@@ -182,12 +182,12 @@ def extract_features_from_scratch(
     del feature_trainer
     cleanup_gpu_memory()
 
-    logger.info("=" * 60)
-    logger.info("FEATURE EXTRACTION COMPLETE")
-    logger.info("=" * 60)
-    logger.info("Extracted features shape: %s", all_features.shape)
-    logger.info("Targets shape: %s", all_targets.shape)
-    logger.info("Starting regression head training for all folds...")
-    logger.info("=" * 60)
+    _logger.info("=" * 60)
+    _logger.info("FEATURE EXTRACTION COMPLETE")
+    _logger.info("=" * 60)
+    _logger.info("Extracted features shape: %s", all_features.shape)
+    _logger.info("Targets shape: %s", all_targets.shape)
+    _logger.info("Starting regression head training for all folds...")
+    _logger.info("=" * 60)
 
     return all_features, all_targets, fold_assignments

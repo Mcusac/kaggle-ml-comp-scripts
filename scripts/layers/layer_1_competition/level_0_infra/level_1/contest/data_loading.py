@@ -21,7 +21,7 @@ from layers.layer_1_competition.level_0_infra.level_1.registry import (
     get_contest,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def load_contest_training_data(
@@ -99,11 +99,11 @@ def load_contest_data(
                 fold=None,
             )
     else:
-        logger.warning(f"Training CSV not found: {train_csv_path}")
+        _logger.warning(f"Training CSV not found: {train_csv_path}")
 
     # Load test data
     test_data = load_csv_raw_if_exists(test_csv_path)
     if test_data is None:
-        logger.debug(f"Test CSV not found: {test_csv_path}")
+        _logger.debug(f"Test CSV not found: {test_csv_path}")
 
     return train_data, val_data, test_data

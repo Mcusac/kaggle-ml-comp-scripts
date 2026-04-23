@@ -11,7 +11,7 @@ from layers.layer_0_core.level_0 import (
 from layers.layer_0_core.level_4 import save_json
 from layers.layer_0_core.level_8 import DatasetGridSearch
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class SimplePaths:
@@ -71,7 +71,7 @@ def dataset_grid_search_pipeline(
     # Generate variant grid
     variant_grid = grid_search._generate_variant_grid()
     total_variants = len(variant_grid)
-    logger.info(f"Total dataset variants to test: {total_variants}")
+    _logger.info(f"Total dataset variants to test: {total_variants}")
 
     # Execute grid search
     result = grid_search.execute()
@@ -89,12 +89,12 @@ def dataset_grid_search_pipeline(
         best_variant_file
     )
 
-    logger.info("=" * 60)
-    logger.info("Dataset grid search complete!")
-    logger.info(f"Best score: {result.get('best_score', -float('inf')):.4f}")
-    logger.info(f"Results saved to: {grid_search.results_file}")
-    logger.info(f"Best variant saved to: {best_variant_file}")
-    logger.info("=" * 60)
+    _logger.info("=" * 60)
+    _logger.info("Dataset grid search complete!")
+    _logger.info(f"Best score: {result.get('best_score', -float('inf')):.4f}")
+    _logger.info(f"Results saved to: {grid_search.results_file}")
+    _logger.info(f"Best variant saved to: {best_variant_file}")
+    _logger.info("=" * 60)
 
     # Cleanup
     grid_search.cleanup()
@@ -122,12 +122,12 @@ def test_max_augmentation_pipeline(
         augmentation_list = sorted(AVAILABLE_AUGMENTATION)
     variant = (preprocessing_list, augmentation_list)
 
-    logger.info("=" * 60)
-    logger.info("Max Augmentation Quick Test Mode")
-    logger.info("=" * 60)
-    logger.info(f"Preprocessing: {preprocessing_list}")
-    logger.info(f"Augmentation: {augmentation_list}")
-    logger.info("=" * 60)
+    _logger.info("=" * 60)
+    _logger.info("Max Augmentation Quick Test Mode")
+    _logger.info("=" * 60)
+    _logger.info(f"Preprocessing: {preprocessing_list}")
+    _logger.info(f"Augmentation: {augmentation_list}")
+    _logger.info("=" * 60)
 
     grid_search = DatasetGridSearch(
         config=config,
@@ -142,6 +142,6 @@ def test_max_augmentation_pipeline(
     # Run variant (single-variant test)
     result = grid_search._run_variant(variant, 0, total_variants=1)
 
-    logger.info("=" * 60)
-    logger.info("Max Augmentation Quick Test Complete!")
-    logger.info("=" * 60)
+    _logger.info("=" * 60)
+    _logger.info("Max Augmentation Quick Test Complete!")
+    _logger.info("=" * 60)

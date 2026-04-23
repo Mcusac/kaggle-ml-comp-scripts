@@ -14,7 +14,7 @@ from layers.layer_0_core.level_0 import (
 )
 from layers.layer_0_core.level_2 import build_weight_matrix
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class PerTargetWeightedEnsemble(EnsemblingMethod):
@@ -79,7 +79,7 @@ class PerTargetWeightedEnsemble(EnsemblingMethod):
                 result,
             )
 
-        logger.info("Combined predictions using per-target weighted ensemble")
+        _logger.info("Combined predictions using per-target weighted ensemble")
 
         return result
 

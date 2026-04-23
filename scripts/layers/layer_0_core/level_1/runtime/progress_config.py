@@ -16,7 +16,7 @@ from typing import Optional
 
 from layers.layer_0_core.level_0 import ConfigValidationError, get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class ProgressVerbosity(IntEnum):
@@ -54,7 +54,7 @@ def _parse_env_verbosity() -> Optional[ProgressVerbosity]:
 
     result = _VERBOSITY_MAP.get(val.strip().lower())
     if result is None:
-        logger.warning(
+        _logger.warning(
             "Invalid PROGRESS_VERBOSITY=%r; use 0-4 or "
             "silent|minimal|moderate|detailed|debug. Ignoring.",
             val,

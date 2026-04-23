@@ -50,11 +50,3 @@ def cell_match_counts(
 def score_grid_exact_match(pred: list[list[int]], truth: list[list[int]]) -> bool:
     """Return True only when both grids match exactly."""
     return pred == truth
-
-
-__all__ = [
-    "arc_grids_equal",
-    "cell_match_counts",
-    "grid_int_hash_key",
-    "score_grid_exact_match",
-]

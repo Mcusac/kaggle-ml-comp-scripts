@@ -16,7 +16,7 @@ from layers.layer_0_core.level_0 import (
 from layers.layer_0_core.level_1 import cleanup_gpu_memory
 from layers.layer_0_core.level_6 import create_variant_specific_data
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 # Matches level_0 TrainingSchema.batch_size default; used when config lacks batch_size
 DEFAULT_BATCH_SIZE = 32
@@ -44,7 +44,7 @@ def _create_variant_config(
 
     # Apply dataset configuration
     if preprocessing_list or augmentation_list:
-        logger.debug(f"Applying preprocessing: {preprocessing_list}, augmentation: {augmentation_list}")
+        _logger.debug(f"Applying preprocessing: {preprocessing_list}, augmentation: {augmentation_list}")
         if isinstance(variant_config, dict):
             variant_config['preprocessing_list'] = preprocessing_list
             variant_config['augmentation_list'] = augmentation_list
@@ -196,11 +196,11 @@ def run_single_variant(
     preprocessing_list, augmentation_list = variant
     variant_id = f"variant_{variant_index:04d}"
 
-    logger.info("=" * 60)
-    logger.info(f"Variant {variant_index+1}/{total_variants}")
-    logger.info(f"Preprocessing: {preprocessing_list if preprocessing_list else '[]'}")
-    logger.info(f"Augmentation: {augmentation_list if augmentation_list else '[]'}")
-    logger.info("=" * 60)
+    _logger.info("=" * 60)
+    _logger.info(f"Variant {variant_index+1}/{total_variants}")
+    _logger.info(f"Preprocessing: {preprocessing_list if preprocessing_list else '[]'}")
+    _logger.info(f"Augmentation: {augmentation_list if augmentation_list else '[]'}")
+    _logger.info("=" * 60)
 
     # Clear GPU memory before starting variant
     cleanup_gpu_memory()
@@ -251,7 +251,7 @@ def run_single_variant(
         return cv_score, fold_scores, result, variant_model_dir
 
     except Exception as e:
-        logger.error(f"Error training variant {variant_id}: {e}", exc_info=True)
+        _logger.error(f"Error training variant {variant_id}: {e}", exc_info=True)
 
         # Create error result
         result = _create_variant_result(

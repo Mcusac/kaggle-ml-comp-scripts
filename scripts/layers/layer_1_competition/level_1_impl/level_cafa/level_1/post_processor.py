@@ -18,7 +18,7 @@ from layers.layer_1_competition.level_0_infra.level_0 import ContestPostProcesso
 
 from layers.layer_1_competition.level_1_impl.level_cafa.level_0 import GOAFilter
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class CAFAPostProcessor(ContestPostProcessor):
@@ -114,15 +114,15 @@ class CAFAPostProcessor(ContestPostProcessor):
         
         # Check if required files exist
         if not submission_path.exists():
-            logger.warning(f"⚠️  Submission file not found: {submission_path}")
+            _logger.warning(f"⚠️  Submission file not found: {submission_path}")
             return str(submission_path)
         
         if not go_obo_path.exists():
-            logger.warning(f"⚠️  OBO file not found: {go_obo_path}, skipping GOA filtering")
+            _logger.warning(f"⚠️  OBO file not found: {go_obo_path}, skipping GOA filtering")
             return str(submission_path)
         
         if not goa_annotations_path.exists():
-            logger.warning(f"⚠️  GOA annotations not found: {goa_annotations_path}, skipping GOA filtering")
+            _logger.warning(f"⚠️  GOA annotations not found: {goa_annotations_path}, skipping GOA filtering")
             return str(submission_path)
         
         try:
@@ -132,10 +132,10 @@ class CAFAPostProcessor(ContestPostProcessor):
             # Filter submission
             filtered_path = self.goa_filter.filter_submission_with_goa(submission_path, negative_keys, output_path)
             
-            logger.info(f"GOA filtering complete: {filtered_path}")
+            _logger.info(f"GOA filtering complete: {filtered_path}")
             return str(filtered_path)
         except Exception as e:
-            logger.warning(f"GOA filtering failed: {e}, returning original submission")
+            _logger.warning(f"GOA filtering failed: {e}, returning original submission")
             return str(submission_path)
     
     

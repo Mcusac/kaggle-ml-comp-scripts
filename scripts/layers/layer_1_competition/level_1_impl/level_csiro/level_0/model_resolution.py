@@ -7,7 +7,7 @@ from layers.layer_0_core.level_1 import generate_feature_filename
 
 from layers.layer_1_competition.level_0_infra.level_0 import get_model_id, get_model_name_from_pretrained, get_model_image_size
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def get_model_id_from_name(model_name: str) -> str:
@@ -21,7 +21,7 @@ def get_model_id_from_name(model_name: str) -> str:
         if resolved_name:
             model_name = resolved_name
         else:
-            logger.warning(
+            _logger.warning(
                 "Could not resolve model name from path '%s', using default model_id '01'",
                 model_name,
             )
@@ -30,7 +30,7 @@ def get_model_id_from_name(model_name: str) -> str:
     try:
         return get_model_id(model_name)
     except ValueError as e:
-        logger.warning("Could not get model_id for '%s': %s. Using default '01'", model_name, e)
+        _logger.warning("Could not get model_id for '%s': %s. Using default '01'", model_name, e)
         return "01"
 
 
@@ -49,7 +49,7 @@ def resolve_feature_filename(
 
     try:
         feature_filename = generate_feature_filename(model_id, combo_id)
-        logger.info(
+        _logger.info(
             "Resolved feature filename: %s (model=%s, combo=%s)",
             feature_filename,
             feature_extraction_model,
@@ -57,7 +57,7 @@ def resolve_feature_filename(
         )
         return feature_filename
     except ValueError as e:
-        logger.warning("Could not generate feature filename: %s", e)
+        _logger.warning("Could not generate feature filename: %s", e)
         return None
 
 
@@ -67,5 +67,5 @@ def get_model_image_size_for_extraction(feature_extraction_model: str) -> int:
     image_size = size_tuple[0] if isinstance(size_tuple, (tuple, list)) else size_tuple
     if isinstance(image_size, tuple):
         image_size = image_size[0]
-    logger.info("Using image size for model %s: %s", feature_extraction_model, image_size)
+    _logger.info("Using image size for model %s: %s", feature_extraction_model, image_size)
     return image_size

@@ -7,11 +7,10 @@ from tqdm import tqdm
 from layers.layer_0_core.level_0 import get_logger, get_torch
 from layers.layer_0_core.level_1 import forward_with_amp
 
-torch = get_torch()
-nn = torch.nn
-DataLoader = torch.utils.data.DataLoader
-
-logger = get_logger(__name__)
+_torch = get_torch()
+_nn = _torch.nn
+_DataLoader = _torch.utils.data.DataLoader
+_logger = get_logger(__name__)
 
 
 class VisionPredictor:
@@ -19,8 +18,8 @@ class VisionPredictor:
 
     def __init__(
         self,
-        model: nn.Module,
-        device: torch.device,
+        model: _nn.Module,
+        device: _torch.device,
         use_mixed_precision: bool = False,
     ):
         self.model = model.to(device)
@@ -28,12 +27,12 @@ class VisionPredictor:
         self.device = device
         self.use_mixed_precision = use_mixed_precision
         if self.use_mixed_precision:
-            logger.info("Mixed precision (FP16) inference enabled")
+            _logger.info("Mixed precision (FP16) inference enabled")
 
-    @torch.no_grad()
+    @_torch.no_grad()
     def predict(
         self,
-        dataloader: DataLoader,
+        dataloader: _DataLoader,
         verbose: bool = True,
     ) -> np.ndarray:
         """
@@ -62,11 +61,11 @@ class VisionPredictor:
             all_preds.append(outputs.cpu().numpy())
 
         predictions = np.concatenate(all_preds, axis=0)
-        logger.info(f"Generated {len(predictions)} predictions")
+        _logger.info(f"Generated {len(predictions)} predictions")
         return predictions
 
-    @torch.no_grad()
-    def predict_single(self, image: torch.Tensor) -> np.ndarray:
+    @_torch.no_grad()
+    def predict_single(self, image: _torch.Tensor) -> np.ndarray:
         """
         Predict on a single image tensor.
 

@@ -8,7 +8,7 @@ from Bio import SeqIO
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_1 import normalize_protein_id
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 _EXPECTED_IO_ERRORS: Tuple[Type[BaseException], ...] = (
     OSError,
@@ -39,17 +39,17 @@ class OntologyDataLoader:
         train_dir = data_root / 'Train'
 
         if not train_dir.exists():
-            logger.warning(f"Training directory not found: {train_dir}")
+            _logger.warning(f"Training directory not found: {train_dir}")
             return None
 
         train_terms_path = train_dir / 'train_terms.tsv'
         if not train_terms_path.exists():
-            logger.warning(f"Training terms file not found: {train_terms_path}")
+            _logger.warning(f"Training terms file not found: {train_terms_path}")
             return None
 
         train_seqs_path = train_dir / 'train_sequences.fasta'
         if not train_seqs_path.exists():
-            logger.warning(f"Training sequences file not found: {train_seqs_path}")
+            _logger.warning(f"Training sequences file not found: {train_seqs_path}")
             return None
 
         try:
@@ -58,10 +58,10 @@ class OntologyDataLoader:
             )
 
             ont_terms = train_terms[train_terms['ontology'] == ontology]
-            logger.info(f"Loaded {len(ont_terms)} term annotations for {ontology} ontology")
+            _logger.info(f"Loaded {len(ont_terms)} term annotations for {ontology} ontology")
 
             target_proteins = set(ont_terms['protein'].unique())
-            logger.info(f"Found {len(target_proteins)} unique proteins for {ontology} ontology")
+            _logger.info(f"Found {len(target_proteins)} unique proteins for {ontology} ontology")
 
             train_seqs = {}
             for rec in SeqIO.parse(train_seqs_path, 'fasta'):
@@ -69,7 +69,7 @@ class OntologyDataLoader:
                 if pid in target_proteins:
                     train_seqs[pid] = str(rec.seq)
 
-            logger.info(f"Loaded {len(train_seqs)} sequences for {ontology} ontology")
+            _logger.info(f"Loaded {len(train_seqs)} sequences for {ontology} ontology")
 
             train_taxonomy = None
             train_taxonomy_path = train_dir / 'train_taxonomy.tsv'
@@ -77,7 +77,7 @@ class OntologyDataLoader:
                 train_taxonomy = pd.read_csv(
                     train_taxonomy_path, sep='\t', names=['protein', 'taxon']
                 )
-                logger.info(f"Loaded taxonomy for {len(train_taxonomy)} proteins")
+                _logger.info(f"Loaded taxonomy for {len(train_taxonomy)} proteins")
 
             return {
                 'sequences': train_seqs,
@@ -86,7 +86,7 @@ class OntologyDataLoader:
                 'protein_ids': sorted(list(target_proteins))
             }
         except _EXPECTED_IO_ERRORS as e:
-            logger.error(
+            _logger.error(
                 f"Error loading training data for {ontology}: {e}",
                 exc_info=True,
             )

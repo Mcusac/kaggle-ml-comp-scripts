@@ -25,7 +25,7 @@ from layers.layer_1_competition.level_1_impl.level_csiro.level_1 import (
     validate_model_paths,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def regression_ensemble_pipeline(
@@ -101,7 +101,7 @@ def regression_ensemble_pipeline(
     )
     extractor = FeatureExtractor(feat_model, device)
     features = extractor.extract_features(loader, dataset_type=dataset_type)
-    logger.info(f"Extracted features shape: {features.shape}")
+    _logger.info(f"Extracted features shape: {features.shape}")
 
     predictions = ensemble.predict(features)
     validate_predictions_shape(
@@ -118,5 +118,5 @@ def regression_ensemble_pipeline(
         post_processor=post_processor,
     )
     out = save_submission_csv(submission_df)
-    logger.info(f"Regression ensemble done. Output: {out}")
+    _logger.info(f"Regression ensemble done. Output: {out}")
     return submission_df

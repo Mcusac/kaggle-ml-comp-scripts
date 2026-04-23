@@ -7,7 +7,7 @@ from pathlib import Path
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_4 import load_csv_raw
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def load_training_csv(

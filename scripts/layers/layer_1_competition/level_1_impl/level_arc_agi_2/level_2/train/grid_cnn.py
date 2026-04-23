@@ -13,10 +13,10 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
     ArcSameShapeGridDataset,
     collect_same_shape_train_pairs,
+    TinyGridCNN,
 )
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.model import TinyGridCNN
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 DEFAULT_EPOCHS = 5
 DEFAULT_BATCH = 8
@@ -74,8 +74,8 @@ def run_grid_cnn_training(data_root: str, output_dir: str, *, epochs: int | None
     model.train()
     for ep in range(n_epochs):
         avg = train_one_epoch(loader, batch_processor=batch_processor, optimizer=opt, scaler=None)
-        logger.info("Epoch %d/%d train loss=%.4f", ep + 1, n_epochs, avg)
+        _logger.info("Epoch %d/%d train loss=%.4f", ep + 1, n_epochs, avg)
 
     ckpt = out / "model.pt"
     torch.save(model.state_dict(), ckpt)
-    logger.info("Saved ARC grid CNN weights: %s", ckpt)
+    _logger.info("Saved ARC grid CNN weights: %s", ckpt)

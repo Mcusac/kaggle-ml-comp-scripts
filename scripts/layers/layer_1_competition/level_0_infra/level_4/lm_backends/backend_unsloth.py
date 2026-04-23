@@ -18,7 +18,7 @@ from layers.layer_1_competition.level_0_infra.level_3 import LmBackend, LmBacken
 from layers.layer_1_competition.level_0_infra.level_3.lm_backend.shared_hooks import SharedTorchLmHooks
 from layers.layer_1_competition.level_0_infra.level_3.lm_backend.shared_inference import SharedTorchLmInference
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 TaskAdaptationFn = Callable[
     ...,
@@ -83,7 +83,7 @@ class UnslothLmBackend(SharedTorchLmInference, LmBackend):
                 state,
                 adapter_name="default",
             )
-            logger.info("✅ Loaded LoRA weights from %s (peft load_result=%s)", lp, load_result)
+            _logger.info("✅ Loaded LoRA weights from %s (peft load_result=%s)", lp, load_result)
 
         model = FastLanguageModel.for_inference(model)
         model.config._attn_implementation = "eager"
@@ -105,7 +105,7 @@ class UnslothLmBackend(SharedTorchLmInference, LmBackend):
         if not self._loaded or self._model is None or self._tokenizer is None:
             return {"status": "skipped", "reason": "not_loaded", "backend": "unsloth"}
         if self._default_adapter_state is None:
-            logger.warning("⚠️ Unsloth adapt_for_task: missing LoRA snapshot; skipping.")
+            _logger.warning("⚠️ Unsloth adapt_for_task: missing LoRA snapshot; skipping.")
             return {"status": "skipped", "reason": "no_adapter_snapshot", "backend": "unsloth"}
         if self._task_adaptation is None:
             return {"status": "skipped", "reason": "no_task_adaptation_runner", "backend": "unsloth"}

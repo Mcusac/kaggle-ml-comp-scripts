@@ -5,7 +5,7 @@ from typing import Optional, Any
 from layers.layer_0_core.level_0 import get_fold_checkpoint_path, get_logger
 from layers.layer_0_core.level_2 import find_best_fold_from_scores
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def train_test_pipeline(
@@ -28,9 +28,9 @@ def train_test_pipeline(
         data_root = str(paths.get_data_root())
 
     # Train
-    logger.info("=" * 60)
-    logger.info("Starting training phase...")
-    logger.info("=" * 60)
+    _logger.info("=" * 60)
+    _logger.info("Starting training phase...")
+    _logger.info("=" * 60)
     avg_cv_score, fold_scores = train_pipeline_fn(
         data_root=data_root,
         model=model,
@@ -42,7 +42,7 @@ def train_test_pipeline(
         raise RuntimeError("No fold scores available. Training may have failed.")
     
     best_fold, best_score = find_best_fold_from_scores(fold_scores)
-    logger.info(f"\n✅ Best fold: {best_fold} with score: {best_score:.4f}")
+    _logger.info(f"\n✅ Best fold: {best_fold} with score: {best_score:.4f}")
     
     # Get model directory
     model_dir = paths.get_models_base_dir()
@@ -55,9 +55,9 @@ def train_test_pipeline(
         )
     
     # Test (use best fold model; test_pipeline from contest context)
-    logger.info("\n" + "=" * 60)
-    logger.info("Starting testing phase...")
-    logger.info("=" * 60)
+    _logger.info("\n" + "=" * 60)
+    _logger.info("Starting testing phase...")
+    _logger.info("=" * 60)
     test_pipeline_fn = contest_context.get_test_pipeline()
     test_pipeline_fn(
         contest_context=contest_context,
@@ -66,6 +66,6 @@ def train_test_pipeline(
         **kwargs
     )
     
-    logger.info("=" * 60)
-    logger.info("✅ Train-test pipeline complete")
-    logger.info("=" * 60)
+    _logger.info("=" * 60)
+    _logger.info("✅ Train-test pipeline complete")
+    _logger.info("=" * 60)

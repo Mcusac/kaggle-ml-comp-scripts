@@ -6,7 +6,7 @@ from layers.layer_0_core.level_0 import get_logger, NamedRegistry
 
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2 import run_grid_cnn_training
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 TrainerFn = Callable[[str, str], None]
 REGISTRY = NamedRegistry[TrainerFn](registry_name="ARCTrainerRegistry", key_label="Model")

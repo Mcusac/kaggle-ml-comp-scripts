@@ -20,7 +20,7 @@ from typing import List, Optional
 from layers.layer_0_core.level_0 import get_logger, DataValidationError
 from layers.layer_0_core.level_1 import validate_predictions_for_ensemble, normalize_weights
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 _EPSILON = 1e-8
 
@@ -70,7 +70,7 @@ def simple_average(
                 f"len(weights)={len(w)} != len(predictions_list)={len(predictions_list)}"
             )
     result = np.average(stacked, axis=0, weights=normalize_weights(w))
-    logger.info(f"simple_average: {len(predictions_list)} models -> shape {result.shape}")
+    _logger.info(f"simple_average: {len(predictions_list)} models -> shape {result.shape}")
     return result
 
 
@@ -116,7 +116,7 @@ def value_rank_average(
     normalised = averaged_ranks / max_rank if max_rank > 0 else averaged_ranks
     result = min_val + normalised * (max_val - min_val)
 
-    logger.info(f"value_rank_average: {len(predictions_list)} models -> shape {result.shape}")
+    _logger.info(f"value_rank_average: {len(predictions_list)} models -> shape {result.shape}")
     return result
 
 
@@ -138,7 +138,7 @@ def value_percentile_average(
     """
     _, stacked = validate_predictions_for_ensemble(predictions_list)
     result = np.percentile(stacked, percentile, axis=0)
-    logger.info(
+    _logger.info(
         f"value_percentile_average: {len(predictions_list)} models, "
         f"p={percentile} -> shape {result.shape}"
     )
@@ -179,7 +179,7 @@ def power_average(
         np.average(np.power(stacked, power), axis=0, weights=normalize_weights(w)),
         1.0 / power,
     )
-    logger.info(f"power_average: {len(predictions_list)} models, power={power} -> shape {result.shape}")
+    _logger.info(f"power_average: {len(predictions_list)} models, power={power} -> shape {result.shape}")
     return result
 
 
@@ -205,7 +205,7 @@ def geometric_mean(
 
     w = np.ones(len(predictions_list)) if weights is None else np.array(weights, dtype=float)
     result = np.exp(np.average(np.log(stacked), axis=0, weights=normalize_weights(w)))
-    logger.info(f"geometric_mean: {len(predictions_list)} models -> shape {result.shape}")
+    _logger.info(f"geometric_mean: {len(predictions_list)} models -> shape {result.shape}")
     return result
 
 
@@ -221,7 +221,7 @@ def max_ensemble(predictions_list: List[np.ndarray]) -> np.ndarray:
     """
     _, stacked = validate_predictions_for_ensemble(predictions_list)
     result = np.max(stacked, axis=0)
-    logger.info(f"max_ensemble: {len(predictions_list)} models -> shape {result.shape}")
+    _logger.info(f"max_ensemble: {len(predictions_list)} models -> shape {result.shape}")
     return result
 
 

@@ -2,7 +2,7 @@
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def generate_feature_filename(model_id: str, combo_id: str = "combo_00") -> str:
@@ -26,7 +26,7 @@ def generate_feature_filename(model_id: str, combo_id: str = "combo_00") -> str:
     except ValueError:
         raise ValueError(f"Invalid combo_id numeric part: {combo_id!r}")
     filename = f"variant_{model_id}{combo_numeric_2digit}_features.npz"
-    logger.debug(f"Generated feature filename: {filename} (model_id={model_id}, combo_id={combo_id})")
+    _logger.debug(f"Generated feature filename: {filename} (model_id={model_id}, combo_id={combo_id})")
     return filename
 
 

@@ -16,6 +16,7 @@ import argparse
 import io
 import sys
 from pathlib import Path
+import importlib.util
 
 _SCRIPT_DIR = Path(__file__).resolve().parent
 
@@ -30,21 +31,55 @@ def _prepend_scripts_root_to_syspath() -> None:
         if (parent / "layers").is_dir():
             if str(parent) not in sys.path:
                 sys.path.insert(0, str(parent))
+            layers_dir = parent / "layers"
+            if str(layers_dir) not in sys.path:
+                sys.path.insert(0, str(layers_dir))
             return
 
     # Fallback: allow running from within scripts/ without relying on __file__ depth.
     cwd = Path.cwd().resolve()
-    if (cwd / "layers").is_dir() and str(cwd) not in sys.path:
-        sys.path.insert(0, str(cwd))
+    layers_dir = cwd / "layers"
+    if layers_dir.is_dir():
+        if str(cwd) not in sys.path:
+            sys.path.insert(0, str(cwd))
+        if str(layers_dir) not in sys.path:
+            sys.path.insert(0, str(layers_dir))
 
 
 _prepend_scripts_root_to_syspath()
 
-from layers.layer_2_devtools.level_1_impl.level_0.regenerate_inits import (
-    apply_regeneration,
-    check_regeneration,
-    report_nonlocal_imports,
-)
+def _load_regenerate_inits():
+    """
+    Load `regenerate_inits` without importing `layers` / barrel `__init__.py` trees.
+
+    We import the `regenerate_inits/` package directly from disk so optional deps in
+    unrelated parts of the framework don't prevent devtools from running.
+    """
+    pkg_dir = (_SCRIPT_DIR.parent / "level_0" / "regenerate_inits").resolve()
+    init_path = pkg_dir / "__init__.py"
+    if not init_path.exists():
+        raise FileNotFoundError(f"regenerate_inits __init__.py not found: {init_path}")
+
+    pkg_name = "_kaggle_ml_regenerate_inits"
+    spec = importlib.util.spec_from_file_location(
+        pkg_name,
+        init_path,
+        submodule_search_locations=[str(pkg_dir)],
+    )
+    if spec is None or spec.loader is None:
+        raise ImportError(f"Unable to create module spec for {init_path}")
+
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[pkg_name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+_regen = _load_regenerate_inits()
+apply_regeneration = _regen.apply_regeneration
+check_regeneration = _regen.check_regeneration
+report_nonlocal_imports = _regen.report_nonlocal_imports
+DEFAULT_EXCLUDED_SYMBOLS = _regen.DEFAULT_EXCLUDED_SYMBOLS
 
 
 def _win_utf8_stdio() -> None:
@@ -86,12 +121,30 @@ def main(argv: list[str]) -> int:
         action="store_true",
         help="Report __init__.py files containing non-relative imports.",
     )
+    p.add_argument(
+        "--exclude-symbol",
+        action="append",
+        default=[],
+        help="Exclude a symbol from leaf-module export inference. Repeatable.",
+    )
+    p.add_argument(
+        "--include-symbol",
+        action="append",
+        default=[],
+        help="Force-include a symbol by removing it from the default excludes. Repeatable.",
+    )
 
     args = p.parse_args(argv)
     root = args.root.resolve()
     if not root.exists():
         print(f"Root does not exist: {root}", file=sys.stderr)
         return 2
+
+    include_symbols = {s for s in args.include_symbol if s}
+    exclude_symbols = set(DEFAULT_EXCLUDED_SYMBOLS)
+    exclude_symbols -= include_symbols
+    exclude_symbols |= {s for s in args.exclude_symbol if s}
+    exclude_symbols_param = None if exclude_symbols == set(DEFAULT_EXCLUDED_SYMBOLS) else exclude_symbols
 
     if args.report_nonlocal:
         hits = report_nonlocal_imports(root, include_tests=bool(args.include_tests))
@@ -104,7 +157,11 @@ def main(argv: list[str]) -> int:
             print("No non-relative imports found in __init__.py files.")
 
     if args.check:
-        rc, drifts = check_regeneration(root, include_tests=bool(args.include_tests))
+        rc, drifts = check_regeneration(
+            root,
+            include_tests=bool(args.include_tests),
+            exclude_symbols=exclude_symbols_param,
+        )
         if drifts and args.verbose:
             for d in drifts:
                 print(str(d.init_path))
@@ -112,7 +169,10 @@ def main(argv: list[str]) -> int:
 
     if args.dry_run:
         rc, drifts = apply_regeneration(
-            root, include_tests=bool(args.include_tests), dry_run=True
+            root,
+            include_tests=bool(args.include_tests),
+            dry_run=True,
+            exclude_symbols=exclude_symbols_param,
         )
         if drifts:
             for d in drifts:
@@ -125,7 +185,12 @@ def main(argv: list[str]) -> int:
                     print(str(d.init_path))
         return int(rc)
 
-    rc, drifts = apply_regeneration(root, include_tests=bool(args.include_tests), dry_run=False)
+    rc, drifts = apply_regeneration(
+        root,
+        include_tests=bool(args.include_tests),
+        dry_run=False,
+        exclude_symbols=exclude_symbols_param,
+    )
     if args.verbose:
         for d in drifts:
             print(str(d.init_path))

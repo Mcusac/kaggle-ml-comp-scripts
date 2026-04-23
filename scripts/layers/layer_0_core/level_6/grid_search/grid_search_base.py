@@ -13,7 +13,7 @@ from layers.layer_0_core.level_5 import (
     save_checkpoint,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _filter_param_grid(
@@ -89,7 +89,7 @@ class GridSearchBase(BasePipeline, ABC):
 
     def setup(self) -> None:
         """Setup grid search pipeline."""
-        logger.info("Setting up grid search pipeline...")
+        _logger.info("Setting up grid search pipeline...")
         if not hasattr(self.config, "paths") or not getattr(
             self.config.paths, "output_dir", None
         ):
@@ -106,21 +106,21 @@ class GridSearchBase(BasePipeline, ABC):
 
         loaded = self._load_checkpoint()
         if loaded:
-            logger.info("Checkpoint loaded successfully")
+            _logger.info("Checkpoint loaded successfully")
         elif self.results_file.exists():
-            logger.info(f"Loading existing results from {self.results_file}")
+            _logger.info(f"Loading existing results from {self.results_file}")
             self._load_results()
 
         if self.quick_mode:
-            logger.info("Quick mode enabled: using smaller parameter grid")
-        logger.info(f"Grid search setup complete. Directory: {self.grid_search_dir}")
+            _logger.info("Quick mode enabled: using smaller parameter grid")
+        _logger.info(f"Grid search setup complete. Directory: {self.grid_search_dir}")
 
     def execute(self) -> Dict[str, Any]:
         """
         Execute grid search via GridSearchExecutor.
         Returns summary dict: success, total_variants, completed_variants, failed_variants, best_score, best_variant, results.
         """
-        logger.info("Starting grid search...")
+        _logger.info("Starting grid search...")
         variants = self._generate_variant_grid()
         best_score_ref = [self.best_score]
         best_variant_ref = [self.best_variant]
@@ -262,4 +262,4 @@ class GridSearchBase(BasePipeline, ABC):
         if self.results_file:
             self._save_results()
 
-        logger.info("Grid search cleanup complete")
+        _logger.info("Grid search cleanup complete")

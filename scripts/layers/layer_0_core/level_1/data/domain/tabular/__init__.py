@@ -1,11 +1,21 @@
-"""Tabular config and dataset."""
+"""Auto-generated package exports."""
 
-from .config import TabularModelConfig, TabularDataConfig, TabularConfig
-from .tabular_dataset import TabularDataset
+
+from .config import (
+    TabularConfig,
+    TabularDataConfig,
+    TabularModelConfig,
+)
+
+from .tabular_dataset import (
+    TabularDataset,
+    TensorT,
+)
 
 __all__ = [
-    "TabularModelConfig",
-    "TabularDataConfig",
     "TabularConfig",
+    "TabularDataConfig",
     "TabularDataset",
+    "TabularModelConfig",
+    "TensorT",
 ]

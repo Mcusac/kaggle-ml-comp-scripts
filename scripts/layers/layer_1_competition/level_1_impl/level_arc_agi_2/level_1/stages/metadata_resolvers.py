@@ -21,7 +21,7 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     load_chosen_params_from_tuned_config,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def default_chosen_params() -> dict[str, Any]:
@@ -57,7 +57,7 @@ def resolve_chosen_params_for_submit(
                         if isinstance(entry, dict) and isinstance(entry.get("chosen_params"), dict):
                             return dict(entry["chosen_params"])
             except Exception as e:
-                logger.warning("Could not read train metadata for submit chosen_params: %s", e)
+                _logger.warning("Could not read train metadata for submit chosen_params: %s", e)
     return None
 
 
@@ -77,7 +77,7 @@ def get_per_model_entry(train_metadata_json: Optional[str], model_name: str) -> 
             if isinstance(entry, dict):
                 return entry
     except Exception as e:
-        logger.warning("Could not read per_model from train metadata: %s", e)
+        _logger.warning("Could not read per_model from train metadata: %s", e)
     return None
 
 

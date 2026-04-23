@@ -9,7 +9,7 @@ import numpy as np
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_2 import ImageCleaningConfig, clean_image_with_config
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 ORANGE_LOWER = (5, 150, 150)
 ORANGE_UPPER = (25, 255, 255)

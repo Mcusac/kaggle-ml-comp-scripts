@@ -1,12 +1,21 @@
-"""Contest implementations under ``layer_1_competition/level_1_impl/``.
+"""Auto-generated aggregation exports."""
 
-Each child package (``level_cafa``, ``level_csiro``, …) has its own ``level_0`` … ``level_K``
-tree. Import a contest subpackage explicitly (e.g. ``level_arc_agi_2.level_0``). Do **not**
-import every contest from this ``__init__`` — optional third-party deps (Bio, unsloth, …)
-would force-install for all workflows.
 
-``registration`` modules are loaded by ``run_helpers.preload_contest_registrations`` / CLI
-so only the selected contest is imported.
-"""
+from . import (
+    level_arc_agi_2,
+    level_cafa,
+    level_csiro,
+    level_rna3d,
+)
 
-__all__ = ["level_arc_agi_2", "level_cafa", "level_csiro", "level_rna3d"]
+from .level_arc_agi_2 import *
+from .level_cafa import *
+from .level_csiro import *
+from .level_rna3d import *
+
+__all__ = (
+    list(level_arc_agi_2.__all__)
+    + list(level_cafa.__all__)
+    + list(level_csiro.__all__)
+    + list(level_rna3d.__all__)
+)

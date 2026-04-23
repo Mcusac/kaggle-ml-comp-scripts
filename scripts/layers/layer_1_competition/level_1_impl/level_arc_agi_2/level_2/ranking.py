@@ -19,11 +19,11 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     empty_arc_grid_like,
     predict_attempts_from_chosen_params,
 )
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.ensemble_prediction_bridge import (
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.ranking import (
     ensemble_rank_predictions_reference,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 Grid = list[list[int]]
 
@@ -108,7 +108,7 @@ def build_fallback_attempts(
 ) -> tuple[Grid, Grid, dict[str, Any]]:
     """Final chosen-params fallback when ranking produced no candidates."""
     a1, a2 = predict_attempts_from_chosen_params(base_input, chosen_params)
-    logger.warning("llm_tta_dfs produced no ranked candidates; falling back to chosen_params.")
+    _logger.warning("llm_tta_dfs produced no ranked candidates; falling back to chosen_params.")
     meta_fb: dict[str, Any] = {
         "status": "fallback_no_candidates",
         "execution_mode": mode,

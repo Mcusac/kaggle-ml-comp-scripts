@@ -11,7 +11,7 @@ from layers.layer_0_core.level_4 import load_pickle
 from layers.layer_0_core.level_6 import SimpleAverageEnsemble
 from layers.layer_0_core.level_7 import create_ensembling_method
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 DEFAULT_FEATURE_EXTRACTION_MODEL = "dinov2_base"
 
@@ -48,13 +48,13 @@ class RegressionEnsemble:
             if alias not in sys.modules:
                 sys.modules[alias] = module
 
-        logger.info(f"Loading {len(self.model_paths)} regression models...")
+        _logger.info(f"Loading {len(self.model_paths)} regression models...")
         for idx, model_path in enumerate(self.model_paths):
             model_file = self._resolve_model_file(model_path)
             model = load_pickle(model_file)
             self.models.append(model)
-            logger.info(f"  Loaded model {idx + 1}/{len(self.model_paths)}: {model_file}")
-        logger.info(f"All {len(self.models)} models loaded successfully")
+            _logger.info(f"  Loaded model {idx + 1}/{len(self.model_paths)}: {model_file}")
+        _logger.info(f"All {len(self.models)} models loaded successfully")
 
     @staticmethod
     def _resolve_model_file(model_path: str) -> Path:
@@ -100,7 +100,7 @@ class RegressionEnsemble:
             if self.cv_scores is not None:
                 weights = self.cv_scores
             else:
-                logger.warning(
+                _logger.warning(
                     f"Method '{method_name}' requires cv_scores but none were provided. "
                     "Falling back to simple average."
                 )

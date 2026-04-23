@@ -6,7 +6,7 @@ from typing import List, Optional
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def compose_transform_pipeline(
@@ -43,18 +43,18 @@ def compose_transform_pipeline(
     # Add PIL transforms
     if pil_transforms:
         transform_list.extend(pil_transforms)
-        logger.debug(f"Added {len(pil_transforms)} PIL transforms")
+        _logger.debug(f"Added {len(pil_transforms)} PIL transforms")
     
     # Add ToTensor
     if include_to_tensor:
         transform_list.append(transforms.ToTensor())
-        logger.debug("Added ToTensor")
+        _logger.debug("Added ToTensor")
     
     # Add tensor transforms
     if tensor_transforms:
         transform_list.extend(tensor_transforms)
-        logger.debug(f"Added {len(tensor_transforms)} tensor transforms")
+        _logger.debug(f"Added {len(tensor_transforms)} tensor transforms")
     
-    logger.debug(f"Composed transform pipeline with {len(transform_list)} total transforms")
+    _logger.debug(f"Composed transform pipeline with {len(transform_list)} total transforms")
     
     return transforms.Compose(transform_list)

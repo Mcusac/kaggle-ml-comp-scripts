@@ -16,7 +16,7 @@ from layers.layer_1_competition.level_0_infra.level_0 import (
     register_model_id_map,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class ContestRegistry:
@@ -146,7 +146,7 @@ def detect_contest(args: argparse.Namespace) -> str:  # only used in cli/handler
             "Registered: %s" % (env, ", ".join(sorted(available)))
         )
     if len(available) == 1:
-        logger.info(f"Auto-detected contest: {available[0]}")
+        _logger.info(f"Auto-detected contest: {available[0]}")
         return available[0]
     if len(available) > 1:
         raise ValueError(

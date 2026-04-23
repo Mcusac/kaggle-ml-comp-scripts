@@ -8,7 +8,7 @@ from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_1 import resolve_environment_path
 from layers.layer_0_core.level_5 import export_from_training_dir
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def handle_export_only_mode(
@@ -20,7 +20,7 @@ def handle_export_only_mode(
     dataset_type: str,
 ) -> None:
     """Handle export-only mode (no training)."""
-    logger.info("Export mode: Reusing existing model (export_only=True)")
+    _logger.info("Export mode: Reusing existing model (export_only=True)")
 
     if model is None:
         training_model_dir = resolve_environment_path("best_model_training", purpose="output")
@@ -53,7 +53,7 @@ def handle_export_only_mode(
         metadata=export_metadata,
     )
 
-    logger.info("Export complete!")
+    _logger.info("Export complete!")
 
 
 def export_trained_model(
@@ -65,7 +65,7 @@ def export_trained_model(
     regression_model_variant_id: Optional[str],
 ) -> None:
     """Export trained model to export directory."""
-    logger.info("Exporting trained model...")
+    _logger.info("Exporting trained model...")
     export_dir_path = Path(export_dir)
     export_dir_path.mkdir(parents=True, exist_ok=True)
 
@@ -93,17 +93,17 @@ def export_trained_model(
         metadata=export_metadata,
     )
 
-    logger.info("=" * 60)
-    logger.info("Model trained and exported successfully!")
+    _logger.info("=" * 60)
+    _logger.info("Model trained and exported successfully!")
     if regression_variant_info:
-        logger.info("   Regression Variant ID: %s", regression_variant_info.get("variant_id"))
+        _logger.info("   Regression Variant ID: %s", regression_variant_info.get("variant_id"))
         if regression_model_variant_id:
-            logger.info("   Selection: Manually specified variant")
+            _logger.info("   Selection: Manually specified variant")
         else:
-            logger.info("   Selection: Best variant (highest CV score)")
+            _logger.info("   Selection: Best variant (highest CV score)")
         cv_score = export_variant_info.get("cv_score")
         if cv_score is not None:
-            logger.info("   CV Score: %.4f", cv_score)
+            _logger.info("   CV Score: %.4f", cv_score)
         else:
-            logger.info("   CV Score: N/A (variant not yet trained for this feature file)")
-    logger.info("=" * 60)
+            _logger.info("   CV Score: N/A (variant not yet trained for this feature file)")
+    _logger.info("=" * 60)

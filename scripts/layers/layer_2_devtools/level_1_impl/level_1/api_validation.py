@@ -7,6 +7,10 @@ from layers.layer_2_devtools.level_1_impl.level_1.composed.dependency_validation
     run_dependency_validation_workflow as _run_dependency_validation,
     write_dependency_report_artifacts as _write_dependency_report_artifacts,
 )
+from layers.layer_2_devtools.level_1_impl.level_1.composed.package_boundary_validation_ops import (
+    run_package_boundary_validation_workflow as _run_package_boundary_validation,
+    write_package_boundary_report_artifacts as _write_package_boundary_report_artifacts,
+)
 from layers.layer_2_devtools.level_0_infra.level_0.contracts.envelope import err as _err
 from layers.layer_2_devtools.level_0_infra.level_0.contracts.envelope import ok as _ok
 from layers.layer_2_devtools.level_0_infra.level_0.contracts.envelope import (
@@ -121,3 +125,52 @@ def run_validate_layer_dependencies_complete(config: dict[str, Any]) -> dict[str
             "summary_line": summary,
         }
     )
+
+
+def run_validate_package_boundaries_complete(config: dict[str, Any]) -> dict[str, Any]:
+    """Validate package boundaries, write JSON/MD artifacts, return paths and summary fields.
+
+    Config: ``scripts_root`` (required), optional ``include_dev`` (default True),
+        ``workspace_root``, ``scope_root``, ``generated`` (date or ``YYYY-MM-DD`` str), ``output_base``.
+    """
+    try:
+        sr = config.get("scripts_root")
+        if sr is None:
+            return _err(["scripts_root is required"])
+        scripts_root = Path(sr)
+        include_dev = bool(config.get("include_dev", True))
+        workspace_root = Path(config["workspace_root"]) if config.get("workspace_root") else None
+        scope_root = Path(config["scope_root"]) if config.get("scope_root") else None
+        generated = _parse_generated_optional(config.get("generated"))
+        report = _run_package_boundary_validation(
+            scripts_root=scripts_root,
+            include_dev=include_dev,
+            workspace_root=workspace_root,
+            scope_root=scope_root,
+            generated=generated,
+        )
+        workspace = Path(report["workspace"]).resolve()
+        ob = config.get("output_base")
+        json_path, md_path = _write_package_boundary_report_artifacts(
+            report,
+            workspace=workspace,
+            output_base=Path(ob).resolve() if ob is not None else None,
+        )
+        v = report.get("violations", {}) or {}
+        summary = (
+            "[SUMMARY] "
+            f"files={report.get('files_scanned', 0)} "
+            f"violations={v.get('total', 0)} "
+            f"(upward={v.get('upward', 0)} illegal_external={v.get('illegal_external', 0)}) "
+            f"nodes={len(report.get('nodes', []))}"
+        )
+        return _ok(
+            {
+                "report": report,
+                "json_path": str(json_path),
+                "md_path": str(md_path),
+                "summary_line": summary,
+            }
+        )
+    except (OSError, TypeError, ValueError) as exc:
+        return _err([str(exc)])

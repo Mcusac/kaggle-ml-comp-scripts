@@ -16,7 +16,7 @@ from layers.layer_1_competition.level_1_impl.level_csiro.level_0 import (
 )
 from layers.layer_1_competition.level_1_impl.level_csiro.level_1 import is_empty_list_json
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def initialize_working_metadata_files(
@@ -64,11 +64,11 @@ def initialize_working_metadata_files(
         )
     ):
         shutil.copy2(input_metadata_file, working_metadata_file)
-        logger.info("Seeded metadata.json from input to working: %s", working_metadata_file)
+        _logger.info("Seeded metadata.json from input to working: %s", working_metadata_file)
     elif not working_metadata_file.exists():
         working_metadata_file.parent.mkdir(parents=True, exist_ok=True)
         save_json([], working_metadata_file)
-        logger.info("Created new metadata.json in working directory: %s", working_metadata_file)
+        _logger.info("Created new metadata.json in working directory: %s", working_metadata_file)
 
     if (
         input_gridsearch_file
@@ -81,10 +81,10 @@ def initialize_working_metadata_files(
         )
     ):
         shutil.copy2(input_gridsearch_file, working_gridsearch_file)
-        logger.info("Seeded gridsearch_metadata.json from input to working: %s", working_gridsearch_file)
+        _logger.info("Seeded gridsearch_metadata.json from input to working: %s", working_gridsearch_file)
     elif not working_gridsearch_file.exists():
         save_json([], working_gridsearch_file)
-        logger.info(
+        _logger.info(
             "Created new gridsearch_metadata.json in working directory: %s",
             working_gridsearch_file,
         )

@@ -16,7 +16,7 @@ from layers.layer_0_core.level_3 import (
     calculate_regression_metrics,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def calculate_metrics(
@@ -87,7 +87,7 @@ def calculate_metrics(
                 f"Available metrics: {available}"
             )
         
-        logger.info(f"Using contest-specific metric: {contest}")
+        _logger.info(f"Using contest-specific metric: {contest}")
         result = contest_metric.calculate(y_true, y_pred, **kwargs)
         
         # Ensure result is a dict

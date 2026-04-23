@@ -1,0 +1,20 @@
+---
+description: Python module hygiene — avoid default __future__ import; keep __all__ in __init__.py barrels
+globs:
+  - input/kaggle-ml-comp-scripts/scripts/**/*.py
+alwaysApply: false
+---
+
+# Python module hygiene
+
+## `from __future__ import annotations`
+
+- Do **not** add `from __future__ import annotations` by default to new files.
+- Only add it when there is a concrete need (compatibility requirement, or an existing file already uses it and consistency is important).
+- Prefer quoted forward references (`"Type"`), `typing.TYPE_CHECKING`, and localized imports to avoid import cycles.
+
+## `__all__` belongs in `__init__.py` only
+
+- Do **not** define `__all__` in logic modules (non-`__init__.py` files).
+- Keep aggregation and re-exports in package `__init__.py` barrels, and define `__all__` there.
+

@@ -11,7 +11,7 @@ from sklearn.model_selection import StratifiedGroupKFold, StratifiedKFold
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def create_robust_cv_splits(
@@ -62,7 +62,7 @@ def create_robust_cv_splits(
     if not emb_cols:
         raise ValueError("No embedding columns found. Provide embedding_cols or ensure columns start with 'emb'")
 
-    logger.info(f"Using {len(emb_cols)} embedding columns for clustering")
+    _logger.info(f"Using {len(emb_cols)} embedding columns for clustering")
 
     pca = PCA(n_components=0.85, random_state=seed)
     X_emb = pca.fit_transform(df[emb_cols].values)
@@ -91,9 +91,9 @@ def create_robust_cv_splits(
     leakage_check = df.groupby('visual_cluster')['fold'].nunique()
     leakage_count = sum(leakage_check > 1)
     if leakage_count > 0:
-        logger.warning(f"Warning: {leakage_count} clusters appear in multiple folds")
+        _logger.warning(f"Warning: {leakage_count} clusters appear in multiple folds")
     else:
-        logger.info("No leakage detected: all clusters in single fold")
+        _logger.info("No leakage detected: all clusters in single fold")
 
     return df
 
@@ -150,7 +150,7 @@ def _create_hierarchical_cv_splits(
     counts = df['final_stratify'].value_counts()
     rare_keys = counts[counts < n_splits].index
     if len(rare_keys) > 0:
-        logger.warning(f"Dropping {len(rare_keys)} extremely rare buckets to 'Misc'")
+        _logger.warning(f"Dropping {len(rare_keys)} extremely rare buckets to 'Misc'")
         df.loc[df['final_stratify'].isin(rare_keys), 'final_stratify'] = 'Misc'
 
     skf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=seed)

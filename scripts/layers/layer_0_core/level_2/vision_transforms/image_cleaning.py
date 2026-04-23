@@ -10,7 +10,7 @@ from typing import List, Optional, Tuple
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_1 import crop_relative_height, inpaint_by_hsv_range
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 @dataclass

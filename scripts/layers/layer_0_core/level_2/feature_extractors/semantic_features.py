@@ -12,8 +12,8 @@ from typing import Any, Dict, List, Optional, Union
 from layers.layer_0_core.level_0 import get_logger, get_torch
 from layers.layer_0_core.level_1 import BaseFeatureExtractor, get_siglip_text_classes
 
-torch = get_torch()
-logger = get_logger(__name__)
+_torch = get_torch()
+_logger = get_logger(__name__)
 
 
 class SemanticFeatureExtractor(BaseFeatureExtractor):
@@ -34,7 +34,7 @@ class SemanticFeatureExtractor(BaseFeatureExtractor):
         self,
         model_path: str,
         concept_groups: Dict[str, List[str]],
-        device: Optional[torch.device] = None,
+        device: Optional[_torch.device] = None,
     ):
         super().__init__(device=device)
         AutoModel, AutoTokenizer = get_siglip_text_classes()
@@ -45,9 +45,9 @@ class SemanticFeatureExtractor(BaseFeatureExtractor):
             )
         self.concept_groups = concept_groups
 
-        logger.info(f"Loading model for semantic features from: {model_path}")
-        logger.info(f"Using device: {self.device}")
-        logger.info(f"Concept groups: {list(self.concept_groups.keys())}")
+        _logger.info(f"Loading model for semantic features from: {model_path}")
+        _logger.info(f"Using device: {self.device}")
+        _logger.info(f"Concept groups: {list(self.concept_groups.keys())}")
 
         try:
             self.model = AutoModel.from_pretrained(
@@ -57,16 +57,16 @@ class SemanticFeatureExtractor(BaseFeatureExtractor):
                 model_path, local_files_only=True
             )
         except Exception as e:
-            logger.error(f"Failed to load model: {e}")
+            _logger.error(f"Failed to load model: {e}")
             raise
 
         self.concept_vectors = self._encode_concepts()
-        logger.info(f"Encoded {len(self.concept_vectors)} concept groups")
+        _logger.info(f"Encoded {len(self.concept_vectors)} concept groups")
 
-    def _encode_concepts(self) -> Dict[str, torch.Tensor]:
+    def _encode_concepts(self) -> Dict[str, _torch.Tensor]:
         """Encode all concept prompts into normalised mean text embeddings."""
         concept_vectors = {}
-        with torch.no_grad():
+        with _torch.no_grad():
             for name, prompts in self.concept_groups.items():
                 inputs = self.tokenizer(
                     prompts,
@@ -80,7 +80,7 @@ class SemanticFeatureExtractor(BaseFeatureExtractor):
 
     def extract_semantic_scores(
         self,
-        image_embeddings: Union[np.ndarray, torch.Tensor],
+        image_embeddings: Union[np.ndarray, _torch.Tensor],
     ) -> np.ndarray:
         """
         Compute cosine similarity between image embeddings and each concept.
@@ -93,18 +93,18 @@ class SemanticFeatureExtractor(BaseFeatureExtractor):
             alphabetically by concept name.
         """
         if isinstance(image_embeddings, np.ndarray):
-            img_tensor = torch.tensor(
-                image_embeddings, dtype=torch.float32
+            img_tensor = _torch.tensor(
+                image_embeddings, dtype=_torch.float32
             ).to(self.device)
         else:
             img_tensor = image_embeddings.to(self.device)
 
         img_tensor = img_tensor / img_tensor.norm(p=2, dim=-1, keepdim=True)
         scores = {}
-        with torch.no_grad():
+        with _torch.no_grad():
             for name, vec in self.concept_vectors.items():
                 scores[name] = (
-                    torch.matmul(img_tensor, vec.T).cpu().numpy().flatten()
+                    _torch.matmul(img_tensor, vec.T).cpu().numpy().flatten()
                 )
 
         concept_names = sorted(self.concept_groups.keys())
@@ -112,7 +112,7 @@ class SemanticFeatureExtractor(BaseFeatureExtractor):
 
     def extract_features(
         self,
-        image_embeddings: Union[np.ndarray, torch.Tensor],
+        image_embeddings: Union[np.ndarray, _torch.Tensor],
         **kwargs: Any,
     ) -> np.ndarray:
         """Implement BaseFeatureExtractor contract. Delegates to extract_semantic_scores."""
@@ -120,7 +120,7 @@ class SemanticFeatureExtractor(BaseFeatureExtractor):
 
     def __call__(
         self,
-        image_embeddings: Union[np.ndarray, torch.Tensor],
+        image_embeddings: Union[np.ndarray, _torch.Tensor],
         **kwargs: Any,
     ) -> np.ndarray:
         return self.extract_features(image_embeddings, **kwargs)
@@ -130,7 +130,7 @@ def generate_semantic_features(
     image_embeddings: np.ndarray,
     model_path: str,
     concept_groups: Dict[str, List[str]],
-    device: Optional[torch.device] = None,
+    device: Optional[_torch.device] = None,
 ) -> np.ndarray:
     """
     Convenience function: construct a SemanticFeatureExtractor and run it once.

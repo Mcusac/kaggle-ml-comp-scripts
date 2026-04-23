@@ -8,7 +8,7 @@ from layers.layer_0_core.level_0 import get_logger
 
 from layers.layer_1_competition.level_0_infra.level_0 import ContestConfig
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class CAFAConfig(ContestConfig):
@@ -141,7 +141,7 @@ class CAFAConfig(ContestConfig):
             )
         else:
             # No per-ontology hyperparams defined, return empty dict
-            logger.warning(
+            _logger.warning(
                 f"No per-ontology hyperparameters defined. "
                 f"Returning empty dict for ontology '{ontology}'"
             )

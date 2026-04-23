@@ -7,7 +7,7 @@ from typing import Dict, List
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_1 import ensure_positive_weights
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def build_weight_matrix(
@@ -51,12 +51,12 @@ def build_weight_matrix(
                     f"number of models ({num_models})"
                 )
 
-            logger.debug(f"Target '{target_name}': using custom weights")
+            _logger.debug(f"Target '{target_name}': using custom weights")
 
         else:
             target_weights = np.ones(num_models, dtype=np.float32)
 
-            logger.debug(
+            _logger.debug(
                 f"Target '{target_name}': no custom weights, using equal weights"
             )
 

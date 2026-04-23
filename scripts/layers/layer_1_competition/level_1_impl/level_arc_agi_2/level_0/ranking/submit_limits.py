@@ -4,7 +4,7 @@ import os
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def read_submit_max_tasks_env() -> int | None:
@@ -19,5 +19,5 @@ def read_submit_max_tasks_env() -> int | None:
         n = int(raw)
         return n if n > 0 else None
     except ValueError:
-        logger.warning("Invalid ARC26_SUBMIT_MAX_TASKS=%r; ignoring", raw)
+        _logger.warning("Invalid ARC26_SUBMIT_MAX_TASKS=%r; ignoring", raw)
         return None

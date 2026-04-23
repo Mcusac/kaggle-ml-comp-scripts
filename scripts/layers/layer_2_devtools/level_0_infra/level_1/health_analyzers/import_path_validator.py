@@ -3,15 +3,17 @@
 from typing import Any
 from pathlib import Path
 
-from layers.layer_2_devtools.level_0_infra.level_0 import (
-    BaseAnalyzer,
+from layers.layer_2_devtools.level_0_infra.level_0.base_health_analyzer import BaseAnalyzer
+from layers.layer_2_devtools.level_0_infra.level_0.path.python_modules import (
     collect_python_files,
     current_package,
     discover_packages,
     file_to_module,
-    get_relative_imports_from_ast,
     is_internal_module,
     module_exists,
+)
+from layers.layer_2_devtools.level_0_infra.level_0.parse.ast.ast_utils import (
+    get_relative_imports_from_ast,
     parse_file,
     resolve_relative_import,
 )
@@ -29,13 +31,17 @@ class ImportPathValidator(BaseAnalyzer):
     External dependencies are not validated as they may not be installed.
     """
     
+    def __init__(self, root: Path, include_tests: bool = False):
+        super().__init__(root)
+        self._include_tests = bool(include_tests)
+
     @property
     def name(self) -> str:
         return "import_paths"
     
     def analyze(self) -> dict[str, Any]:
         """Validate all relative import paths in the codebase."""
-        files = collect_python_files(self.root)
+        files = collect_python_files(self.root, include_tests=self._include_tests)
         internal_packages = discover_packages(self.root)
         
         invalid_imports = []

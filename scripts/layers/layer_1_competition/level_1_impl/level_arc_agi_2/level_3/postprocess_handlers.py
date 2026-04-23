@@ -13,7 +13,7 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2 import (
     pipeline_run_score_submission,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def score_submission_cmd(args: argparse.Namespace) -> None:
@@ -23,9 +23,9 @@ def score_submission_cmd(args: argparse.Namespace) -> None:
             submission_path=str(getattr(args, "submission", "")),
             split=str(getattr(args, "split", "evaluation")),
         )
-        logger.info("✅ score_submission score=%s paths=%s", out.get("score"), {k: out[k] for k in ("challenges_path", "solutions_path", "submission_path")})
+        _logger.info("✅ score_submission score=%s paths=%s", out.get("score"), {k: out[k] for k in ("challenges_path", "solutions_path", "submission_path")})
     except Exception as e:
-        logger.error("❌ score_submission failed: %s", e)
+        _logger.error("❌ score_submission failed: %s", e)
         raise
 
 
@@ -38,7 +38,7 @@ def benchmark_rankers_cmd(args: argparse.Namespace) -> None:
             n_guesses=int(getattr(args, "n_guesses", 2) or 2),
             max_targets=int(getattr(args, "max_targets", 0) or 0),
         )
-        logger.info("✅ benchmark_rankers summary=%s", out)
+        _logger.info("✅ benchmark_rankers summary=%s", out)
     except Exception as e:
-        logger.error("❌ benchmark_rankers failed: %s", e)
+        _logger.error("❌ benchmark_rankers failed: %s", e)
         raise

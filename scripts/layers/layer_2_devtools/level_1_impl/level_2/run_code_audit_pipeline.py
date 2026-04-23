@@ -89,6 +89,16 @@ def main() -> int:
         help="Skip CSIRO contest tier scan",
     )
     parser.add_argument(
+        "--no-oversized-scan",
+        action="store_true",
+        help="Skip oversized module scan",
+    )
+    parser.add_argument(
+        "--run-package-boundary",
+        action="store_true",
+        help="Also run package boundary validation (default: off).",
+    )
+    parser.add_argument(
         "--strict",
         action="store_true",
         help="Forward strict mode to precheck (and contract validation when applicable)",
@@ -116,6 +126,8 @@ def main() -> int:
         "run_precheck": not args.no_precheck,
         "run_general_stack_scan": not args.no_general_scan,
         "run_csiro_scan": not args.no_csiro_scan,
+        "run_oversized_module_scan": not args.no_oversized_scan,
+        "run_package_boundary_validation": bool(args.run_package_boundary),
         "precheck_strict": bool(args.strict),
         "max_targets": args.max_targets,
         "write_queue_json": not args.no_queue_file,

@@ -7,7 +7,7 @@ from typing import Optional
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def create_kfold_splits(
@@ -82,8 +82,8 @@ def create_kfold_splits(
     if data['fold'].isna().any():
         raise RuntimeError("Some rows were not assigned to a fold")
 
-    logger.info(f"Created {n_folds}-fold CV splits")
-    logger.info(f"Fold distribution:\n{data['fold'].value_counts().sort_index()}")
+    _logger.info(f"Created {n_folds}-fold CV splits")
+    _logger.info(f"Fold distribution:\n{data['fold'].value_counts().sort_index()}")
 
     return data
 
@@ -126,13 +126,13 @@ def get_fold_data(
     if train:
         # Training data: all folds except the specified fold
         filtered = data[data['fold'] != fold].copy()
-        logger.debug(f"Fold {fold} training data: {len(filtered)} samples")
+        _logger.debug(f"Fold {fold} training data: {len(filtered)} samples")
     else:
         # Validation data: only the specified fold
         filtered = data[data['fold'] == fold].copy()
-        logger.debug(f"Fold {fold} validation data: {len(filtered)} samples")
+        _logger.debug(f"Fold {fold} validation data: {len(filtered)} samples")
 
         if len(filtered) == 0:
-            logger.warning(f"No data found for fold {fold} (validation)")
+            _logger.warning(f"No data found for fold {fold} (validation)")
 
     return filtered

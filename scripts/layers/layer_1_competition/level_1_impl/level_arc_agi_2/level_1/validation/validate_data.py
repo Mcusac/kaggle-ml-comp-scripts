@@ -22,7 +22,7 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.validation.
     validate_submission_contract,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _read_json_file(path: Path) -> Any:
@@ -72,7 +72,7 @@ def validate_arc_inputs(data_root: str, max_targets: int = 0) -> None:
         sample_data = _read_json_file(sample_submission)
         validate_submission_contract(test_data, sample_data)
 
-    logger.info("ARC inputs validated")
-    logger.info("  train tasks: %d", len(train_data))
-    logger.info("  evaluation tasks: %d", len(eval_data))
-    logger.info("  test tasks: %d", len(test_data))
+    _logger.info("ARC inputs validated")
+    _logger.info("  train tasks: %d", len(train_data))
+    _logger.info("  evaluation tasks: %d", len(eval_data))
+    _logger.info("  test tasks: %d", len(test_data))

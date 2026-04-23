@@ -24,7 +24,7 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3 import (
     list_available_models,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def run_train_pipeline(
@@ -50,7 +50,7 @@ def run_train_pipeline(
         if trainer is not None:
             model_output_dir = out_dir / name
             ensure_dir(model_output_dir)
-            logger.info("Training registered model %s -> %s", name, model_output_dir)
+            _logger.info("Training registered model %s -> %s", name, model_output_dir)
             trainer(str(root), str(model_output_dir))
             ckpt = model_output_dir / "model.pt"
             tcfg = model_output_dir / "train_config.json"
@@ -63,7 +63,7 @@ def run_train_pipeline(
                 },
             }
         else:
-            logger.warning(
+            _logger.warning(
                 "select_best_heuristic_on_training was never implemented; "
                 "Run 12 replaced non-registered model %r training with "
                 "default chosen_params and empty train_scores",
@@ -74,7 +74,7 @@ def run_train_pipeline(
                 "train_scores": {},
             }
             if name in registered:
-                logger.warning("Model %r is in registry but get_trainer returned None", name)
+                _logger.warning("Model %r is in registry but get_trainer returned None", name)
 
     metadata = {
         "contest": "arc_agi_2",
@@ -86,7 +86,7 @@ def run_train_pipeline(
         "per_model": per_model,
     }
     save_json(metadata, metadata_path)
-    logger.info("Wrote ARC training metadata: %s", metadata_path)
+    _logger.info("Wrote ARC training metadata: %s", metadata_path)
     if run_ctx is not None:
         commit_run_artifacts(
             run_ctx,

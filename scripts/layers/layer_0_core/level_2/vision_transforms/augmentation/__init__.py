@@ -1,23 +1,29 @@
-"""Vision augmentation: registry, presets, and preset selector."""
+"""Auto-generated package exports."""
+
 
 from .presets import (
-    get_light_augmentation,
-    get_medium_augmentation,
-    get_heavy_augmentation,
-    get_custom_augmentation,
     AugmentationPreset,
     PRESET_FUNCS,
     build_augmentation_transforms,
+    get_custom_augmentation,
+    get_heavy_augmentation,
+    get_light_augmentation,
+    get_medium_augmentation,
 )
-from .registry import AUGMENTATION_BUILDERS
+
+from .registry import (
+    AUGMENTATION_BUILDERS,
+    AugmentationBuilder,
+)
 
 __all__ = [
-    "get_light_augmentation",
-    "get_medium_augmentation",
-    "get_heavy_augmentation",
-    "get_custom_augmentation",
+    "AUGMENTATION_BUILDERS",
+    "AugmentationBuilder",
     "AugmentationPreset",
     "PRESET_FUNCS",
     "build_augmentation_transforms",
-    "AUGMENTATION_BUILDERS",
+    "get_custom_augmentation",
+    "get_heavy_augmentation",
+    "get_light_augmentation",
+    "get_medium_augmentation",
 ]

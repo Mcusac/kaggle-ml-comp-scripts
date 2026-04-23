@@ -14,7 +14,7 @@ from layers.layer_1_competition.level_1_impl.level_rna3d.level_2 import get_trai
 from layers.layer_1_competition.level_0_infra.level_0 import contest_models_dir
 from layers.layer_1_competition.level_0_infra.level_1.contest import ValidateFirstRunner
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def train_pipeline(
@@ -48,8 +48,8 @@ def train_pipeline(
                     f"Model '{model_name}' not found. Available: {available}"
                 )
 
-            logger.info("Training model: %s", model_name)
-            logger.info("  Train mode: %s", train_mode)
+            _logger.info("Training model: %s", model_name)
+            _logger.info("  Train mode: %s", train_mode)
 
             trainer = get_trainer(model_name)
             if trainer is None:
@@ -60,12 +60,12 @@ def train_pipeline(
 
             try:
                 trainer(data_root=data_root, output_dir=str(model_output_dir))
-                logger.info("  Completed: %s", model_output_dir)
+                _logger.info("  Completed: %s", model_output_dir)
             except Exception as e:
-                logger.error("  Failed to train %s: %s", model_name, e, exc_info=True)
+                _logger.error("  Failed to train %s: %s", model_name, e, exc_info=True)
                 raise
 
-        logger.info("Training pipeline completed")
+        _logger.info("Training pipeline completed")
 
     if validate_first:
         return ValidateFirstRunner(

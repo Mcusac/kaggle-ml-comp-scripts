@@ -18,7 +18,7 @@ from layers.layer_1_competition.level_1_impl.level_rna3d.level_1 import (
 from layers.layer_0_core.level_4 import save_json
 from layers.layer_1_competition.level_0_infra.level_0 import contest_models_dir
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _get_baseline_approx_grid(search_type: str = "quick") -> List[BaselineApproxConfig]:
@@ -104,16 +104,16 @@ def tune_pipeline(
     if model_name != "baseline_approx":
         raise ValueError(f"Tuning not yet implemented for model: {model_name}")
 
-    logger.info("Tuning %s with search_type=%s", model_name, search_type)
+    _logger.info("Tuning %s with search_type=%s", model_name, search_type)
     grid = _get_baseline_approx_grid(search_type=search_type)
-    logger.info("  Grid size: %d candidates", len(grid))
+    _logger.info("  Grid size: %d candidates", len(grid))
 
     best_score = -1.0
     best_config: Optional[BaselineApproxConfig] = None
     best_idx = -1
 
     for idx, cfg in enumerate(grid, start=1):
-        logger.info(
+        _logger.info(
             "  Evaluating config %d/%d: pool=%s, top_n=%s, noise=%s",
             idx, len(grid), cfg.template_pool, cfg.template_top_n, cfg.noise_gain,
         )
@@ -130,7 +130,7 @@ def tune_pipeline(
                 labels=validation_labels,
             )
 
-            logger.info("    TM-score: %.4f", mean_tm)
+            _logger.info("    TM-score: %.4f", mean_tm)
 
             if mean_tm > best_score:
                 best_score = mean_tm
@@ -138,16 +138,16 @@ def tune_pipeline(
                 best_idx = idx
 
         except Exception as e:
-            logger.warning("    Failed: %s", e)
+            _logger.warning("    Failed: %s", e)
             continue
 
     if best_config is None:
         raise RuntimeError("No valid config found during tuning")
 
-    logger.info("Best config (idx=%d): TM-score=%.4f", best_idx, best_score)
-    logger.info("  template_pool=%s", best_config.template_pool)
-    logger.info("  template_top_n=%s", best_config.template_top_n)
-    logger.info("  noise_gain=%s", best_config.noise_gain)
+    _logger.info("Best config (idx=%d): TM-score=%.4f", best_idx, best_score)
+    _logger.info("  template_pool=%s", best_config.template_pool)
+    _logger.info("  template_top_n=%s", best_config.template_top_n)
+    _logger.info("  noise_gain=%s", best_config.noise_gain)
 
     best_dict = asdict(best_config)
     best_dict["_tune_score"] = float(best_score)
@@ -160,6 +160,6 @@ def tune_pipeline(
 
     save_json(best_dict, config_path, indent=2, ensure_ascii=False)
 
-    logger.info("Saved best config: %s", config_path)
+    _logger.info("Saved best config: %s", config_path)
 
     return best_dict

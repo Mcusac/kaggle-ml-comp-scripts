@@ -9,13 +9,13 @@ from scipy.sparse import csr_matrix, issparse, spmatrix
 from layers.layer_0_core.level_0 import get_logger, get_torch
 from layers.layer_0_core.level_4 import load_json
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
-torch = get_torch()
-if torch is None:
+_torch = get_torch()
+if _torch is None:
     raise ImportError("torch is required for SparseTabularDataset")
 
-Dataset = torch.utils.data.Dataset
+Dataset = _torch.utils.data.Dataset
 
 
 class SparseTabularDataset(Dataset):
@@ -87,7 +87,7 @@ class SparseTabularDataset(Dataset):
         """Return dataset size."""
         return len(self.indices)
     
-    def __getitem__(self, idx: int) -> Tuple[torch.Tensor, torch.Tensor]:
+    def __getitem__(self, idx: int) -> Tuple[_torch.Tensor, _torch.Tensor]:
         """
         Get a single sample.
         
@@ -132,4 +132,4 @@ class SparseTabularDataset(Dataset):
             # Apply smoothing: positive labels become 1.0 - smoothing, negative become smoothing / n_labels
             labels = labels * (1.0 - self.label_smoothing) + self.label_smoothing / self.n_labels
         
-        return torch.from_numpy(features), torch.from_numpy(labels)
+        return _torch.from_numpy(features), _torch.from_numpy(labels)

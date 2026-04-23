@@ -3,10 +3,10 @@
 from typing import List, Tuple, TypeVar
 from itertools import combinations
 
-T = TypeVar("T")
+_T = TypeVar("_T")
 
 
-def generate_power_set(items: List[T]) -> List[Tuple[T, ...]]:
+def generate_power_set(items: List[_T]) -> List[Tuple[_T, ...]]:
     """
     Generate all possible subsets (power set) of items.
 
@@ -29,7 +29,7 @@ def generate_power_set(items: List[T]) -> List[Tuple[T, ...]]:
 
     # Generate all combinations of all sizes (0 to n)
     for r in range(n + 1):
-        for combo in combinations(items, r):
+        for combo in combinations[tuple[_T, ...]](items, r):
             power_set.append(tuple(sorted(combo)))
 
     return power_set

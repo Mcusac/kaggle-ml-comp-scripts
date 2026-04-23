@@ -7,7 +7,7 @@ from layers.layer_0_core.level_0 import DATASET_TYPE_SPLIT, get_logger
 from layers.layer_0_core.level_1 import get_transformer_hyperparameter_grid
 from layers.layer_0_core.level_5 import find_metadata_dir
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def get_default_hyperparameters() -> Dict[str, Any]:
@@ -57,11 +57,11 @@ def create_variant_specific_data(
             metadata_dir = find_metadata_dir()
 
         if metadata_dir:
-            logger.debug(
+            _logger.debug(
                 "combo_id lookup skipped: get_or_create_combo_id not available"
             )
         else:
-            logger.warning("Metadata directory not found, cannot resolve combo_id")
+            _logger.warning("Metadata directory not found, cannot resolve combo_id")
 
     if hyperparameters is not None:
         variant_specific_data["hyperparameters"] = hyperparameters

@@ -13,7 +13,7 @@ from layers.layer_0_core.level_5 import StackingEnsemble
 
 from layers.layer_1_competition.level_1_impl.level_csiro.level_0 import calc_metric
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def load_model_metadata(model_paths: List[str]) -> Tuple[List[Dict[str, Any]], str]:
@@ -56,7 +56,7 @@ def load_training_features(
     feature_extraction_model_name: str
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, Dict[str, Any]]:
     """Load training features and targets from feature cache."""
-    logger.info("Loading training features and targets...")
+    _logger.info("Loading training features and targets...")
 
     feature_filename = None
     if model_configs and model_configs[0].get('feature_filename'):
@@ -69,11 +69,11 @@ def load_training_features(
     if not cache_path:
         raise FileNotFoundError(f"Feature file not found: {feature_filename}")
 
-    logger.info(f"Loading features from {cache_path}")
+    _logger.info(f"Loading features from {cache_path}")
     all_features, all_targets_from_cache, fold_assignments, cache_metadata = load_features(cache_path)
     all_targets = all_targets_from_cache
 
-    logger.info(f"Loaded features: {all_features.shape}, targets: {all_targets.shape}")
+    _logger.info(f"Loaded features: {all_features.shape}, targets: {all_targets.shape}")
 
     return all_features, all_targets, fold_assignments, cache_metadata
 
@@ -90,7 +90,7 @@ def create_and_train_stacking_ensemble(
     config
 ) -> Tuple[np.ndarray, float]:
     """Create stacking ensemble, generate OOF predictions, train meta-models, and get final predictions."""
-    logger.info(f"Creating stacking ensemble with {len(model_paths)} base models...")
+    _logger.info(f"Creating stacking ensemble with {len(model_paths)} base models...")
 
     stacking = StackingEnsemble(
         model_paths=model_paths,
@@ -100,22 +100,22 @@ def create_and_train_stacking_ensemble(
         meta_model_alpha=meta_model_alpha
     )
 
-    logger.info("Generating out-of-fold predictions...")
+    _logger.info("Generating out-of-fold predictions...")
     oof_preds, test_preds = stacking.generate_oof_predictions(
         X_train=all_features,
         y_train=all_targets,
         X_test=test_features
     )
 
-    logger.info("Training meta-models...")
+    _logger.info("Training meta-models...")
     stacking.fit_meta_models(oof_preds, all_targets)
 
     oof_combined = stacking.predict(oof_preds)
     oof_score, _ = calc_metric(oof_combined, all_targets, config=config)
-    logger.info(f"Stacking OOF Score: {oof_score:.4f}")
+    _logger.info(f"Stacking OOF Score: {oof_score:.4f}")
 
-    logger.info("Generating final test predictions...")
+    _logger.info("Generating final test predictions...")
     final_predictions = stacking.predict(test_preds)
-    logger.info(f"Final predictions shape: {final_predictions.shape}")
+    _logger.info(f"Final predictions shape: {final_predictions.shape}")
 
     return final_predictions, oof_score

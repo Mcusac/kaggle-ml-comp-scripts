@@ -10,8 +10,16 @@ alwaysApply: false
 **Filesystem:** general code lives under `scripts/layers/layer_0_core/`; competition code under `scripts/layers/layer_1_competition/` (`level_0_infra/`, `level_1_impl/`). After `path_bootstrap.prepend_framework_paths()`, top-level `level_N` resolves to the general stack; `layers.layer_1_competition.*` resolves via `scripts/` on `sys.path`.
 
 Top-of-file **ordering and blank lines**: `python-import-order.mdc`. This file defines **which module paths and symbols** are allowed.
+Module hygiene (avoid default `__future__` import; keep `__all__` in `__init__.py` barrels): `python-module-hygiene.mdc`.
 
 ## General packages (`level_0` … `level_10`)
+
+## Framework-core explicit imports (`layers.layer_0_core.level_0` … `layers.layer_0_core.level_10`)
+
+- If you import from the framework core via the `layers.layer_0_core` namespace, use the **full explicit module path**:
+  - ✅ `from layers.layer_0_core.level_N import ...`
+  - ❌ do not shorten it to `from level_N import ...` in files that are already using `layers.layer_0_core.*` imports
+- Rationale: keep imports explicit and grep-friendly when referencing the framework core directly (many files do this for clarity).
 
 ### `__init__.py` — aggregation only
 - Use `from .module import X` or `from . import subpkg` to re-export; define `__all__`.

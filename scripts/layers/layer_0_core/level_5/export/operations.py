@@ -8,7 +8,7 @@ from typing import Dict, Any, Optional
 from layers.layer_0_core.level_0 import ensure_dir, get_logger
 from layers.layer_0_core.level_4 import load_json, save_json
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def find_trained_model_path(
@@ -171,9 +171,9 @@ def export_from_training_dir(
     copy_model_checkpoint(model_path, export_dir / export_filename)
     write_metadata_file(metadata, export_dir / 'model_metadata.json')
     
-    logger.info("✅ Model exported from training directory")
-    logger.info(f"   Model: {export_dir / export_filename}")
-    logger.info(f"   Metadata: {export_dir / 'model_metadata.json'}")
+    _logger.info("✅ Model exported from training directory")
+    _logger.info(f"   Model: {export_dir / export_filename}")
+    _logger.info(f"   Metadata: {export_dir / 'model_metadata.json'}")
 
 
 def copy_model_checkpoint(source: Path, dest: Path) -> None:
@@ -196,7 +196,7 @@ def copy_model_checkpoint(source: Path, dest: Path) -> None:
     
     # Copy file
     shutil.copy2(source, dest)
-    logger.debug(f"Copied checkpoint: {source} -> {dest}")
+    _logger.debug(f"Copied checkpoint: {source} -> {dest}")
 
 
 def write_metadata_file(metadata: Dict[str, Any], dest: Path) -> None:
@@ -215,4 +215,4 @@ def write_metadata_file(metadata: Dict[str, Any], dest: Path) -> None:
     
     # Write JSON file
     save_json(metadata, dest)
-    logger.debug(f"Wrote metadata: {dest}")
+    _logger.debug(f"Wrote metadata: {dest}")

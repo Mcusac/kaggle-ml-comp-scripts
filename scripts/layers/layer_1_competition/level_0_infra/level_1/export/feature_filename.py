@@ -8,7 +8,7 @@ from layers.layer_0_core.level_1 import generate_feature_filename, get_model_id
 from layers.layer_1_competition.level_0_infra.level_0 import get_model_name_from_pretrained
 from layers.layer_0_core.level_6 import find_combo_id_from_config
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def resolve_feature_extraction_model_name(config: Any) -> Optional[str]:
@@ -35,9 +35,9 @@ def construct_feature_filename_from_config(config: Any) -> Optional[str]:
             return None
         model_id = get_model_id(model_name)
         feature_filename = generate_feature_filename(model_id, combo_id)
-        logger.info(f"Constructed feature_filename from config: {feature_filename}")
+        _logger.info(f"Constructed feature_filename from config: {feature_filename}")
         return feature_filename
     except Exception as e:
-        logger.warning(f"Could not construct feature_filename from config: {e}")
+        _logger.warning(f"Could not construct feature_filename from config: {e}")
         return None
 

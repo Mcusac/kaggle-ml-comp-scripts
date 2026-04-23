@@ -1,6 +1,10 @@
-"""Per-task LM adaptation orchestration (infra; contest injects factories)."""
+"""Auto-generated package exports."""
 
-from .session import prepare_llm_tta_backend, restore_adapter_safely
+
+from .session import (
+    prepare_llm_tta_backend,
+    restore_adapter_safely,
+)
 
 __all__ = [
     "prepare_llm_tta_backend",

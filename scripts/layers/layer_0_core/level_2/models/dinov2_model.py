@@ -8,9 +8,9 @@ from transformers import Dinov2Model as HFDinov2Model
 from layers.layer_0_core.level_0 import get_logger, get_torch
 from layers.layer_0_core.level_1 import FiLM, BaseVisionModel
 
-logger = get_logger(__name__)
-torch = get_torch()
-nn = torch.nn
+_logger = get_logger(__name__)
+_torch = get_torch()
+_nn = _torch.nn
 
 # DINOv2's recommended input resolution
 _DEFAULT_DINOV2_SIZE: Tuple[int, int] = (518, 518)
@@ -71,12 +71,12 @@ class DINOv2Model(BaseVisionModel):
         self.use_film = use_film
         self._pretrained_loaded: bool = False  # set to True inside _load_backbone on success
 
-        logger.info(f"Creating DINOv2 model: {model_name} (pretrained={pretrained})")
+        _logger.info(f"Creating DINOv2 model: {model_name} (pretrained={pretrained})")
         self._load_backbone(model_name, pretrained)
 
         if input_size is not None:
             self.input_size = input_size
-            logger.debug(f"Input size overridden to: {self.input_size}")
+            _logger.debug(f"Input size overridden to: {self.input_size}")
 
         self._init_heads()
 
@@ -97,7 +97,7 @@ class DINOv2Model(BaseVisionModel):
                 return HFDinov2Model.from_pretrained(model_name)
             except AttributeError as e:
                 if 'MessageFactory' in str(e) and 'GetPrototype' in str(e):
-                    logger.warning("Suppressed MessageFactory.GetPrototype error — retrying")
+                    _logger.warning("Suppressed MessageFactory.GetPrototype error — retrying")
                     return HFDinov2Model.from_pretrained(model_name)
                 raise
 
@@ -106,12 +106,12 @@ class DINOv2Model(BaseVisionModel):
         Load the HuggingFace backbone and resolve feat_dim and input_size from its config.
         """
         try:
-            logger.info(f"Loading HuggingFace DINOv2 from: {model_name}")
+            _logger.info(f"Loading HuggingFace DINOv2 from: {model_name}")
             self.backbone = self._load_hf_model_with_retry(model_name)
             self._pretrained_loaded = True
-            logger.info("Successfully loaded HuggingFace DINOv2 model")
+            _logger.info("Successfully loaded HuggingFace DINOv2 model")
         except Exception as e:
-            logger.error(f"Failed to load HuggingFace model: {e}")
+            _logger.error(f"Failed to load HuggingFace model: {e}")
             raise
 
         # Resolve feature dimension
@@ -119,11 +119,11 @@ class DINOv2Model(BaseVisionModel):
             hidden_size = self.backbone.config.hidden_size
         else:
             hidden_size = _DEFAULT_HIDDEN_SIZE
-            logger.warning(
+            _logger.warning(
                 f"Could not read hidden_size from HF config — using default {hidden_size}"
             )
         self.feat_dim: int = hidden_size * 3  # CLS + AVG_pool + MAX_pool
-        logger.info(f"Feature dim: {hidden_size} → {self.feat_dim} (CLS+AVG+MAX)")
+        _logger.info(f"Feature dim: {hidden_size} → {self.feat_dim} (CLS+AVG+MAX)")
 
         # Resolve input size
         if hasattr(self.backbone, 'config') and hasattr(self.backbone.config, 'image_size'):
@@ -131,14 +131,14 @@ class DINOv2Model(BaseVisionModel):
                 self.backbone.config.image_size,
                 self.backbone.config.image_size,
             )
-            logger.info(f"Input size from HF config: {self.input_size}")
+            _logger.info(f"Input size from HF config: {self.input_size}")
         else:
             self.input_size = _DEFAULT_DINOV2_SIZE
-            logger.info(f"Using default DINOv2 input size: {self.input_size}")
+            _logger.info(f"Using default DINOv2 input size: {self.input_size}")
 
         if hasattr(self.backbone, 'gradient_checkpointing_enable'):
             self.backbone.gradient_checkpointing_enable()
-            logger.info("Gradient checkpointing enabled")
+            _logger.info("Gradient checkpointing enabled")
 
     # ------------------------------------------------------------------
     # Head and fusion initialisation
@@ -147,25 +147,25 @@ class DINOv2Model(BaseVisionModel):
     def _init_heads(self) -> None:
         """Create regression heads for single and split input modes."""
         hidden_single = max(32, int(self.feat_dim * 0.25))
-        self.head_single = nn.Sequential(
-            nn.Linear(self.feat_dim, hidden_single),
-            nn.ReLU(inplace=True),
-            nn.Dropout(0.3),
-            nn.Linear(hidden_single, self.num_classes),
+        self.head_single = _nn.Sequential(
+            _nn.Linear(self.feat_dim, hidden_single),
+            _nn.ReLU(inplace=True),
+            _nn.Dropout(0.3),
+            _nn.Linear(hidden_single, self.num_classes),
         )
 
         hidden_split = max(32, int(self.feat_dim * 2 * 0.25))
-        self.head_split = nn.Sequential(
-            nn.Linear(self.feat_dim * 2, hidden_split),
-            nn.ReLU(inplace=True),
-            nn.Dropout(0.3),
-            nn.Linear(hidden_split, self.num_classes),
+        self.head_split = _nn.Sequential(
+            _nn.Linear(self.feat_dim * 2, hidden_split),
+            _nn.ReLU(inplace=True),
+            _nn.Dropout(0.3),
+            _nn.Linear(hidden_split, self.num_classes),
         )
 
         self._init_fusion_module()
 
         if self.use_tiles:
-            logger.info(
+            _logger.info(
                 f"Tile processing enabled: {self.tile_grid_size}×{self.tile_grid_size} grid per half"
             )
 
@@ -173,17 +173,17 @@ class DINOv2Model(BaseVisionModel):
         """Create FiLM or cross-gating layers for left/right feature fusion."""
         if self.use_film:
             self.film = FiLM(self.feat_dim)
-            logger.info("Using FiLM fusion")
+            _logger.info("Using FiLM fusion")
         else:
-            self.cross_gate_left = nn.Linear(self.feat_dim, self.feat_dim)
-            self.cross_gate_right = nn.Linear(self.feat_dim, self.feat_dim)
-            logger.info("Using cross-gating fusion")
+            self.cross_gate_left = _nn.Linear(self.feat_dim, self.feat_dim)
+            self.cross_gate_right = _nn.Linear(self.feat_dim, self.feat_dim)
+            _logger.info("Using cross-gating fusion")
 
     # ------------------------------------------------------------------
     # Feature extraction
     # ------------------------------------------------------------------
 
-    def _extract_hf_features(self, x: torch.Tensor) -> torch.Tensor:
+    def _extract_hf_features(self, x: _torch.Tensor) -> _torch.Tensor:
         """
         Extract CLS + average-pooled + max-pooled patch features from the backbone.
 
@@ -202,9 +202,9 @@ class DINOv2Model(BaseVisionModel):
         patch_tokens = last_hidden[:, 1:, :]        # (B, N_patches, D)
         avg_pool = patch_tokens.mean(dim=1)          # (B, D)
         max_pool = patch_tokens.max(dim=1)[0]        # (B, D)
-        return torch.cat([cls_token, avg_pool, max_pool], dim=1)  # (B, 3*D)
+        return _torch.cat([cls_token, avg_pool, max_pool], dim=1)  # (B, 3*D)
 
-    def _extract_tiles(self, img: torch.Tensor) -> torch.Tensor:
+    def _extract_tiles(self, img: _torch.Tensor) -> _torch.Tensor:
         """
         Slice img into a tile_grid_size × tile_grid_size grid and resize each tile.
 
@@ -226,13 +226,13 @@ class DINOv2Model(BaseVisionModel):
                 w_end = (j + 1) * tile_w if j < self.tile_grid_size - 1 else W
                 tile = img[:, :, h_start:h_end, w_start:w_end]
                 if tile.shape[2] != self.input_size[0] or tile.shape[3] != self.input_size[1]:
-                    tile = torch.nn.functional.interpolate(
+                    tile = _nn.functional.interpolate(
                         tile, size=self.input_size, mode='bilinear', align_corners=False
                     )
                 tiles.append(tile)
-        return torch.cat(tiles, dim=0)  # (B * num_tiles, C, H, W)
+        return _torch.cat(tiles, dim=0)  # (B * num_tiles, C, H, W)
 
-    def _process_tiles(self, img: torch.Tensor) -> torch.Tensor:
+    def _process_tiles(self, img: _torch.Tensor) -> _torch.Tensor:
         """
         Extract tile features and mean-pool them into a single feature vector per image.
 
@@ -254,8 +254,8 @@ class DINOv2Model(BaseVisionModel):
     # ------------------------------------------------------------------
 
     def forward(
-        self, x: Union[torch.Tensor, Tuple[torch.Tensor, torch.Tensor]]
-    ) -> torch.Tensor:
+        self, x: Union[_torch.Tensor, Tuple[_torch.Tensor, _torch.Tensor]]
+    ) -> _torch.Tensor:
         """
         Forward pass supporting single-image and left/right split input.
 
@@ -278,12 +278,12 @@ class DINOv2Model(BaseVisionModel):
                 right_feat = right_feat * (1 + gamma) + beta
             else:
                 # Cross-gating: each branch is gated by the opposite branch's features
-                g_l = torch.sigmoid(self.cross_gate_left(right_feat))
-                g_r = torch.sigmoid(self.cross_gate_right(left_feat))
+                g_l = _torch.sigmoid(self.cross_gate_left(right_feat))
+                g_r = _torch.sigmoid(self.cross_gate_right(left_feat))
                 left_feat = left_feat * g_l
                 right_feat = right_feat * g_r
 
-            combined = torch.cat([left_feat, right_feat], dim=1)  # (B, feat_dim*2)
+            combined = _torch.cat([left_feat, right_feat], dim=1)  # (B, feat_dim*2)
             return self.head_split(combined)
         else:
             extractor = self._process_tiles if self.use_tiles else self._extract_hf_features
@@ -301,13 +301,13 @@ class DINOv2Model(BaseVisionModel):
         """Freeze all backbone parameters."""
         for param in self.backbone.parameters():
             param.requires_grad = False
-        logger.info(f"Backbone frozen: {self.model_name}")
+        _logger.info(f"Backbone frozen: {self.model_name}")
 
     def unfreeze_backbone(self) -> None:
         """Unfreeze all backbone parameters."""
         for param in self.backbone.parameters():
             param.requires_grad = True
-        logger.info(f"Backbone unfrozen: {self.model_name}")
+        _logger.info(f"Backbone unfrozen: {self.model_name}")
 
     def is_pretrained(self) -> bool:
         """Return True if pretrained weights were successfully loaded."""

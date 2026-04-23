@@ -9,7 +9,7 @@ from layers.layer_0_core.level_0 import get_logger, DataLoadError, DataValidatio
 from layers.layer_0_core.level_2 import validate_dataframe
 from layers.layer_0_core.level_3 import validate_path_is_file
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def load_csv_raw(path: Union[str, Path], **kwargs) -> pd.DataFrame:
@@ -80,7 +80,7 @@ def load_csv(
         name="CSV",
     )
 
-    logger.debug(
+    _logger.debug(
         f"Loaded CSV: {path_obj} "
         f"({len(df)} rows, {len(df.columns)} columns)"
     )
@@ -113,6 +113,6 @@ def save_csv(
     try:
         ensure_dir(path.parent)
         df.to_csv(path, index=index, **kwargs)
-        logger.debug(f"Saved CSV: {path}")
+        _logger.debug(f"Saved CSV: {path}")
     except Exception as e:
         raise DataValidationError(f"Failed to save CSV {path}: {e}")

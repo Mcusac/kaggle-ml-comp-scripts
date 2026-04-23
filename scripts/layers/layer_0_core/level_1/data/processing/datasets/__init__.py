@@ -1,12 +1,23 @@
-"""Image and streaming dataset classes."""
+"""Auto-generated package exports."""
 
-from .image_datasets import BaseImageDataset, ImagePathDataset
-from .streaming_datasets import BaseStreamingDataset, StreamingDataset, StreamingSplitDataset
+
+from .image_datasets import (
+    BaseImageDataset,
+    ImagePathDataset,
+)
+
+from .streaming_datasets import (
+    BaseStreamingDataset,
+    IterableDataset,
+    StreamingDataset,
+    StreamingSplitDataset,
+)
 
 __all__ = [
     "BaseImageDataset",
-    "ImagePathDataset",
     "BaseStreamingDataset",
+    "ImagePathDataset",
+    "IterableDataset",
     "StreamingDataset",
     "StreamingSplitDataset",
 ]

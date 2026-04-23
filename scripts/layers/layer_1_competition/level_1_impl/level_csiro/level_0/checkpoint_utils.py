@@ -5,8 +5,8 @@ from typing import Any, Dict
 
 from layers.layer_0_core.level_0 import get_logger, get_torch
 
-torch = get_torch()
-logger = get_logger(__name__)
+_torch = get_torch()
+_logger = get_logger(__name__)
 
 
 def load_model_from_checkpoint(
@@ -31,16 +31,16 @@ def load_model_from_checkpoint(
     if not path.exists():
         raise FileNotFoundError(f"Checkpoint not found: {path}")
 
-    checkpoint = torch.load(path, map_location=device, weights_only=False)
+    checkpoint = _torch.load(path, map_location=device, weights_only=False)
 
     state_dict = checkpoint.get("model_state_dict")
     if state_dict is None:
         raise KeyError("Checkpoint missing 'model_state_dict'")
 
-    if isinstance(model, torch.nn.DataParallel):
+    if isinstance(model, _torch.nn.DataParallel):
         model.module.load_state_dict(state_dict)
     else:
         model.load_state_dict(state_dict)
 
-    logger.info("Loaded checkpoint from %s", path)
+    _logger.info("Loaded checkpoint from %s", path)
     return checkpoint

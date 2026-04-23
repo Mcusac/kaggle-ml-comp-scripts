@@ -1,1 +1,3 @@
-"""Tests for trainer factory and trainer selection."""
+"""Auto-generated package exports (empty)."""
+
+__all__: list[str] = []

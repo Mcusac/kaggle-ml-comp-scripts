@@ -17,7 +17,7 @@ from layers.layer_1_competition.level_0_infra.level_1 import get_contest, resolv
 from layers.layer_1_competition.level_1_impl.level_csiro.level_1 import train_pipeline
 from layers.layer_1_competition.level_1_impl.level_csiro.level_4 import get_grid_search_context
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def handle_dataset_grid_search(args: argparse.Namespace) -> None:
@@ -83,10 +83,10 @@ def handle_cleanup_grid_search(args: argparse.Namespace) -> None:
     )
     keep_top = getattr(args, "keep_top", 20)
 
-    logger.info("Running retroactive cleanup:")
-    logger.info("  Model directory: %s", model_dir)
-    logger.info("  Results file: %s", results_file)
-    logger.info("  Keep top: %s variants", keep_top)
+    _logger.info("Running retroactive cleanup:")
+    _logger.info("  Model directory: %s", model_dir)
+    _logger.info("  Results file: %s", results_file)
+    _logger.info("  Keep top: %s variants", keep_top)
 
     variants_deleted, bytes_freed = cleanup_grid_search_checkpoints_retroactive(
         model_base_dir=model_dir,
@@ -94,7 +94,7 @@ def handle_cleanup_grid_search(args: argparse.Namespace) -> None:
         keep_top_n=keep_top,
     )
 
-    logger.info("Cleanup complete:")
-    logger.info("  Variants deleted: %s", variants_deleted)
+    _logger.info("Cleanup complete:")
+    _logger.info("  Variants deleted: %s", variants_deleted)
     mb_freed = bytes_freed / (1024 * 1024)
-    logger.info("  Space freed: %.2f MB", mb_freed)
+    _logger.info("  Space freed: %.2f MB", mb_freed)

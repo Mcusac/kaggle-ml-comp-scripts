@@ -11,8 +11,8 @@ from layers.layer_0_core.level_2 import VisionPredictor
 from layers.layer_0_core.level_3 import TTAPredictor
 from layers.layer_0_core.level_4 import create_test_dataloader, create_vision_model, load_pickle
 
-logger = get_logger(__name__)
-torch = get_torch()
+_logger = get_logger(__name__)
+_torch = get_torch()
 
 
 class PredictPipeline(BasePipeline):
@@ -55,7 +55,7 @@ class PredictPipeline(BasePipeline):
 
     def setup(self) -> None:
         """Setup prediction pipeline."""
-        logger.info("🔧 Setting up prediction pipeline...")
+        _logger.info("🔧 Setting up prediction pipeline...")
 
         validate_config_section_exists(self.config, "paths")
 
@@ -67,7 +67,7 @@ class PredictPipeline(BasePipeline):
             ensure_dir(output_dir)
             ensure_dir(output_dir / "predictions")
 
-        logger.info("✅ Prediction pipeline setup complete")
+        _logger.info("✅ Prediction pipeline setup complete")
 
     def execute(self) -> Dict[str, Any]:
         """
@@ -79,7 +79,7 @@ class PredictPipeline(BasePipeline):
             - 'predictions': np.ndarray (predictions array)
             - 'output_path': str (path to saved predictions)
         """
-        logger.info("🔮 Generating predictions...")
+        _logger.info("🔮 Generating predictions...")
 
         if self.model_type == "vision":
             return self._predict_vision()
@@ -92,8 +92,8 @@ class PredictPipeline(BasePipeline):
         """Generate predictions with vision model."""
         device = get_device(self.config.device if hasattr(self.config, "device") else "auto")
 
-        logger.info(f"Loading model from {self.model_path}")
-        checkpoint = torch.load(self.model_path, map_location=device)
+        _logger.info(f"Loading model from {self.model_path}")
+        checkpoint = _torch.load(self.model_path, map_location=device)
 
         self.model = create_vision_model(
             model_name=self.config.model.name,
@@ -116,7 +116,7 @@ class PredictPipeline(BasePipeline):
         )
 
         if self.use_tta:
-            logger.info("Using Test-Time Augmentation")
+            _logger.info("Using Test-Time Augmentation")
             predictor = TTAPredictor(
                 model=self.model,
                 device=device,
@@ -131,8 +131,8 @@ class PredictPipeline(BasePipeline):
         ensure_dir(output_path.parent)
         np.save(output_path, self.predictions)
 
-        logger.info(f"✅ Predictions complete. Saved to {output_path}")
-        logger.info(f"  Shape: {self.predictions.shape}")
+        _logger.info(f"✅ Predictions complete. Saved to {output_path}")
+        _logger.info(f"  Shape: {self.predictions.shape}")
 
         return {
             "success": True,
@@ -146,7 +146,7 @@ class PredictPipeline(BasePipeline):
         if X_test is None:
             raise ValueError("X_test is required for tabular prediction")
 
-        logger.info(f"Loading model from {self.model_path}")
+        _logger.info(f"Loading model from {self.model_path}")
         self.model = load_pickle(self.model_path)
 
         threshold = self.kwargs.get("threshold", 0.5)
@@ -156,8 +156,8 @@ class PredictPipeline(BasePipeline):
         ensure_dir(output_path.parent)
         np.save(output_path, self.predictions)
 
-        logger.info(f"✅ Predictions complete. Saved to {output_path}")
-        logger.info(f"  Shape: {self.predictions.shape}")
+        _logger.info(f"✅ Predictions complete. Saved to {output_path}")
+        _logger.info(f"  Shape: {self.predictions.shape}")
 
         return {
             "success": True,

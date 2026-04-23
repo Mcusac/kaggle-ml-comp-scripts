@@ -13,7 +13,7 @@ from layers.layer_1_competition.level_0_infra.level_2 import extract_test_featur
 
 from layers.layer_1_competition.level_1_impl.level_csiro.level_2 import generate_ensemble_oof_predictions
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _find_feature_filename_from_ensembles(
@@ -43,7 +43,7 @@ def load_features_for_regression(
     data_schema: Any
 ) -> tuple[Optional[np.ndarray], Optional[np.ndarray], Optional[np.ndarray]]:
     """Load training and test features for regression ensembles."""
-    logger.info("Loading training features and targets for regression ensembles...")
+    _logger.info("Loading training features and targets for regression ensembles...")
 
     feature_filename = _find_feature_filename_from_ensembles(regression_ensembles)
 
@@ -51,11 +51,11 @@ def load_features_for_regression(
     if not cache_path:
         raise FileNotFoundError(f"Feature file not found: {feature_filename}")
 
-    logger.info(f"Loading features from {cache_path}")
+    _logger.info(f"Loading features from {cache_path}")
     all_features, all_targets_from_cache, fold_assignments, cache_metadata = load_features(cache_path)
     all_targets = all_targets_from_cache
 
-    logger.info(f"Loaded features: {all_features.shape}, targets: {all_targets.shape}")
+    _logger.info(f"Loaded features: {all_features.shape}, targets: {all_targets.shape}")
 
     test_features = extract_test_features_from_model(
         test_csv_path=test_csv_path,
@@ -80,9 +80,9 @@ def generate_regression_ensemble_oof_predictions(
     ensemble_oof_preds = []
     ensemble_test_preds = []
 
-    logger.info("Generating regression ensemble-level OOF predictions...")
+    _logger.info("Generating regression ensemble-level OOF predictions...")
     for idx, ensemble_config in enumerate(regression_ensembles):
-        logger.info(f"Processing regression ensemble {idx + 1}/{len(regression_ensembles)}...")
+        _logger.info(f"Processing regression ensemble {idx + 1}/{len(regression_ensembles)}...")
         oof_pred, test_pred = generate_ensemble_oof_predictions(
             ensemble_config=ensemble_config,
             all_features=all_features,
@@ -93,6 +93,6 @@ def generate_regression_ensemble_oof_predictions(
         )
         ensemble_oof_preds.append(oof_pred)
         ensemble_test_preds.append(test_pred)
-        logger.info(f"  Regression ensemble {idx + 1} OOF shape: {oof_pred.shape}, test shape: {test_pred.shape}")
+        _logger.info(f"  Regression ensemble {idx + 1} OOF shape: {oof_pred.shape}, test shape: {test_pred.shape}")
 
     return ensemble_oof_preds, ensemble_test_preds

@@ -14,7 +14,7 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_5 import (
     predict_attempts_for_llm_tta_dfs,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def predict_attempts_for_submit_strategy(
@@ -56,7 +56,7 @@ def predict_attempts_for_submit_strategy(
             return a1, a2, {"status": "ok", "execution_mode": "heuristic_single"}
         return a1, a2
     if s == "ensemble":
-        logger.warning(
+        _logger.warning(
             "ensemble strategy is not implemented (Run 12 removed the broken "
             "heuristic ranker cascade); falling back to single"
         )
@@ -64,7 +64,7 @@ def predict_attempts_for_submit_strategy(
         if return_metadata:
             return a1, a2, {"status": "fallback_ensemble_removed", "execution_mode": "heuristic_single"}
         return a1, a2
-    logger.warning("Unknown strategy %r; using single", strategy)
+    _logger.warning("Unknown strategy %r; using single", strategy)
     a1, a2 = predict_attempts_from_chosen_params(input_grid, chosen_params)
     if return_metadata:
         return a1, a2, {"status": "fallback_unknown_strategy", "execution_mode": "heuristic_single"}

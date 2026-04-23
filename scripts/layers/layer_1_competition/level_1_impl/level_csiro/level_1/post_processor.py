@@ -10,7 +10,7 @@ from layers.layer_1_competition.level_0_infra.level_0 import ContestPostProcesso
 
 from layers.layer_1_competition.level_1_impl.level_csiro.level_0 import CSIROConfig
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class CSIROPostProcessor(ContestPostProcessor):
@@ -96,7 +96,7 @@ class CSIROPostProcessor(ContestPostProcessor):
                 
             except np.linalg.LinAlgError:
                 # Fallback to pseudo-inverse if matrix is singular
-                logger.warning("Constraint matrix is singular, using pseudo-inverse")
+                _logger.warning("Constraint matrix is singular, using pseudo-inverse")
                 CCt = C @ C.T
                 inv_CCt = np.linalg.pinv(CCt)
                 P = np.eye(self.config.num_total_targets) - C.T @ inv_CCt @ C
@@ -145,7 +145,7 @@ class CSIROPostProcessor(ContestPostProcessor):
         
         for target_name, rule_dict in rules.items():
             if target_name not in target_idx:
-                logger.warning(f"Unknown target name: {target_name}, skipping")
+                _logger.warning(f"Unknown target name: {target_name}, skipping")
                 continue
             
             idx = target_idx[target_name]

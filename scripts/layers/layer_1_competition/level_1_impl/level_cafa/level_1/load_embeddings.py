@@ -17,7 +17,7 @@ from layers.layer_1_competition.level_1_impl.level_cafa.level_0 import (
     normalize_embedding_type_cafa,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def load_embedding_data(

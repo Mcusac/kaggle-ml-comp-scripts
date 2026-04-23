@@ -8,6 +8,7 @@ from layers.layer_0_core.level_4 import load_json_raw, save_json
 
 from layers.layer_1_competition.level_0_infra.level_1 import (
     RunContext,
+    build_submit_run_artifacts_patch,
     commit_run_artifacts,
 )
 
@@ -37,7 +38,7 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_6 import (
     predict_attempts_for_submit_strategy,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def run_submission_pipeline(
@@ -82,6 +83,7 @@ def run_submission_pipeline(
     llm_infer_artifact_run_name: str = "",
 ) -> Path:
     """Build submission.json using heuristics and/or neural checkpoint (primary model)."""
+    out_path: Path | None = None
     root = require_data_root(data_root)
 
     models_list = [str(m) for m in models] if models else ["baseline_approx"]
@@ -149,129 +151,99 @@ def run_submission_pipeline(
         llm_infer_artifact_run_name=llm_infer_artifact_run_name,
     )
     strategy_telemetry: dict[str, int] = {}
-
-    submission: dict[str, list[dict[str, Any]]] = {}
-    for task_id, task in test_challenges.items():
-        tests = task.get("test", [])
-        if not isinstance(tests, list):
-            raise ValueError(f"Task {task_id!r} has invalid test list.")
-        entries: list[dict[str, Any]] = []
-        bound = len(tests) if max_targets <= 0 else min(len(tests), int(max_targets))
-        for idx, pair in enumerate(tests):
-            if idx >= bound:
-                input_grid = tests[0]["input"]
-            else:
-                input_grid = pair["input"]
-            use_strategy_path = str(strategy or "").strip().lower() == "llm_tta_dfs" and not bool(llm_cfg.prefer_cnn_attempt1)
-            if use_neural and not use_strategy_path:
-                a1 = predict_grid_from_checkpoint(input_grid, ckpt_path, cfg_path)
-                a2 = second_attempt_grid(
-                    input_grid,
-                    strategy=strategy,
-                    chosen_params=chosen_params,
-                    data_root=str(root),
-                    train_mode=str(train_mode),
-                    max_pairs_per_task=int(max_targets or 0),
-                )
-            else:
-                a1, a2, s_meta = predict_attempts_for_submit_strategy(
-                    input_grid,
-                    strategy=strategy,
-                    chosen_params=chosen_params,
-                    data_root=str(root),
-                    train_mode=str(train_mode),
-                    max_pairs_per_task=int(max_targets or 0),
-                    task_payload=task if isinstance(task, dict) else None,
-                    task_id=str(task_id),
-                    test_index=int(idx),
-                    llm_tta_config=llm_cfg,
-                    return_metadata=True,
-                )
-                status = str(s_meta.get("status", "unknown"))
-                strategy_telemetry[status] = strategy_telemetry.get(status, 0) + 1
-            entries.append({"attempt_1": a1, "attempt_2": a2})
-        submission[str(task_id)] = entries
-
-    submission = ARC26PostProcessor().normalize_submission(submission)
-    out_path = Path(output_json) if output_json else ARC26Paths().submission_output_path()
-    save_json(submission, out_path)
-    log_local_evaluation_score_optional(data_root=str(root), submission_path=str(out_path))
     infer_artifact_final: dict[str, Any] | None = None
-    if str(strategy or "").strip().lower() == "llm_tta_dfs" and str(llm_cfg.infer_artifact_dir or "").strip():
-        try:
-            infer_artifact_final = infer_finalize_artifact_root(
-                str(llm_cfg.infer_artifact_dir).strip(),
-                run_name=str(llm_cfg.infer_artifact_run_name or ""),
-            )
-            logger.info(
-                "✅ inference decoded_results materialized: %s",
-                infer_artifact_final.get("decoded_store_pkl"),
-            )
-        except Exception as e:
-            logger.warning("⚠️ infer_finalize_artifact_root failed: %s", e)
-    logger.info("Wrote ARC submission (%s strategy, primary_model=%s, neural=%s): %s", strategy, primary, use_neural, out_path)
-    if run_ctx is not None:
-        commit_run_artifacts(
-            run_ctx,
-            {
-                "config": {
-                    "submit": {
-                        "strategy": str(strategy),
-                        "max_targets": int(max_targets),
-                        "models": models_list,
-                        "primary_model": primary,
-                        "neural_infer": use_neural,
-                        "llm_tta_config": {
-                            "num_augmentations": int(llm_cfg.num_augmentations),
-                            "execution_mode": str(llm_cfg.execution_mode),
-                            "beam_width": int(llm_cfg.beam_width),
-                            "max_candidates": int(llm_cfg.max_candidates),
-                            "max_neg_log_score": float(llm_cfg.max_neg_log_score),
-                            "seed": int(llm_cfg.seed),
-                            "consistency_weight": float(llm_cfg.consistency_weight),
-                            "model_weight": float(llm_cfg.model_weight),
-                            "augmentation_likelihood_weight": float(llm_cfg.augmentation_likelihood_weight),
-                            "enable_neural_backend": bool(llm_cfg.enable_neural_backend),
-                            "model_path": llm_cfg.model_path,
-                            "lora_path": llm_cfg.lora_path,
-                            "max_runtime_sec": float(llm_cfg.max_runtime_sec),
-                            "task_runtime_sec": float(llm_cfg.task_runtime_sec),
-                            "decode_runtime_sec": float(llm_cfg.decode_runtime_sec),
-                            "adapt_steps": int(llm_cfg.adapt_steps),
-                            "adapt_batch_size": int(llm_cfg.adapt_batch_size),
-                            "adapt_gradient_accumulation_steps": int(llm_cfg.adapt_gradient_accumulation_steps),
-                            "adapt_disabled": bool(llm_cfg.adapt_disabled),
-                            "per_task_adaptation": bool(llm_cfg.per_task_adaptation),
-                            "runtime_attention_mode": str(llm_cfg.runtime_attention_mode),
-                            "runtime_disable_compile": bool(llm_cfg.runtime_disable_compile),
-                            "runtime_allocator_expandable_segments": bool(
-                                llm_cfg.runtime_allocator_expandable_segments
-                            ),
-                            "runtime_allocator_max_split_size_mb": int(
-                                llm_cfg.runtime_allocator_max_split_size_mb
-                            ),
-                            "prefer_cnn_attempt1": bool(llm_cfg.prefer_cnn_attempt1),
-                            "candidate_ranker": str(llm_cfg.candidate_ranker),
-                            "infer_artifact_dir": llm_cfg.infer_artifact_dir,
-                            "infer_artifact_run_name": str(llm_cfg.infer_artifact_run_name or ""),
-                        },
-                        "infer_artifact_final": (
-                            {
-                                "decoded_store_pkl": infer_artifact_final.get("decoded_store_pkl"),
-                                "manifest_json": infer_artifact_final.get("manifest_json"),
-                            }
-                            if infer_artifact_final
-                            else None
-                        ),
-                        "strategy_telemetry": dict(strategy_telemetry),
-                        "tuned_config_path": str(tuned_config_path) if tuned_config_path else None,
-                        "train_metadata_json": str(train_metadata_json) if train_metadata_json else None,
-                    }
-                },
-                "inputs": {"data_root": str(root)},
-                "artifacts": {"submission_json_src": str(out_path)},
-            },
-            src_path=out_path,
-            dest_name="submission.json",
+
+    try:
+        submission: dict[str, list[dict[str, Any]]] = {}
+        for task_id, task in test_challenges.items():
+            tests = task.get("test", [])
+            if not isinstance(tests, list):
+                raise ValueError(f"Task {task_id!r} has invalid test list.")
+            entries: list[dict[str, Any]] = []
+            bound = len(tests) if max_targets <= 0 else min(len(tests), int(max_targets))
+            for idx, pair in enumerate(tests):
+                if idx >= bound:
+                    input_grid = tests[0]["input"]
+                else:
+                    input_grid = pair["input"]
+                use_strategy_path = (
+                    str(strategy or "").strip().lower() == "llm_tta_dfs"
+                    and not bool(llm_cfg.prefer_cnn_attempt1)
+                )
+                if use_neural and not use_strategy_path:
+                    a1 = predict_grid_from_checkpoint(input_grid, ckpt_path, cfg_path)
+                    a2 = second_attempt_grid(
+                        input_grid,
+                        strategy=strategy,
+                        chosen_params=chosen_params,
+                        data_root=str(root),
+                        train_mode=str(train_mode),
+                        max_pairs_per_task=int(max_targets or 0),
+                    )
+                else:
+                    a1, a2, s_meta = predict_attempts_for_submit_strategy(
+                        input_grid,
+                        strategy=strategy,
+                        chosen_params=chosen_params,
+                        data_root=str(root),
+                        train_mode=str(train_mode),
+                        max_pairs_per_task=int(max_targets or 0),
+                        task_payload=task if isinstance(task, dict) else None,
+                        task_id=str(task_id),
+                        test_index=int(idx),
+                        llm_tta_config=llm_cfg,
+                        return_metadata=True,
+                    )
+                    status = str(s_meta.get("status", "unknown"))
+                    strategy_telemetry[status] = strategy_telemetry.get(status, 0) + 1
+                entries.append({"attempt_1": a1, "attempt_2": a2})
+            submission[str(task_id)] = entries
+
+        submission = ARC26PostProcessor().normalize_submission(submission)
+        out_path = Path(output_json) if output_json else ARC26Paths().submission_output_path()
+        save_json(submission, out_path)
+        log_local_evaluation_score_optional(data_root=str(root), submission_path=str(out_path))
+        if str(strategy or "").strip().lower() == "llm_tta_dfs" and str(
+            llm_cfg.infer_artifact_dir or ""
+        ).strip():
+            try:
+                infer_artifact_final = infer_finalize_artifact_root(
+                    str(llm_cfg.infer_artifact_dir).strip(),
+                    run_name=str(llm_cfg.infer_artifact_run_name or ""),
+                )
+                _logger.info(
+                    "✅ inference decoded_results materialized: %s",
+                    infer_artifact_final.get("decoded_store_pkl"),
+                )
+            except Exception as e:
+                _logger.warning("⚠️ infer_finalize_artifact_root failed: %s", e)
+        _logger.info(
+            "Wrote ARC submission (%s strategy, primary_model=%s, neural=%s): %s",
+            strategy,
+            primary,
+            use_neural,
+            out_path,
         )
-    return out_path
+        return out_path
+    finally:
+        if run_ctx is not None and out_path is not None and out_path.is_file():
+            patch = build_submit_run_artifacts_patch(
+                strategy=str(strategy),
+                max_targets=int(max_targets),
+                models_list=models_list,
+                primary_model=primary,
+                use_neural=use_neural,
+                llm_cfg=llm_cfg,
+                infer_artifact_final=infer_artifact_final,
+                strategy_telemetry=strategy_telemetry,
+                tuned_config_path=str(tuned_config_path) if tuned_config_path else None,
+                train_metadata_json=str(train_metadata_json) if train_metadata_json else None,
+                data_root=str(root),
+                submission_json_src=str(out_path),
+            )
+            commit_run_artifacts(
+                run_ctx,
+                patch,
+                src_path=out_path,
+                dest_name="submission.json",
+            )

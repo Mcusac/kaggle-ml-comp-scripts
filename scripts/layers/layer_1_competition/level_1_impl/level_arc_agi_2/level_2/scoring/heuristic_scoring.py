@@ -5,15 +5,20 @@ from pathlib import Path
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_4 import load_json_raw
 
-from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
-    arc_find_first_existing_file,
+from layers.layer_1_competition.level_0_infra.level_0 import (
     cell_match_counts,
-    eval_solution_grids_for_task,
-    predict_attempts_for_heuristic,
     score_grid_exact_match,
 )
 
-logger = get_logger(__name__)
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
+    arc_find_first_existing_file,
+    predict_attempts_for_heuristic,
+)
+from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0.decoding.eval_solution_parse import (
+    eval_parse_task_solution_grids,
+)
+
+_logger = get_logger(__name__)
 
 
 def _first_existing_or_default(root: Path, names: list[str]) -> Path:
@@ -154,7 +159,7 @@ def score_heuristic_on_evaluation(
     if not eval_ch_path.is_file():
         return 0.0
     if not eval_sol_path.is_file():
-        logger.info("No evaluation solutions on disk; skipping tune scoring for %s", heuristic)
+        _logger.info("No evaluation solutions on disk; skipping tune scoring for %s", heuristic)
         return 0.0
     challenges = load_json_raw(eval_ch_path)
     solutions_raw = load_json_raw(eval_sol_path)
@@ -173,7 +178,7 @@ def score_heuristic_on_evaluation(
         if not isinstance(tests, list) or not tests:
             continue
         bounds = len(tests) if max_targets <= 0 else min(len(tests), int(max_targets))
-        truth_series = eval_solution_grids_for_task(solutions_raw, str(task_id), bounds)
+        truth_series = eval_parse_task_solution_grids(solutions_raw, str(task_id), bounds)
         for idx in range(bounds):
             pair = tests[idx]
             inp = pair["input"]

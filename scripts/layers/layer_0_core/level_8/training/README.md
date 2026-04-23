@@ -27,7 +27,8 @@ Atomic vision/tabular training (`TrainPipeline`), robust CV split construction, 
 - **level_2**: `create_optimizer`, `create_scheduler`, `create_loss_function`
 - **level_4**: `create_vision_model`, `save_pickle`, `create_dataloaders`
 - **level_5**: `VisionTrainer`
-- **level_7**: `create_tabular_model`, `auto_detect_grid_search_results`
+- **level_6**: `auto_detect_grid_search_results`
+- **level_7**: `create_tabular_model`
 
 ## Usage Example
 

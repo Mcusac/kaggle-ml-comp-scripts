@@ -18,6 +18,8 @@ class ThresholdConfig:
     min_package_cohesion_pct: int = 25
     max_deep_imports: int = 30
     max_import_depth: int = 4
+    max_directory_depth: int = 6
+    max_deep_directories: int = 30
     max_duplicate_blocks: int = 200
     min_duplicate_lines: int = 6
     min_duplicate_frequency_for_warning: int = 3
@@ -35,6 +37,8 @@ class ThresholdConfig:
             "min_package_cohesion_pct": self.min_package_cohesion_pct,
             "max_deep_imports": self.max_deep_imports,
             "max_import_depth": self.max_import_depth,
+            "max_directory_depth": getattr(self, "max_directory_depth", 6),
+            "max_deep_directories": getattr(self, "max_deep_directories", 30),
             "max_duplicate_blocks": self.max_duplicate_blocks,
             "min_duplicate_lines": self.min_duplicate_lines,
             "min_duplicate_frequency_for_warning": getattr(

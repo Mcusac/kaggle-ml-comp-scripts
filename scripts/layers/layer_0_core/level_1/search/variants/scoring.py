@@ -4,7 +4,7 @@ from typing import Any, Dict, Optional, Tuple
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def select_best_score(
@@ -28,7 +28,7 @@ def select_best_score(
         Tuple of (best_score, best_result_or_None).
     """
     if new_score is not None and new_score > current_best_score:
-        logger.info("New best score: %.4f", new_score)
+        _logger.info("New best score: %.4f", new_score)
         return new_score, new_result
 
     return current_best_score, None

@@ -9,7 +9,7 @@ from typing import Dict, Optional, Tuple, Union, Any
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_2 import ConfigHelper
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class ContestConfigHelper(ConfigHelper):
@@ -48,14 +48,14 @@ class ContestConfigHelper(ConfigHelper):
         # Apply contest defaults
         if extracted_num_targets is None:
             extracted_num_targets = ContestConfigHelper.DEFAULT_NUM_TARGETS
-            logger.info(
+            _logger.info(
                 "Using default num_primary_targets=%d",
                 extracted_num_targets,
             )
 
         if extracted_model_name is None:
             extracted_model_name = ContestConfigHelper.DEFAULT_MODEL_NAME
-            logger.info(
+            _logger.info(
                 "Using default model_name=%s",
                 extracted_model_name,
             )
@@ -95,7 +95,7 @@ class ContestConfigHelper(ConfigHelper):
                 or "dinov3" in model_name.lower()
             )
         ):
-            logger.info(
+            _logger.info(
                 "Auto-enabled mixed precision for transformer model"
             )
 

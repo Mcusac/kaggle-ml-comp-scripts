@@ -8,11 +8,11 @@ from typing import Tuple
 from layers.layer_0_core.level_0 import get_torch
 from layers.layer_0_core.level_3 import SigLIPExtractor
 
-torch = get_torch()
-nn = torch.nn
+_torch = get_torch()
+_nn = _torch.nn
 
 
-class SigLIPFeatureExtractorAdapter(nn.Module):
+class SigLIPFeatureExtractorAdapter(_nn.Module):
     """
     Presents SigLIPExtractor behind a FeatureExtractor-style API.
 
@@ -36,7 +36,7 @@ class SigLIPFeatureExtractorAdapter(nn.Module):
         """Get input image size for this model."""
         return self._input_size
 
-    def extract_features(self, x: torch.Tensor) -> torch.Tensor:
+    def extract_features(self, x: _torch.Tensor) -> _torch.Tensor:
         """Extract features from batch of images [B, C, H, W] -> [B, embedding_dim]."""
         batch_size = x.shape[0]
         features_list = []
@@ -48,4 +48,4 @@ class SigLIPFeatureExtractorAdapter(nn.Module):
             img_pil = Image.fromarray(img_np)
             features = self.siglip_extractor.extract_from_image(img_pil, return_patches=False)
             features_list.append(features)
-        return torch.from_numpy(np.stack(features_list)).float()
+        return _torch.from_numpy(np.stack(features_list)).float()

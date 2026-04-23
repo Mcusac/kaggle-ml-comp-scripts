@@ -4,15 +4,15 @@ from typing import Union, Tuple
 
 from layers.layer_0_core.level_0 import get_torch
 
-torch = get_torch()
-nn = torch.nn if torch is not None else None
+_torch = get_torch()
+_nn = _torch.nn if _torch is not None else None
 
 
 def forward_with_amp(
-    model: nn.Module,
-    inputs: Union[torch.Tensor, Tuple[torch.Tensor, torch.Tensor]],
+    model: _nn.Module,
+    inputs: Union[_torch.Tensor, Tuple[_torch.Tensor, _torch.Tensor]],
     use_amp: bool = False
-) -> torch.Tensor:
+) -> _torch.Tensor:
     """
     Forward pass through model with optional automatic mixed precision.
 
@@ -25,6 +25,6 @@ def forward_with_amp(
         Model outputs.
     """
     if use_amp:
-        with torch.amp.autocast('cuda'):
+        with _torch.amp.autocast('cuda'):
             return model(inputs)
     return model(inputs)

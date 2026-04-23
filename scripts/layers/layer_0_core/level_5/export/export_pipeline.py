@@ -8,7 +8,7 @@ from layers.layer_0_core.level_0 import ensure_dir, get_logger
 from layers.layer_0_core.level_1 import BasePipeline, validate_config_section_exists
 from layers.layer_0_core.level_4 import save_json
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class ExportPipeline(BasePipeline):
@@ -46,7 +46,7 @@ class ExportPipeline(BasePipeline):
     
     def setup(self) -> None:
         """Setup export pipeline."""
-        logger.info("🔧 Setting up export pipeline...")
+        _logger.info("🔧 Setting up export pipeline...")
         
         # Validate config
         validate_config_section_exists(self.config, 'paths')
@@ -61,7 +61,7 @@ class ExportPipeline(BasePipeline):
         
         ensure_dir(self.export_dir)
         
-        logger.info("✅ Export pipeline setup complete")
+        _logger.info("✅ Export pipeline setup complete")
     
     def execute(self) -> Dict[str, Any]:
         """
@@ -73,7 +73,7 @@ class ExportPipeline(BasePipeline):
             - 'export_path': str (path to exported model)
             - 'metadata_path': str (path to metadata file)
         """
-        logger.info("📦 Exporting model...")
+        _logger.info("📦 Exporting model...")
         
         # Create export subdirectory with model name
         model_name = self.model_path.stem
@@ -83,7 +83,7 @@ class ExportPipeline(BasePipeline):
         # Copy model file
         export_model_path = export_subdir / self.model_path.name
         shutil.copy2(self.model_path, export_model_path)
-        logger.info(f"Copied model to {export_model_path}")
+        _logger.info(f"Copied model to {export_model_path}")
         
         # Create metadata
         metadata = {
@@ -96,9 +96,9 @@ class ExportPipeline(BasePipeline):
         # Save metadata
         metadata_path = export_subdir / 'metadata.json'
         save_json(metadata, metadata_path)
-        logger.info(f"Saved metadata to {metadata_path}")
+        _logger.info(f"Saved metadata to {metadata_path}")
         
-        logger.info(f"✅ Export complete. Model exported to {export_subdir}")
+        _logger.info(f"✅ Export complete. Model exported to {export_subdir}")
         
         return {
             'success': True,

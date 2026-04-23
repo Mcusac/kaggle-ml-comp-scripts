@@ -16,10 +16,10 @@ from layers.layer_0_core.level_5 import save_regression_model
 from layers.layer_1_competition.level_0_infra.level_1 import create_feature_extraction_model
 from layers.layer_1_competition.level_0_infra.level_2 import FeatureExtractionHelper
 
-logger = get_logger(__name__)
-torch = get_torch()
-nn = torch.nn
-DataLoader = torch.utils.data.DataLoader
+_logger = get_logger(__name__)
+_torch = get_torch()
+_nn = _torch.nn
+_DataLoader = _torch.utils.data.DataLoader
 
 
 class FeatureExtractionTrainer:
@@ -33,8 +33,8 @@ class FeatureExtractionTrainer:
     def __init__(
         self,
         config: Union[Any, Dict[str, Any]],
-        device: torch.device,
-        feature_extraction_model: Optional[nn.Module] = None,
+        device: _torch.device,
+        feature_extraction_model: Optional[_nn.Module] = None,
         regression_model_hyperparameters: Optional[Dict[str, Any]] = None,
         regression_only: bool = False,
         metric_calculator: Optional[Any] = None,
@@ -72,8 +72,8 @@ class FeatureExtractionTrainer:
     def _setup_feature_extractor(
         self,
         config: Union[Any, Dict[str, Any]],
-        device: torch.device,
-        feature_extraction_model: Optional[nn.Module],
+        device: _torch.device,
+        feature_extraction_model: Optional[_nn.Module],
         regression_only: bool
     ) -> Optional[FeatureExtractor]:
         """Setup feature extraction model."""
@@ -93,7 +93,7 @@ class FeatureExtractionTrainer:
 
         return FeatureExtractor(feature_extraction_model, device)
 
-    def _create_feature_extraction_model(self, model_name: str) -> nn.Module:
+    def _create_feature_extraction_model(self, model_name: str) -> _nn.Module:
         """Create feature extraction model from model name."""
         num_primary_targets = self._num_primary_targets
         if num_primary_targets is None and isinstance(self.config, dict):
@@ -113,18 +113,18 @@ class FeatureExtractionTrainer:
 
     def extract_all_features(
         self,
-        all_loader: DataLoader
+        all_loader: _DataLoader
     ) -> Tuple[np.ndarray, np.ndarray]:
         """Extract features and targets from all images."""
-        logger.info("Extracting features from all images...")
+        _logger.info("Extracting features from all images...")
         all_features, all_targets = self.feature_helper.extract_all_features(all_loader)
-        logger.info(f"Extracted features: {all_features.shape}, targets: {all_targets.shape}")
+        _logger.info(f"Extracted features: {all_features.shape}, targets: {all_targets.shape}")
         return all_features, all_targets
 
     def train(
         self,
-        train_loader: Optional[DataLoader] = None,
-        val_loader: Optional[DataLoader] = None,
+        train_loader: Optional[_DataLoader] = None,
+        val_loader: Optional[_DataLoader] = None,
         num_epochs: Optional[int] = None,
         save_dir: Optional[Path] = None,
         resume: bool = True,
@@ -148,7 +148,7 @@ class FeatureExtractionTrainer:
             if fold is None:
                 raise ValueError("fold is required when using pre-extracted features")
 
-            logger.info(f"Using pre-extracted features, splitting for fold {fold}...")
+            _logger.info(f"Using pre-extracted features, splitting for fold {fold}...")
             train_features, val_features, train_targets, val_targets = split_features_by_fold(
                 all_features, all_targets, fold_assignments, fold
             )
@@ -156,14 +156,14 @@ class FeatureExtractionTrainer:
             if train_loader is None or val_loader is None:
                 raise ValueError("train_loader and val_loader are required when all_features is not provided")
 
-            logger.info("Extracting features from loaders...")
+            _logger.info("Extracting features from loaders...")
             train_features, train_targets = self.extract_all_features(train_loader)
             val_features, val_targets = self.extract_all_features(val_loader)
 
-        logger.info(f"Features: train {train_features.shape}, val {val_features.shape}")
-        logger.info(f"Targets: train {train_targets.shape}, val {val_targets.shape}")
+        _logger.info(f"Features: train {train_features.shape}, val {val_features.shape}")
+        _logger.info(f"Targets: train {train_targets.shape}, val {val_targets.shape}")
 
-        logger.info("Training regression model on extracted features...")
+        _logger.info("Training regression model on extracted features...")
         self.regression_model.fit(train_features, train_targets)
 
         val_predictions = self.regression_model.predict(val_features)
@@ -172,8 +172,8 @@ class FeatureExtractionTrainer:
         weighted_r2, r2_scores = self._metric_calculator(val_predictions, val_targets, config=self.config)
         val_score = weighted_r2
 
-        logger.info("Regression model training complete")
-        logger.info(f"Validation Score: {val_score:.4f}")
+        _logger.info("Regression model training complete")
+        _logger.info(f"Validation Score: {val_score:.4f}")
 
         self.best_score = val_score
         self.best_epoch = 0

@@ -1,6 +1,8 @@
-"""Prediction pipeline and streaming test dataloader creation."""
+"""Auto-generated package exports."""
+
 
 from .predict_pipeline import PredictPipeline
+
 from .streaming_test_dataloader import create_streaming_test_dataloader
 
 __all__ = [

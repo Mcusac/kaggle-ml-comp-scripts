@@ -6,7 +6,7 @@ from typing import Tuple, Union
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def get_blur_transform(
@@ -23,7 +23,7 @@ def get_blur_transform(
             raise ValueError(f"kernel_size must be positive, got {kernel_size}")
         if kernel_size % 2 == 0:
             kernel_size += 1
-            logger.debug("kernel_size was even, adjusted to %s", kernel_size)
+            _logger.debug("kernel_size was even, adjusted to %s", kernel_size)
     elif isinstance(kernel_size, tuple):
         if len(kernel_size) != 2:
             raise ValueError(f"kernel_size tuple must have length 2, got {kernel_size}")

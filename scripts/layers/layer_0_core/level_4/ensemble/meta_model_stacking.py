@@ -14,7 +14,7 @@ from layers.layer_0_core.level_0 import get_logger, DataValidationError, validat
 from layers.layer_0_core.level_1 import validate_paired_predictions
 from layers.layer_0_core.level_3 import create_meta_model
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 _VALID_META_MODEL_TYPES = {"ridge", "linear", "lasso"}
 
@@ -85,7 +85,7 @@ def stacking_ensemble_with_validation(
     n_val_samples, n_targets = base_predictions_val[0].shape
     validate_targets(y_val, n_val_samples, n_targets)
 
-    logger.info(
+    _logger.info(
         f"Stacking {n_base_models} base models with '{meta_model_type}' meta-model "
         f"({n_val_samples} val samples, {n_targets} targets)"
     )
@@ -107,10 +107,10 @@ def stacking_ensemble_with_validation(
         meta_model.fit(target_meta_features, target_labels)
         ensemble_predictions[:, target_idx] = meta_model.predict(target_meta_features)
 
-        logger.debug(
+        _logger.debug(
             f"Target {target_idx}: trained '{meta_model_type}' on "
             f"{n_val_samples} samples"
         )
 
-    logger.info(f"Stacking complete: ensemble shape {ensemble_predictions.shape}")
+    _logger.info(f"Stacking complete: ensemble shape {ensemble_predictions.shape}")
     return ensemble_predictions

@@ -1,4 +1,5 @@
-"""CAFA level_3: ontology data preparation."""
+"""Auto-generated package exports."""
+
 
 from .ontology_data_preparer import OntologyDataPreparer
 

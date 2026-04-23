@@ -4,7 +4,7 @@ from typing import Dict, Optional
 
 from layers.layer_0_core.level_0 import Metric, get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class MetricRegistry:
@@ -15,9 +15,9 @@ class MetricRegistry:
 
     def register(self, metric: Metric) -> None:
         if metric.name in self._metrics:
-            logger.warning("Metric '%s' already registered, overwriting", metric.name)
+            _logger.warning("Metric '%s' already registered, overwriting", metric.name)
         self._metrics[metric.name] = metric
-        logger.debug("Registered metric: %s", metric.name)
+        _logger.debug("Registered metric: %s", metric.name)
 
     def get(self, name: str) -> Optional[Metric]:
         return self._metrics.get(name)

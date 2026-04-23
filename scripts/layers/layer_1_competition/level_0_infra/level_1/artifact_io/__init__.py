@@ -2,7 +2,6 @@
 
 
 from .layout import (
-    logger,
     prepare_artifact_layout,
     write_decoded_shard,
     write_intermediate_candidates,
@@ -30,7 +29,6 @@ __all__ = [
     "infer_save_decoded_result_shard",
     "infer_save_intermediate_candidates",
     "infer_shard_basename",
-    "logger",
     "prepare_artifact_layout",
     "write_decoded_shard",
     "write_intermediate_candidates",

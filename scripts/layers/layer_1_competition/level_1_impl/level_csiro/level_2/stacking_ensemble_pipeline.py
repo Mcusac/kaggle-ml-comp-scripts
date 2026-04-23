@@ -32,7 +32,7 @@ from layers.layer_1_competition.level_1_impl.level_csiro.level_1 import (
     resolve_model_paths_from_config,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _resolve_ensemble_model_paths(ensemble_config: Dict[str, Any]) -> Tuple[List[str], Optional[List[float]]]:
@@ -151,7 +151,7 @@ def generate_ensemble_oof_predictions(
     kf = KFold(n_splits=n_folds, shuffle=True, random_state=random_state)
 
     for fold, (train_idx, val_idx) in enumerate(kf.split(all_features, all_targets)):
-        logger.info(f"  Ensemble fold {fold + 1}/{n_folds}")
+        _logger.info(f"  Ensemble fold {fold + 1}/{n_folds}")
 
         X_tr, X_val = all_features[train_idx], all_features[val_idx]
         y_tr = all_targets[train_idx]
@@ -199,11 +199,11 @@ def _load_training_features(
     if not cache_path:
         raise FileNotFoundError(f"Feature file not found: {feature_filename}")
 
-    logger.info(f"Loading features from {cache_path}")
+    _logger.info(f"Loading features from {cache_path}")
     all_features, all_targets_from_cache, fold_assignments, cache_metadata = load_features(cache_path)
     all_targets = all_targets_from_cache
 
-    logger.info(f"Loaded features: {all_features.shape}, targets: {all_targets.shape}")
+    _logger.info(f"Loaded features: {all_features.shape}, targets: {all_targets.shape}")
     return all_features, all_targets
 
 
@@ -218,9 +218,9 @@ def _generate_ensemble_level_predictions(
     ensemble_oof_preds = []
     ensemble_test_preds = []
 
-    logger.info("Generating ensemble-level OOF predictions...")
+    _logger.info("Generating ensemble-level OOF predictions...")
     for idx, ensemble_config in enumerate(ensemble_configs):
-        logger.info(f"Processing ensemble {idx + 1}/{len(ensemble_configs)}...")
+        _logger.info(f"Processing ensemble {idx + 1}/{len(ensemble_configs)}...")
         oof_pred, test_pred = generate_ensemble_oof_predictions(
             ensemble_config=ensemble_config,
             all_features=all_features,
@@ -231,7 +231,7 @@ def _generate_ensemble_level_predictions(
         )
         ensemble_oof_preds.append(oof_pred)
         ensemble_test_preds.append(test_pred)
-        logger.info(f"  Ensemble {idx + 1} OOF shape: {oof_pred.shape}, test shape: {test_pred.shape}")
+        _logger.info(f"  Ensemble {idx + 1} OOF shape: {oof_pred.shape}, test shape: {test_pred.shape}")
 
     return ensemble_oof_preds, ensemble_test_preds
 
@@ -243,7 +243,7 @@ def _train_stacking_meta_models(
 ) -> dict:
     """Train Ridge meta-models per target on ensemble OOF predictions."""
 
-    logger.info("Training meta-models on ensemble predictions...")
+    _logger.info("Training meta-models on ensemble predictions...")
     n_targets = all_targets.shape[1]
     meta_models = {}
 
@@ -263,9 +263,9 @@ def _train_stacking_meta_models(
             f"Ensemble_{i+1}: {coef:.3f}"
             for i, coef in enumerate(meta_model.coef_)
         ])
-        logger.info(f"  Target {target_idx} weights -> {coef_str}")
+        _logger.info(f"  Target {target_idx} weights -> {coef_str}")
 
-    logger.info(f"Trained {len(meta_models)} meta-models")
+    _logger.info(f"Trained {len(meta_models)} meta-models")
     return meta_models
 
 
@@ -286,7 +286,7 @@ def _calculate_stacking_oof_score(
 
     oof_combined = np.clip(oof_combined, 0, None)
     oof_score, _ = calc_metric(oof_combined, all_targets, config=config)
-    logger.info(f"Stacking Ensemble OOF Score: {oof_score:.4f}")
+    _logger.info(f"Stacking Ensemble OOF Score: {oof_score:.4f}")
     return oof_score
 
 
@@ -297,7 +297,7 @@ def _generate_stacking_final_predictions(
     n_targets: int
 ) -> np.ndarray:
     """Generate final test predictions using meta-models."""
-    logger.info("Generating final test predictions...")
+    _logger.info("Generating final test predictions...")
     final_predictions = np.zeros((n_test, n_targets))
 
     for target_idx, meta_model in meta_models.items():
@@ -308,7 +308,7 @@ def _generate_stacking_final_predictions(
         final_predictions[:, target_idx] = meta_model.predict(X_meta)
 
     final_predictions = np.clip(final_predictions, 0, None)
-    logger.info(f"Final predictions shape: {final_predictions.shape}")
+    _logger.info(f"Final predictions shape: {final_predictions.shape}")
     return final_predictions
 
 
@@ -345,18 +345,18 @@ def stacking_ensemble_pipeline(
     meta_model_alpha = stacking_ensemble_config.get('meta_model_alpha', 10.0)
     n_folds = stacking_ensemble_config.get('n_folds', 5)
 
-    logger.info("=" * 60)
-    logger.info("Stacking Ensemble Pipeline")
-    logger.info("=" * 60)
-    logger.info(f"  Base ensembles: {len(ensemble_configs)}")
-    logger.info(f"  Meta-model alpha: {meta_model_alpha}")
-    logger.info(f"  CV folds: {n_folds}")
+    _logger.info("=" * 60)
+    _logger.info("Stacking Ensemble Pipeline")
+    _logger.info("=" * 60)
+    _logger.info(f"  Base ensembles: {len(ensemble_configs)}")
+    _logger.info(f"  Meta-model alpha: {meta_model_alpha}")
+    _logger.info(f"  CV folds: {n_folds}")
 
     test_csv_path = Path(data_root) / test_filename
     if not test_csv_path.exists():
         raise FileNotFoundError(f"Test CSV not found: {test_csv_path}")
 
-    logger.info("Loading training features and targets...")
+    _logger.info("Loading training features and targets...")
     all_features, all_targets = _load_training_features(ensemble_configs)
 
     test_features = extract_test_features_from_model(
@@ -384,7 +384,7 @@ def stacking_ensemble_pipeline(
         ensemble_test_preds, meta_models, test_features.shape[0], all_targets.shape[1]
     )
 
-    logger.info("Expanding predictions to submission format...")
+    _logger.info("Expanding predictions to submission format...")
     submission_df = expand_predictions_to_submission_format(
         predictions=final_predictions,
         test_csv_path=str(test_csv_path),
@@ -396,11 +396,11 @@ def stacking_ensemble_pipeline(
     output_path = str(paths.get_output_dir() / 'submission.csv')
     save_submission_csv(submission_df, output_path=output_path)
 
-    logger.info("=" * 60)
-    logger.info("✅ Stacking Ensemble Pipeline Complete")
-    logger.info("=" * 60)
-    logger.info(f"  Base ensembles: {len(ensemble_configs)}")
-    logger.info(f"  OOF score: {oof_score:.4f}")
-    logger.info(f"  Output: {output_path}")
+    _logger.info("=" * 60)
+    _logger.info("✅ Stacking Ensemble Pipeline Complete")
+    _logger.info("=" * 60)
+    _logger.info(f"  Base ensembles: {len(ensemble_configs)}")
+    _logger.info(f"  OOF score: {oof_score:.4f}")
+    _logger.info(f"  Output: {output_path}")
 
     return submission_df

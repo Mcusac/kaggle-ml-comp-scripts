@@ -1,7 +1,10 @@
-"""Training pipelines and workflows."""
+"""Auto-generated package exports."""
+
 
 from .cv_splits import create_robust_cv_splits
+
 from .detect_train_export_mode import detect_train_export_mode
+
 from .train_pipeline import TrainPipeline
 
 __all__ = [

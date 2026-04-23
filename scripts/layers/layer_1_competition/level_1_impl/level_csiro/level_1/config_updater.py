@@ -8,7 +8,7 @@ from layers.layer_0_core.level_1 import validate_config_section_exists
 
 from layers.layer_1_competition.level_1_impl.level_csiro.level_0 import find_metadata_dir, load_combo_metadata
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def apply_data_combo(config, combo: dict) -> None:
@@ -60,7 +60,7 @@ def apply_combo_to_config(config: Any, combo_id: str) -> None:
         metadata_dir = find_metadata_dir()
         combo = _load_combo_metadata(metadata_dir, combo_id)
         apply_data_combo(config, combo)
-        logger.info(f"✓ Applied data manipulation combo '{combo_id}'")
+        _logger.info(f"✓ Applied data manipulation combo '{combo_id}'")
     except (FileNotFoundError, ValueError) as e:
         raise
     except Exception as e:

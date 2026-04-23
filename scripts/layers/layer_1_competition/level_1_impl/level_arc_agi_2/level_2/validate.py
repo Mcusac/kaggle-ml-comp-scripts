@@ -15,7 +15,7 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
 )
 
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def run_validate_data_pipeline(
@@ -52,7 +52,7 @@ def run_validate_data_pipeline(
                     },
                 )
             except (OSError, KeyError, ValueError, TypeError) as meta_err:
-                logger.warning(
+                _logger.warning(
                     "validate_data: failed to persist failure metadata for run=%s: %s",
                     getattr(run_ctx, "run_id", "?"),
                     meta_err,

@@ -11,6 +11,7 @@ from .public_symbols import public_symbols_from_file
 from .render import RenderedInit
 from .render import render_aggregate_init
 from .render import render_leaf_init
+from .render import render_mixed_init
 from .render import render_stub_init
 from .walk import bottom_up_package_dirs
 from .walk import read_package_contents
@@ -40,18 +41,26 @@ def _init_path(package_dir: Path) -> Path:
     return package_dir / "__init__.py"
 
 
-def expected_init_for_package(package_dir: Path, include_tests: bool) -> RenderedInit:
+def expected_init_for_package(
+    package_dir: Path,
+    include_tests: bool,
+    *,
+    exclude_symbols: set[str] | None = None,
+) -> RenderedInit:
     contents = read_package_contents(package_dir, include_tests=include_tests)
-
-    if contents.subpackages:
-        return render_aggregate_init(contents.subpackages)
 
     module_to_symbols: dict[str, list[str]] = {}
     for mod in contents.modules:
         path = package_dir / f"{mod}.py"
-        syms = public_symbols_from_file(path)
+        syms = public_symbols_from_file(path, exclude=exclude_symbols)
         if syms:
             module_to_symbols[mod] = syms
+
+    if contents.subpackages and module_to_symbols:
+        return render_mixed_init(contents.subpackages, module_to_symbols)
+
+    if contents.subpackages:
+        return render_aggregate_init(contents.subpackages)
 
     if module_to_symbols:
         return render_leaf_init(module_to_symbols)
@@ -59,11 +68,18 @@ def expected_init_for_package(package_dir: Path, include_tests: bool) -> Rendere
     return render_stub_init()
 
 
-def compute_drift(root: Path, include_tests: bool) -> list[Drift]:
+def compute_drift(
+    root: Path,
+    include_tests: bool,
+    *,
+    exclude_symbols: set[str] | None = None,
+) -> list[Drift]:
     drifts: list[Drift] = []
     for pkg_dir in bottom_up_package_dirs(root, include_tests=include_tests):
         init_path = _init_path(pkg_dir)
-        rendered = expected_init_for_package(pkg_dir, include_tests=include_tests)
+        rendered = expected_init_for_package(
+            pkg_dir, include_tests=include_tests, exclude_symbols=exclude_symbols
+        )
         expected = rendered.text
         try:
             actual = init_path.read_text(encoding="utf-8") if init_path.exists() else ""
@@ -86,12 +102,14 @@ def compute_drift(root: Path, include_tests: bool) -> list[Drift]:
 def check_regeneration(
     root: Path,
     include_tests: bool = False,
+    *,
+    exclude_symbols: set[str] | None = None,
 ) -> tuple[int, list[Drift]]:
     """
     Return (exit_code, drifts).
     Exit code is 0 on no drift, 1 otherwise.
     """
-    drifts = compute_drift(root, include_tests=include_tests)
+    drifts = compute_drift(root, include_tests=include_tests, exclude_symbols=exclude_symbols)
     return (0 if not drifts else 1), drifts
 
 
@@ -99,13 +117,15 @@ def apply_regeneration(
     root: Path,
     include_tests: bool = False,
     dry_run: bool = False,
+    *,
+    exclude_symbols: set[str] | None = None,
 ) -> tuple[int, list[Drift]]:
     """
     Apply deterministic regeneration under `root`.
 
     Returns (exit_code, drifts). Exit code is always 0 unless an IO error occurs.
     """
-    drifts = compute_drift(root, include_tests=include_tests)
+    drifts = compute_drift(root, include_tests=include_tests, exclude_symbols=exclude_symbols)
     if dry_run:
         return 0, drifts
 

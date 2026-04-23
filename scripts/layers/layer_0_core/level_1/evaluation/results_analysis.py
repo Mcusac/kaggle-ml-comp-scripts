@@ -6,7 +6,7 @@ from typing import List, Optional, Dict
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def calculate_fold_statistics(fold_scores: List[float]) -> Dict[str, float]:
@@ -81,7 +81,7 @@ def generate_cv_test_gap_warnings(
                 f"This may indicate overfitting. Possible causes: overfitting to validation folds, "
                 f"distribution shift, or model instability."
             )
-            logger.warning(
+            _logger.warning(
                 f"⚠️ Large CV-test gap detected: {cv_test_gap:.4f} (threshold: {threshold}). "
                 f"This may indicate overfitting. CV: {cv_score:.4f}, Test: {test_score:.4f}"
             )

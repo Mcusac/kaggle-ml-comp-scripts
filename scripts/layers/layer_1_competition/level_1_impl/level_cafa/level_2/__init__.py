@@ -1,4 +1,5 @@
-"""CAFA level_2: feature extraction for per-ontology training."""
+"""Auto-generated package exports."""
+
 
 from .feature_extractor import OntologyFeatureExtractor
 

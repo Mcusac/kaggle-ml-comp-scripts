@@ -10,7 +10,7 @@ from layers.layer_0_core.level_2 import extract_handcrafted_features
 
 from layers.layer_1_competition.level_1_impl.level_cafa.level_1 import load_embedding_data
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class OntologyFeatureExtractor:
@@ -45,10 +45,10 @@ class OntologyFeatureExtractor:
                     train_seqs, protein_ids, feature_type, ontology_config
                 )
             else:
-                logger.warning(f"Unknown feature type: {feature_type}, using hand-crafted")
+                _logger.warning(f"Unknown feature type: {feature_type}, using hand-crafted")
                 return self._extract_handcrafted_features(train_seqs, protein_ids)
         except Exception as e:
-            logger.error(f"Error extracting features: {e}")
+            _logger.error(f"Error extracting features: {e}")
             return None
 
     def _extract_handcrafted_features(
@@ -66,10 +66,10 @@ class OntologyFeatureExtractor:
                     features.append(np.zeros(HANDCRAFTED_FEATURE_DIM))
 
             X_train = np.array(features)
-            logger.info(f"Extracted {len(features)} hand-crafted feature vectors")
+            _logger.info(f"Extracted {len(features)} hand-crafted feature vectors")
             return X_train
         except ImportError:
-            logger.warning(
+            _logger.warning(
                 "Hand-crafted feature extraction not available. "
                 "Using placeholder features."
             )
@@ -83,7 +83,7 @@ class OntologyFeatureExtractor:
         ontology_config: Dict[str, Any]
     ) -> Optional[np.ndarray]:
         """Extract embedding features."""
-        logger.info(f"Extracting {feature_type} features...")
+        _logger.info(f"Extracting {feature_type} features...")
 
         if feature_type == 'fused_embeddings':
             features_list = ontology_config.get('features', ['protbert', 'esm2', 'hc'])
@@ -116,7 +116,7 @@ class OntologyFeatureExtractor:
                 )
                 return fused
             else:
-                logger.warning("No embeddings loaded")
+                _logger.warning("No embeddings loaded")
                 return np.array([])
         else:
             embeds, embed_ids = load_embedding_data(
@@ -128,5 +128,5 @@ class OntologyFeatureExtractor:
                 aligned, _ = align_embeddings(embeds, embed_ids, protein_ids)
                 return aligned
             else:
-                logger.warning(f"No embeddings loaded for {feature_type}")
+                _logger.warning(f"No embeddings loaded for {feature_type}")
                 return np.array([])

@@ -9,7 +9,7 @@ from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_3 import validate_path_is_file
 from layers.layer_0_core.level_4 import load_csv
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def load_and_validate_test_data(

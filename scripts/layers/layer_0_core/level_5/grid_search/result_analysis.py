@@ -7,7 +7,7 @@ from layers.layer_0_core.level_0 import extract_results_list, get_logger, merge_
 from layers.layer_0_core.level_1 import get_transformer_hyperparameter_grid
 from layers.layer_0_core.level_4 import load_json
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 # Parameter types for range calculation
 NUMERIC_PARAMS = {
@@ -45,7 +45,7 @@ def load_raw_results(results_file: Union[str, Path]) -> List[Dict[str, Any]]:
         )
     data = extract_results_list(raw)
 
-    logger.info(f"Loaded {len(data)} results from {results_file}")
+    _logger.info(f"Loaded {len(data)} results from {results_file}")
     return data
 
 
@@ -87,7 +87,7 @@ def extract_top_results(
     )
 
     top_results = sorted_results[:top_n]
-    logger.info(f"Extracted top {len(top_results)} results (from {len(valid_results)} valid)")
+    _logger.info(f"Extracted top {len(top_results)} results (from {len(valid_results)} valid)")
     return top_results
 
 
@@ -131,7 +131,7 @@ def extract_parameter_ranges(
         ]
 
         if not param_values:
-            logger.warning(f"No values found for parameter '{param_name}' in top results")
+            _logger.warning(f"No values found for parameter '{param_name}' in top results")
             continue
 
         if param_name in NUMERIC_PARAMS:
@@ -145,7 +145,7 @@ def extract_parameter_ranges(
         else:
             unique_values = sorted(set(param_values), key=str)
             focused_ranges[param_name] = unique_values
-            logger.debug(
+            _logger.debug(
                 f"Parameter '{param_name}': unknown type, "
                 f"keeping {len(unique_values)} values: {unique_values}"
             )
@@ -182,7 +182,7 @@ def analyze_results_for_focused_grid(
         range_expansion_factor=range_expansion_factor,
         min_values_per_param=min_values_per_param,
     )
-    logger.info(f"Generated focused parameter ranges for {len(focused_ranges)} parameters")
+    _logger.info(f"Generated focused parameter ranges for {len(focused_ranges)} parameters")
     return focused_ranges
 
 
@@ -264,7 +264,7 @@ def _extract_numeric_range(
             focused_values.add(expanded_min + i * step)
         focused_list = sorted(focused_values)
 
-    logger.debug(
+    _logger.debug(
         f"Parameter '{param_name}': "
         f"original range [{min_val:.6f}, {max_val:.6f}], "
         f"expanded to [{expanded_min:.6f}, {expanded_max:.6f}], "
@@ -292,12 +292,12 @@ def _extract_categorical_values(
     unique_values = sorted(set(param_values))
 
     if len(unique_values) < min_values_per_param:
-        logger.warning(
+        _logger.warning(
             f"Parameter '{param_name}' has only {len(unique_values)} unique value(s) "
             f"in top results (minimum requested: {min_values_per_param})"
         )
 
-    logger.debug(
+    _logger.debug(
         f"Parameter '{param_name}': "
         f"keeping {len(unique_values)} values: {unique_values}"
     )

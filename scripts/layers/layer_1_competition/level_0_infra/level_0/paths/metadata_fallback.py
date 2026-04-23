@@ -4,7 +4,7 @@ from typing import Dict, Any, Optional
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def load_feature_filename_from_gridsearch(
@@ -29,7 +29,7 @@ def load_feature_filename_from_gridsearch(
         Feature filename if found, None otherwise
     """
     if not variant_id or not regression_model_type:
-        logger.warning(
+        _logger.warning(
             f"feature_filename not found in exported metadata and cannot fallback: "
             f"variant_id={variant_id}, regression_model_type={regression_model_type}. "
             f"Please ensure the exported model_metadata.json contains 'feature_filename'."
@@ -40,7 +40,7 @@ def load_feature_filename_from_gridsearch(
     if loader is None:
         return None
 
-    logger.info(f"feature_filename not in exported metadata, looking up from grid search metadata...")
+    _logger.info(f"feature_filename not in exported metadata, looking up from grid search metadata...")
     try:
         results = loader(
             regression_model_type=regression_model_type,
@@ -52,17 +52,17 @@ def load_feature_filename_from_gridsearch(
             feature_filename = best_result.get('feature_filename')
             if feature_filename:
                 metadata['feature_filename'] = feature_filename
-                logger.info(
+                _logger.info(
                     f"Found feature_filename from grid search metadata: {feature_filename} "
                     f"(cv_score: {best_result.get('cv_score', 0):.4f})"
                 )
                 return feature_filename
             else:
-                logger.warning(f"feature_filename not found in grid search result for variant {variant_id}")
+                _logger.warning(f"feature_filename not found in grid search result for variant {variant_id}")
         else:
-            logger.warning(f"No grid search results found for variant {variant_id}")
+            _logger.warning(f"No grid search results found for variant {variant_id}")
     except Exception as e:
-        logger.warning(
+        _logger.warning(
             f"Could not load feature_filename from grid search metadata: {e}. "
             f"Please ensure the exported model_metadata.json contains 'feature_filename'."
         )

@@ -8,7 +8,7 @@ from layers.layer_0_core.level_0 import (
     generate_power_set,
     get_logger,
 )
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 _ALWAYS_APPLIED_PREPROCESSING: frozenset = frozenset({"resize", "normalize"})
 
@@ -28,9 +28,9 @@ def get_max_augmentation_variant() -> Tuple[List[str], List[str]]:
     """Return the maximal variant: all optional preprocessing and augmentation options."""
     preprocessing_options, augmentation_options = _get_preprocessing_and_augmentation_options()
 
-    logger.info("Max augmentation variant:")
-    logger.info("  Preprocessing: %s", preprocessing_options)
-    logger.info("  Augmentation: %s", augmentation_options)
+    _logger.info("Max augmentation variant:")
+    _logger.info("  Preprocessing: %s", preprocessing_options)
+    _logger.info("  Augmentation: %s", augmentation_options)
 
     return preprocessing_options, augmentation_options
 
@@ -54,18 +54,18 @@ def get_dataset_variant_grid() -> List[Tuple[List[str], List[str]]]:
         for aug_combo in augmentation_combinations
     ]
 
-    logger.info("Generated dataset variant grid: %d combinations", total_combinations)
-    logger.info(
+    _logger.info("Generated dataset variant grid: %d combinations", total_combinations)
+    _logger.info(
         "  Optional preprocessing methods: %d -> %d combinations",
         num_optional_preprocessing,
         num_preprocessing_combinations,
     )
-    logger.info(
+    _logger.info(
         "  Augmentation methods: %d -> %d combinations",
         num_augmentation,
         num_augmentation_combinations,
     )
-    logger.info(
+    _logger.info(
         "  Total: %d x %d = %d",
         num_preprocessing_combinations,
         num_augmentation_combinations,

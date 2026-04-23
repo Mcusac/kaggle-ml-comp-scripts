@@ -15,7 +15,7 @@ from layers.layer_0_core.level_2 import (
 )
 from layers.layer_0_core.level_3 import build_transforms_for_dataloaders
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def create_dataloaders(
@@ -99,10 +99,10 @@ def create_dataloaders(
         worker_init_fn=worker_init_fn,
     )
     
-    logger.info(f"✅ Created data loaders:")
-    logger.info(f"  Train: {len(train_dataset)} samples, {len(train_loader)} batches")
-    logger.info(f"  Val: {len(val_dataset)} samples, {len(val_loader)} batches")
-    logger.info(f"  Batch size: {batch_size}, Num workers: {num_workers}")
+    _logger.info(f"✅ Created data loaders:")
+    _logger.info(f"  Train: {len(train_dataset)} samples, {len(train_loader)} batches")
+    _logger.info(f"  Val: {len(val_dataset)} samples, {len(val_loader)} batches")
+    _logger.info(f"  Batch size: {batch_size}, Num workers: {num_workers}")
     
     return train_loader, val_loader
 
@@ -155,6 +155,6 @@ def create_test_dataloader(
         pin_memory=pin_memory,
     )
     
-    logger.info(f"✅ Created test loader: {len(test_dataset)} samples, {len(test_loader)} batches")
+    _logger.info(f"✅ Created test loader: {len(test_dataset)} samples, {len(test_loader)} batches")
     
     return test_loader

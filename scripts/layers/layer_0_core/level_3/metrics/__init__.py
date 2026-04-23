@@ -1,74 +1,57 @@
-"""Metrics: classification and regression implementations.
+"""Auto-generated package exports."""
 
-Importing this package auto-registers all standard metrics into the global
-metric registry (level_1.register_metric). This is intentional: any module
-that imports level_3.metrics gets a fully populated registry as a side effect,
-so callers never have to call register_*() themselves. The registration
-functions are private (_register_*) because they are an implementation detail
-of this package's import contract, not part of its public API.
-"""
 
 from .classification import (
+    AccuracyMetric,
+    F1Metric,
+    PrecisionMetric,
+    ROCAUCMetric,
+    RecallMetric,
     calculate_accuracy,
+    calculate_classification_metrics,
     calculate_f1,
     calculate_precision,
     calculate_recall,
     calculate_roc_auc,
-    AccuracyMetric,
-    F1Metric,
-    PrecisionMetric,
-    RecallMetric,
-    ROCAUCMetric,
-    calculate_classification_metrics,
-    _register_classification_metrics,
 )
 
 from .regression import (
-    calculate_rmse,
+    MAEMetric,
+    R2Metric,
+    RMSEMetric,
+    WeightedRMSEMetric,
     calculate_mae,
     calculate_r2,
     calculate_r2_per_target,
-    calculate_weighted_r2_from_arrays,
-    prepare_weighted_arrays,
-    calculate_weighted_rmse,
-    RMSEMetric,
-    MAEMetric,
-    R2Metric,
-    WeightedRMSEMetric,
     calculate_regression_metrics,
-    _register_regression_metrics,
+    calculate_rmse,
+    calculate_weighted_r2_from_arrays,
+    calculate_weighted_rmse,
+    prepare_weighted_arrays,
 )
 
-# Auto-register all standard metrics when this package is imported.
-_register_classification_metrics()
-_register_regression_metrics()
-
 __all__ = [
-    # Classification — functions
-    "calculate_accuracy",
-    "calculate_f1",
-    "calculate_precision",
-    "calculate_recall",
-    "calculate_roc_auc",
-    "calculate_classification_metrics",
-    # Classification — classes
     "AccuracyMetric",
     "F1Metric",
+    "MAEMetric",
     "PrecisionMetric",
-    "RecallMetric",
+    "R2Metric",
+    "RMSEMetric",
     "ROCAUCMetric",
-    # Regression — functions
-    "calculate_rmse",
+    "RecallMetric",
+    "WeightedRMSEMetric",
+    "calculate_accuracy",
+    "calculate_classification_metrics",
+    "calculate_f1",
     "calculate_mae",
+    "calculate_precision",
     "calculate_r2",
     "calculate_r2_per_target",
-    "calculate_weighted_r2_from_arrays",
-    "prepare_weighted_arrays",
-    "calculate_weighted_rmse",
+    "calculate_recall",
     "calculate_regression_metrics",
-    # Regression — classes
-    "RMSEMetric",
-    "MAEMetric",
-    "R2Metric",
-    "WeightedRMSEMetric",
+    "calculate_rmse",
+    "calculate_roc_auc",
+    "calculate_weighted_r2_from_arrays",
+    "calculate_weighted_rmse",
+    "prepare_weighted_arrays",
 ]

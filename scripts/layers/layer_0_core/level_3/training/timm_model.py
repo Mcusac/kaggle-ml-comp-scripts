@@ -11,9 +11,9 @@ from layers.layer_0_core.level_0 import get_logger, get_torch
 from layers.layer_0_core.level_1 import BaseVisionModel
 from layers.layer_0_core.level_2 import TimmWeightLoader
 
-logger = get_logger(__name__)
-torch = get_torch()
-nn = torch.nn
+_logger = get_logger(__name__)
+_torch = get_torch()
+_nn = _torch.nn
 
 DEFAULT_IMAGE_SIZE: Tuple[int, int] = (224, 224)
 
@@ -72,7 +72,7 @@ class TimmModel(BaseVisionModel):
 
     def _create_backbone(self, model_name: str, pretrained: bool) -> tuple:
 
-        logger.info(f"Creating timm model: {model_name} (pretrained={pretrained})")
+        _logger.info(f"Creating timm model: {model_name} (pretrained={pretrained})")
 
         weight_loader = TimmWeightLoader()
 
@@ -103,7 +103,7 @@ class TimmModel(BaseVisionModel):
         if hasattr(backbone, "num_classes"):
             return int(backbone.num_classes)
 
-        logger.warning(
+        _logger.warning(
             "Could not determine feature dimension from backbone attributes. "
             "Falling back to default 2048."
         )
@@ -125,24 +125,24 @@ class TimmModel(BaseVisionModel):
         if self.dataset_type == 'split':
             hidden_split = max(32, int(self.feat_dim * 2 * 0.25))
 
-            self.head_split = nn.Sequential(
-                nn.Linear(self.feat_dim * 2, hidden_split),
-                nn.ReLU(inplace=True),
-                nn.Dropout(0.3),
-                nn.Linear(hidden_split, num_classes),
+            self.head_split = _nn.Sequential(
+                _nn.Linear(self.feat_dim * 2, hidden_split),
+                _nn.ReLU(inplace=True),
+                _nn.Dropout(0.3),
+                _nn.Linear(hidden_split, num_classes),
             )
 
-            self.cross_gate_left = nn.Linear(self.feat_dim, self.feat_dim)
-            self.cross_gate_right = nn.Linear(self.feat_dim, self.feat_dim)
+            self.cross_gate_left = _nn.Linear(self.feat_dim, self.feat_dim)
+            self.cross_gate_right = _nn.Linear(self.feat_dim, self.feat_dim)
 
         else:
             hidden_size = max(32, int(self.feat_dim * 0.25))
 
-            self.head_single = nn.Sequential(
-                nn.Linear(self.feat_dim, hidden_size),
-                nn.ReLU(inplace=True),
-                nn.Dropout(0.3),
-                nn.Linear(hidden_size, num_classes),
+            self.head_single = _nn.Sequential(
+                _nn.Linear(self.feat_dim, hidden_size),
+                _nn.ReLU(inplace=True),
+                _nn.Dropout(0.3),
+                _nn.Linear(hidden_size, num_classes),
             )
 
     # ------------------------------------------------------------------
@@ -168,7 +168,7 @@ class TimmModel(BaseVisionModel):
                     return (size[-2], size[-1])
 
         except Exception as e:
-            logger.warning(f"Error reading pretrained_cfg input_size: {e}")
+            _logger.warning(f"Error reading pretrained_cfg input_size: {e}")
 
         return DEFAULT_IMAGE_SIZE
 
@@ -212,13 +212,13 @@ class TimmModel(BaseVisionModel):
 
         self.feat_dim = self._extract_feature_dimension(self.backbone)
 
-        logger.info(f"Backbone feature dimension: {self.feat_dim}")
+        _logger.info(f"Backbone feature dimension: {self.feat_dim}")
 
         self._create_regression_heads(num_classes)
 
         self.input_size = self._extract_input_size(self.backbone, input_size)
 
-        logger.info(f"Model input size: {self.input_size}")
+        _logger.info(f"Model input size: {self.input_size}")
 
     # ------------------------------------------------------------------
     # Forward
@@ -226,8 +226,8 @@ class TimmModel(BaseVisionModel):
 
     def forward(
         self,
-        x: Union[torch.Tensor, Tuple[torch.Tensor, torch.Tensor]],
-    ) -> torch.Tensor:
+        x: Union[_torch.Tensor, Tuple[_torch.Tensor, _torch.Tensor]],
+    ) -> _torch.Tensor:
 
         if isinstance(x, tuple):
             if self.dataset_type != 'split':
@@ -242,13 +242,13 @@ class TimmModel(BaseVisionModel):
             left_feat = self.backbone.forward_features(left_img)
             right_feat = self.backbone.forward_features(right_img)
 
-            g_l = torch.sigmoid(self.cross_gate_left(right_feat))
-            g_r = torch.sigmoid(self.cross_gate_right(left_feat))
+            g_l = _torch.sigmoid(self.cross_gate_left(right_feat))
+            g_r = _torch.sigmoid(self.cross_gate_right(left_feat))
 
             left_feat = left_feat * g_l
             right_feat = right_feat * g_r
 
-            combined = torch.cat([left_feat, right_feat], dim=1)
+            combined = _torch.cat([left_feat, right_feat], dim=1)
 
             return self.head_split(combined)
 
@@ -275,14 +275,14 @@ class TimmModel(BaseVisionModel):
         for p in self.backbone.parameters():
             p.requires_grad = False
 
-        logger.info(f"Frozen {self.model_name} backbone")
+        _logger.info(f"Frozen {self.model_name} backbone")
 
     def unfreeze_backbone(self) -> None:
 
         for p in self.backbone.parameters():
             p.requires_grad = True
 
-        logger.info(f"Unfrozen {self.model_name} backbone")
+        _logger.info(f"Unfrozen {self.model_name} backbone")
 
     def is_pretrained(self) -> bool:
         return self._pretrained_loaded

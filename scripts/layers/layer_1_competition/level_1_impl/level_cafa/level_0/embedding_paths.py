@@ -12,7 +12,7 @@ from layers.layer_0_core.level_0 import (
 
 EMBEDDING_TYPE_ALIASES = {"esm2": "esm2_650m"}
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def get_embedding_paths() -> tuple[dict, Path]:

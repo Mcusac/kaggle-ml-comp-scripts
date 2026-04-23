@@ -1,10 +1,18 @@
-"""Devtools infrastructure layers.
+"""Auto-generated aggregation exports."""
 
-The aggregate public surface is ``level_0`` (primitives and star-exported subpackages).
-For composed helpers and console reporting import ``level_1`` or ``level_2`` explicitly.
-"""
 
-from . import level_0
+from . import (
+    level_0,
+    level_1,
+    level_2,
+)
+
 from .level_0 import *
+from .level_1 import *
+from .level_2 import *
 
-__all__ = list(level_0.__all__)
+__all__ = (
+    list(level_0.__all__)
+    + list(level_1.__all__)
+    + list(level_2.__all__)
+)

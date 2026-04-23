@@ -19,7 +19,7 @@ from layers.layer_1_competition.level_0_infra.level_0 import (
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.paths import ARC26Paths
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.run import resolve_run_dir
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _try_get_gpu_name() -> Optional[str]:
@@ -121,5 +121,5 @@ def init_run_context(
 
     save_json(payload, ctx.manifest_path)
     ctx.commands_path.write_text(payload["commands"]["raw"] + "\n", encoding="utf-8")
-    logger.info("Initialized ARC run folder: %s", ctx.run_dir)
+    _logger.info("Initialized ARC run folder: %s", ctx.run_dir)
     return ctx

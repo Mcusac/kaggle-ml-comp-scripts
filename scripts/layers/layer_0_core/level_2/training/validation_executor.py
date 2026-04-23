@@ -7,10 +7,10 @@ from typing import Any, Callable, List, Tuple
 from layers.layer_0_core.level_0 import get_logger, get_torch
 from layers.layer_0_core.level_1 import run_supervised_batch
 
-torch = get_torch()
-nn = torch.nn
-DataLoader = torch.utils.data.DataLoader
-logger = get_logger(__name__)
+_torch = get_torch()
+_nn = _torch.nn
+_DataLoader = _torch.utils.data.DataLoader
+_logger = get_logger(__name__)
 
 
 class ValidationPhaseExecutor:
@@ -18,9 +18,9 @@ class ValidationPhaseExecutor:
 
     def __init__(
         self,
-        model: nn.Module,
-        device: torch.device,
-        criterion: nn.Module,
+        model: _nn.Module,
+        device: _torch.device,
+        criterion: _nn.Module,
         config: Any,
         metric_calculator: Callable,
     ):
@@ -43,11 +43,11 @@ class ValidationPhaseExecutor:
     def process_batch(
         self,
         batch: Tuple,
-    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    ) -> Tuple[_torch.Tensor, _torch.Tensor, _torch.Tensor]:
         """Process a single batch via run_supervised_batch."""
         return run_supervised_batch(self.model, self.device, self.criterion, batch)
 
-    def validate(self, val_loader: DataLoader) -> Tuple[float, float, np.ndarray]:
+    def validate(self, val_loader: _DataLoader) -> Tuple[float, float, np.ndarray]:
         """
         Validate model on validation set.
 
@@ -69,12 +69,12 @@ class ValidationPhaseExecutor:
         all_targets: List[np.ndarray] = []
         num_batches = 0
 
-        with torch.no_grad():
+        with _torch.no_grad():
             for batch in val_loader:
                 outputs, targets, loss = self.process_batch(batch)
 
-                if torch.isnan(loss):
-                    logger.warning("NaN loss detected during validation")
+                if _torch.isnan(loss):
+                    _logger.warning("NaN loss detected during validation")
 
                 total_loss += loss.item()
                 num_batches += 1

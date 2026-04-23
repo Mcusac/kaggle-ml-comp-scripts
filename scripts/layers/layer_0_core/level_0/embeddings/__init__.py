@@ -1,8 +1,12 @@
-"""Base utilities for working with embeddings."""
+"""Auto-generated package exports."""
+
 
 from .alignment import align_embeddings
+
 from .id_ops import find_common_ids
+
 from .normalize import normalize_embedding_type
+
 from .path_resolver import resolve_embedding_base_path
 
 __all__ = [

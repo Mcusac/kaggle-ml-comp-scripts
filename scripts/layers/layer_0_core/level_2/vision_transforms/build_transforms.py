@@ -7,7 +7,7 @@ from typing import List, Optional, Tuple, Union
 from layers.layer_0_core.level_0 import get_logger, IMAGENET_MEAN, IMAGENET_STD
 from layers.layer_0_core.level_1 import get_resize_transform, get_normalize_transform
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def build_preprocessing_transforms(
@@ -28,22 +28,22 @@ def build_preprocessing_transforms(
 
     if image_size:
         transform_list.append(get_resize_transform(image_size))
-        logger.debug(f"Added resize transform: {image_size}")
+        _logger.debug(f"Added resize transform: {image_size}")
 
     if center_crop:
         crop_size = image_size if isinstance(image_size, int) else image_size[0]
         transform_list.append(transforms.CenterCrop(crop_size))
-        logger.debug(f"Added center crop: {crop_size}")
+        _logger.debug(f"Added center crop: {crop_size}")
 
     if additional_transforms:
         transform_list.extend(additional_transforms)
-        logger.debug(f"Added {len(additional_transforms)} additional transforms")
+        _logger.debug(f"Added {len(additional_transforms)} additional transforms")
 
     transform_list.append(transforms.ToTensor())
 
     if normalize:
         transform_list.append(get_normalize_transform(mean, std))
-        logger.debug(f"Added normalization: mean={mean}, std={std}")
+        _logger.debug(f"Added normalization: mean={mean}, std={std}")
 
     return transforms.Compose(transform_list)
 

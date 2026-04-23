@@ -1,44 +1,20 @@
-"""CSIRO level_7: CLI facade (subparsers + handler registry + multi-variant pipeline)."""
+"""Auto-generated package exports."""
 
-from .multi_variant_regression_training_pipeline import (
-    multi_variant_regression_training_pipeline,
-)
 
 from .handlers import (
+    FRAMEWORK_SUBPARSER_NAMES_TO_SKIP,
     extend_subparsers,
     get_handlers,
-    handle_cleanup_grid_search,
-    handle_csiro_ensemble,
-    handle_dataset_grid_search,
-    handle_export_model,
-    handle_hyperparameter_grid_search,
-    handle_hybrid_stacking,
-    handle_multi_variant_regression_train,
-    handle_regression_ensemble,
-    handle_regression_grid_search,
-    handle_stacking,
-    handle_stacking_ensemble,
-    handle_submit,
-    handle_submit_best,
-    handle_train_and_export,
 )
 
+from .handlers_multi_variant import handle_multi_variant_regression_train
+
+from .multi_variant_regression_training_pipeline import multi_variant_regression_training_pipeline
+
 __all__ = [
+    "FRAMEWORK_SUBPARSER_NAMES_TO_SKIP",
     "extend_subparsers",
     "get_handlers",
-    "multi_variant_regression_training_pipeline",
-    "handle_cleanup_grid_search",
-    "handle_csiro_ensemble",
-    "handle_dataset_grid_search",
-    "handle_export_model",
-    "handle_hyperparameter_grid_search",
-    "handle_hybrid_stacking",
     "handle_multi_variant_regression_train",
-    "handle_regression_ensemble",
-    "handle_regression_grid_search",
-    "handle_stacking",
-    "handle_stacking_ensemble",
-    "handle_submit",
-    "handle_submit_best",
-    "handle_train_and_export",
+    "multi_variant_regression_training_pipeline",
 ]

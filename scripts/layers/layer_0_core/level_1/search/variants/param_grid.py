@@ -6,7 +6,7 @@ from typing import Any, Dict, List
 
 from layers.layer_0_core.level_0 import ConfigValidationError, get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def resolve_param_grid(
@@ -25,7 +25,7 @@ def resolve_param_grid(
     """
 
     if quick_mode and "quick_param_grid" in grid_config:
-        logger.debug("Quick mode: resolved quick_param_grid")
+        _logger.debug("Quick mode: resolved quick_param_grid")
         return grid_config["quick_param_grid"].copy()
 
     if "param_grid" in grid_config:

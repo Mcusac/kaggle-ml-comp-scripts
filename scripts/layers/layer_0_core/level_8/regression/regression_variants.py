@@ -9,7 +9,7 @@ from layers.layer_0_core.level_1 import split_features_by_fold
 from layers.layer_0_core.level_3 import create_regression_model
 from layers.layer_0_core.level_7 import build_success_result
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def run_regression_cv_fold(
@@ -41,7 +41,7 @@ def run_regression_cv_fold(
     Returns:
         Fold score (weighted R²)
     """
-    logger.info(f"Fold {fold+1}/{n_folds}")
+    _logger.info(f"Fold {fold+1}/{n_folds}")
 
     # Split features by fold
     train_features, val_features, train_targets, val_targets = split_features_by_fold(
@@ -61,7 +61,7 @@ def run_regression_cv_fold(
     weighted_r2, r2_scores = metric_calculator(val_predictions, val_targets, config=config)
     fold_score = weighted_r2
 
-    logger.info(f"Fold {fold+1} score: {fold_score:.4f}")
+    _logger.info(f"Fold {fold+1} score: {fold_score:.4f}")
 
     return fold_score
 

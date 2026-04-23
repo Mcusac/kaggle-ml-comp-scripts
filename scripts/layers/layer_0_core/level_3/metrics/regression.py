@@ -19,7 +19,7 @@ from layers.layer_0_core.level_0 import Metric, get_logger
 from layers.layer_0_core.level_1 import register_metric
 from layers.layer_0_core.level_2 import validate_paired_arrays
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 # =====================================================

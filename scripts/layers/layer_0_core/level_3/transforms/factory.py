@@ -32,7 +32,7 @@ from layers.layer_0_core.level_1 import (
 )
 from layers.layer_0_core.level_2 import PREPROCESSING_BUILDERS, build_augmentation_transforms
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _build_deterministic_augmentations_from_list(
@@ -60,11 +60,11 @@ def _build_deterministic_augmentations_from_list(
         elif aug_name == "noise_addition":
             tensor_list.append(get_noise_transform())
         elif aug_name == "geometric_transformations":
-            logger.debug(
+            _logger.debug(
                 "Skipping 'geometric_transformations' (handled by variant)"
             )
         else:
-            logger.warning("Unknown augmentation '%s', skipping", aug_name)
+            _logger.warning("Unknown augmentation '%s', skipping", aug_name)
     return (pil_list, tensor_list)
 
 
@@ -259,9 +259,9 @@ def build_tta_transforms(
         _build_single_tta_variant(v, base_pil, augmentation_list, config)
         for v in tta_variants
     ]
-    logger.info("Built %s TTA variants: %s", len(transforms_list), ", ".join(tta_variants))
+    _logger.info("Built %s TTA variants: %s", len(transforms_list), ", ".join(tta_variants))
     if augmentation_list:
-        logger.info(
+        _logger.info(
             "Applying augmentations deterministically: %s",
             ", ".join(augmentation_list),
         )

@@ -1,19 +1,22 @@
-"""Level 0: Core utilities. Public API defined in each subpackage."""
+"""Auto-generated aggregation exports."""
 
-from . import abstractions
-from . import cli
-from . import config
-from . import embeddings
-from . import errors
-from . import grid_search
-from . import ontology
-from . import paths
-from . import prediction_guards
-from . import protein_features
-from . import runtime
-from . import scoring
-from . import training
-from . import vision
+
+from . import (
+    abstractions,
+    cli,
+    config,
+    embeddings,
+    errors,
+    grid_search,
+    ontology,
+    paths,
+    prediction_guards,
+    protein_features,
+    runtime,
+    scoring,
+    training,
+    vision,
+)
 
 from .abstractions import *
 from .cli import *

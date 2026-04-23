@@ -8,7 +8,7 @@ from typing import Any, Optional, Union
 from layers.layer_0_core.level_0 import get_logger, DataLoadError, DataProcessingError, DataValidationError, ensure_dir
 from layers.layer_0_core.level_3 import validate_path_is_file
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 PICKLE_HIGHEST_PROTOCOL = pickle.HIGHEST_PROTOCOL
 
@@ -84,6 +84,6 @@ def save_pickle(
                 pickle.dump(data, f)
             else:
                 pickle.dump(data, f, protocol=protocol)
-        logger.debug(f"Saved pickle: {path}")
+        _logger.debug(f"Saved pickle: {path}")
     except Exception as e:
         raise DataProcessingError(f"Failed to save pickle {path}: {e}") from e

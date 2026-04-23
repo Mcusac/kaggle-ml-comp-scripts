@@ -7,7 +7,7 @@ from typing import Dict, Callable, Optional, Any
 from layers.layer_0_core.level_0 import noise_reduction, get_image_size_from_config
 from layers.layer_0_core.level_1 import get_resize_transform, contrast_enhancement
 
-TransformBuilder = Callable[[Any], Optional[Any]]
+_TransformBuilder = Callable[[Any], Optional[Any]]
 
 
 def _get_center_crop_transform(config: Any) -> Optional[transforms.CenterCrop]:
@@ -32,7 +32,7 @@ def _get_resize_from_config(config: Any) -> Optional[Any]:
     return get_resize_transform(image_size)
 
 
-PREPROCESSING_BUILDERS: Dict[str, TransformBuilder] = {
+PREPROCESSING_BUILDERS: Dict[str, _TransformBuilder] = {
     "resize": _get_resize_from_config,
     "center_crop": _get_center_crop_transform,
     "contrast_enhancement": lambda config: transforms.Lambda(

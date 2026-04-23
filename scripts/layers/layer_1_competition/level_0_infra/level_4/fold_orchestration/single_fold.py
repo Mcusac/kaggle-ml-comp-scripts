@@ -12,7 +12,7 @@ from layers.layer_0_core.level_3 import (
 
 from layers.layer_1_competition.level_0_infra.level_4.trainer import create_trainer
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def train_single_fold(
@@ -47,9 +47,9 @@ def train_single_fold(
     Returns:
         Best score for this fold
     """
-    logger.info("=" * 60)
-    logger.info(f"Training fold {fold+1}/{n_folds}")
-    logger.info("=" * 60)
+    _logger.info("=" * 60)
+    _logger.info(f"Training fold {fold+1}/{n_folds}")
+    _logger.info("=" * 60)
 
     device = get_device("auto")
 
@@ -86,7 +86,7 @@ def train_single_fold(
     )
 
     best_score = trainer.best_score
-    logger.info(f"Fold {fold+1} best score: {best_score:.4f}")
+    _logger.info(f"Fold {fold+1} best score: {best_score:.4f}")
 
     del trainer, train_loader, val_loader
     cleanup_gpu_memory()

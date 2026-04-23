@@ -9,7 +9,7 @@ from layers.layer_0_core.level_9 import TrainPredictWorkflow
 
 from layers.layer_1_competition.level_0_infra.level_0 import create_pipeline_kwargs, setup_handler_context
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def make_handler(builder: Any) -> Callable[[argparse.Namespace], None]:
@@ -32,7 +32,7 @@ def make_handler(builder: Any) -> Callable[[argparse.Namespace], None]:
             **pipeline_kwargs,
         )
         results = workflow.run()
-        logger.info("Train-test workflow complete: %s", results["success"])
+        _logger.info("Train-test workflow complete: %s", results["success"])
 
     return _handle_train_test
 

@@ -6,8 +6,8 @@ from typing import Any, Tuple
 
 from layers.layer_0_core.level_0 import get_logger, get_torch, IMAGENET_MEAN, IMAGENET_STD
 
-torch = get_torch()
-logger = get_logger(__name__)
+_torch = get_torch()
+_logger = get_logger(__name__)
 
 
 def normalize(
@@ -26,7 +26,7 @@ def normalize(
     Returns:
         Normalized tensor of the same shape.
     """
-    if not isinstance(tensor, torch.Tensor):
+    if not isinstance(tensor, _torch.Tensor):
         raise TypeError(f"tensor must be torch.Tensor, got {type(tensor)}")
     if len(mean) != 3:
         raise ValueError(f"mean must be a tuple of length 3, got {mean}")

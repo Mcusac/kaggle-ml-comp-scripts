@@ -6,7 +6,7 @@ from typing import Optional
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def get_color_jitter_transform(

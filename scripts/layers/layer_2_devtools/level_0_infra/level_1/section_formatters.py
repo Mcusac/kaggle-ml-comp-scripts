@@ -128,6 +128,35 @@ class SectionFormatters:
         return lines
 
     @staticmethod
+    def format_deep_nesting(nesting: dict[str, Any]) -> List[str]:
+        """Format directory nesting section."""
+        lines = list(FormattingHelpers.format_section_header("DEEP NESTING", "📁"))
+
+        max_depth = int(nesting.get("max_depth", 0))
+        deep_dirs = nesting.get("deep_dirs", []) or []
+
+        if not deep_dirs:
+            lines.append("✓ No Python files found (or no directories to analyze)")
+            lines.append("")
+            return lines
+
+        lines.append(f"Max directory depth (code-containing dirs): {max_depth}")
+        lines.append("")
+
+        show = deep_dirs[:15]
+        lines.append(f"Deepest directories (top {len(show)}):")
+        for row in show:
+            d = row.get("dir", "<?>")
+            depth = int(row.get("depth", 0))
+            py_files = int(row.get("py_files", 0))
+            lines.append(f"  depth {depth:2}  {d} ({py_files} .py files)")
+        if len(deep_dirs) > len(show):
+            lines.append(f"  ... and {len(deep_dirs) - len(show)} more")
+
+        lines.append("")
+        return lines
+
+    @staticmethod
     def format_cohesion(cohesion: dict[str, Any]) -> List[str]:
         """Format cohesion section."""
         lines = list(

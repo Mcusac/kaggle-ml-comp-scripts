@@ -19,7 +19,7 @@ from layers.layer_0_core.level_5.metadata.paths import (
     get_writable_metadata_dir,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 # Hyperparameter constants for different model types
 LGBM_HYPERPARAMETERS = [
@@ -238,7 +238,7 @@ def load_regression_metadata(
         )
     
     variants = load_json(metadata_file)
-    logger.info(f"Loaded {len(variants)} variants from {metadata_file}")
+    _logger.info(f"Loaded {len(variants)} variants from {metadata_file}")
     
     return variants
 
@@ -286,7 +286,7 @@ def load_and_join_metadata(
                 'feature_filename': grid_item.get('feature_filename')
             })
     
-    logger.info(f"Joined {len(combined)} records from metadata and gridsearch_metadata")
+    _logger.info(f"Joined {len(combined)} records from metadata and gridsearch_metadata")
     return combined
 
 

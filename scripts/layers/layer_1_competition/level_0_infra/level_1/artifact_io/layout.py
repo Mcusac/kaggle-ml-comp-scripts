@@ -16,7 +16,7 @@ from .store import (
     infer_shard_basename,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def prepare_artifact_layout(
@@ -51,7 +51,7 @@ def write_decoded_shard(infer_out: str, basekey: str, aug_index: int, shard: lis
     try:
         infer_save_decoded_result_shard(shard_path, shard)
     except Exception as e:
-        logger.warning("⚠️ inference_outputs shard write failed (%s): %s", shard_path, e)
+        _logger.warning("⚠️ inference_outputs shard write failed (%s): %s", shard_path, e)
 
 
 def write_intermediate_candidates(
@@ -87,4 +87,4 @@ def write_intermediate_candidates(
             },
         )
     except Exception as e:
-        logger.warning("⚠️ intermediate_candidates write failed: %s", e)
+        _logger.warning("⚠️ intermediate_candidates write failed: %s", e)

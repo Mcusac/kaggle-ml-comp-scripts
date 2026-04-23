@@ -1,4 +1,5 @@
-"""Ensembling method implementations."""
+"""Auto-generated package exports."""
+
 
 from .ensembling_methods import (
     PercentileAverageEnsemble,
@@ -9,9 +10,9 @@ from .ensembling_methods import (
 )
 
 __all__ = [
-    "SimpleAverageEnsemble",
-    "WeightedAverageEnsemble",
-    "RankedAverageEnsemble",
     "PercentileAverageEnsemble",
+    "RankedAverageEnsemble",
+    "SimpleAverageEnsemble",
     "TargetSpecificEnsemble",
+    "WeightedAverageEnsemble",
 ]

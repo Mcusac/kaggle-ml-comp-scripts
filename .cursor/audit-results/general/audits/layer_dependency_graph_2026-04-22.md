@@ -1,0 +1,1397 @@
+---
+generated: 2026-04-22
+artifact: layer_dependency_graph
+---
+
+# Layer dependency graph
+
+- Scripts root: `C:/Users/mdc0431/OneDrive - UNT System/Documents/Kaggle/code/input/kaggle-ml-comp-scripts/scripts`
+- Files scanned: 1022
+- Imports analyzed (internal only): 2360
+- Parse errors: 0
+- Buckets: 57
+- Unique bucket edges: 416
+- Violating bucket edges: 4 (edges counted: 4)
+
+## Buckets
+
+- `competition_infra_level_0`
+- `competition_infra_level_1`
+- `competition_infra_level_2`
+- `competition_infra_level_3`
+- `competition_infra_level_4`
+- `competition_infra_level_5`
+- `competition_infra_level_6`
+- `contest_level_arc_agi_2_level_0`
+- `contest_level_arc_agi_2_level_1`
+- `contest_level_arc_agi_2_level_2`
+- `contest_level_arc_agi_2_level_3`
+- `contest_level_arc_agi_2_level_4`
+- `contest_level_arc_agi_2_level_5`
+- `contest_level_arc_agi_2_level_6`
+- `contest_level_arc_agi_2_level_7`
+- `contest_level_arc_agi_2_level_8`
+- `contest_level_arc_agi_2_other`
+- `contest_level_cafa_level_0`
+- `contest_level_cafa_level_1`
+- `contest_level_cafa_level_2`
+- `contest_level_cafa_level_3`
+- `contest_level_cafa_level_4`
+- `contest_level_cafa_other`
+- `contest_level_csiro_level_0`
+- `contest_level_csiro_level_1`
+- `contest_level_csiro_level_2`
+- `contest_level_csiro_level_3`
+- `contest_level_csiro_level_4`
+- `contest_level_csiro_level_5`
+- `contest_level_csiro_level_6`
+- `contest_level_csiro_level_7`
+- `contest_level_csiro_other`
+- `contest_level_rna3d_level_0`
+- `contest_level_rna3d_level_1`
+- `contest_level_rna3d_level_2`
+- `contest_level_rna3d_level_3`
+- `contest_level_rna3d_level_4`
+- `contest_level_rna3d_other`
+- `devtools_impl_level_0`
+- `devtools_impl_level_1`
+- `devtools_impl_level_2`
+- `devtools_infra_level_0`
+- `devtools_infra_level_1`
+- `devtools_infra_level_2`
+- `devtools_other`
+- `external_other`
+- `layer_0_level_0`
+- `layer_0_level_1`
+- `layer_0_level_10`
+- `layer_0_level_2`
+- `layer_0_level_3`
+- `layer_0_level_4`
+- `layer_0_level_5`
+- `layer_0_level_6`
+- `layer_0_level_7`
+- `layer_0_level_8`
+- `layer_0_level_9`
+
+## Adjacency (bucket -> bucket, count)
+
+### `competition_infra_level_0`
+- `competition_infra_level_0`: 75
+  - `layers/layer_1_competition/level_0_infra/level_0/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+  - `layers/layer_1_competition/level_0_infra/level_0/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_0.abstractions`
+  - `layers/layer_1_competition/level_0_infra/level_0/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_0.argparse_builders`
+- `layer_0_level_0`: 14
+  - `layers/layer_1_competition/level_0_infra/level_0/abstractions/paths.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_0_infra/level_0/ensemble.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_0_infra/level_0/handler_context.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_1`: 2
+  - `layers/layer_1_competition/level_0_infra/level_0/model/feature_catalog.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_1_competition/level_0_infra/level_0/model/model_constants.py`: `import layers.layer_0_core.level_1`
+- `competition_infra_level_1`: 1
+  - `layers/layer_1_competition/level_0_infra/level_0/pipeline_logging.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `layer_0_level_2`: 1
+  - `layers/layer_1_competition/level_0_infra/level_0/ensemble.py`: `import layers.layer_0_core.level_2`
+- `layer_0_level_5`: 1
+  - `layers/layer_1_competition/level_0_infra/level_0/abstractions/paths.py`: `import layers.layer_0_core.level_5`
+
+### `competition_infra_level_1`
+- `competition_infra_level_1`: 61
+  - `layers/layer_1_competition/level_0_infra/level_1/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+  - `layers/layer_1_competition/level_0_infra/level_1/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_1.artifact_io`
+  - `layers/layer_1_competition/level_0_infra/level_1/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_1.commands`
+- `competition_infra_level_0`: 18
+  - `layers/layer_1_competition/level_0_infra/level_1/artifact_io/layout.py`: `import layers.layer_1_competition.level_0_infra.level_0.lm`
+  - `layers/layer_1_competition/level_0_infra/level_1/commands/cross_validate.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+  - `layers/layer_1_competition/level_0_infra/level_1/commands/export_model.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+- `layer_0_level_0`: 17
+  - `layers/layer_1_competition/level_0_infra/level_1/artifact_io/layout.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_0_infra/level_1/commands/cross_validate.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_0_infra/level_1/commands/export_model.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_4`: 5
+  - `layers/layer_1_competition/level_0_infra/level_1/contest/csv_io.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_1_competition/level_0_infra/level_1/contest/data_loading.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_1_competition/level_0_infra/level_1/export/source_handlers.py`: `import layers.layer_0_core.level_4`
+- `layer_0_level_5`: 3
+  - `layers/layer_1_competition/level_0_infra/level_1/commands/export_model.py`: `import layers.layer_0_core.level_5`
+  - `layers/layer_1_competition/level_0_infra/level_1/export/metadata_builders.py`: `import layers.layer_0_core.level_5`
+  - `layers/layer_1_competition/level_0_infra/level_1/export/source_handlers.py`: `import layers.layer_0_core.level_5`
+- `layer_0_level_9`: 3
+  - `layers/layer_1_competition/level_0_infra/level_1/commands/cross_validate.py`: `import layers.layer_0_core.level_9`
+  - `layers/layer_1_competition/level_0_infra/level_1/commands/grid_search.py`: `import layers.layer_0_core.level_9`
+  - `layers/layer_1_competition/level_0_infra/level_1/commands/train_test.py`: `import layers.layer_0_core.level_9`
+- `layer_0_level_1`: 2
+  - `layers/layer_1_competition/level_0_infra/level_1/contest/splits.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_1_competition/level_0_infra/level_1/export/feature_filename.py`: `import layers.layer_0_core.level_1`
+- `layer_0_level_6`: 2
+  - `layers/layer_1_competition/level_0_infra/level_1/commands/test.py`: `import layers.layer_0_core.level_6`
+  - `layers/layer_1_competition/level_0_infra/level_1/export/feature_filename.py`: `import layers.layer_0_core.level_6`
+- `layer_0_level_3`: 1
+  - `layers/layer_1_competition/level_0_infra/level_1/features/feature_extractor_factory.py`: `import layers.layer_0_core.level_3`
+
+### `competition_infra_level_2`
+- `competition_infra_level_2`: 14
+  - `layers/layer_1_competition/level_0_infra/level_2/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_2`
+  - `layers/layer_1_competition/level_0_infra/level_2/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_2.feature_extraction`
+  - `layers/layer_1_competition/level_0_infra/level_2/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_2.grid_search`
+- `competition_infra_level_1`: 10
+  - `layers/layer_1_competition/level_0_infra/level_2/grid_search/base.py`: `import layers.layer_1_competition.level_0_infra.level_1.registry`
+  - `layers/layer_1_competition/level_0_infra/level_2/grid_search/context.py`: `import layers.layer_1_competition.level_0_infra.level_1.registry.contest_registry`
+  - `layers/layer_1_competition/level_0_infra/level_2/handlers/command_handlers.py`: `import layers.layer_1_competition.level_0_infra.level_1.commands.cross_validate`
+- `competition_infra_level_0`: 3
+  - `layers/layer_1_competition/level_0_infra/level_2/grid_search/context.py`: `import layers.layer_1_competition.level_0_infra.level_0.context_types`
+  - `layers/layer_1_competition/level_0_infra/level_2/handlers/command_handlers.py`: `import layers.layer_1_competition.level_0_infra.level_0.ensemble`
+  - `layers/layer_1_competition/level_0_infra/level_2/tta_scoring/augmentation_scoring.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+- `layer_0_level_0`: 2
+  - `layers/layer_1_competition/level_0_infra/level_2/grid_search/base.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_0_infra/level_2/handlers/command_handlers.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_2`: 1
+  - `layers/layer_1_competition/level_0_infra/level_2/feature_extraction/feature_extraction_helper.py`: `import layers.layer_0_core.level_2`
+- `layer_0_level_6`: 1
+  - `layers/layer_1_competition/level_0_infra/level_2/grid_search/base.py`: `import layers.layer_0_core.level_6`
+
+### `competition_infra_level_3`
+- `competition_infra_level_3`: 15
+  - `layers/layer_1_competition/level_0_infra/level_3/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_3`
+  - `layers/layer_1_competition/level_0_infra/level_3/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_3.lm_backend`
+  - `layers/layer_1_competition/level_0_infra/level_3/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_3.trainer`
+- `competition_infra_level_0`: 4
+  - `layers/layer_1_competition/level_0_infra/level_3/lm_backend/backend_transformers.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+  - `layers/layer_1_competition/level_0_infra/level_3/lm_backend/mock_backend.py`: `import layers.layer_1_competition.level_0_infra.level_0.lm`
+  - `layers/layer_1_competition/level_0_infra/level_3/lm_backend/protocol.py`: `import layers.layer_1_competition.level_0_infra.level_0.lm`
+- `layer_0_level_0`: 2
+  - `layers/layer_1_competition/level_0_infra/level_3/lm_backend/turbo_dfs.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_0_infra/level_3/trainer/feature_extraction.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_1`: 2
+  - `layers/layer_1_competition/level_0_infra/level_3/trainer/feature_extraction.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_1_competition/level_0_infra/level_3/trainer/feature_extraction.py`: `import layers.layer_0_core.level_1.guards`
+- `competition_infra_level_1`: 1
+  - `layers/layer_1_competition/level_0_infra/level_3/trainer/feature_extraction.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `competition_infra_level_2`: 1
+  - `layers/layer_1_competition/level_0_infra/level_3/trainer/feature_extraction.py`: `import layers.layer_1_competition.level_0_infra.level_2`
+- `layer_0_level_2`: 1
+  - `layers/layer_1_competition/level_0_infra/level_3/trainer/feature_extraction.py`: `import layers.layer_0_core.level_2`
+- `layer_0_level_3`: 1
+  - `layers/layer_1_competition/level_0_infra/level_3/trainer/feature_extraction.py`: `import layers.layer_0_core.level_3`
+- `layer_0_level_5`: 1
+  - `layers/layer_1_competition/level_0_infra/level_3/trainer/feature_extraction.py`: `import layers.layer_0_core.level_5`
+
+### `competition_infra_level_4`
+- `competition_infra_level_4`: 11
+  - `layers/layer_1_competition/level_0_infra/level_4/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_4`
+  - `layers/layer_1_competition/level_0_infra/level_4/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_4.fold_orchestration`
+  - `layers/layer_1_competition/level_0_infra/level_4/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_4.lm_backends`
+- `competition_infra_level_3`: 5
+  - `layers/layer_1_competition/level_0_infra/level_4/lm_backends/backend_unsloth.py`: `import layers.layer_1_competition.level_0_infra.level_3`
+  - `layers/layer_1_competition/level_0_infra/level_4/lm_backends/backend_unsloth.py`: `import layers.layer_1_competition.level_0_infra.level_3.lm_backend.shared_hooks`
+  - `layers/layer_1_competition/level_0_infra/level_4/lm_backends/backend_unsloth.py`: `import layers.layer_1_competition.level_0_infra.level_3.lm_backend.shared_inference`
+- `competition_infra_level_0`: 4
+  - `layers/layer_1_competition/level_0_infra/level_4/lm_backends/backend_unsloth.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+  - `layers/layer_1_competition/level_0_infra/level_4/lm_backends/unsloth_adaptation_loop.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+  - `layers/layer_1_competition/level_0_infra/level_4/lm_backends/unsloth_adaptation_loop.py`: `import layers.layer_1_competition.level_0_infra.level_0.lm`
+- `layer_0_level_0`: 4
+  - `layers/layer_1_competition/level_0_infra/level_4/fold_orchestration/single_fold.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_0_infra/level_4/lm_backends/backend_unsloth.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_0_infra/level_4/lm_task_adaptation/session.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_1`: 1
+  - `layers/layer_1_competition/level_0_infra/level_4/fold_orchestration/single_fold.py`: `import layers.layer_0_core.level_1`
+- `layer_0_level_3`: 1
+  - `layers/layer_1_competition/level_0_infra/level_4/fold_orchestration/single_fold.py`: `import layers.layer_0_core.level_3`
+- `layer_0_level_5`: 1
+  - `layers/layer_1_competition/level_0_infra/level_4/trainer/factory.py`: `import layers.layer_0_core.level_5`
+
+### `competition_infra_level_5`
+- `competition_infra_level_5`: 3
+  - `layers/layer_1_competition/level_0_infra/level_5/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_5`
+  - `layers/layer_1_competition/level_0_infra/level_5/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_5.submission`
+  - `layers/layer_1_competition/level_0_infra/level_5/submission/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_5.submission.formatting`
+- `layer_0_level_0`: 1
+  - `layers/layer_1_competition/level_0_infra/level_5/submission/formatting.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_5`: 1
+  - `layers/layer_1_competition/level_0_infra/level_5/submission/formatting.py`: `import layers.layer_0_core.level_5`
+
+### `competition_infra_level_6`
+- `competition_infra_level_6`: 3
+  - `layers/layer_1_competition/level_0_infra/level_6/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_6`
+  - `layers/layer_1_competition/level_0_infra/level_6/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_6.submission`
+  - `layers/layer_1_competition/level_0_infra/level_6/submission/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_6.submission.regression_submission`
+- `competition_infra_level_2`: 1
+  - `layers/layer_1_competition/level_0_infra/level_6/submission/regression_submission.py`: `import layers.layer_1_competition.level_0_infra.level_2`
+- `competition_infra_level_5`: 1
+  - `layers/layer_1_competition/level_0_infra/level_6/submission/regression_submission.py`: `import layers.layer_1_competition.level_0_infra.level_5`
+- `layer_0_level_0`: 1
+  - `layers/layer_1_competition/level_0_infra/level_6/submission/regression_submission.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_4`: 1
+  - `layers/layer_1_competition/level_0_infra/level_6/submission/regression_submission.py`: `import layers.layer_0_core.level_4`
+- `layer_0_level_5`: 1
+  - `layers/layer_1_competition/level_0_infra/level_6/submission/regression_submission.py`: `import layers.layer_0_core.level_5`
+
+### `contest_level_arc_agi_2_level_0`
+- `contest_level_arc_agi_2_level_0`: 42
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_0/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_0/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0.arc_paths`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_0/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0.config`
+- `competition_infra_level_0`: 9
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_0/config/config.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_0/config/data_schema.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_0/config/post_processor.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+- `layer_0_level_0`: 4
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_0/grid/grid_tensor_encoding.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_0/ranking/heuristics.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_0/ranking/submit_limits.py`: `import layers.layer_0_core.level_0`
+- `competition_infra_level_2`: 2
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_0/notebook_commands/base_cmd.py`: `import layers.layer_1_competition.level_0_infra.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_0/scoring/augmentation_scoring.py`: `import layers.layer_1_competition.level_0_infra.level_2.tta_scoring`
+- `competition_infra_level_3`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_0/decoding/llm_decoding.py`: `import layers.layer_1_competition.level_0_infra.level_3.lm_backend.turbo_dfs`
+- `layer_0_level_4`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_0/ranking/tuning_io.py`: `import layers.layer_0_core.level_4`
+
+### `contest_level_arc_agi_2_level_1`
+- `contest_level_arc_agi_2_level_1`: 52
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_1/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_1/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.cli`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_1/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.datasets`
+- `contest_level_arc_agi_2_level_0`: 16
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_1/cli/parsers/common.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_1/datasets/dataset_same_shape.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_1/datasets/dataset_same_shape_pairs.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0`
+- `competition_infra_level_0`: 15
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_1/cli/append_common_args.py`: `import layers.layer_1_competition.level_0_infra.level_0.argv_command_builders`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_1/cli/commands/build_submit_command.py`: `import layers.layer_1_competition.level_0_infra.level_0.argv_command_builders`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_1/cli/commands/build_train_command.py`: `import layers.layer_1_competition.level_0_infra.level_0.argv_command_builders`
+- `layer_0_level_0`: 6
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_1/datasets/dataset_same_shape.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_1/datasets/dataset_same_shape_pairs.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_1/model/tiny_grid_cnn.py`: `import layers.layer_0_core.level_0`
+- `competition_infra_level_1`: 5
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_1/cli/parsers/postprocess.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_1/cli/parsers/validate_data.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_1/eval/ranker_benchmark.py`: `import layers.layer_1_competition.level_0_infra.level_1.artifact_io`
+- `competition_infra_level_2`: 3
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_1/cli/commands/build_submit_command.py`: `import layers.layer_1_competition.level_0_infra.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_1/cli/commands/build_train_command.py`: `import layers.layer_1_competition.level_0_infra.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_1/cli/commands/build_tune_command.py`: `import layers.layer_1_competition.level_0_infra.level_2`
+- `layer_0_level_4`: 2
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_1/datasets/dataset_same_shape_pairs.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_1/stages/metadata_resolvers.py`: `import layers.layer_0_core.level_4`
+
+### `contest_level_arc_agi_2_level_2`
+- `contest_level_arc_agi_2_level_2`: 25
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2.cmd_submit`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2.cmd_train_and_submit`
+- `contest_level_arc_agi_2_level_0`: 16
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/cmd_submit.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/cmd_train_and_submit.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/cmd_tune_and_submit.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0`
+- `contest_level_arc_agi_2_level_1`: 15
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/decode_branches.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/inference/predict_grid_checkpoint.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/parsers/submit.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1`
+- `competition_infra_level_0`: 13
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/cmd_submit.py`: `import layers.layer_1_competition.level_0_infra.level_0.argv_command_builders`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/cmd_train_and_submit.py`: `import layers.layer_1_competition.level_0_infra.level_0.argv_command_builders`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/cmd_tune_and_submit.py`: `import layers.layer_1_competition.level_0_infra.level_0.argv_command_builders`
+- `competition_infra_level_1`: 10
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/decode_branches.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/parsers/submit.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/parsers/train.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `layer_0_level_0`: 7
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/inference/predict_grid_checkpoint.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/pipelines/score_submission.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/ranking.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_4`: 6
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/inference/predict_grid_checkpoint.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/pipelines/benchmark_rankers.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/pipelines/score_submission.py`: `import layers.layer_0_core.level_4`
+- `layer_0_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_2/train/grid_cnn.py`: `import layers.layer_0_core.level_1`
+
+### `contest_level_arc_agi_2_level_3`
+- `contest_level_arc_agi_2_level_3`: 9
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_3/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_3/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3.extend_subparsers`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_3/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3.lm_task_adaptation`
+- `contest_level_arc_agi_2_level_2`: 5
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_3/extend_subparsers.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_3/lm_task_adaptation/training_rows.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_3/neural_eval_score/neural.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2`
+- `contest_level_arc_agi_2_level_0`: 3
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_3/lm_task_adaptation/training_rows.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_3/neural_eval_score/neural.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_3/neural_eval_score/neural.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0.decoding.eval_solution_parse`
+- `competition_infra_level_0`: 2
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_3/lm_task_adaptation/training_rows.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_3/neural_eval_score/neural.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+- `layer_0_level_0`: 2
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_3/postprocess_handlers.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_3/trainer_registry/trainer_registry.py`: `import layers.layer_0_core.level_0`
+- `competition_infra_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_3/postprocess_handlers.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `contest_level_arc_agi_2_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_3/extend_subparsers.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1`
+- `layer_0_level_4`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_3/neural_eval_score/neural.py`: `import layers.layer_0_core.level_4`
+
+### `contest_level_arc_agi_2_level_4`
+- `contest_level_arc_agi_2_level_4`: 11
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4.llm_tta_runner`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4.lm`
+- `contest_level_arc_agi_2_level_1`: 8
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/lm/torch_lm_hooks.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/lm_task_adaptation/runner.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/stages/train.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.paths`
+- `competition_infra_level_0`: 4
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/lm/backend_config.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/lm_task_adaptation/runner.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/stages/train.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+- `contest_level_arc_agi_2_level_3`: 3
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/lm_task_adaptation/runner.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3.lm_task_adaptation.training_rows`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/stages/train.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/stages/tune.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3`
+- `layer_0_level_0`: 3
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/lm/backend_config.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/stages/train.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/stages/tune.py`: `import layers.layer_0_core.level_0`
+- `competition_infra_level_1`: 2
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/stages/train.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/stages/tune.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `competition_infra_level_3`: 2
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/lm/backend_config.py`: `import layers.layer_1_competition.level_0_infra.level_3`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/lm/torch_lm_hooks.py`: `import layers.layer_1_competition.level_0_infra.level_3`
+- `competition_infra_level_4`: 2
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/lm/backend_config.py`: `import layers.layer_1_competition.level_0_infra.level_4.lm_backends.backend_unsloth`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/lm_task_adaptation/runner.py`: `import layers.layer_1_competition.level_0_infra.level_4`
+- `contest_level_arc_agi_2_level_0`: 2
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/lm/torch_lm_hooks.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/stages/tune.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0`
+- `layer_0_level_4`: 2
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/stages/train.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_4/stages/tune.py`: `import layers.layer_0_core.level_4`
+
+### `contest_level_arc_agi_2_level_5`
+- `contest_level_arc_agi_2_level_2`: 2
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_5/runner.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2.decode_branches`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_5/runner.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2.ranking`
+- `competition_infra_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_5/runner.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+- `competition_infra_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_5/runner.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `competition_infra_level_4`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_5/runner.py`: `import layers.layer_1_competition.level_0_infra.level_4`
+- `contest_level_arc_agi_2_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_5/runner.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0`
+- `contest_level_arc_agi_2_level_4`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_5/runner.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4.lm`
+- `contest_level_arc_agi_2_level_5`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_5/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_5.runner`
+- `layer_0_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_5/runner.py`: `import layers.layer_0_core.level_0`
+
+### `contest_level_arc_agi_2_level_6`
+- `contest_level_arc_agi_2_level_6`: 4
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_6/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_6`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_6/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_6.dispatch`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_6/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_6.single_stage`
+- `competition_infra_level_0`: 2
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_6/dispatch/submit_strategy_dispatch.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_6/single_stage.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+- `contest_level_arc_agi_2_level_5`: 2
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_6/dispatch/submit_strategy_dispatch.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_5`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_6/single_stage.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_5`
+- `layer_0_level_0`: 2
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_6/dispatch/submit_strategy_dispatch.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_6/single_stage.py`: `import layers.layer_0_core.level_0`
+- `competition_infra_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_6/single_stage.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `contest_level_arc_agi_2_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_6/dispatch/submit_strategy_dispatch.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0`
+- `contest_level_arc_agi_2_level_3`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_6/single_stage.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3`
+- `contest_level_arc_agi_2_level_4`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_6/single_stage.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4`
+- `layer_0_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_6/single_stage.py`: `import layers.layer_0_core.level_1`
+
+### `contest_level_arc_agi_2_level_7`
+- `contest_level_arc_agi_2_level_7`: 4
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_7/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_7`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_7/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_7.orchestration`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_7/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_7.submit`
+- `competition_infra_level_1`: 3
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_7/orchestration/composites.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_7/orchestration/composites.py`: `import layers.layer_1_competition.level_0_infra.level_1.pipelines`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_7/submit.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `contest_level_arc_agi_2_level_2`: 2
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_7/submit.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_7/submit.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2.pipelines.score_submission`
+- `contest_level_arc_agi_2_level_6`: 2
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_7/orchestration/composites.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_6`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_7/submit.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_6`
+- `layer_0_level_0`: 2
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_7/orchestration/composites.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_7/submit.py`: `import layers.layer_0_core.level_0`
+- `competition_infra_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_7/orchestration/composites.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+- `contest_level_arc_agi_2_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_7/submit.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0`
+- `contest_level_arc_agi_2_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_7/submit.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1`
+- `contest_level_arc_agi_2_level_3`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_7/orchestration/composites.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3`
+- `layer_0_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_7/orchestration/composites.py`: `import layers.layer_0_core.level_1.pipelines`
+- `layer_0_level_4`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_7/submit.py`: `import layers.layer_0_core.level_4`
+
+### `contest_level_arc_agi_2_level_8`
+- `contest_level_arc_agi_2_level_8`: 3
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_8/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_8`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_8/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_8.handlers`
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_8/handlers/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_8.handlers.pipeline_handlers`
+- `competition_infra_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_8/handlers/pipeline_handlers.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+- `competition_infra_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_8/handlers/pipeline_handlers.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `contest_level_arc_agi_2_level_2`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_8/handlers/pipeline_handlers.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2`
+- `contest_level_arc_agi_2_level_6`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_8/handlers/pipeline_handlers.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_6`
+- `contest_level_arc_agi_2_level_7`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/level_8/handlers/pipeline_handlers.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_7`
+
+### `contest_level_arc_agi_2_other`
+- `competition_infra_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/registration.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `competition_infra_level_2`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/registration.py`: `import layers.layer_1_competition.level_0_infra.level_2`
+- `contest_level_arc_agi_2_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/registration.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0.config`
+- `contest_level_arc_agi_2_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/registration.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1.paths`
+
+### `contest_level_cafa_level_0`
+- `contest_level_cafa_level_0`: 14
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_0/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_0.config`
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_0/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_0.constants`
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_0/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_0.data_schema`
+- `layer_0_level_0`: 7
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_0/config.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_0/embedding_paths.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_0/goa_filter.py`: `import layers.layer_0_core.level_0`
+- `competition_infra_level_0`: 5
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_0/config.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_0/data_schema.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_0/hierarchy.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+- `layer_0_level_1`: 3
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_0/goa_filter.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_0/hierarchy.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_0/ontology_data_loader.py`: `import layers.layer_0_core.level_1`
+- `layer_0_level_7`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_0/ontology_model_manager.py`: `import layers.layer_0_core.level_7`
+
+### `contest_level_cafa_level_1`
+- `contest_level_cafa_level_0`: 4
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_1/load_embeddings.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_1/parameter_grids.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_1/post_processor.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_0`
+- `contest_level_cafa_level_1`: 4
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_1/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_1.load_embeddings`
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_1/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_1.parameter_grids`
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_1/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_1.post_processor`
+- `layer_0_level_0`: 3
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_1/load_embeddings.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_1/parameter_grids.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_1/post_processor.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_1`: 2
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_1/load_embeddings.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_1/post_processor.py`: `import layers.layer_0_core.level_1`
+- `layer_0_level_2`: 2
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_1/parameter_grids.py`: `import layers.layer_0_core.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_1/training.py`: `import layers.layer_0_core.level_2`
+- `competition_infra_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_1/post_processor.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+
+### `contest_level_cafa_level_2`
+- `contest_level_cafa_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_2/feature_extractor.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_1`
+- `contest_level_cafa_level_2`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_2/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_2.feature_extractor`
+- `layer_0_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_2/feature_extractor.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_2/feature_extractor.py`: `import layers.layer_0_core.level_1`
+- `layer_0_level_2`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_2/feature_extractor.py`: `import layers.layer_0_core.level_2`
+
+### `contest_level_cafa_level_3`
+- `contest_level_cafa_level_2`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_3/ontology_data_preparer.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_2`
+- `contest_level_cafa_level_3`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_3/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_3.ontology_data_preparer`
+- `layer_0_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_3/ontology_data_preparer.py`: `import layers.layer_0_core.level_0`
+
+### `contest_level_cafa_level_4`
+- `contest_level_cafa_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_4/per_ontology_training.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_0`
+- `contest_level_cafa_level_3`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_4/per_ontology_training.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_3`
+- `contest_level_cafa_level_4`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_4/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_4.per_ontology_training`
+- `layer_0_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_4/per_ontology_training.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/level_4/per_ontology_training.py`: `import layers.layer_0_core.level_1`
+
+### `contest_level_cafa_other`
+- `contest_level_cafa_level_0`: 3
+  - `layers/layer_1_competition/level_1_impl/level_cafa/registration.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_0.config`
+  - `layers/layer_1_competition/level_1_impl/level_cafa/registration.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_0.data_schema`
+  - `layers/layer_1_competition/level_1_impl/level_cafa/registration.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_0.paths`
+- `competition_infra_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/registration.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `contest_level_cafa_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/registration.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_1.post_processor`
+
+### `contest_level_csiro_level_0`
+- `contest_level_csiro_level_0`: 27
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_0.aggregate`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_0.biomass_models`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_0.biomass_semantic_features`
+- `layer_0_level_0`: 15
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/aggregate.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/biomass_models.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/biomass_semantic_features.py`: `import layers.layer_0_core.level_0`
+- `competition_infra_level_1`: 6
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/aggregate.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/config_setup.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/csiro_grid_search_base.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `competition_infra_level_0`: 5
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/config.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/config_setup.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/data_schema.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+- `layer_0_level_1`: 5
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/export_ops.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/metrics.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/model_resolution.py`: `import layers.layer_0_core.level_1`
+- `layer_0_level_2`: 5
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/biomass_semantic_features.py`: `import layers.layer_0_core.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/camera_trap.py`: `import layers.layer_0_core.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/config_helper.py`: `import layers.layer_0_core.level_2`
+- `layer_0_level_3`: 3
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/biomass_models.py`: `import layers.layer_0_core.level_3`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/csiro_ensemble.py`: `import layers.layer_0_core.level_3`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/metrics.py`: `import layers.layer_0_core.level_3`
+- `layer_0_level_5`: 2
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/csiro_metadata.py`: `import layers.layer_0_core.level_5`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/export_ops.py`: `import layers.layer_0_core.level_5`
+- `layer_0_level_6`: 2
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/csiro_ensemble.py`: `import layers.layer_0_core.level_6`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/stacking_utils.py`: `import layers.layer_0_core.level_6`
+- `layer_0_level_4`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/stacking_utils.py`: `import layers.layer_0_core.level_4`
+- `layer_0_level_7`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_0/stacking_utils.py`: `import layers.layer_0_core.level_7`
+
+### `contest_level_csiro_level_1`
+- `contest_level_csiro_level_0`: 11
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/best_variant.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/config_updater.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/e2e_ensemble_oof.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_0`
+- `contest_level_csiro_level_1`: 11
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_1.best_variant`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_1.config_updater`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_1.e2e_ensemble_oof`
+- `layer_0_level_0`: 10
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/best_variant.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/config_updater.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/e2e_ensemble_oof.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_1`: 4
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/config_updater.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/e2e_ensemble_oof.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/stacking_helpers.py`: `import layers.layer_0_core.level_1`
+- `layer_0_level_4`: 4
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/best_variant.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/e2e_ensemble_oof.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/stacking_helpers.py`: `import layers.layer_0_core.level_4`
+- `layer_0_level_2`: 3
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/best_variant.py`: `import layers.layer_0_core.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/meta_models.py`: `import layers.layer_0_core.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/stacking_helpers.py`: `import layers.layer_0_core.level_2`
+- `layer_0_level_5`: 3
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/model_selection.py`: `import layers.layer_0_core.level_5`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/stacking_helpers.py`: `import layers.layer_0_core.level_5`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/variant_selection_internal.py`: `import layers.layer_0_core.level_5`
+- `competition_infra_level_0`: 2
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/post_processor.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/train_pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+- `competition_infra_level_1`: 2
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/e2e_ensemble_oof.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/train_pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `competition_infra_level_4`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_1/train_pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_4`
+
+### `contest_level_csiro_level_2`
+- `contest_level_csiro_level_1`: 8
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/csiro_regression_ensemble.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/e2e_training.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/regression_ensemble_pipeline.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_1`
+- `contest_level_csiro_level_2`: 8
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_2.csiro_regression_ensemble`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_2.e2e_training`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_2.regression_ensemble_pipeline`
+- `layer_0_level_0`: 7
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/e2e_training.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/regression_ensemble_pipeline.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/stacking_ensemble_pipeline.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_5`: 5
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/regression_ensemble_pipeline.py`: `import layers.layer_0_core.level_5`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/stacking_ensemble_pipeline.py`: `import layers.layer_0_core.level_5`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/stacking_pipeline.py`: `import layers.layer_0_core.level_5`
+- `competition_infra_level_1`: 4
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/regression_ensemble_pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/stacking_ensemble_pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/stacking_pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `competition_infra_level_2`: 3
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/stacking_ensemble_pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/stacking_ensemble_pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_2.feature_extraction`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/stacking_pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_2`
+- `competition_infra_level_5`: 3
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/regression_ensemble_pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_5`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/stacking_ensemble_pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_5`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/stacking_pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_5`
+- `layer_0_level_2`: 3
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/regression_ensemble_pipeline.py`: `import layers.layer_0_core.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/stacking_ensemble_pipeline.py`: `import layers.layer_0_core.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/submit_lightweight_pipeline.py`: `import layers.layer_0_core.level_2`
+- `layer_0_level_4`: 3
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/stacking_ensemble_pipeline.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/submit_lightweight_pipeline.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/variant_selection_io.py`: `import layers.layer_0_core.level_4`
+- `contest_level_csiro_level_0`: 2
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/stacking_ensemble_pipeline.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/variant_selection_io.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_0`
+- `layer_0_level_1`: 2
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/regression_ensemble_pipeline.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/submit_lightweight_pipeline.py`: `import layers.layer_0_core.level_1`
+- `competition_infra_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/submit_lightweight_pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+- `competition_infra_level_6`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/submit_lightweight_pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_6`
+- `layer_0_level_3`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/stacking_ensemble_pipeline.py`: `import layers.layer_0_core.level_3`
+- `layer_0_level_6`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/regression_ensemble_pipeline.py`: `import layers.layer_0_core.level_6`
+- `layer_0_level_7`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_2/stacking_ensemble_pipeline.py`: `import layers.layer_0_core.level_7`
+
+### `contest_level_csiro_level_3`
+- `contest_level_csiro_level_3`: 5
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_3/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_3.ensemble_pipeline`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_3/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_3.regression_ensemble_oof`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_3/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_3.result_persistence`
+- `layer_0_level_0`: 4
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_3/ensemble_pipeline.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_3/regression_ensemble_oof.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_3/result_persistence.py`: `import layers.layer_0_core.level_0`
+- `contest_level_csiro_level_2`: 3
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_3/ensemble_pipeline.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_3/regression_ensemble_oof.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_3/variant_selection_variants.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_2`
+- `layer_0_level_4`: 2
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_3/regression_ensemble_oof.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_3/variant_selection_variants.py`: `import layers.layer_0_core.level_4`
+- `competition_infra_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_3/ensemble_pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `competition_infra_level_2`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_3/regression_ensemble_oof.py`: `import layers.layer_1_competition.level_0_infra.level_2`
+- `contest_level_csiro_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_3/variant_selection_variants.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_0`
+- `contest_level_csiro_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_3/variant_selection_variants.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_1`
+- `layer_0_level_2`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_3/regression_ensemble_oof.py`: `import layers.layer_0_core.level_2`
+- `layer_0_level_5`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_3/variant_selection_variants.py`: `import layers.layer_0_core.level_5`
+
+### `contest_level_csiro_level_4`
+- `contest_level_csiro_level_3`: 4
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/feature_extraction.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_3`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/grid_search_context.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_3`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/handlers_ensemble.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_3`
+- `contest_level_csiro_level_4`: 4
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_4.feature_extraction`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_4.grid_search_context`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_4.handlers_ensemble`
+- `competition_infra_level_1`: 3
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/grid_search_context.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/handlers_ensemble.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/hybrid_stacking_pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `contest_level_csiro_level_0`: 3
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/feature_extraction.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/grid_search_context.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/handlers_ensemble.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_0`
+- `contest_level_csiro_level_2`: 3
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/feature_extraction.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/grid_search_context.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/handlers_ensemble.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_2`
+- `contest_level_csiro_level_1`: 2
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/grid_search_context.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/hybrid_stacking_pipeline.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_1`
+- `layer_0_level_0`: 2
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/feature_extraction.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/hybrid_stacking_pipeline.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_1`: 2
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/feature_extraction.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/grid_search_context.py`: `import layers.layer_0_core.level_1`
+- `layer_0_level_2`: 2
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/feature_extraction.py`: `import layers.layer_0_core.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/grid_search_context.py`: `import layers.layer_0_core.level_2`
+- `competition_infra_level_4`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/feature_extraction.py`: `import layers.layer_1_competition.level_0_infra.level_4`
+- `competition_infra_level_5`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/hybrid_stacking_pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_5`
+- `layer_0_level_3`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/feature_extraction.py`: `import layers.layer_0_core.level_3`
+- `layer_0_level_5`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_4/hybrid_stacking_pipeline.py`: `import layers.layer_0_core.level_5`
+
+### `contest_level_csiro_level_5`
+- `contest_level_csiro_level_4`: 5
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/handlers_grid_search.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_4`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/handlers_stacking.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_4`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/handlers_submit.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_4`
+- `contest_level_csiro_level_5`: 5
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_5.handlers_grid_search`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_5.handlers_stacking`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_5.handlers_submit`
+- `competition_infra_level_1`: 4
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/handlers_grid_search.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/handlers_stacking.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/handlers_submit.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `contest_level_csiro_level_0`: 4
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/handlers_stacking.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/handlers_submit.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/handlers_training.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_0`
+- `contest_level_csiro_level_2`: 3
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/handlers_stacking.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/handlers_submit.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/handlers_training.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_2`
+- `layer_0_level_0`: 2
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/handlers_grid_search.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/regression_training.py`: `import layers.layer_0_core.level_0`
+- `contest_level_csiro_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/handlers_grid_search.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_1`
+- `contest_level_csiro_level_6`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/handlers_training.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_6`
+- `layer_0_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/handlers_grid_search.py`: `import layers.layer_0_core.level_1`
+- `layer_0_level_10`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/handlers_grid_search.py`: `import layers.layer_0_core.level_10`
+- `layer_0_level_2`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/regression_training.py`: `import layers.layer_0_core.level_2`
+- `layer_0_level_3`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/regression_training.py`: `import layers.layer_0_core.level_3`
+- `layer_0_level_5`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/handlers_grid_search.py`: `import layers.layer_0_core.level_5`
+- `layer_0_level_9`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/handlers_grid_search.py`: `import layers.layer_0_core.level_9`
+
+### `contest_level_csiro_level_6`
+- `competition_infra_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_6/train_and_export_pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `contest_level_csiro_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_6/train_and_export_pipeline.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_0`
+- `contest_level_csiro_level_2`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_6/train_and_export_pipeline.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_2`
+- `contest_level_csiro_level_3`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_6/train_and_export_pipeline.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_3`
+- `contest_level_csiro_level_4`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_6/train_and_export_pipeline.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_4`
+- `contest_level_csiro_level_5`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_6/train_and_export_pipeline.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_5`
+- `contest_level_csiro_level_6`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_6/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_6.train_and_export_pipeline`
+- `layer_0_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_6/train_and_export_pipeline.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_6/train_and_export_pipeline.py`: `import layers.layer_0_core.level_1`
+
+### `contest_level_csiro_level_7`
+- `contest_level_csiro_level_7`: 5
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_7/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_7.handlers`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_7/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_7.handlers_multi_variant`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_7/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_7.multi_variant_regression_training_pipeline`
+- `competition_infra_level_0`: 2
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_7/handlers.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_7/multi_variant_regression_training_pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+- `competition_infra_level_1`: 2
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_7/handlers_multi_variant.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_7/multi_variant_regression_training_pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `contest_level_csiro_level_0`: 2
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_7/handlers.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_7/handlers_multi_variant.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_0`
+- `contest_level_csiro_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_7/multi_variant_regression_training_pipeline.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_1`
+- `contest_level_csiro_level_4`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_7/handlers.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_4`
+- `contest_level_csiro_level_5`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_7/handlers.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_5`
+- `contest_level_csiro_level_6`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_7/multi_variant_regression_training_pipeline.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_6`
+- `layer_0_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_7/multi_variant_regression_training_pipeline.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_7/multi_variant_regression_training_pipeline.py`: `import layers.layer_0_core.level_1`
+
+### `contest_level_csiro_other`
+- `competition_infra_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/registration.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `competition_infra_level_2`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/registration.py`: `import layers.layer_1_competition.level_0_infra.level_2`
+- `contest_level_csiro_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/registration.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_0`
+- `contest_level_csiro_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/registration.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_1`
+- `layer_0_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/registration.py`: `import layers.layer_0_core.level_1`
+
+### `contest_level_rna3d_level_0`
+- `contest_level_rna3d_level_0`: 8
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_0/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_0.artifacts`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_0/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_0.config`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_0/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_0.data_schema`
+- `competition_infra_level_0`: 4
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_0/config.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_0/data_schema.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_0/paths.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+- `competition_infra_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_0/notebook_commands.py`: `import layers.layer_1_competition.level_0_infra.level_1.notebook`
+- `layer_0_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_0/validate_data.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_4`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_0/artifacts.py`: `import layers.layer_0_core.level_4`
+
+### `contest_level_rna3d_level_1`
+- `contest_level_rna3d_level_0`: 2
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_1/baseline_approx.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_1/scoring.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_0`
+- `contest_level_rna3d_level_1`: 2
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_1/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_1.baseline_approx`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_1/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_1.scoring`
+- `competition_infra_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_1/baseline_approx.py`: `import layers.layer_1_competition.level_0_infra.level_1.paths`
+- `layer_0_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_1/baseline_approx.py`: `import layers.layer_0_core.level_0`
+
+### `contest_level_rna3d_level_2`
+- `contest_level_rna3d_level_2`: 7
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_2`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_2.orchestration`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_2.orchestration.submission`
+- `competition_infra_level_0`: 5
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/submission.py`: `import layers.layer_1_competition.level_0_infra.level_0.submission`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/train_and_submit.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/train_and_submit.py`: `import layers.layer_1_competition.level_0_infra.level_0.artifacts`
+- `competition_infra_level_1`: 3
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/submission.py`: `import layers.layer_1_competition.level_0_infra.level_1.contest`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/train_and_submit.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/train_and_submit.py`: `import layers.layer_1_competition.level_0_infra.level_1.pipelines`
+- `contest_level_rna3d_level_0`: 3
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/submission.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/train_and_submit.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/tuning.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_0`
+- `contest_level_rna3d_level_1`: 3
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/submission.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/trainer_registry.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_1`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/tuning.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_1`
+- `layer_0_level_0`: 3
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/submission.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/trainer_registry.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/tuning.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_4`: 3
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/submission.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/trainer_registry.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/tuning.py`: `import layers.layer_0_core.level_4`
+- `contest_level_rna3d_level_3`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/train_and_submit.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_3.training.pipeline`
+
+### `contest_level_rna3d_level_3`
+- `contest_level_rna3d_level_3`: 3
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_3/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_3`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_3/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_3.training`
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_3/training/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_3.training.pipeline`
+- `competition_infra_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_3/training/pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+- `competition_infra_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_3/training/pipeline.py`: `import layers.layer_1_competition.level_0_infra.level_1.contest`
+- `contest_level_rna3d_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_3/training/pipeline.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_0`
+- `contest_level_rna3d_level_2`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_3/training/pipeline.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_2`
+- `layer_0_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_3/training/pipeline.py`: `import layers.layer_0_core.level_0`
+
+### `contest_level_rna3d_level_4`
+- `competition_infra_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_4/handlers.py`: `import layers.layer_1_competition.level_0_infra.level_1.contest`
+- `contest_level_rna3d_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_4/handlers.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_0.validate_data`
+- `contest_level_rna3d_level_2`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_4/handlers.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_2`
+- `contest_level_rna3d_level_3`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_4/handlers.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_3`
+- `contest_level_rna3d_level_4`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_4/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_4.handlers`
+
+### `contest_level_rna3d_other`
+- `competition_infra_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/registration.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `competition_infra_level_2`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/registration.py`: `import layers.layer_1_competition.level_0_infra.level_2`
+- `contest_level_rna3d_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/registration.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_0`
+
+### `devtools_impl_level_0`
+- `devtools_impl_level_0`: 41
+  - `layers/layer_2_devtools/level_1_impl/level_0/__init__.py`: `import layers.layer_2_devtools.level_1_impl.level_0`
+  - `layers/layer_2_devtools/level_1_impl/level_0/__init__.py`: `import layers.layer_2_devtools.level_1_impl.level_0.arc_llm_tta_benchmark`
+  - `layers/layer_2_devtools/level_1_impl/level_0/__init__.py`: `import layers.layer_2_devtools.level_1_impl.level_0.composed`
+- `devtools_infra_level_0`: 38
+  - `layers/layer_2_devtools/level_1_impl/level_0/composed/audit_precheck_workflow_ops.py`: `import layers.layer_2_devtools.level_0_infra.level_0`
+  - `layers/layer_2_devtools/level_1_impl/level_0/composed/audit_precheck_workflow_ops.py`: `import layers.layer_2_devtools.level_0_infra.level_0.constants.import_patterns`
+  - `layers/layer_2_devtools/level_1_impl/level_0/composed/audit_precheck_workflow_ops.py`: `import layers.layer_2_devtools.level_0_infra.level_0.path.audit_paths`
+- `devtools_infra_level_1`: 4
+  - `layers/layer_2_devtools/level_1_impl/level_0/composed/health_threshold_enforcement_ops.py`: `import layers.layer_2_devtools.level_0_infra.level_1.checker`
+  - `layers/layer_2_devtools/level_1_impl/level_0/composed/hyperparameter_workflow_ops.py`: `import layers.layer_2_devtools.level_0_infra.level_1`
+  - `layers/layer_2_devtools/level_1_impl/level_0/composed/package_health_workflow_ops.py`: `import layers.layer_2_devtools.level_0_infra.level_1`
+- `devtools_infra_level_2`: 1
+  - `layers/layer_2_devtools/level_1_impl/level_0/composed/package_health_workflow_ops.py`: `import layers.layer_2_devtools.level_0_infra.level_2`
+- `layer_0_level_4`: 1
+  - `layers/layer_2_devtools/level_1_impl/level_0/composed/hyperparameter_workflow_ops.py`: `import layers.layer_0_core.level_4`
+
+### `devtools_impl_level_1`
+- `devtools_infra_level_0`: 24
+  - `layers/layer_2_devtools/level_1_impl/level_1/api_audit.py`: `import layers.layer_2_devtools.level_0_infra.level_0.contracts.envelope`
+  - `layers/layer_2_devtools/level_1_impl/level_1/api_audit.py`: `import layers.layer_2_devtools.level_0_infra.level_0.path.audit_paths`
+  - `layers/layer_2_devtools/level_1_impl/level_1/api_audit.py`: `import layers.layer_2_devtools.level_0_infra.level_0.path.layer_core_paths`
+- `devtools_impl_level_1`: 15
+  - `layers/layer_2_devtools/level_1_impl/level_1/__init__.py`: `import layers.layer_2_devtools.level_1_impl.level_1`
+  - `layers/layer_2_devtools/level_1_impl/level_1/__init__.py`: `import layers.layer_2_devtools.level_1_impl.level_1.api_audit`
+  - `layers/layer_2_devtools/level_1_impl/level_1/__init__.py`: `import layers.layer_2_devtools.level_1_impl.level_1.api_audit_emit`
+- `devtools_impl_level_0`: 11
+  - `layers/layer_2_devtools/level_1_impl/level_1/api_audit.py`: `import layers.layer_2_devtools.level_1_impl.level_0.composed.audit_precheck_workflow_ops`
+  - `layers/layer_2_devtools/level_1_impl/level_1/api_audit.py`: `import layers.layer_2_devtools.level_1_impl.level_0.composed.barrel_enforcement_workflow_ops`
+  - `layers/layer_2_devtools/level_1_impl/level_1/api_audit.py`: `import layers.layer_2_devtools.level_1_impl.level_0.composed.contest_scan_workflow_ops`
+- `devtools_infra_level_1`: 3
+  - `layers/layer_2_devtools/level_1_impl/level_1/api_audit.py`: `import layers.layer_2_devtools.level_0_infra.level_1.rollup_skeleton`
+  - `layers/layer_2_devtools/level_1_impl/level_1/api_import_probe.py`: `import layers.layer_2_devtools.level_0_infra.level_1.tester`
+  - `layers/layer_2_devtools/level_1_impl/level_1/api_maintenance.py`: `import layers.layer_2_devtools.level_0_infra.level_1`
+- `devtools_impl_level_2`: 1
+  - `layers/layer_2_devtools/level_1_impl/level_1/api_pipeline.py`: `import layers.layer_2_devtools.level_1_impl.level_2.pipeline_ops`
+- `devtools_infra_level_2`: 1
+  - `layers/layer_2_devtools/level_1_impl/level_1/api_import_probe.py`: `import layers.layer_2_devtools.level_0_infra.level_2.reporter`
+
+### `devtools_impl_level_2`
+- `devtools_impl_level_2`: 36
+  - `layers/layer_2_devtools/level_1_impl/level_2/__init__.py`: `import layers.layer_2_devtools.level_1_impl.level_2`
+  - `layers/layer_2_devtools/level_1_impl/level_2/__init__.py`: `import layers.layer_2_devtools.level_1_impl.level_2._fix_imports`
+  - `layers/layer_2_devtools/level_1_impl/level_2/__init__.py`: `import layers.layer_2_devtools.level_1_impl.level_2._violation_fix_bundle`
+- `devtools_impl_level_1`: 27
+  - `layers/layer_2_devtools/level_1_impl/level_2/_fix_imports.py`: `import layers.layer_2_devtools.level_1_impl.level_1.api_maintenance`
+  - `layers/layer_2_devtools/level_1_impl/level_2/_violation_fix_bundle.py`: `import layers.layer_2_devtools.level_1_impl.level_1.api_maintenance`
+  - `layers/layer_2_devtools/level_1_impl/level_2/analyze_hyperparameters.py`: `import layers.layer_2_devtools.level_1_impl.level_1.api_hyperparameter`
+- `devtools_impl_level_0`: 1
+  - `layers/layer_2_devtools/level_1_impl/level_2/pipeline_ops.py`: `import layers.layer_2_devtools.level_1_impl.level_0.targets.discovery_ops`
+- `devtools_infra_level_0`: 1
+  - `layers/layer_2_devtools/level_1_impl/level_2/scan_level_violations.py`: `import layers.layer_2_devtools.level_0_infra.level_0.formatting.move_plan_from_scan`
+
+### `devtools_infra_level_0`
+- `devtools_infra_level_0`: 61
+  - `layers/layer_2_devtools/level_0_infra/level_0/__init__.py`: `import layers.layer_2_devtools.level_0_infra.level_0`
+  - `layers/layer_2_devtools/level_0_infra/level_0/__init__.py`: `import layers.layer_2_devtools.level_0_infra.level_0._codemod`
+  - `layers/layer_2_devtools/level_0_infra/level_0/__init__.py`: `import layers.layer_2_devtools.level_0_infra.level_0.base_health_analyzer`
+- `layer_0_level_5`: 2
+  - `layers/layer_2_devtools/level_0_infra/level_0/hyperparameter/hyperparameter_utils.py`: `import layers.layer_0_core.level_5.file_io.merge`
+  - `layers/layer_2_devtools/level_0_infra/level_0/hyperparameter/hyperparameter_utils.py`: `import layers.layer_0_core.level_5.metadata.paths`
+- `layer_0_level_0`: 1
+  - `layers/layer_2_devtools/level_0_infra/level_0/hyperparameter/hyperparameter_utils.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_4`: 1
+  - `layers/layer_2_devtools/level_0_infra/level_0/hyperparameter/hyperparameter_utils.py`: `import layers.layer_0_core.level_4`
+
+### `devtools_infra_level_1`
+- `devtools_infra_level_0`: 24
+  - `layers/layer_2_devtools/level_0_infra/level_1/checker.py`: `import layers.layer_2_devtools.level_0_infra.level_0`
+  - `layers/layer_2_devtools/level_0_infra/level_1/dumper_cli.py`: `import layers.layer_2_devtools.level_0_infra.level_0`
+  - `layers/layer_2_devtools/level_0_infra/level_1/dumper_presets.py`: `import layers.layer_2_devtools.level_0_infra.level_0`
+- `devtools_infra_level_1`: 21
+  - `layers/layer_2_devtools/level_0_infra/level_1/__init__.py`: `import layers.layer_2_devtools.level_0_infra.level_1`
+  - `layers/layer_2_devtools/level_0_infra/level_1/__init__.py`: `import layers.layer_2_devtools.level_0_infra.level_1.checker`
+  - `layers/layer_2_devtools/level_0_infra/level_1/__init__.py`: `import layers.layer_2_devtools.level_0_infra.level_1.dumper_cli`
+- `layer_0_level_5`: 1
+  - `layers/layer_2_devtools/level_0_infra/level_1/hyperparameter_analysis.py`: `import layers.layer_0_core.level_5`
+
+### `devtools_infra_level_2`
+- `devtools_infra_level_0`: 2
+  - `layers/layer_2_devtools/level_0_infra/level_2/console_reporter.py`: `import layers.layer_2_devtools.level_0_infra.level_0`
+  - `layers/layer_2_devtools/level_0_infra/level_2/reporter.py`: `import layers.layer_2_devtools.level_0_infra.level_0`
+- `devtools_infra_level_1`: 2
+  - `layers/layer_2_devtools/level_0_infra/level_2/console_reporter.py`: `import layers.layer_2_devtools.level_0_infra.level_1`
+  - `layers/layer_2_devtools/level_0_infra/level_2/reporter.py`: `import layers.layer_2_devtools.level_0_infra.level_1`
+- `devtools_infra_level_2`: 2
+  - `layers/layer_2_devtools/level_0_infra/level_2/__init__.py`: `import layers.layer_2_devtools.level_0_infra.level_2.console_reporter`
+  - `layers/layer_2_devtools/level_0_infra/level_2/__init__.py`: `import layers.layer_2_devtools.level_0_infra.level_2.reporter`
+
+### `devtools_other`
+- `devtools_other`: 7
+  - `layers/layer_2_devtools/level_1_impl/tests/integration/__init__.py`: `import layers.layer_2_devtools.level_1_impl.tests.integration`
+  - `layers/layer_2_devtools/level_1_impl/tests/integration/__init__.py`: `import layers.layer_2_devtools.level_1_impl.tests.integration.test_pipelines`
+  - `layers/layer_2_devtools/level_1_impl/tests/integration/__init__.py`: `import layers.layer_2_devtools.level_1_impl.tests.integration.test_trainers`
+- `devtools_impl_level_2`: 6
+  - `layers/layer_2_devtools/entrypoints/audit_rollup.py`: `import layers.layer_2_devtools.level_1_impl.level_2.audit_rollup`
+  - `layers/layer_2_devtools/entrypoints/check_health.py`: `import layers.layer_2_devtools.level_1_impl.level_2.check_health`
+  - `layers/layer_2_devtools/entrypoints/check_health_thresholds.py`: `import layers.layer_2_devtools.level_1_impl.level_2.check_health_thresholds`
+
+### `external_other`
+- `external_other`: 25
+  - `layers/__init__.py`: `import layers`
+  - `layers/__init__.py`: `import layers.layer_0_core`
+  - `layers/__init__.py`: `import layers.layer_1_competition`
+- `competition_infra_level_0`: 1
+  - `layers/layer_1_competition/level_0_infra/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_0`
+- `competition_infra_level_1`: 1
+  - `layers/layer_1_competition/level_0_infra/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `competition_infra_level_2`: 1
+  - `layers/layer_1_competition/level_0_infra/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_2`
+- `competition_infra_level_3`: 1
+  - `layers/layer_1_competition/level_0_infra/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_3`
+- `competition_infra_level_4`: 1
+  - `layers/layer_1_competition/level_0_infra/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_4`
+- `competition_infra_level_5`: 1
+  - `layers/layer_1_competition/level_0_infra/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_5`
+- `competition_infra_level_6`: 1
+  - `layers/layer_1_competition/level_0_infra/__init__.py`: `import layers.layer_1_competition.level_0_infra.level_6`
+- `contest_level_arc_agi_2_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0`
+- `contest_level_arc_agi_2_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1`
+- `contest_level_arc_agi_2_level_2`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_2`
+- `contest_level_arc_agi_2_level_3`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_3`
+- `contest_level_arc_agi_2_level_4`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4`
+- `contest_level_arc_agi_2_level_5`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_5`
+- `contest_level_arc_agi_2_level_6`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_6`
+- `contest_level_arc_agi_2_level_7`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_7`
+- `contest_level_arc_agi_2_level_8`: 1
+  - `layers/layer_1_competition/level_1_impl/level_arc_agi_2/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_8`
+- `contest_level_cafa_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_0`
+- `contest_level_cafa_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_1`
+- `contest_level_cafa_level_2`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_2`
+- `contest_level_cafa_level_3`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_3`
+- `contest_level_cafa_level_4`: 1
+  - `layers/layer_1_competition/level_1_impl/level_cafa/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_cafa.level_4`
+- `contest_level_csiro_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_0`
+- `contest_level_csiro_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_1`
+- `contest_level_csiro_level_2`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_2`
+- `contest_level_csiro_level_3`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_3`
+- `contest_level_csiro_level_4`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_4`
+- `contest_level_csiro_level_5`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_5`
+- `contest_level_csiro_level_6`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_6`
+- `contest_level_csiro_level_7`: 1
+  - `layers/layer_1_competition/level_1_impl/level_csiro/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_7`
+- `contest_level_rna3d_level_0`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_0`
+- `contest_level_rna3d_level_1`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_1`
+- `contest_level_rna3d_level_2`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_2`
+- `contest_level_rna3d_level_3`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_3`
+- `contest_level_rna3d_level_4`: 1
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/__init__.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_4`
+- `devtools_impl_level_0`: 1
+  - `layers/layer_2_devtools/level_1_impl/__init__.py`: `import layers.layer_2_devtools.level_1_impl.level_0`
+- `devtools_impl_level_1`: 1
+  - `layers/layer_2_devtools/level_1_impl/__init__.py`: `import layers.layer_2_devtools.level_1_impl.level_1`
+- `devtools_impl_level_2`: 1
+  - `layers/layer_2_devtools/level_1_impl/__init__.py`: `import layers.layer_2_devtools.level_1_impl.level_2`
+- `devtools_infra_level_0`: 1
+  - `layers/layer_2_devtools/level_0_infra/__init__.py`: `import layers.layer_2_devtools.level_0_infra.level_0`
+- `devtools_infra_level_1`: 1
+  - `layers/layer_2_devtools/level_0_infra/__init__.py`: `import layers.layer_2_devtools.level_0_infra.level_1`
+- `devtools_infra_level_2`: 1
+  - `layers/layer_2_devtools/level_0_infra/__init__.py`: `import layers.layer_2_devtools.level_0_infra.level_2`
+- `layer_0_level_0`: 1
+  - `layers/layer_0_core/__init__.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_1`: 1
+  - `layers/layer_0_core/__init__.py`: `import layers.layer_0_core.level_1`
+- `layer_0_level_10`: 1
+  - `layers/layer_0_core/__init__.py`: `import layers.layer_0_core.level_10`
+- `layer_0_level_2`: 1
+  - `layers/layer_0_core/__init__.py`: `import layers.layer_0_core.level_2`
+- `layer_0_level_3`: 1
+  - `layers/layer_0_core/__init__.py`: `import layers.layer_0_core.level_3`
+- `layer_0_level_4`: 1
+  - `layers/layer_0_core/__init__.py`: `import layers.layer_0_core.level_4`
+- `layer_0_level_5`: 1
+  - `layers/layer_0_core/__init__.py`: `import layers.layer_0_core.level_5`
+- `layer_0_level_6`: 1
+  - `layers/layer_0_core/__init__.py`: `import layers.layer_0_core.level_6`
+- `layer_0_level_7`: 1
+  - `layers/layer_0_core/__init__.py`: `import layers.layer_0_core.level_7`
+- `layer_0_level_8`: 1
+  - `layers/layer_0_core/__init__.py`: `import layers.layer_0_core.level_8`
+- `layer_0_level_9`: 1
+  - `layers/layer_0_core/__init__.py`: `import layers.layer_0_core.level_9`
+
+### `layer_0_level_0`
+- `layer_0_level_0`: 91
+  - `layers/layer_0_core/level_0/__init__.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_0_core/level_0/__init__.py`: `import layers.layer_0_core.level_0.abstractions`
+  - `layers/layer_0_core/level_0/__init__.py`: `import layers.layer_0_core.level_0.cli`
+
+### `layer_0_level_1`
+- `layer_0_level_1`: 130
+  - `layers/layer_0_core/level_1/__init__.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_0_core/level_1/__init__.py`: `import layers.layer_0_core.level_1.cli`
+  - `layers/layer_0_core/level_1/__init__.py`: `import layers.layer_0_core.level_1.data`
+- `layer_0_level_0`: 87
+  - `layers/layer_0_core/level_1/cli/builders/ensemble/builder.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_0_core/level_1/cli/builders/ensemble/weights.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_0_core/level_1/cli/builders/grid_search.py`: `import layers.layer_0_core.level_0`
+
+### `layer_0_level_10`
+- `layer_0_level_10`: 3
+  - `layers/layer_0_core/level_10/__init__.py`: `import layers.layer_0_core.level_10`
+  - `layers/layer_0_core/level_10/__init__.py`: `import layers.layer_0_core.level_10.end_to_end_grid_search`
+  - `layers/layer_0_core/level_10/end_to_end_grid_search/__init__.py`: `import layers.layer_0_core.level_10.end_to_end_grid_search.pipeline`
+- `layer_0_level_0`: 1
+  - `layers/layer_0_core/level_10/end_to_end_grid_search/pipeline.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_1`: 1
+  - `layers/layer_0_core/level_10/end_to_end_grid_search/pipeline.py`: `import layers.layer_0_core.level_1`
+- `layer_0_level_4`: 1
+  - `layers/layer_0_core/level_10/end_to_end_grid_search/pipeline.py`: `import layers.layer_0_core.level_4`
+- `layer_0_level_7`: 1
+  - `layers/layer_0_core/level_10/end_to_end_grid_search/pipeline.py`: `import layers.layer_0_core.level_7`
+- `layer_0_level_8`: 1
+  - `layers/layer_0_core/level_10/end_to_end_grid_search/pipeline.py`: `import layers.layer_0_core.level_8`
+- `layer_0_level_9`: 1
+  - `layers/layer_0_core/level_10/end_to_end_grid_search/pipeline.py`: `import layers.layer_0_core.level_9`
+
+### `layer_0_level_2`
+- `layer_0_level_2`: 60
+  - `layers/layer_0_core/level_2/__init__.py`: `import layers.layer_0_core.level_2`
+  - `layers/layer_0_core/level_2/__init__.py`: `import layers.layer_0_core.level_2.analysis`
+  - `layers/layer_0_core/level_2/__init__.py`: `import layers.layer_0_core.level_2.dataloader`
+- `layer_0_level_1`: 42
+  - `layers/layer_0_core/level_2/analysis/cv_analysis.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_0_core/level_2/dataloader/datasets.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_0_core/level_2/dataloader/streaming_datasets.py`: `import layers.layer_0_core.level_1`
+- `layer_0_level_0`: 35
+  - `layers/layer_0_core/level_2/analysis/cv_analysis.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_0_core/level_2/dataloader/loader.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_0_core/level_2/ensemble_strategies/averaging.py`: `import layers.layer_0_core.level_0`
+
+### `layer_0_level_3`
+- `layer_0_level_3`: 32
+  - `layers/layer_0_core/level_3/__init__.py`: `import layers.layer_0_core.level_3`
+  - `layers/layer_0_core/level_3/__init__.py`: `import layers.layer_0_core.level_3.dataloader`
+  - `layers/layer_0_core/level_3/__init__.py`: `import layers.layer_0_core.level_3.ensemble`
+- `layer_0_level_2`: 22
+  - `layers/layer_0_core/level_3/dataloader/factory.py`: `import layers.layer_0_core.level_2`
+  - `layers/layer_0_core/level_3/dataloader/transforms.py`: `import layers.layer_0_core.level_2`
+  - `layers/layer_0_core/level_3/ensemble/blending_ensemble.py`: `import layers.layer_0_core.level_2`
+- `layer_0_level_0`: 15
+  - `layers/layer_0_core/level_3/dataloader/factory.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_0_core/level_3/ensemble/blending_ensemble.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_0_core/level_3/ensemble/per_target_weighted.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_1`: 9
+  - `layers/layer_0_core/level_3/dataloader/factory.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_0_core/level_3/ensemble_strategies/pipeline_result_handler.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_0_core/level_3/features/siglip_extractor.py`: `import layers.layer_0_core.level_1`
+
+### `layer_0_level_4`
+- `layer_0_level_4`: 26
+  - `layers/layer_0_core/level_4/__init__.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_0_core/level_4/__init__.py`: `import layers.layer_0_core.level_4.dataloaders`
+  - `layers/layer_0_core/level_4/__init__.py`: `import layers.layer_0_core.level_4.ensemble`
+- `layer_0_level_3`: 16
+  - `layers/layer_0_core/level_4/dataloaders/create_dataloaders.py`: `import layers.layer_0_core.level_3`
+  - `layers/layer_0_core/level_4/ensemble/meta_model_stacking.py`: `import layers.layer_0_core.level_3`
+  - `layers/layer_0_core/level_4/features/compute_siglip_embeddings.py`: `import layers.layer_0_core.level_3`
+- `layer_0_level_0`: 15
+  - `layers/layer_0_core/level_4/dataloaders/create_dataloaders.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_0_core/level_4/ensemble/meta_model_stacking.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_0_core/level_4/features/siglip_adapter.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_1`: 6
+  - `layers/layer_0_core/level_4/ensemble/meta_model_stacking.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_0_core/level_4/metrics/calculate_metrics.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_0_core/level_4/models/vision_model_factory.py`: `import layers.layer_0_core.level_1`
+- `layer_0_level_2`: 6
+  - `layers/layer_0_core/level_4/dataloaders/create_dataloaders.py`: `import layers.layer_0_core.level_2`
+  - `layers/layer_0_core/level_4/file_io/csv.py`: `import layers.layer_0_core.level_2`
+  - `layers/layer_0_core/level_4/metrics/weighted_r2.py`: `import layers.layer_0_core.level_2`
+
+### `layer_0_level_5`
+- `layer_0_level_5`: 40
+  - `layers/layer_0_core/level_5/__init__.py`: `import layers.layer_0_core.level_5`
+  - `layers/layer_0_core/level_5/__init__.py`: `import layers.layer_0_core.level_5.batch_loading`
+  - `layers/layer_0_core/level_5/__init__.py`: `import layers.layer_0_core.level_5.data_structure`
+- `layer_0_level_4`: 23
+  - `layers/layer_0_core/level_5/batch_loading/csv_batch.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_0_core/level_5/batch_loading/image_batch.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_0_core/level_5/data_structure/base/config_loader.py`: `import layers.layer_0_core.level_4`
+- `layer_0_level_0`: 21
+  - `layers/layer_0_core/level_5/data_structure/base/config_loader.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_0_core/level_5/data_structure/tabular/base.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_0_core/level_5/data_structure/tabular/sparse_tabular_dataset.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_1`: 8
+  - `layers/layer_0_core/level_5/batch_loading/csv_batch.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_0_core/level_5/batch_loading/image_batch.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_0_core/level_5/ensembling/combine.py`: `import layers.layer_0_core.level_1`
+- `layer_0_level_2`: 4
+  - `layers/layer_0_core/level_5/datasets/splits.py`: `import layers.layer_0_core.level_2`
+  - `layers/layer_0_core/level_5/ensembling/combine.py`: `import layers.layer_0_core.level_2`
+  - `layers/layer_0_core/level_5/ensembling/stacking_ensemble.py`: `import layers.layer_0_core.level_2`
+- `layer_0_level_3`: 3
+  - `layers/layer_0_core/level_5/datasets/load_and_validate_test_data.py`: `import layers.layer_0_core.level_3`
+  - `layers/layer_0_core/level_5/ensembling/stacking_ensemble.py`: `import layers.layer_0_core.level_3`
+  - `layers/layer_0_core/level_5/model_io/model_io.py`: `import layers.layer_0_core.level_3`
+
+### `layer_0_level_6`
+- `layer_0_level_6`: 23
+  - `layers/layer_0_core/level_6/__init__.py`: `import layers.layer_0_core.level_6`
+  - `layers/layer_0_core/level_6/__init__.py`: `import layers.layer_0_core.level_6.ensembling`
+  - `layers/layer_0_core/level_6/__init__.py`: `import layers.layer_0_core.level_6.grid_search`
+- `layer_0_level_5`: 14
+  - `layers/layer_0_core/level_6/ensembling/ensembling_methods.py`: `import layers.layer_0_core.level_5`
+  - `layers/layer_0_core/level_6/grid_search/grid_search_base.py`: `import layers.layer_0_core.level_5`
+  - `layers/layer_0_core/level_6/grid_search/grid_search_results.py`: `import layers.layer_0_core.level_5`
+- `layer_0_level_0`: 13
+  - `layers/layer_0_core/level_6/ensembling/ensembling_methods.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_0_core/level_6/grid_search/grid_search_base.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_0_core/level_6/grid_search/grid_search_results.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_1`: 7
+  - `layers/layer_0_core/level_6/ensembling/ensembling_methods.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_0_core/level_6/grid_search/grid_search_base.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_0_core/level_6/grid_search/grid_search_results.py`: `import layers.layer_0_core.level_1`
+- `layer_0_level_2`: 7
+  - `layers/layer_0_core/level_6/ensembling/ensembling_methods.py`: `import layers.layer_0_core.level_2`
+  - `layers/layer_0_core/level_6/prediction/predict_pipeline.py`: `import layers.layer_0_core.level_2`
+  - `layers/layer_0_core/level_6/prediction/streaming_test_dataloader.py`: `import layers.layer_0_core.level_2`
+- `layer_0_level_4`: 5
+  - `layers/layer_0_core/level_6/grid_search/result_handlers.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_0_core/level_6/grid_search/variant_cleanup_runner.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_0_core/level_6/metadata/combo_lookup.py`: `import layers.layer_0_core.level_4`
+- `layer_0_level_3`: 1
+  - `layers/layer_0_core/level_6/prediction/predict_pipeline.py`: `import layers.layer_0_core.level_3`
+
+### `layer_0_level_7`
+- `layer_0_level_7`: 8
+  - `layers/layer_0_core/level_7/__init__.py`: `import layers.layer_0_core.level_7`
+  - `layers/layer_0_core/level_7/__init__.py`: `import layers.layer_0_core.level_7.factories`
+  - `layers/layer_0_core/level_7/__init__.py`: `import layers.layer_0_core.level_7.grid_search`
+- `layer_0_level_6`: 5
+  - `layers/layer_0_core/level_7/factories/create_ensembling_method.py`: `import layers.layer_0_core.level_6`
+  - `layers/layer_0_core/level_7/factories/tabular_model_factory.py`: `import layers.layer_0_core.level_6`
+  - `layers/layer_0_core/level_7/grid_search/dataset_variant_executor.py`: `import layers.layer_0_core.level_6`
+- `layer_0_level_0`: 4
+  - `layers/layer_0_core/level_7/factories/create_ensembling_method.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_0_core/level_7/grid_search/dataset_variant_executor.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_0_core/level_7/grid_search/hyperparameter_base.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_1`: 1
+  - `layers/layer_0_core/level_7/grid_search/dataset_variant_executor.py`: `import layers.layer_0_core.level_1`
+- `layer_0_level_3`: 1
+  - `layers/layer_0_core/level_7/factories/create_ensembling_method.py`: `import layers.layer_0_core.level_3`
+- `layer_0_level_5`: 1
+  - `layers/layer_0_core/level_7/factories/tabular_model_factory.py`: `import layers.layer_0_core.level_5`
+
+### `layer_0_level_8`
+- `layer_0_level_8`: 11
+  - `layers/layer_0_core/level_8/__init__.py`: `import layers.layer_0_core.level_8`
+  - `layers/layer_0_core/level_8/__init__.py`: `import layers.layer_0_core.level_8.grid_search`
+  - `layers/layer_0_core/level_8/__init__.py`: `import layers.layer_0_core.level_8.regression`
+- `layer_0_level_0`: 7
+  - `layers/layer_0_core/level_8/grid_search/dataset_grid_search.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_0_core/level_8/grid_search/end_to_end_variants.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_0_core/level_8/regression/regression_ensemble.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_7`: 6
+  - `layers/layer_0_core/level_8/grid_search/dataset_grid_search.py`: `import layers.layer_0_core.level_7`
+  - `layers/layer_0_core/level_8/grid_search/end_to_end_variants.py`: `import layers.layer_0_core.level_7`
+  - `layers/layer_0_core/level_8/regression/regression_ensemble.py`: `import layers.layer_0_core.level_7`
+- `layer_0_level_1`: 4
+  - `layers/layer_0_core/level_8/grid_search/dataset_grid_search.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_0_core/level_8/regression/regression_variants.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_0_core/level_8/training/detect_train_export_mode.py`: `import layers.layer_0_core.level_1`
+- `layer_0_level_4`: 2
+  - `layers/layer_0_core/level_8/regression/regression_ensemble.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_0_core/level_8/training/train_pipeline.py`: `import layers.layer_0_core.level_4`
+- `layer_0_level_6`: 2
+  - `layers/layer_0_core/level_8/grid_search/dataset_grid_search.py`: `import layers.layer_0_core.level_6`
+  - `layers/layer_0_core/level_8/regression/regression_ensemble.py`: `import layers.layer_0_core.level_6`
+- `layer_0_level_2`: 1
+  - `layers/layer_0_core/level_8/training/train_pipeline.py`: `import layers.layer_0_core.level_2`
+- `layer_0_level_3`: 1
+  - `layers/layer_0_core/level_8/regression/regression_variants.py`: `import layers.layer_0_core.level_3`
+- `layer_0_level_5`: 1
+  - `layers/layer_0_core/level_8/training/train_pipeline.py`: `import layers.layer_0_core.level_5`
+
+### `layer_0_level_9`
+- `layer_0_level_9`: 10
+  - `layers/layer_0_core/level_9/__init__.py`: `import layers.layer_0_core.level_9`
+  - `layers/layer_0_core/level_9/__init__.py`: `import layers.layer_0_core.level_9.grid_search`
+  - `layers/layer_0_core/level_9/__init__.py`: `import layers.layer_0_core.level_9.train_predict`
+- `layer_0_level_0`: 6
+  - `layers/layer_0_core/level_9/grid_search/dataset_grid_search_pipeline.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_0_core/level_9/grid_search/hyperparameter.py`: `import layers.layer_0_core.level_0`
+  - `layers/layer_0_core/level_9/grid_search/regression_grid_search.py`: `import layers.layer_0_core.level_0`
+- `layer_0_level_8`: 6
+  - `layers/layer_0_core/level_9/grid_search/dataset_grid_search_pipeline.py`: `import layers.layer_0_core.level_8`
+  - `layers/layer_0_core/level_9/grid_search/hyperparameter.py`: `import layers.layer_0_core.level_8`
+  - `layers/layer_0_core/level_9/grid_search/regression_grid_search.py`: `import layers.layer_0_core.level_8`
+- `layer_0_level_6`: 4
+  - `layers/layer_0_core/level_9/grid_search/hyperparameter.py`: `import layers.layer_0_core.level_6`
+  - `layers/layer_0_core/level_9/grid_search/regression_grid_search.py`: `import layers.layer_0_core.level_6`
+  - `layers/layer_0_core/level_9/train_predict/workflow.py`: `import layers.layer_0_core.level_6`
+- `layer_0_level_1`: 3
+  - `layers/layer_0_core/level_9/train_predict/workflow.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_0_core/level_9/training/cross_validate.py`: `import layers.layer_0_core.level_1`
+  - `layers/layer_0_core/level_9/training/train_and_export.py`: `import layers.layer_0_core.level_1`
+- `layer_0_level_4`: 3
+  - `layers/layer_0_core/level_9/grid_search/dataset_grid_search_pipeline.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_0_core/level_9/grid_search/hyperparameter.py`: `import layers.layer_0_core.level_4`
+  - `layers/layer_0_core/level_9/training/cross_validate.py`: `import layers.layer_0_core.level_4`
+- `layer_0_level_5`: 1
+  - `layers/layer_0_core/level_9/training/train_and_export.py`: `import layers.layer_0_core.level_5`
+- `layer_0_level_7`: 1
+  - `layers/layer_0_core/level_9/grid_search/regression_grid_search.py`: `import layers.layer_0_core.level_7`
+
+## Highlighted edges (potential violations)
+
+- `competition_infra_level_0` -> `competition_infra_level_1`: 1 (upward_competition_infra=1)
+  - `layers/layer_1_competition/level_0_infra/level_0/pipeline_logging.py`: `import layers.layer_1_competition.level_0_infra.level_1`
+- `contest_level_csiro_level_5` -> `contest_level_csiro_level_6`: 1 (upward_contest_tier=1)
+  - `layers/layer_1_competition/level_1_impl/level_csiro/level_5/handlers_training.py`: `import layers.layer_1_competition.level_1_impl.level_csiro.level_6`
+- `contest_level_rna3d_level_2` -> `contest_level_rna3d_level_3`: 1 (upward_contest_tier=1)
+  - `layers/layer_1_competition/level_1_impl/level_rna3d/level_2/orchestration/train_and_submit.py`: `import layers.layer_1_competition.level_1_impl.level_rna3d.level_3.training.pipeline`
+- `devtools_impl_level_1` -> `devtools_impl_level_2`: 1 (upward_devtools_layering=1)
+  - `layers/layer_2_devtools/level_1_impl/level_1/api_pipeline.py`: `import layers.layer_2_devtools.level_1_impl.level_2.pipeline_ops`
+

@@ -4,7 +4,7 @@ from typing import Iterable, Union, Tuple, Any
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def lazy_import(
@@ -30,7 +30,7 @@ def lazy_import(
         return values[0] if single else values
 
     except Exception:
-        logger.warning("%s not available. %s", package, warn)
+        _logger.warning("%s not available. %s", package, warn)
 
         if single:
             return None

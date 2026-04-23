@@ -8,7 +8,7 @@ from layers.layer_0_core.level_0 import (
     get_vision_module_and_tensor_types,
 )
 
-torch = get_torch()
+_torch = get_torch()
 _NNModule = get_nn_module_base_class()
 ModuleT, TensorT = get_vision_module_and_tensor_types()
 
@@ -30,7 +30,7 @@ class BaseHead(_NNModule):
         activation: str = "relu",
     ):
         super().__init__()
-        if torch is None:
+        if _torch is None:
             raise RuntimeError("PyTorch is required to build vision heads.")
         self.in_features = in_features
         self.out_features = out_features
@@ -38,30 +38,30 @@ class BaseHead(_NNModule):
         act_fn = self._get_activation(activation)
 
         if hidden_size is None or hidden_size <= 0:
-            self.head = torch.nn.Linear(in_features, out_features)
+            self.head = _torch.nn.Linear(in_features, out_features)
         else:
-            self.head = torch.nn.Sequential(
-                torch.nn.Linear(in_features, hidden_size),
+            self.head = _torch.nn.Sequential(
+                _torch.nn.Linear(in_features, hidden_size),
                 act_fn,
-                torch.nn.Dropout(dropout),
-                torch.nn.Linear(hidden_size, out_features),
+                _torch.nn.Dropout(dropout),
+                _torch.nn.Linear(hidden_size, out_features),
             )
 
     def _get_activation(self, activation: str) -> ModuleT:
         """Return activation module by name."""
-        if torch is None:
+        if _torch is None:
             raise RuntimeError("PyTorch is required to build vision heads.")
         activation = activation.lower()
         if activation == "relu":
-            return torch.nn.ReLU(inplace=True)
+            return _torch.nn.ReLU(inplace=True)
         if activation == "gelu":
-            return torch.nn.GELU()
+            return _torch.nn.GELU()
         if activation == "silu":
-            return torch.nn.SiLU(inplace=True)
+            return _torch.nn.SiLU(inplace=True)
         raise ValueError(f"Unknown activation: {activation}")
 
     def forward(self, x: TensorT) -> TensorT:
-        if torch is None:
+        if _torch is None:
             raise RuntimeError("PyTorch is required to run vision heads.")
         return self.head(x)
 

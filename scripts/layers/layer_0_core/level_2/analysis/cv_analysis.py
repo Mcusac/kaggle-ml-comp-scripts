@@ -7,7 +7,7 @@ from typing import List, Tuple, Dict, Any, Optional
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_1 import calculate_fold_statistics, generate_cv_test_gap_warnings
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def find_best_fold_from_scores(fold_scores: List[float]) -> Tuple[int, float]:
@@ -131,7 +131,7 @@ def analyze_fold_score_range(
 
     fold_range = max(fold_scores) - min(fold_scores)
     if fold_range > threshold:
-        logger.warning(
+        _logger.warning(
             f"Large fold score range detected: {fold_range:.4f} (threshold: {threshold}). "
             f"High variance across folds may indicate model instability. "
             f"Scores: {fold_scores}"

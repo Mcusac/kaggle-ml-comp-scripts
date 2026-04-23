@@ -9,7 +9,7 @@ from layers.layer_0_core.level_0 import extract_results_list, get_logger
 from layers.layer_0_core.level_4 import load_json
 from layers.layer_0_core.level_5 import cleanup_grid_search_checkpoints_retroactive
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _get_cleanup_config(
@@ -84,13 +84,13 @@ def delete_variant_checkpoints_immediately(
     """
     _, _, _, delete_checkpoints = _get_cleanup_config(config)
     if cv_score is not None and delete_checkpoints:
-        logger.info(f"Deleting checkpoints for variant {variant_id} (results saved to results.json)")
+        _logger.info(f"Deleting checkpoints for variant {variant_id} (results saved to results.json)")
         try:
             if variant_model_dir.exists():
                 shutil.rmtree(variant_model_dir)
-                logger.info(f"Deleted variant checkpoints: {variant_model_dir}")
+                _logger.info(f"Deleted variant checkpoints: {variant_model_dir}")
         except Exception as e:
-            logger.warning(f"Failed to delete variant checkpoints: {e}")
+            _logger.warning(f"Failed to delete variant checkpoints: {e}")
 
 
 def cleanup_top_variants(
@@ -121,9 +121,9 @@ def cleanup_top_variants(
             keep_top_n=keep_top_n,
         )
         if deleted > 0:
-            logger.info(f"Pruned {deleted} variants, freed {freed / (1024 * 1024):.2f} MB")
+            _logger.info(f"Pruned {deleted} variants, freed {freed / (1024 * 1024):.2f} MB")
     except Exception as e:
-        logger.warning(f"Failed to prune top variants: {e}")
+        _logger.warning(f"Failed to prune top variants: {e}")
 
 
 def run_periodic_cleanup(
@@ -148,7 +148,7 @@ def run_periodic_cleanup(
         return
 
     if completed_count > 0 and completed_count % cleanup_interval == 0:
-        logger.info(f"Running periodic checkpoint cleanup (every {cleanup_interval} variants)")
+        _logger.info(f"Running periodic checkpoint cleanup (every {cleanup_interval} variants)")
         try:
             deleted, freed = cleanup_grid_search_checkpoints_retroactive(
                 model_base_dir=base_model_dir,
@@ -156,12 +156,12 @@ def run_periodic_cleanup(
                 keep_top_n=keep_top_n,
             )
             if deleted > 0:
-                logger.info(
+                _logger.info(
                     f"Periodic cleanup: deleted {deleted} variants, "
                     f"freed {freed / (1024 * 1024):.2f} MB"
                 )
         except Exception as e:
-            logger.warning(f"Periodic cleanup failed: {e}")
+            _logger.warning(f"Periodic cleanup failed: {e}")
 
 
 def get_completed_count(results_file: Path) -> int:
@@ -204,7 +204,7 @@ def run_final_cleanup(
     if not enable_cleanup or not results_file:
         return
 
-    logger.info("Running final checkpoint cleanup")
+    _logger.info("Running final checkpoint cleanup")
     try:
         deleted, freed = cleanup_grid_search_checkpoints_retroactive(
             model_base_dir=base_model_dir,
@@ -212,12 +212,12 @@ def run_final_cleanup(
             keep_top_n=keep_top_n,
         )
         if deleted > 0:
-            logger.info(
+            _logger.info(
                 f"Final cleanup: deleted {deleted} variants, "
                 f"freed {freed / (1024 * 1024):.2f} MB"
             )
         else:
             completed = get_completed_count(results_file)
-            logger.info(f"Final cleanup: nothing to delete ({completed} variants retained)")
+            _logger.info(f"Final cleanup: nothing to delete ({completed} variants retained)")
     except Exception as e:
-        logger.warning(f"Final cleanup failed: {e}")
+        _logger.warning(f"Final cleanup failed: {e}")

@@ -1,63 +1,73 @@
-"""IO utilities for loading and saving data.
+"""Auto-generated package exports."""
 
-Provides consistent, validated loading/saving across common data formats.
-Depends on level_0 (errors, logging, paths), level_2 (validate_dataframe),
-and level_3 (validate_path_is_file).
 
-Example:
-    >>> from layers.layer_0_core.level_4 import load_csv, load_image, save_json
-    >>> df = load_csv('data.csv', required_cols=['id', 'value'])
-"""
+from .csv import (
+    load_csv,
+    load_csv_raw,
+    load_csv_raw_if_exists,
+    save_csv,
+)
 
-from .csv import load_csv_raw, load_csv_raw_if_exists, load_csv, save_csv
-from .images import load_image_raw, load_image, save_image
-from .json import load_json_raw, load_json, load_best_config_json, save_json, save_json_atomic
+from .images import (
+    load_image,
+    load_image_raw,
+    save_image,
+)
+
+from .json import (
+    load_best_config_json,
+    load_json,
+    load_json_raw,
+    save_json,
+    save_json_atomic,
+)
+
 from .memmap import (
-    should_use_memmap,
+    MEMMAP_THRESHOLD_MB,
     create_memmap,
     load_memmap,
-    save_memmap_with_metadata,
     load_memmap_with_metadata,
-    MEMMAP_THRESHOLD_MB,
+    save_memmap_with_metadata,
+    should_use_memmap,
 )
+
 from .pickle import (
     PICKLE_HIGHEST_PROTOCOL,
-    load_pickle_raw,
     load_pickle,
+    load_pickle_raw,
     save_pickle,
 )
-from .yaml import load_yaml_raw, load_yaml, save_yaml
+
+from .yaml import (
+    load_yaml,
+    load_yaml_raw,
+    save_yaml,
+)
 
 __all__ = [
-    # CSV
+    "MEMMAP_THRESHOLD_MB",
+    "PICKLE_HIGHEST_PROTOCOL",
+    "create_memmap",
+    "load_best_config_json",
+    "load_csv",
     "load_csv_raw",
     "load_csv_raw_if_exists",
-    "load_csv",
-    "save_csv",
-    # Images
-    "load_image_raw",
     "load_image",
-    "save_image",
-    # JSON
-    "load_json_raw",
+    "load_image_raw",
     "load_json",
-    "load_best_config_json",
+    "load_json_raw",
+    "load_memmap",
+    "load_memmap_with_metadata",
+    "load_pickle",
+    "load_pickle_raw",
+    "load_yaml",
+    "load_yaml_raw",
+    "save_csv",
+    "save_image",
     "save_json",
     "save_json_atomic",
-    # Memmap
-    "should_use_memmap",
-    "create_memmap",
-    "load_memmap",
     "save_memmap_with_metadata",
-    "load_memmap_with_metadata",
-    "MEMMAP_THRESHOLD_MB",
-    # Pickle
-    "PICKLE_HIGHEST_PROTOCOL",
-    "load_pickle_raw",
-    "load_pickle",
     "save_pickle",
-    # YAML
-    "load_yaml_raw",
-    "load_yaml",
     "save_yaml",
-    ]
+    "should_use_memmap",
+]

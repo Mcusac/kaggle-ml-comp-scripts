@@ -8,7 +8,7 @@ from typing import Any
 from layers.layer_0_core.level_0 import get_logger, get_torch
 from layers.layer_0_core.level_1 import is_cuda_available, perform_aggressive_cleanup
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _safe_cuda_synchronize(torch) -> None:
@@ -44,12 +44,12 @@ def cleanup_model(model: Any) -> None:
         elif hasattr(model, 'cpu'):
             model.cpu()
     except Exception as e:
-        logger.debug("Could not move model to CPU: %s", e)
+        _logger.debug("Could not move model to CPU: %s", e)
 
     try:
         del model
     except Exception as e:
-        logger.debug("Could not delete model reference: %s", e)
+        _logger.debug("Could not delete model reference: %s", e)
 
 
 def release_training_resources(
@@ -108,10 +108,10 @@ def _cleanup_dataframe(dataframe: Any) -> bool:
         del dataframe
         return True
     except (AttributeError, RuntimeError) as e:
-        logger.debug("Error deleting dataframe during cleanup: %s", e)
+        _logger.debug("Error deleting dataframe during cleanup: %s", e)
         return True
     except Exception as e:
-        logger.debug("Unexpected error deleting dataframe during cleanup: %s", e, exc_info=True)
+        _logger.debug("Unexpected error deleting dataframe during cleanup: %s", e, exc_info=True)
         return True
 
 
@@ -126,9 +126,9 @@ def _cleanup_dataset(dataset: Any) -> None:
             del dataset.data
         del dataset
     except (AttributeError, RuntimeError) as e:
-        logger.debug("Error deleting dataset during cleanup: %s", e)
+        _logger.debug("Error deleting dataset during cleanup: %s", e)
     except Exception as e:
-        logger.debug("Unexpected error deleting dataset during cleanup: %s", e, exc_info=True)
+        _logger.debug("Unexpected error deleting dataset during cleanup: %s", e, exc_info=True)
 
 
 def _cleanup_dataloader(dataloader: Any) -> None:
@@ -148,14 +148,14 @@ def _cleanup_dataloader(dataloader: Any) -> None:
                 if hasattr(iterator, '_shutdown'):
                     iterator._shutdown()
             except (AttributeError, RuntimeError) as e:
-                logger.debug("Error closing dataloader iterator: %s", e)
+                _logger.debug("Error closing dataloader iterator: %s", e)
             except Exception as e:
-                logger.debug("Unexpected error closing dataloader iterator: %s", e, exc_info=True)
+                _logger.debug("Unexpected error closing dataloader iterator: %s", e, exc_info=True)
         del dataloader
     except (AttributeError, RuntimeError) as e:
-        logger.debug("Error deleting dataloader during cleanup: %s", e)
+        _logger.debug("Error deleting dataloader during cleanup: %s", e)
     except Exception as e:
-        logger.debug("Unexpected error deleting dataloader during cleanup: %s", e, exc_info=True)
+        _logger.debug("Unexpected error deleting dataloader during cleanup: %s", e, exc_info=True)
 
 
 def _cleanup_cuda(aggressive: bool, delay_seconds: float) -> None:

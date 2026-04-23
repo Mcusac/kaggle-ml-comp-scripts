@@ -8,7 +8,7 @@ from typing import Any, Union
 from layers.layer_0_core.level_0 import get_logger, DataLoadError, DataProcessingError, DataValidationError, ensure_dir
 from layers.layer_0_core.level_3 import validate_path_is_file
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def load_yaml_raw(path: Union[str, Path]) -> Any:
@@ -75,6 +75,6 @@ def save_yaml(data: Any, path: Union[str, Path]) -> None:
         ensure_dir(path.parent)
         with open(path, "w", encoding="utf-8") as f:
             yaml.safe_dump(data, f, allow_unicode=True, default_flow_style=False)
-        logger.debug(f"Saved YAML: {path}")
+        _logger.debug(f"Saved YAML: {path}")
     except Exception as e:
         raise DataProcessingError(f"Failed to save YAML {path}: {e}")

@@ -1,5 +1,8 @@
-"""I/O utilities for submission files and generic TSV processing."""
+"""Auto-generated package exports."""
+
 
 from .tsv_submission_formatter import TsvSubmissionFormatter
 
-__all__ = ["TsvSubmissionFormatter"]
+__all__ = [
+    "TsvSubmissionFormatter",
+]

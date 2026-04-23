@@ -12,7 +12,7 @@ from layers.layer_0_core.level_1 import ProgressConfig, get_device_info
 from layers.layer_0_core.level_2 import ProgressBarManager, ProgressMetrics
 from layers.layer_0_core.level_3 import ProgressFormatter
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class ProgressTracker:

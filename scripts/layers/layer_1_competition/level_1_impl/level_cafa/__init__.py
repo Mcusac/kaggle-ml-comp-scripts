@@ -1,6 +1,5 @@
-"""CAFA 6 Protein Function Prediction contest implementation."""
+"""Auto-generated aggregation exports."""
 
-from . import registration  # noqa: F401
 
 from . import (
     level_0,

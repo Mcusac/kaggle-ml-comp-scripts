@@ -1,4 +1,5 @@
-"""Progress tracker for training and inference."""
+"""Auto-generated package exports."""
+
 
 from .progress_tracker import ProgressTracker
 

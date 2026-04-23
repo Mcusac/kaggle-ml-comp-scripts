@@ -13,7 +13,7 @@ from pathlib import Path
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def optimize_threshold_ia_weighted(
@@ -50,7 +50,7 @@ def optimize_threshold_ia_weighted(
     best_threshold = default_threshold
     best_f1 = -1.0
     
-    logger.info(f"Searching {len(threshold_grid)} threshold values...")
+    _logger.info(f"Searching {len(threshold_grid)} threshold values...")
     
     for threshold in threshold_grid:
         # Binarize predictions at this threshold
@@ -63,7 +63,7 @@ def optimize_threshold_ia_weighted(
             best_f1 = f1
             best_threshold = threshold
     
-    logger.info(f"✓ Best threshold: {best_threshold:.3f}, Best IA-weighted F1: {best_f1:.6f}")
+    _logger.info(f"✓ Best threshold: {best_threshold:.3f}, Best IA-weighted F1: {best_f1:.6f}")
     
     return best_threshold, best_f1
 
@@ -83,7 +83,7 @@ def load_ia_weights(ia_file_path: Path) -> Dict[str, float]:
               Returns empty dict if file not found (graceful fallback).
     """
     if not ia_file_path.exists():
-        logger.warning(f"⚠️  IA file not found at {ia_file_path}, returning empty dict")
+        _logger.warning(f"⚠️  IA file not found at {ia_file_path}, returning empty dict")
         return {}
     
     ia_weights = {}
@@ -105,9 +105,9 @@ def load_ia_weights(ia_file_path: Path) -> Dict[str, float]:
                     # Default to 0.0 if parsing fails
                     ia_weights[go_id] = 0.0
         
-        logger.info(f"✓ Loaded {len(ia_weights):,} IA weights")
+        _logger.info(f"✓ Loaded {len(ia_weights):,} IA weights")
     except Exception as e:
-        logger.warning(f"⚠️  Error loading IA file: {e}, returning empty dict")
+        _logger.warning(f"⚠️  Error loading IA file: {e}, returning empty dict")
         return {}
     
     return ia_weights

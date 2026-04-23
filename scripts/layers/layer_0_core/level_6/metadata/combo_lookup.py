@@ -6,7 +6,7 @@ from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_4 import load_json_raw
 from layers.layer_0_core.level_5 import find_metadata_dir
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def find_combo_id_from_config(config: Any) -> Optional[str]:
@@ -25,6 +25,6 @@ def find_combo_id_from_config(config: Any) -> Optional[str]:
                 return combo.get("combo_id")
         return None
     except Exception as e:
-        logger.warning(f"Could not find combo_id: {e}")
+        _logger.warning(f"Could not find combo_id: {e}")
         return None
 

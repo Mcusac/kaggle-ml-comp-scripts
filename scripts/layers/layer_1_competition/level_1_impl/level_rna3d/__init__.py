@@ -1,10 +1,5 @@
-"""Stanford RNA 3D Folding Part 2 contest implementation.
+"""Auto-generated aggregation exports."""
 
-Registers `rna3d` on import so `KAGGLE_COMP_CONTEST=rna3d` resolves via the
-ContestRegistry.
-"""
-
-from . import registration  # noqa: F401
 
 from . import (
     level_0,

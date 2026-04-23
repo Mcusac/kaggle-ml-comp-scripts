@@ -8,7 +8,7 @@ from layers.layer_0_core.level_1 import resolve_environment_path
 from layers.layer_0_core.level_4 import load_json
 from layers.layer_0_core.level_5 import get_writable_metadata_dir
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _handle_grid_search_returncode(
@@ -28,9 +28,9 @@ def _handle_grid_search_returncode(
 
 def _log_grid_search_success(log_success_fn: Callable[[], None]) -> None:
     """Log success banner, call log_success_fn for search-specific message and details, then banner."""
-    logger.info("=" * 60)
+    _logger.info("=" * 60)
     log_success_fn()
-    logger.info("=" * 60)
+    _logger.info("=" * 60)
 
 
 def handle_hyperparameter_grid_search_result(
@@ -57,11 +57,11 @@ def handle_hyperparameter_grid_search_result(
     )
 
     def _log_success():
-        logger.info("✅ Hyperparameter grid search complete!")
-        logger.info(f"\n📊 Results saved to: {resolve_environment_path('output/hyperparameter_grid_search/')}")
-        logger.info("   (All search types append to: gridsearch_results.json)")
-        logger.info("   (Already-tested combinations are automatically skipped)")
-        logger.info("   Next: Use best hyperparameters for final model training")
+        _logger.info("✅ Hyperparameter grid search complete!")
+        _logger.info(f"\n📊 Results saved to: {resolve_environment_path('output/hyperparameter_grid_search/')}")
+        _logger.info("   (All search types append to: gridsearch_results.json)")
+        _logger.info("   (Already-tested combinations are automatically skipped)")
+        _logger.info("   Next: Use best hyperparameters for final model training")
 
     _log_grid_search_success(_log_success)
 
@@ -94,9 +94,9 @@ def handle_dataset_grid_search_result(
     dataset_type_str = dataset_type or "split"
 
     def _log_success():
-        logger.info("✅ Dataset grid search complete!")
-        logger.info(f"\n📊 Results saved to: {resolve_environment_path(f'output/dataset_grid_search_{dataset_type_str}/gridsearch_results.json')}")
-        logger.info("   Next: Run Cell 2a (train and export) to train and export the best model")
+        _logger.info("✅ Dataset grid search complete!")
+        _logger.info(f"\n📊 Results saved to: {resolve_environment_path(f'output/dataset_grid_search_{dataset_type_str}/gridsearch_results.json')}")
+        _logger.info("   Next: Run Cell 2a (train and export) to train and export the best model")
 
     _log_grid_search_success(_log_success)
 
@@ -133,7 +133,7 @@ def handle_regression_grid_search_result(
     successful_results = [r for r in results if r.get("cv_score") is not None]
 
     if not successful_results:
-        logger.warning("No successful results found in regression grid search")
+        _logger.warning("No successful results found in regression grid search")
         return {}
 
     best_result = max(successful_results, key=lambda x: x.get("cv_score", -float("inf")))
@@ -156,16 +156,16 @@ def handle_regression_grid_search_result(
                                 best_result["hyperparameters"] = hyperparameters
                                 break
             except Exception as e:
-                logger.warning(f"Failed to retrieve hyperparameters from metadata.json: {e}")
+                _logger.warning(f"Failed to retrieve hyperparameters from metadata.json: {e}")
 
-    logger.info("=" * 60)
-    logger.info("REGRESSION GRID SEARCH RESULTS")
-    logger.info("=" * 60)
-    logger.info(f"Total combinations tested: {len(successful_results)}")
-    logger.info(f"Best CV Score: {best_result.get('cv_score', 0):.4f}")
-    logger.info(f"Best Variant ID: {best_result.get('variant_id', 'unknown')}")
-    logger.info(f"Best Hyperparameters: {best_result.get('hyperparameters', {})}")
-    logger.info(f"Feature Filename: {best_result.get('feature_filename', 'unknown')}")
-    logger.info("=" * 60)
+    _logger.info("=" * 60)
+    _logger.info("REGRESSION GRID SEARCH RESULTS")
+    _logger.info("=" * 60)
+    _logger.info(f"Total combinations tested: {len(successful_results)}")
+    _logger.info(f"Best CV Score: {best_result.get('cv_score', 0):.4f}")
+    _logger.info(f"Best Variant ID: {best_result.get('variant_id', 'unknown')}")
+    _logger.info(f"Best Hyperparameters: {best_result.get('hyperparameters', {})}")
+    _logger.info(f"Feature Filename: {best_result.get('feature_filename', 'unknown')}")
+    _logger.info("=" * 60)
 
     return best_result

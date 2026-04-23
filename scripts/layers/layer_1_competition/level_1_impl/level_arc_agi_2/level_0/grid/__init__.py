@@ -15,7 +15,6 @@ from .grid_tensor_encoding import (
     grid_to_one_hot_tensor,
     logits_to_grid,
     pad_grid_to_canvas,
-    torch,
 )
 
 __all__ = [
@@ -29,5 +28,4 @@ __all__ = [
     "grid_to_one_hot_tensor",
     "logits_to_grid",
     "pad_grid_to_canvas",
-    "torch",
 ]

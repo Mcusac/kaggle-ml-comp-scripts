@@ -38,6 +38,11 @@ def _make_loader(module: str, cls: str, package: str, warn: str) -> Callable[[],
     return _loader
 
 
+def _get(name: str) -> Callable[[], Any]:
+    module, cls, package, warn = _SKLEARN_REGISTRY[name]
+    return _make_loader(module, cls, package, warn)
+
+
 def __getattr__(name: str) -> Any:
     if name in _SKLEARN_REGISTRY:
         module, cls, package, warn = _SKLEARN_REGISTRY[name]
@@ -45,6 +50,25 @@ def __getattr__(name: str) -> Any:
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
-# Expose getters for static analysis and IDE support; generated from registry.
-for _name, (_mod, _cls, _pkg, _warn) in _SKLEARN_REGISTRY.items():
-    globals()[_name] = _make_loader(_mod, _cls, _pkg, _warn)
+get_standard_scaler = _get("get_standard_scaler")
+get_pca = _get("get_pca")
+get_pls_regression = _get("get_pls_regression")
+get_gaussian_mixture = _get("get_gaussian_mixture")
+get_gradient_boosting_regressor = _get("get_gradient_boosting_regressor")
+get_hist_gradient_boosting_regressor = _get("get_hist_gradient_boosting_regressor")
+get_random_forest_regressor = _get("get_random_forest_regressor")
+get_catboost = _get("get_catboost")
+get_lightgbm = _get("get_lightgbm")
+get_lgbm_classifier = _get("get_lgbm_classifier")
+get_xgboost = _get("get_xgboost")
+get_xgb_classifier = _get("get_xgb_classifier")
+get_ridge = _get("get_ridge")
+get_logistic_regression = _get("get_logistic_regression")
+get_ridge_classifier = _get("get_ridge_classifier")
+get_linear_regression = _get("get_linear_regression")
+get_lasso = _get("get_lasso")
+get_elastic_net = _get("get_elastic_net")
+get_kfold = _get("get_kfold")
+get_stratified_kfold = _get("get_stratified_kfold")
+get_train_test_split = _get("get_train_test_split")
+get_cross_val_score = _get("get_cross_val_score")

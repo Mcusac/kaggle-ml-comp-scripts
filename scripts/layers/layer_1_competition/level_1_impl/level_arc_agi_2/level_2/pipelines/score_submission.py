@@ -14,7 +14,7 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
     eval_score_submission_two_attempts,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def pipeline_run_score_submission(
@@ -72,9 +72,9 @@ def log_local_evaluation_score_optional(*, data_root: str, submission_path: str)
             split="evaluation",
         )
     except Exception as exc:
-        logger.warning("⚠️ Local evaluation score skipped: %s", exc)
+        _logger.warning("⚠️ Local evaluation score skipped: %s", exc)
         return
-    logger.info(
+    _logger.info(
         "✅ Local evaluation score (public eval, two-attempt weighting): %s | challenges=%s | solutions=%s | submission=%s",
         out.get("score"),
         out.get("challenges_path"),

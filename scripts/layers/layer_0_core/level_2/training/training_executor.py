@@ -5,10 +5,10 @@ from typing import Any, Tuple
 from layers.layer_0_core.level_0 import get_logger, get_torch
 from layers.layer_0_core.level_1 import train_one_epoch, run_supervised_batch
 
-torch = get_torch()
-nn = torch.nn
-DataLoader = torch.utils.data.DataLoader
-logger = get_logger(__name__)
+_torch = get_torch()
+_nn = _torch.nn
+_DataLoader = _torch.utils.data.DataLoader
+_logger = get_logger(__name__)
 
 
 class TrainingPhaseExecutor:
@@ -16,10 +16,10 @@ class TrainingPhaseExecutor:
 
     def __init__(
         self,
-        model: nn.Module,
-        device: torch.device,
-        criterion: nn.Module,
-        optimizer: torch.optim.Optimizer,
+        model: _nn.Module,
+        device: _torch.device,
+        criterion: _nn.Module,
+        optimizer: _torch.optim.Optimizer,
         scheduler: Any,
         use_mixed_precision: bool,
         scaler: Any,
@@ -35,7 +35,7 @@ class TrainingPhaseExecutor:
     def process_batch(
         self,
         batch: Tuple,
-    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    ) -> Tuple[_torch.Tensor, _torch.Tensor, _torch.Tensor]:
         """Process a single batch via run_supervised_batch."""
         return run_supervised_batch(self.model, self.device, self.criterion, batch)
 
@@ -43,14 +43,14 @@ class TrainingPhaseExecutor:
         """Return a callable(batch) -> loss for train_one_epoch."""
         def process(batch):
             if self.use_mixed_precision and self.scaler:
-                with torch.amp.autocast('cuda'):
+                with _torch.amp.autocast('cuda'):
                     _, _, loss = self.process_batch(batch)
             else:
                 _, _, loss = self.process_batch(batch)
             return loss
         return process
 
-    def train_epoch(self, train_loader: DataLoader) -> float:
+    def train_epoch(self, train_loader: _DataLoader) -> float:
         """Train for one epoch and return average training loss."""
         self.model.train()
         return train_one_epoch(

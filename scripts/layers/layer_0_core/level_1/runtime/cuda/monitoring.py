@@ -2,7 +2,7 @@
 
 from layers.layer_0_core.level_0 import get_logger, get_torch
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def print_gpu_memory_status() -> None:
@@ -17,9 +17,9 @@ def print_gpu_memory_status() -> None:
             BYTES_PER_GB = 1024 * 1024 * 1024
             allocated = torch.cuda.memory_allocated() / BYTES_PER_GB
             reserved = torch.cuda.memory_reserved() / BYTES_PER_GB
-            logger.info(f"📊 GPU Memory Status (before grid search):")
-            logger.info(f"   Allocated: {allocated:.2f} GB")
-            logger.info(f"   Reserved: {reserved:.2f} GB")
+            _logger.info(f"📊 GPU Memory Status (before grid search):")
+            _logger.info(f"   Allocated: {allocated:.2f} GB")
+            _logger.info(f"   Reserved: {reserved:.2f} GB")
     except ImportError:
         # torch not available - skip GPU memory check
         pass

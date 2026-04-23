@@ -1,7 +1,16 @@
-"""Import testing framework (module discovery and import probes)."""
+"""Auto-generated package exports."""
 
-from .classifier import ErrorClassifier, ErrorInfo, ErrorType
-from .discoverer import DiscoveryConfig, ModuleDiscoverer
+
+from .classifier import (
+    ErrorClassifier,
+    ErrorInfo,
+    ErrorType,
+)
+
+from .discoverer import (
+    DiscoveryConfig,
+    ModuleDiscoverer,
+)
 
 __all__ = [
     "DiscoveryConfig",

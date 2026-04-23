@@ -36,6 +36,8 @@ class ThresholdChecker:
             self._check_file_metrics(results["file_metrics"])
         if "complexity" in results:
             self._check_complexity(results["complexity"])
+        if "deep_nesting" in results:
+            self._check_deep_nesting(results["deep_nesting"])
         if "cohesion" in results:
             self._check_cohesion(results["cohesion"])
         if "imports" in results:
@@ -88,6 +90,36 @@ class ThresholdChecker:
                     details=details,
                 )
             )
+
+    def _check_deep_nesting(self, nesting: dict[str, Any]) -> None:
+        deep_dirs = nesting.get("deep_dirs", []) or []
+        max_depth = int(getattr(self.config, "max_directory_depth", 6))
+        max_dirs = int(getattr(self.config, "max_deep_directories", 30))
+
+        offenders = [d for d in deep_dirs if int(d.get("depth", 0)) > max_depth]
+        if len(offenders) <= max_dirs:
+            return
+
+        details = []
+        for row in offenders[:10]:
+            d = row.get("dir", "<?>")
+            depth = int(row.get("depth", 0))
+            py_files = int(row.get("py_files", 0))
+            details.append(f"  {d}: depth {depth} ({py_files} .py files)")
+        if len(offenders) > 10:
+            details.append(f"  ... and {len(offenders) - 10} more")
+
+        self.violations.append(
+            ThresholdViolation(
+                category="deep_nesting",
+                severity=Severity.WARN,
+                message=(
+                    f"{len(offenders)} directories exceed depth {max_depth} "
+                    f"(target ≤{max_dirs})"
+                ),
+                details=details,
+            )
+        )
 
     def _check_cohesion(self, cohesion: dict[str, Any]) -> None:
         low_cohesion = []

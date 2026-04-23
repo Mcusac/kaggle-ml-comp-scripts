@@ -61,3 +61,41 @@ def mirror_files_to_run_snapshot(
         shutil.copy2(src, target)
         out.append(target)
     return out
+
+
+def architecture_scorecard_markdown_path(
+    workspace: Path,
+    audit_scope: str,
+    generated: date,
+    *,
+    stem: str = "architecture_scorecard",
+) -> Path:
+    """Path for a consolidated markdown scorecard under summaries/."""
+    safe_stem = stem.strip() or "architecture_scorecard"
+    return (
+        workspace
+        / ".cursor"
+        / "audit-results"
+        / audit_scope
+        / "summaries"
+        / f"{safe_stem}_{generated.isoformat()}.md"
+    )
+
+
+def architecture_score_json_path(
+    workspace: Path,
+    audit_scope: str,
+    generated: date,
+    *,
+    stem: str = "architecture_score",
+) -> Path:
+    """Path for a consolidated score JSON under summaries/."""
+    safe_stem = stem.strip() or "architecture_score"
+    return (
+        workspace
+        / ".cursor"
+        / "audit-results"
+        / audit_scope
+        / "summaries"
+        / f"{safe_stem}_{generated.isoformat()}.json"
+    )

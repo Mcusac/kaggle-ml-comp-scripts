@@ -5,18 +5,18 @@ from typing import Any, Callable, Generic, Optional, TypeVar
 
 from layers.layer_0_core.level_0 import PipelineResult
 
-T = TypeVar("T")
+_T = TypeVar("_T")
 
 
-class BasePipeline(Generic[T]):
+class BasePipeline(Generic[_T]):
     """Minimal pipeline interface: a callable object with a single `run()`."""
 
-    def run(self) -> T:  # pragma: no cover (interface)
+    def run(self) -> _T:  # pragma: no cover (interface)
         raise NotImplementedError
 
 
 @dataclass(frozen=True)
-class ValidateFirstRunner(BasePipeline[T]):
+class ValidateFirstRunner(BasePipeline[_T]):
     """
     Validate-first shell for pipelines that signal failure via exceptions.
 
@@ -26,11 +26,11 @@ class ValidateFirstRunner(BasePipeline[T]):
     """
 
     validate_fn: Callable[..., None]
-    run_fn: Callable[[], T]
+    run_fn: Callable[[], _T]
     data_root: str
     max_targets: int = 0
 
-    def run(self) -> T:
+    def run(self) -> _T:
         self.validate_fn(data_root=self.data_root, max_targets=int(self.max_targets or 0))
         return self.run_fn()
 

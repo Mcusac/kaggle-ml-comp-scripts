@@ -8,7 +8,7 @@ from typing import Optional, Set
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_1 import HierarchyPropagator
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class GOAFilter:
@@ -29,14 +29,14 @@ class GOAFilter:
         go_obo_path: Path
     ) -> Set[str]:
         """Build set of negative protein-GO pairs from GOA annotations."""
-        logger.info("Building negative annotation set from GOA...")
+        _logger.info("Building negative annotation set from GOA...")
 
         # Parse ontology (sets internal state for get_descendants)
-        logger.info("   [1/4] Parsing GO ontology structure...")
+        _logger.info("   [1/4] Parsing GO ontology structure...")
         self.hierarchy_propagator.parse_obo(go_obo_path)
 
         # Load GOA annotations
-        logger.info("   [2/4] Loading GOA annotations...")
+        _logger.info("   [2/4] Loading GOA annotations...")
         goa_file = self._find_goa_file(goa_annotations_path)
 
         if not goa_file:
@@ -50,7 +50,7 @@ class GOAFilter:
             goa_df.columns = ['protein_id', 'go_term', 'qualifier'] + list(goa_df.columns[3:])
 
         # Filter negative annotations (NOT qualifiers)
-        logger.info("   [3/4] Extracting and propagating negative annotations...")
+        _logger.info("   [3/4] Extracting and propagating negative annotations...")
         negative_df = goa_df[goa_df['qualifier'].str.contains('NOT', na=False)].copy()
         negative_df = negative_df[['protein_id', 'go_term']].drop_duplicates()
 
@@ -67,13 +67,13 @@ class GOAFilter:
             propagated[protein_id] = sorted(neg_set)
 
         # Convert to prediction keys
-        logger.info("   [4/4] Converting to prediction keys...")
+        _logger.info("   [4/4] Converting to prediction keys...")
         negative_keys = set()
         for protein_id, terms in propagated.items():
             for term in terms:
                 negative_keys.add(f"{protein_id}_{term}")
 
-        logger.info(f"Total unique negative protein-GO pairs: {len(negative_keys):,}")
+        _logger.info(f"Total unique negative protein-GO pairs: {len(negative_keys):,}")
         return negative_keys
 
     def _find_goa_file(self, goa_annotations_path: Path) -> Optional[Path]:
@@ -92,7 +92,7 @@ class GOAFilter:
         output_path: Path
     ) -> Path:
         """Filter submission file to remove negative annotations."""
-        logger.info(f"Filtering submission with {len(negative_keys):,} negative keys...")
+        _logger.info(f"Filtering submission with {len(negative_keys):,} negative keys...")
 
         filtered_count = 0
         total_count = 0
@@ -115,7 +115,7 @@ class GOAFilter:
                     else:
                         filtered_count += 1
 
-        logger.info(f"Filtered {filtered_count:,} / {total_count:,} predictions")
-        logger.info(f"Kept {kept_count:,} predictions ({kept_count/total_count*100:.2f}%)")
+        _logger.info(f"Filtered {filtered_count:,} / {total_count:,} predictions")
+        _logger.info(f"Kept {kept_count:,} predictions ({kept_count/total_count*100:.2f}%)")
 
         return output_path

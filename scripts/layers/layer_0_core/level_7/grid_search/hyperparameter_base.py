@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Tuple
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_6 import GridSearchBase
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class HyperparameterGridSearchBase(GridSearchBase, ABC):
@@ -64,7 +64,7 @@ class HyperparameterGridSearchBase(GridSearchBase, ABC):
         param_values = list(param_grid.values())
         self.all_combinations = list(product(*param_values))
 
-        logger.info(f"Total hyperparameter combinations: {len(self.all_combinations):,}")
+        _logger.info(f"Total hyperparameter combinations: {len(self.all_combinations):,}")
 
         return self.param_grid, self.all_combinations
 

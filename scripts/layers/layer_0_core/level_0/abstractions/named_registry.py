@@ -3,7 +3,7 @@
 from dataclasses import dataclass, field
 from typing import Callable, Dict, Generic, Iterable, Optional, Sequence, TypeVar
 
-T = TypeVar("T")
+_T = TypeVar("_T")
 
 
 def build_unknown_key_error(*, registry_name: str, key_label: str, key: str, available: Sequence[str]) -> str:
@@ -12,31 +12,31 @@ def build_unknown_key_error(*, registry_name: str, key_label: str, key: str, ava
 
 
 @dataclass
-class NamedRegistry(Generic[T]):
+class NamedRegistry(Generic[_T]):
     """
     A simple string-keyed registry with optional decorator-based registration.
     """
 
     registry_name: str
     key_label: str = "Key"
-    _items: Dict[str, T] = field(default_factory=dict)
+    _items: Dict[str, _T] = field(default_factory=dict)
 
-    def register(self, key: str) -> Callable[[T], T]:
+    def register(self, key: str) -> Callable[[_T], _T]:
         k = str(key)
 
-        def _decorator(obj: T) -> T:
+        def _decorator(obj: _T) -> _T:
             self._items[k] = obj
             return obj
 
         return _decorator
 
-    def set(self, key: str, obj: T) -> None:
+    def set(self, key: str, obj: _T) -> None:
         self._items[str(key)] = obj
 
-    def get(self, key: str) -> Optional[T]:
+    def get(self, key: str) -> Optional[_T]:
         return self._items.get(str(key))
 
-    def require(self, key: str) -> T:
+    def require(self, key: str) -> _T:
         k = str(key)
         obj = self._items.get(k)
         if obj is None:

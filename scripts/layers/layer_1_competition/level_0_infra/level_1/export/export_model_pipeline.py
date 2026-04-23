@@ -11,7 +11,7 @@ from layers.layer_1_competition.level_0_infra.level_1.export.source_handlers imp
     handle_results_file,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def export_model_pipeline(
@@ -38,7 +38,7 @@ def export_model_pipeline(
     # Determine export scenario and handle
     if model_dir:
         # Scenario 1: Just-trained model
-        logger.info(f"Exporting just-trained model from: {model_dir}")
+        _logger.info(f"Exporting just-trained model from: {model_dir}")
         export_path, metadata = handle_just_trained_model(
             model_dir=model_dir,
             config=config,
@@ -65,9 +65,9 @@ def export_model_pipeline(
     else:
         # Scenario 4: Scan models base dir (auto-detect). For now, export from base dir.
         scan_dir = model_dir or str(paths.get_models_base_dir())
-        logger.info(f"Exporting model from: {scan_dir}")
+        _logger.info(f"Exporting model from: {scan_dir}")
         export_path, metadata = handle_just_trained_model(model_dir=scan_dir, config=config)
 
-    logger.info(f"✅ Model exported to: {export_path}")
+    _logger.info(f"✅ Model exported to: {export_path}")
 
     return str(export_path)

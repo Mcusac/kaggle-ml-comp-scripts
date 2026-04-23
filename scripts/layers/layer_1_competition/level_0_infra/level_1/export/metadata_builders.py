@@ -9,7 +9,7 @@ from layers.layer_1_competition.level_0_infra.level_1.export.feature_filename im
 )
 from layers.layer_0_core.level_5 import extract_scores_from_json, resolve_best_fold_and_score
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def prepare_regression_model_metadata_dict(
@@ -86,7 +86,7 @@ def build_regression_metadata(
         best_fold=best_fold_used,
         best_fold_score=best_fold_score,
     )
-    logger.info(
+    _logger.info(
         f"Built regression model metadata: regression_model_type={regression_model_type}, "
         f"feature_filename={feature_filename}"
     )

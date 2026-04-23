@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Optional
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_1 import resolve_param_grid
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def resolve_keyed_param_grid(
@@ -35,7 +35,7 @@ def resolve_keyed_param_grid(
 
     # Quick mode still wins
     if quick_mode and "quick_param_grid" in grid_config:
-        logger.debug("Quick mode: resolved quick_param_grid")
+        _logger.debug("Quick mode: resolved quick_param_grid")
         return grid_config["quick_param_grid"].copy()
 
     # Keyed override
@@ -44,7 +44,7 @@ def resolve_keyed_param_grid(
         and keyed_grids_field in grid_config
         and key in grid_config[keyed_grids_field]
     ):
-        logger.debug("Resolved keyed grid for '%s'", key)
+        _logger.debug("Resolved keyed grid for '%s'", key)
         return grid_config[keyed_grids_field][key].copy()
 
     # Fallback to base

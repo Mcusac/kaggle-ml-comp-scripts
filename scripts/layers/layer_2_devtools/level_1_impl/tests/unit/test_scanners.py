@@ -45,6 +45,20 @@ def test_general_allows_lower_level(tmp_path: Path) -> None:
     assert not r.violations
 
 
+def test_general_mixed_layer0_core_and_short_level(tmp_path: Path) -> None:
+    """Explicit ``layers.layer_0_core`` imports must not mix with ``from level_N``."""
+    core = tmp_path / "layer_0_core"
+    f = core / "level_2" / "logic.py"
+    f.parent.mkdir(parents=True)
+    f.write_text(
+        "from layers.layer_0_core.level_1 import a\n"
+        "from level_0 import b\n",
+        encoding="utf-8",
+    )
+    r = scan_general_stack_file(f, core)
+    assert any(v.kind == "LAYER0_CORE_MIXED_IMPORT_STYLE" for v in r.violations)
+
+
 def test_infra_tier_upward(tmp_path: Path) -> None:
     f = tmp_path / "infra" / "level_0" / "x.py"
     f.parent.mkdir(parents=True)
@@ -54,6 +68,25 @@ def test_infra_tier_upward(tmp_path: Path) -> None:
     )
     r = scan_infra_file(f, tier_k=0)
     assert any(v.kind == "INFRA_TIER_UPWARD" for v in r.violations)
+
+
+def test_infra_barrel_deep_when_reexported(tmp_path: Path) -> None:
+    infra = tmp_path / "level_0_infra"
+    lv0 = infra / "level_0"
+    lv0.mkdir(parents=True)
+    (lv0 / "__init__.py").write_text(
+        "from .reg import foo\n__all__ = (\"foo\",)\n",
+        encoding="utf-8",
+    )
+    (lv0 / "reg.py").write_text("foo = 1\n", encoding="utf-8")
+    f = infra / "level_2" / "x.py"
+    f.parent.mkdir(parents=True)
+    f.write_text(
+        "from layers.layer_1_competition.level_0_infra.level_0.reg import foo\n",
+        encoding="utf-8",
+    )
+    r = scan_infra_file(f, tier_k=2)
+    assert any(v.kind == "INFRA_BARREL_DEEP" for v in r.violations)
 
 
 def test_contest_allows_relative_when_disabled(tmp_path: Path) -> None:

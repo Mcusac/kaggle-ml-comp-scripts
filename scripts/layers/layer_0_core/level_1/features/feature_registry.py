@@ -9,7 +9,7 @@ from typing import Any, Dict, List
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 # ---------------------------------------------------------------------------
@@ -83,7 +83,7 @@ def _calculate_dimensions(features: List[str]) -> int:
         dims = INDIVIDUAL_FEATURES.get(feat, {}).get("dimensions")
 
         if dims is None:
-            logger.warning(
+            _logger.warning(
                 "Feature %r has no known dimensions; skipping",
                 feat,
             )

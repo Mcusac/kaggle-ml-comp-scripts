@@ -4,7 +4,7 @@ from torch.nn.functional import scaled_dot_product_attention
 
 from layers.layer_0_core.level_0 import get_torch
 
-torch = get_torch()
+_torch = get_torch()
 
 
 def _repeat_interleave_attention(Q, K, V, *args, **kwargs):
@@ -21,9 +21,9 @@ def _repeat_interleave_attention(Q, K, V, *args, **kwargs):
         V = V.repeat_interleave(factor, dim=1)
 
     scale = Q.shape[-1] ** -0.5
-    scores = torch.matmul(Q, K.transpose(-2, -1)) * scale
-    weights = torch.softmax(scores.float(), dim=-1).to(Q.dtype)
-    out = torch.matmul(weights, V)
+    scores = _torch.matmul(Q, K.transpose(-2, -1)) * scale
+    weights = _torch.softmax(scores.float(), dim=-1).to(Q.dtype)
+    out = _torch.matmul(weights, V)
     return out.transpose(1, 2)
 
 
@@ -56,9 +56,3 @@ def install_sdpa_attention() -> None:
     import unsloth.models.qwen3 as qwen3_module
 
     qwen3_module.flash_attn_func = _sdpa_expand_attention
-
-
-__all__ = [
-    "install_repeat_interleave_attention",
-    "install_sdpa_attention",
-]

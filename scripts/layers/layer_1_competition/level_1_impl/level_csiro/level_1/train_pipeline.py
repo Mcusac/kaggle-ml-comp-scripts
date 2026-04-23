@@ -16,7 +16,7 @@ from layers.layer_1_competition.level_0_infra.level_1 import get_contest
 
 from layers.layer_1_competition.level_1_impl.level_csiro.level_0 import calc_metric, aggregate_train_csv
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def train_pipeline(
@@ -72,7 +72,7 @@ def train_pipeline(
     if not train_csv_path.exists():
         raise FileNotFoundError(f"Train CSV not found: {train_csv_path}")
 
-    logger.info(f"Loading train data from {train_csv_path}")
+    _logger.info(f"Loading train data from {train_csv_path}")
     agg_train_df = aggregate_train_csv(train_csv_path)
     agg_train_df = create_kfold_splits(
         agg_train_df,
@@ -98,10 +98,10 @@ def train_pipeline(
 
     avg_cv_score = sum(all_scores) / len(all_scores) if all_scores else -float('inf')
 
-    logger.info("=" * 60)
-    logger.info("Cross-validation summary:")
-    logger.info(f"Average CV score: {avg_cv_score:.4f}")
-    logger.info(f"Individual fold scores: {all_scores}")
-    logger.info("=" * 60)
+    _logger.info("=" * 60)
+    _logger.info("Cross-validation summary:")
+    _logger.info(f"Average CV score: {avg_cv_score:.4f}")
+    _logger.info(f"Individual fold scores: {all_scores}")
+    _logger.info("=" * 60)
 
     return avg_cv_score, all_scores

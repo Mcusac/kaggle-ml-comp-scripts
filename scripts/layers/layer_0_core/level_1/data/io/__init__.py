@@ -1,12 +1,21 @@
-"""Data I/O utilities."""
+"""Auto-generated package exports."""
 
-from .batch_loading import BatchLoader, load_batch
-from .numpy_loader import build_embedding_error_message, load_ids_file, load_embeddings_file
+
+from .batch_loading import (
+    BatchLoader,
+    load_batch,
+)
+
+from .numpy_loader import (
+    build_embedding_error_message,
+    load_embeddings_file,
+    load_ids_file,
+)
 
 __all__ = [
     "BatchLoader",
-    "load_batch",
     "build_embedding_error_message",
-    "load_ids_file",
+    "load_batch",
     "load_embeddings_file",
+    "load_ids_file",
 ]

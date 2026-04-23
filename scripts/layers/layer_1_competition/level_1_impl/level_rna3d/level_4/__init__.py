@@ -1,15 +1,24 @@
-"""RNA3D contest tier 4: CLI handlers that delegate to training, tuning, and submission pipelines."""
+"""Auto-generated package exports."""
+
 
 from .handlers import (
+    FRAMEWORK_SUBPARSER_NAMES_TO_SKIP,
+    extend_subparsers,
     get_handlers,
     submit,
     train,
+    train_and_submit,
     tune,
+    validate_data,
 )
 
 __all__ = [
-    "train",
-    "tune",
-    "submit",
+    "FRAMEWORK_SUBPARSER_NAMES_TO_SKIP",
+    "extend_subparsers",
     "get_handlers",
+    "submit",
+    "train",
+    "train_and_submit",
+    "tune",
+    "validate_data",
 ]

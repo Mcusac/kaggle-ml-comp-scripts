@@ -5,7 +5,7 @@ from typing import List, Tuple, Union
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def normalize_protein_id(protein_id: Union[str, int, float]) -> str:
@@ -58,25 +58,25 @@ def find_common_protein_ids(
         embedding_intersection = (
             set.intersection(*id_sets) if len(id_sets) > 1 else id_sets[0]
         )
-        logger.debug(
+        _logger.debug(
             f"Intersection of {len(id_sets)} embedding types: "
             f"{len(embedding_intersection):,} proteins"
         )
         target_id_set = {normalize_protein_id(str(pid)) for pid in target_ids}
-        logger.debug(f"Target IDs: {len(target_id_set):,} proteins")
+        _logger.debug(f"Target IDs: {len(target_id_set):,} proteins")
         all_id_sets = id_sets + [target_id_set]
         common_id_set = set.intersection(*all_id_sets)
         normalized_target_ids = [normalize_protein_id(str(pid)) for pid in target_ids]
         common_ids = [pid for pid in normalized_target_ids if pid in common_id_set]
-        logger.info(
+        _logger.info(
             f"Found {len(common_ids):,} common proteins across {len(id_sets)} "
             f"embedding types and {len(target_ids):,} target IDs"
         )
         if len(common_ids) == 0:
-            logger.warning("No common IDs found across embeddings and target_ids")
+            _logger.warning("No common IDs found across embeddings and target_ids")
             if len(embedding_intersection) > 0:
                 overlap = embedding_intersection & target_id_set
-                logger.warning(
+                _logger.warning(
                     f"Overlap between embedding IDs and target IDs: {len(overlap):,} proteins"
                 )
         return common_ids

@@ -17,7 +17,7 @@ from layers.layer_1_competition.level_1_impl.level_csiro.level_1 import (
     find_best_variant,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _find_model_path(
@@ -51,20 +51,20 @@ def _find_model_path(
             best_model = found_path / 'best_model.pth'
 
             if regression_model.exists():
-                logger.info(f"Found regression model in directory: {regression_model}")
+                _logger.info(f"Found regression model in directory: {regression_model}")
                 return regression_model
             elif best_model.exists():
-                logger.info(f"Found end-to-end model in directory: {best_model}")
+                _logger.info(f"Found end-to-end model in directory: {best_model}")
                 return best_model
             else:
                 # Look for any .pkl or .pth files
                 pkl_files = list(found_path.glob('*.pkl'))
                 if pkl_files:
-                    logger.info(f"Found .pkl file in directory: {pkl_files[0]}")
+                    _logger.info(f"Found .pkl file in directory: {pkl_files[0]}")
                     return pkl_files[0]
                 pth_files = list(found_path.glob('*.pth'))
                 if pth_files:
-                    logger.info(f"Found .pth file in directory: {pth_files[0]}")
+                    _logger.info(f"Found .pth file in directory: {pth_files[0]}")
                     return pth_files[0]
                 raise FileNotFoundError(
                     f"Model path is a directory but no checkpoint found: {found_path}\n"
@@ -203,7 +203,7 @@ def _generate_regression_submission(
     Raises:
         ValueError: If feature_filename not in metadata
     """
-    logger.info("Generating submission using regression model...")
+    _logger.info("Generating submission using regression model...")
     feature_filename = metadata.get('feature_filename')
 
     if not feature_filename:
@@ -227,11 +227,11 @@ def _generate_regression_submission(
         preprocessing_list = extraction_info['preprocessing_list']
         augmentation_list = extraction_info['augmentation_list']
 
-        logger.info(f"Parsed feature_filename '{feature_filename}':")
-        logger.info(f"  Feature extraction model: {feature_extraction_model_name}")
-        logger.info(f"  Data manipulation combo: {extraction_info['combo_id']}")
-        logger.info(f"  Preprocessing: {preprocessing_list if preprocessing_list else '[]'}")
-        logger.info(f"  Augmentation: {augmentation_list if augmentation_list else '[]'}")
+        _logger.info(f"Parsed feature_filename '{feature_filename}':")
+        _logger.info(f"  Feature extraction model: {feature_extraction_model_name}")
+        _logger.info(f"  Data manipulation combo: {extraction_info['combo_id']}")
+        _logger.info(f"  Preprocessing: {preprocessing_list if preprocessing_list else '[]'}")
+        _logger.info(f"  Augmentation: {augmentation_list if augmentation_list else '[]'}")
     except Exception as e:
         raise ValueError(
             f"Failed to parse feature_filename '{feature_filename}': {e}. "
@@ -242,12 +242,12 @@ def _generate_regression_submission(
     dataset_type = 'split'
     if hasattr(config, 'data'):
         config.data.dataset_type = dataset_type
-    logger.info(f"Using dataset_type: 'split' (default for regression models)")
+    _logger.info(f"Using dataset_type: 'split' (default for regression models)")
 
     # Apply preprocessing and augmentation to config (from feature extraction)
     # This is CRITICAL - must match what was used during feature extraction
     if preprocessing_list or augmentation_list:
-        logger.info("Applying preprocessing and augmentation configuration from feature extraction...")
+        _logger.info("Applying preprocessing and augmentation configuration from feature extraction...")
         combo_id = extraction_info.get('combo_id')
         if combo_id:
             try:
@@ -340,7 +340,7 @@ def submit_lightweight_pipeline(
             found_model_path, metadata, data_root, config, paths, contest_context
         )
     else:
-        logger.info("Generating submission using end-to-end model...")
+        _logger.info("Generating submission using end-to-end model...")
         test_pipeline_fn = contest_context.get_test_pipeline()
         test_pipeline_fn(
             contest_context=contest_context,
@@ -350,8 +350,8 @@ def submit_lightweight_pipeline(
             **kwargs
         )
 
-    logger.info("=" * 60)
-    logger.info("✅ Submission generated successfully!")
-    logger.info(f"  Model: {found_model_path}")
-    logger.info(f"  Dataset Type: {dataset_type_from_metadata}")
-    logger.info("=" * 60)
+    _logger.info("=" * 60)
+    _logger.info("✅ Submission generated successfully!")
+    _logger.info(f"  Model: {found_model_path}")
+    _logger.info(f"  Dataset Type: {dataset_type_from_metadata}")
+    _logger.info("=" * 60)

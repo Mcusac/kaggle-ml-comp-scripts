@@ -5,9 +5,9 @@ from typing import Optional
 
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_1 import print_config_section
-from layers.layer_0_core.level_7 import auto_detect_grid_search_results
+from layers.layer_0_core.level_6.grid_search import auto_detect_grid_search_results
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def detect_train_export_mode(
@@ -39,11 +39,11 @@ def detect_train_export_mode(
     try:
         results_file = auto_detect_grid_search_results(model_name=model_name)
     except FileNotFoundError as e:
-        logger.error("\n❌ ERROR: No grid search results found")
-        logger.error("=" * 60)
-        logger.error("Cell 2a requires completed grid search results.")
-        logger.error("Please run Cell 1a and/or Cell 1b first to find optimal hyperparameters.")
-        logger.error("=" * 60)
+        _logger.error("\n❌ ERROR: No grid search results found")
+        _logger.error("=" * 60)
+        _logger.error("Cell 2a requires completed grid search results.")
+        _logger.error("Please run Cell 1a and/or Cell 1b first to find optimal hyperparameters.")
+        _logger.error("=" * 60)
         raise RuntimeError(str(e)) from e
 
     # Ensure results_file is a string

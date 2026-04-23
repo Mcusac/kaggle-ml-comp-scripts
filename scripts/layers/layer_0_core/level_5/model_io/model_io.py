@@ -15,8 +15,8 @@ from layers.layer_0_core.level_0 import (
 from layers.layer_0_core.level_3 import validate_file_exists
 from layers.layer_0_core.level_4 import load_json, load_pickle, save_json, save_pickle
 
-logger = get_logger(__name__)
-torch = get_torch()
+_logger = get_logger(__name__)
+_torch = get_torch()
 TORCH_AVAILABLE = is_torch_available()
 
 
@@ -59,7 +59,7 @@ def save_model_raw(
         try:
             _save_metadata(path, metadata)
         except Exception as e:
-            logger.warning(f"Failed to save metadata for {path}: {e}")
+            _logger.warning(f"Failed to save metadata for {path}: {e}")
 
     return path
 
@@ -95,7 +95,7 @@ def save_model(
         result_path = save_model_raw(model, path, metadata)
         model_type = _get_model_type_name(model)
         size_mb = path.stat().st_size / (1024 * 1024)
-        logger.info(f"Saved {model_type} model: {path} ({size_mb:.2f}MB)")
+        _logger.info(f"Saved {model_type} model: {path} ({size_mb:.2f}MB)")
         return result_path
     except ModelError:
         raise
@@ -142,7 +142,7 @@ def load_model_raw(
         try:
             metadata = _load_metadata(path)
         except Exception as e:
-            logger.debug(f"No metadata sidecar found for {path}: {e}")
+            _logger.debug(f"No metadata sidecar found for {path}: {e}")
 
     return model, metadata
 
@@ -174,9 +174,9 @@ def load_model(
 
     try:
         model, metadata = load_model_raw(path_obj)
-        logger.info(f"Loaded model: {path_obj}")
+        _logger.info(f"Loaded model: {path_obj}")
         if metadata:
-            logger.debug(f"Model metadata keys: {list(metadata.keys())}")
+            _logger.debug(f"Model metadata keys: {list(metadata.keys())}")
         return model, metadata
     except (FileNotFoundError, ModelLoadError):
         raise
@@ -203,7 +203,7 @@ def _save_pytorch_model(
     }
     if metadata:
         checkpoint['metadata'] = metadata
-    torch.save(checkpoint, path)
+    _torch.save(checkpoint, path)
 
 
 def _save_pickle_backed_model(
@@ -229,7 +229,7 @@ def _load_pytorch_model(
     if not TORCH_AVAILABLE:
         raise ModelLoadError("PyTorch not installed")
     try:
-        checkpoint = torch.load(path, map_location='cpu')
+        checkpoint = _torch.load(path, map_location='cpu')
     except Exception as e:
         raise ModelLoadError(f"Failed to load PyTorch checkpoint: {e}")
     return checkpoint, checkpoint.get('metadata')

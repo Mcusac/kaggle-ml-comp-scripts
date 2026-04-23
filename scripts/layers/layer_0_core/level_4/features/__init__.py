@@ -1,9 +1,11 @@
-"""SigLIP feature extraction and adapters."""
+"""Auto-generated package exports."""
+
 
 from .compute_siglip_embeddings import compute_siglip_embeddings
+
 from .siglip_adapter import SigLIPFeatureExtractorAdapter
 
 __all__ = [
-    "compute_siglip_embeddings",
     "SigLIPFeatureExtractorAdapter",
+    "compute_siglip_embeddings",
 ]

@@ -1,0 +1,36 @@
+---
+description: Use devtools + automation_ideas inventory before re-scanning or one-off architecture checks
+globs:
+  - input/kaggle-ml-comp-scripts/scripts/**/*.py
+  - input/kaggle-ml-comp-scripts/docs/automation_ideas.md
+  - input/kaggle-ml-comp-scripts/.cursor/commands/**/*.md
+  - .cursor/agents/**/*.md
+---
+
+# Devtools automation inventory (avoid duplicate work)
+
+## Before writing a new script or “scanning the repo”
+
+1. Read **`input/kaggle-ml-comp-scripts/docs/automation_ideas.md`** — status (Implemented / Partial / Not started), entrypoints, and artifacts.
+2. Read **`input/kaggle-ml-comp-scripts/scripts/layers/layer_2_devtools/README.md`** — canonical `python -m layers.layer_2_devtools.level_1_impl.level_2.<module>` list.
+3. Prefer copy-paste from **`input/kaggle-ml-comp-scripts/.cursor/commands/devtools-inventory.md`** (chat: `/devtools-inventory` when available).
+
+## Prefer existing automation
+
+- **Machine pipeline + manifest:** `run_code_audit_pipeline` (writes under `artifact_base/.cursor/audit-results/.../summaries/machine_runs/...`).
+- **General stack layering scan:** `scan_level_violations` (e.g. `general/audits/level_violations_scan_*.{md,json}`; JSON v2 may include `suggested_min_level`; use `--emit-move-plan` for a draft checklist, `--fail-on-violations` to exit non-zero when over `--max-violations`).
+- **Barrel / import-surface enforcement (merged):** `scan_barrel_enforcement` (e.g. `general/audits/barrel_enforcement_scan_*.{md,json}`, `schema: barrel_enforcement_scan.v1` with per-row `scope`); prefer this over re-grepping for the same rules.
+- **Layer dependency report:** `validate_layer_dependencies`.
+- **Fixes from scan JSON:** `apply_violation_fixes` (default dry-run; `--apply` to write).
+- **Health + gates:** `check_health` → `check_health_thresholds` (CI parity in `.github/workflows/health-check.yml`).
+- **Unused imports:** `cleanup_imports` driven by health JSON.
+- **Init regen:** `regenerate_package_inits`.
+- **Chat orchestration:** `/code-audit` / `/code-fix` per workspace `.cursor/rules/code-audit-delegation.mdc` and `code-fix-delegation.mdc` (do not replace with ad-hoc full-tree greps when a tool already exists).
+
+## Working directory
+
+Run `python -m ...` from **`input/kaggle-ml-comp-scripts/scripts/`** so `layers.*` imports resolve, unless a module’s `--help` says otherwise.
+
+## If something is “Not started” in automation_ideas.md
+
+That is a signal to add or extend a **named** `level_2` module (or CI wiring), then **update** `automation_ideas.md` in the same change — not to duplicate the intent in a one-off subagent pass.

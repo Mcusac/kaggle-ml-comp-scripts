@@ -10,7 +10,7 @@ from typing import Any, Iterable, Optional, Type, Union
 from layers.layer_0_core.level_0 import get_logger, DataLoadError, DataProcessingError, ensure_dir
 from layers.layer_0_core.level_3 import validate_path_is_file
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def load_json_raw(path: Union[str, Path]) -> Any:
@@ -69,7 +69,7 @@ def load_json(
             f"{file_type} must contain {expected_type.__name__}, got {type(data).__name__}"
         )
 
-    logger.debug(f"Loaded {file_type}: {path_obj}")
+    _logger.debug(f"Loaded {file_type}: {path_obj}")
     return data
 
 
@@ -100,7 +100,7 @@ def save_json(
         ensure_dir(path.parent)
         with open(path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=indent, ensure_ascii=ensure_ascii)
-        logger.debug(f"Saved JSON: {path}")
+        _logger.debug(f"Saved JSON: {path}")
     except Exception as e:
         raise DataProcessingError(f"Failed to save JSON {path}: {e}")
 
@@ -140,7 +140,7 @@ def save_json_atomic(
                         os.remove(tmp_path)
                 except OSError:
                     pass
-        logger.debug(f"Saved JSON (atomic): {p}")
+        _logger.debug(f"Saved JSON (atomic): {p}")
     except Exception as e:
         raise DataProcessingError(f"Failed to save JSON atomically {p}: {e}")
 

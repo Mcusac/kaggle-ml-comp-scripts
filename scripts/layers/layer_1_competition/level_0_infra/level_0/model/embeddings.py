@@ -7,7 +7,7 @@ from typing import List, Optional, Tuple
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def load_embedding_data(

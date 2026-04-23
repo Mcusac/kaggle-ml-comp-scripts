@@ -29,7 +29,7 @@ def load_combo_metadata(metadata_dir: Path) -> dict:
     return _load_combo_raw(metadata_dir, CSIRO_COMBO_SUBPATH)
 
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _get_combo_details(combo_id: str, metadata_dir: Path) -> Dict[str, List[str]]:

@@ -12,7 +12,7 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     pad_grid_to_canvas,
 )
 
-torch = get_torch()
+_torch = get_torch()
 
 
 class ArcSameShapeGridDataset(Dataset):
@@ -25,10 +25,10 @@ class ArcSameShapeGridDataset(Dataset):
     def __len__(self) -> int:
         return len(self._pairs)
 
-    def __getitem__(self, idx: int) -> tuple[torch.Tensor, torch.Tensor, dict[str, Any]]:
+    def __getitem__(self, idx: int) -> tuple[_torch.Tensor, _torch.Tensor, dict[str, Any]]:
         inp, out = self._pairs[idx]
         oh = grid_to_one_hot_tensor(inp, canvas=self._canvas)
         padded_out = pad_grid_to_canvas(out, canvas=self._canvas)
-        target = torch.tensor(padded_out, dtype=torch.long)
+        target = _torch.tensor(padded_out, dtype=_torch.long)
         meta = {"orig_h": len(inp), "orig_w": len(inp[0]) if inp else 0}
         return oh, target, meta

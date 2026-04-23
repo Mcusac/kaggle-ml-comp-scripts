@@ -4,7 +4,7 @@ from typing import Callable, Mapping
 
 from layers.layer_0_core.level_0 import get_logger, ExecutionError
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def safe_execute_cell(
@@ -18,7 +18,7 @@ def safe_execute_cell(
     Wraps execution errors in ExecutionError with cell context.
     """
     if not enabled_cells.get(cell_id, False):
-        logger.info(f"Cell {cell_id} skipped.")
+        _logger.info(f"Cell {cell_id} skipped.")
         return
 
     try:

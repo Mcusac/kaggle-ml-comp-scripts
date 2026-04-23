@@ -9,7 +9,7 @@ from level_8 import TrainPipeline
 
 from layers.layer_1_competition.level_0_infra.level_0 import create_pipeline_kwargs, setup_handler_context
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def make_handler(builder: Any) -> Callable[[argparse.Namespace], None]:
@@ -24,7 +24,7 @@ def make_handler(builder: Any) -> Callable[[argparse.Namespace], None]:
         pipeline_kwargs = create_pipeline_kwargs(paths, data_schema, model_type)
         train_pipeline = TrainPipeline(config=config, train_data=train_data, val_data=val_data, **pipeline_kwargs)
         results = train_pipeline.run()
-        logger.info("Training complete: %s", results["success"])
+        _logger.info("Training complete: %s", results["success"])
 
     return _handle_train
 

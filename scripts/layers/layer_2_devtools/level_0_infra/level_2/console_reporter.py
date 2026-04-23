@@ -48,6 +48,9 @@ class ConsoleReporter(BaseReporter):
                 SectionFormatters.format_type_annotations(results["type_annotations"])
             )
 
+        if "deep_nesting" in results:
+            lines.extend(SectionFormatters.format_deep_nesting(results["deep_nesting"]))
+
         if "cohesion" in results:
             lines.extend(SectionFormatters.format_cohesion(results["cohesion"]))
 

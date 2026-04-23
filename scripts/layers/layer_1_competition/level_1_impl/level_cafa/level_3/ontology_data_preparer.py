@@ -11,7 +11,7 @@ from layers.layer_0_core.level_0 import get_logger
 
 from layers.layer_1_competition.level_1_impl.level_cafa.level_2 import OntologyFeatureExtractor
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 _LABEL_PREP_ERRORS = (KeyError, ValueError, TypeError)
 
@@ -47,10 +47,10 @@ class OntologyDataPreparer:
         protein_ids = train_data.get('protein_ids', [])
 
         if not train_seqs or train_terms is None or not protein_ids:
-            logger.warning(f"Insufficient training data for {ontology} ontology")
+            _logger.warning(f"Insufficient training data for {ontology} ontology")
             return None, None
 
-        logger.info(f"Extracting features for {ontology} ontology...")
+        _logger.info(f"Extracting features for {ontology} ontology...")
         feature_type = ontology_config.get('feature_type', 'hand_crafted')
 
         X_train = self._feature_extractor.extract_features(
@@ -61,12 +61,12 @@ class OntologyDataPreparer:
         )
 
         if X_train is None:
-            logger.warning(f"Feature extraction failed for {ontology} ontology")
+            _logger.warning(f"Feature extraction failed for {ontology} ontology")
             return None, None
 
-        logger.info(f"Extracted features shape: {X_train.shape}")
+        _logger.info(f"Extracted features shape: {X_train.shape}")
 
-        logger.info(f"Preparing labels for {ontology} ontology...")
+        _logger.info(f"Preparing labels for {ontology} ontology...")
         y_train = self.prepare_labels(
             train_terms=train_terms,
             protein_ids=protein_ids,
@@ -75,10 +75,10 @@ class OntologyDataPreparer:
         )
 
         if y_train is None:
-            logger.warning(f"Label preparation failed for {ontology} ontology")
+            _logger.warning(f"Label preparation failed for {ontology} ontology")
             return None, None
 
-        logger.info(f"Prepared labels shape: {y_train.shape}")
+        _logger.info(f"Prepared labels shape: {y_train.shape}")
 
         return X_train, y_train
 
@@ -113,7 +113,7 @@ class OntologyDataPreparer:
                     all_term_counts.update(terms)
 
                 top_terms = set([term for term, _ in all_term_counts.most_common(top_k_labels)])
-                logger.info(f"Restricting to top-{top_k_labels} most frequent GO terms ({len(top_terms)} unique)")
+                _logger.info(f"Restricting to top-{top_k_labels} most frequent GO terms ({len(top_terms)} unique)")
 
                 filtered_protein_terms = {}
                 for pid, terms in protein_terms.items():
@@ -130,11 +130,11 @@ class OntologyDataPreparer:
                 if num_terms < 10000:
                     y_train = y_train.toarray()
                 else:
-                    logger.info(f"Keeping labels as sparse matrix ({num_terms} terms)")
+                    _logger.info(f"Keeping labels as sparse matrix ({num_terms} terms)")
 
-            logger.info(f"Prepared labels: {y_train.shape[0]} samples, {y_train.shape[1]} GO terms")
+            _logger.info(f"Prepared labels: {y_train.shape[0]} samples, {y_train.shape[1]} GO terms")
 
             return y_train
         except _LABEL_PREP_ERRORS as e:
-            logger.error(f"Error preparing labels: {e}", exc_info=True)
+            _logger.error(f"Error preparing labels: {e}", exc_info=True)
             return None

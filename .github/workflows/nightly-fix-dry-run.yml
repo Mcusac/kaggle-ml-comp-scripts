@@ -1,0 +1,47 @@
+name: Nightly Fix Dry-Run
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: nightly-fix-dry-run
+  cancel-in-progress: true
+
+jobs:
+  nightly-fix-dry-run:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Run fix pipeline (dry-run)
+      working-directory: scripts
+      run: |
+        python -m layers.layer_2_devtools.level_1_impl.level_2.run_code_fix_pipeline \
+          --scripts-root "." \
+          --target-root "layers/layer_0_core" \
+          --dry-run
+
+    - name: Upload fix dry-run artifacts
+      if: success() || failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: nightly-fix-dry-run-artifacts
+        path: |
+          .cursor/audit-results/**/*
+        if-no-files-found: warn
+        compression-level: 6
+

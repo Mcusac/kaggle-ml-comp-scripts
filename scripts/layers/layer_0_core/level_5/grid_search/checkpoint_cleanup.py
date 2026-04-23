@@ -8,7 +8,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 from layers.layer_0_core.level_0 import extract_results_list, get_logger
 from layers.layer_0_core.level_4 import load_json
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _delete_non_top_dirs(
@@ -35,9 +35,9 @@ def _delete_non_top_dirs(
             shutil.rmtree(d)
             deleted += 1
             freed += size
-            logger.debug(f"Deleted variant directory: {d}")
+            _logger.debug(f"Deleted variant directory: {d}")
         except Exception as e:
-            logger.warning(f"Failed to delete {d}: {e}")
+            _logger.warning(f"Failed to delete {d}: {e}")
     return deleted, freed
 
 
@@ -66,19 +66,19 @@ def cleanup_grid_search_checkpoints_retroactive(
     results_file = Path(results_file)
 
     if not results_file.exists():
-        logger.warning(f"Results file not found: {results_file}")
+        _logger.warning(f"Results file not found: {results_file}")
         return 0, 0
 
     try:
         data = load_json(results_file)
         all_results = extract_results_list(data)
     except Exception as e:
-        logger.error(f"Failed to load results file: {e}")
+        _logger.error(f"Failed to load results file: {e}")
         return 0, 0
 
     successful = [r for r in all_results if r.get('cv_score') is not None]
     if not successful:
-        logger.info("No successful results found")
+        _logger.info("No successful results found")
         return 0, 0
 
     successful.sort(key=lambda x: x.get('cv_score', -float('inf')), reverse=True)
@@ -87,7 +87,7 @@ def cleanup_grid_search_checkpoints_retroactive(
         for r in successful[:keep_top_n]
         if r.get('variant_id')
     }
-    logger.info(f"Keeping top {len(keep_ids)} variants")
+    _logger.info(f"Keeping top {len(keep_ids)} variants")
 
     total_deleted = 0
     total_freed = 0
@@ -101,12 +101,12 @@ def cleanup_grid_search_checkpoints_retroactive(
         total_freed += freed
 
     if total_deleted > 0:
-        logger.info(
+        _logger.info(
             f"Cleanup complete: deleted {total_deleted} variants, "
             f"freed {total_freed / (1024 * 1024):.2f} MB"
         )
     else:
-        logger.info("No variants to delete (all within top N)")
+        _logger.info("No variants to delete (all within top N)")
 
     return total_deleted, total_freed
 
@@ -128,10 +128,10 @@ def cleanup_checkpoints(
         results: Pre-loaded list of result dicts, each with 'success',
                  'score', and 'variant_index' keys. If None, skips cleanup.
     """
-    logger.info(f"Cleaning up checkpoints (keeping top {keep_top_n})...")
+    _logger.info(f"Cleaning up checkpoints (keeping top {keep_top_n})...")
 
     if results is None:
-        logger.warning("No results provided — cannot determine top variants. Skipping.")
+        _logger.warning("No results provided — cannot determine top variants. Skipping.")
         return
 
     sorted_results = sorted(
@@ -147,7 +147,7 @@ def cleanup_checkpoints(
         if d.is_dir() and d.name.startswith('variant_')
     ]
     deleted, _ = _delete_non_top_dirs(candidate_dirs, keep_names)
-    logger.info(
+    _logger.info(
         f"Cleanup complete: removed {deleted} variant directories, "
         f"kept {len(keep_names)} top variants."
     )

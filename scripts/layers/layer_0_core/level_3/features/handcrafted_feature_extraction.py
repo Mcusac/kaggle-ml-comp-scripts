@@ -9,7 +9,7 @@ from typing import Dict, Generator, List, Optional, Tuple
 from layers.layer_0_core.level_0 import HANDCRAFTED_FEATURE_DIM, get_logger
 from layers.layer_0_core.level_2 import extract_handcrafted_features
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 _DEFAULT_CHUNK_SIZE: int = 10_000
 
@@ -92,7 +92,7 @@ def extract_handcrafted_parallel(
         rows = list(executor.map(lambda pid: _extract_one(pid, sequences), protein_ids))
 
     result = np.array(rows, dtype=np.float32)
-    logger.info(f"Extracted features for {len(protein_ids):,} proteins: shape {result.shape}")
+    _logger.info(f"Extracted features for {len(protein_ids):,} proteins: shape {result.shape}")
     return result
 
 
@@ -119,12 +119,12 @@ def stream_features(
 
     protein_ids = list(sequences.keys())
     total = len(protein_ids)
-    logger.info(f"Streaming features for {total:,} proteins in chunks of {chunk_size:,}")
+    _logger.info(f"Streaming features for {total:,} proteins in chunks of {chunk_size:,}")
 
     for chunk_num, start in enumerate(range(0, total, chunk_size), start=1):
         chunk_ids = protein_ids[start:start + chunk_size]
         features = extract_handcrafted_features_for_ids(sequences, chunk_ids)
-        logger.info(f"  Chunk {chunk_num}: {len(chunk_ids):,} proteins, shape {features.shape}")
+        _logger.info(f"  Chunk {chunk_num}: {len(chunk_ids):,} proteins, shape {features.shape}")
         yield features, chunk_ids
 
-    logger.info(f"Streamed all {total:,} proteins")
+    _logger.info(f"Streamed all {total:,} proteins")

@@ -1,0 +1,238 @@
+{
+  "generated": "2026-04-22",
+  "nesting": {
+    "deep_dirs": [
+      {
+        "depth": 4,
+        "dir": "level_0_infra/level_0/parse/ast",
+        "py_files": 5
+      },
+      {
+        "depth": 4,
+        "dir": "level_1_impl/tests/unit/test_levels",
+        "py_files": 2
+      },
+      {
+        "depth": 4,
+        "dir": "level_0_infra/level_0/validation/import_rules",
+        "py_files": 2
+      },
+      {
+        "depth": 4,
+        "dir": "level_0_infra/level_0/parse/json",
+        "py_files": 2
+      },
+      {
+        "depth": 4,
+        "dir": "level_1_impl/tests/unit/test_contest",
+        "py_files": 1
+      },
+      {
+        "depth": 4,
+        "dir": "level_1_impl/tests/integration/test_trainers",
+        "py_files": 1
+      },
+      {
+        "depth": 4,
+        "dir": "level_1_impl/tests/integration/test_pipelines",
+        "py_files": 1
+      },
+      {
+        "depth": 3,
+        "dir": "level_0_infra/level_1/health_analyzers",
+        "py_files": 15
+      },
+      {
+        "depth": 3,
+        "dir": "level_0_infra/level_0/formatting",
+        "py_files": 11
+      },
+      {
+        "depth": 3,
+        "dir": "level_1_impl/level_0/composed",
+        "py_files": 10
+      },
+      {
+        "depth": 3,
+        "dir": "level_0_infra/level_0/fix",
+        "py_files": 8
+      },
+      {
+        "depth": 3,
+        "dir": "level_0_infra/level_0/models",
+        "py_files": 7
+      },
+      {
+        "depth": 3,
+        "dir": "level_0_infra/level_0/path",
+        "py_files": 6
+      },
+      {
+        "depth": 3,
+        "dir": "level_1_impl/level_0/scan",
+        "py_files": 5
+      },
+      {
+        "depth": 3,
+        "dir": "level_1_impl/level_0/regenerate_inits",
+        "py_files": 5
+      },
+      {
+        "depth": 3,
+        "dir": "level_1_impl/level_2/package_dumping",
+        "py_files": 3
+      },
+      {
+        "depth": 3,
+        "dir": "level_0_infra/level_0/placement",
+        "py_files": 3
+      },
+      {
+        "depth": 3,
+        "dir": "level_0_infra/level_0/io",
+        "py_files": 3
+      },
+      {
+        "depth": 3,
+        "dir": "level_0_infra/level_0/import_testing",
+        "py_files": 3
+      },
+      {
+        "depth": 3,
+        "dir": "level_0_infra/level_0/graph",
+        "py_files": 3
+      },
+      {
+        "depth": 3,
+        "dir": "level_1_impl/level_1/composed",
+        "py_files": 2
+      },
+      {
+        "depth": 3,
+        "dir": "level_1_impl/level_0/targets",
+        "py_files": 2
+      },
+      {
+        "depth": 3,
+        "dir": "level_1_impl/level_0/preparation",
+        "py_files": 2
+      },
+      {
+        "depth": 3,
+        "dir": "level_0_infra/level_0/validation",
+        "py_files": 2
+      },
+      {
+        "depth": 3,
+        "dir": "level_0_infra/level_0/parse",
+        "py_files": 2
+      },
+      {
+        "depth": 3,
+        "dir": "level_0_infra/level_0/package_dump",
+        "py_files": 2
+      },
+      {
+        "depth": 3,
+        "dir": "level_0_infra/level_0/hyperparameter",
+        "py_files": 2
+      },
+      {
+        "depth": 3,
+        "dir": "level_0_infra/level_0/health_thresholds",
+        "py_files": 2
+      },
+      {
+        "depth": 3,
+        "dir": "level_0_infra/level_0/fs",
+        "py_files": 2
+      },
+      {
+        "depth": 3,
+        "dir": "level_0_infra/level_0/contracts",
+        "py_files": 2
+      },
+      {
+        "depth": 3,
+        "dir": "level_0_infra/level_0/constants",
+        "py_files": 2
+      },
+      {
+        "depth": 3,
+        "dir": "level_1_impl/tests/unit",
+        "py_files": 1
+      },
+      {
+        "depth": 3,
+        "dir": "level_1_impl/tests/integration",
+        "py_files": 1
+      },
+      {
+        "depth": 2,
+        "dir": "level_1_impl/level_2",
+        "py_files": 47
+      },
+      {
+        "depth": 2,
+        "dir": "level_1_impl/level_1",
+        "py_files": 13
+      },
+      {
+        "depth": 2,
+        "dir": "level_0_infra/level_1",
+        "py_files": 10
+      },
+      {
+        "depth": 2,
+        "dir": "level_0_infra/level_0",
+        "py_files": 6
+      },
+      {
+        "depth": 2,
+        "dir": "level_1_impl/level_0",
+        "py_files": 3
+      },
+      {
+        "depth": 2,
+        "dir": "level_0_infra/level_2",
+        "py_files": 3
+      },
+      {
+        "depth": 2,
+        "dir": "level_1_impl/tests",
+        "py_files": 2
+      },
+      {
+        "depth": 1,
+        "dir": "entrypoints",
+        "py_files": 9
+      },
+      {
+        "depth": 1,
+        "dir": "level_1_impl",
+        "py_files": 1
+      },
+      {
+        "depth": 1,
+        "dir": "level_0_infra",
+        "py_files": 1
+      },
+      {
+        "depth": 0,
+        "dir": ".",
+        "py_files": 2
+      }
+    ],
+    "dir_depth_histogram": {
+      "0": 1,
+      "1": 3,
+      "2": 7,
+      "3": 26,
+      "4": 7
+    },
+    "max_depth": 4
+  },
+  "root": "C:/Users/mdc0431/OneDrive - UNT System/Documents/Kaggle/code/input/kaggle-ml-comp-scripts/scripts/layers/layer_2_devtools",
+  "schema": "deep_nesting_scan.v1",
+  "workspace": "C:/Users/mdc0431/OneDrive - UNT System/Documents/Kaggle/code/input/kaggle-ml-comp-scripts"
+}

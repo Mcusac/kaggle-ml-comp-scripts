@@ -11,7 +11,7 @@ from layers.layer_0_core.level_1 import ensure_positive_weights, normalize_weigh
 from layers.layer_0_core.level_2 import simple_average
 
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 # =============================================================================
@@ -45,7 +45,7 @@ def combine_with_fallback(
     normalized = normalize_weights(safe_weights)
 
     if normalized is None:
-        logger.warning(
+        _logger.warning(
             f"{ensemble_name} failed: zero weight sum. "
             "Falling back to simple average."
         )
@@ -53,7 +53,7 @@ def combine_with_fallback(
 
     combined = apply_weighted_combination(stacked, normalized)
 
-    logger.info(
+    _logger.info(
         f"Combined {len(predictions_list)} predictions using {ensemble_name}"
     )
 

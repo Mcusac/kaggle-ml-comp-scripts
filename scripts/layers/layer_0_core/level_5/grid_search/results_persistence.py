@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 from layers.layer_0_core.level_0 import extract_results_list, get_logger
 from layers.layer_0_core.level_4 import load_json, save_json
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def load_results(
@@ -32,11 +32,11 @@ def load_results(
             for r in results
             if r.get('variant_key') is not None
         }
-        logger.info(f"Loaded {len(results)} existing results")
-        logger.info(f"Best score so far: {best_score:.4f}")
+        _logger.info(f"Loaded {len(results)} existing results")
+        _logger.info(f"Best score so far: {best_score:.4f}")
         return results, best_score, best_variant, completed_variants
     except Exception as e:
-        logger.warning(f"Failed to load results: {e}")
+        _logger.warning(f"Failed to load results: {e}")
         return [], -float('inf'), None, set()
 
 
@@ -103,13 +103,13 @@ def load_checkpoint(
     latest = checkpoint_files[0]
 
     try:
-        logger.info(f"Loading checkpoint: {latest.name}")
+        _logger.info(f"Loading checkpoint: {latest.name}")
         checkpoint = load_json(latest)
 
         if param_grid is not None:
             ckpt_grid = checkpoint.get('param_grid', {})
             if ckpt_grid != param_grid:
-                logger.warning(
+                _logger.warning(
                     f"Checkpoint param_grid does not match current grid. "
                     f"Checkpoint: {ckpt_grid}, Current: {param_grid}"
                 )
@@ -119,11 +119,11 @@ def load_checkpoint(
         best_variant = checkpoint.get('best_params', None)
         completed_variants = set(checkpoint.get('tested_variants', []))
 
-        logger.info(f"Checkpoint loaded: {len(results)} results, best_score={best_score}")
+        _logger.info(f"Checkpoint loaded: {len(results)} results, best_score={best_score}")
         return results, best_score, best_variant, completed_variants
 
     except Exception as e:
-        logger.warning(f"Failed to load checkpoint: {e}")
+        _logger.warning(f"Failed to load checkpoint: {e}")
         return None
 
 
@@ -173,9 +173,9 @@ def save_checkpoint(
     checkpoint_file = checkpoint_dir / f"checkpoint_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
     try:
         save_json(checkpoint, checkpoint_file)
-        logger.debug(f"Checkpoint saved: {checkpoint_file.name}")
+        _logger.debug(f"Checkpoint saved: {checkpoint_file.name}")
     except Exception as e:
-        logger.warning(f"Failed to save checkpoint: {e}")
+        _logger.warning(f"Failed to save checkpoint: {e}")
 
 
 # ---------------------------------------------------------------------------

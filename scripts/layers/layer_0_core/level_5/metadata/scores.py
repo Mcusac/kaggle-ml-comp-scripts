@@ -6,7 +6,7 @@ from typing import Optional
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_4 import load_json_raw
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def extract_scores_from_json(
@@ -27,7 +27,7 @@ def extract_scores_from_json(
             fold_scores = info.get("fold_scores", [])
             extracted_best_fold = info.get("best_fold", best_fold)
         except Exception as e:
-            logger.warning(f"Could not load {json_filename}: {e}")
+            _logger.warning(f"Could not load {json_filename}: {e}")
     return cv_score, fold_scores, extracted_best_fold
 
 

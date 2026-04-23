@@ -1,3 +1,10 @@
-"""Package dump CLI entrypoints; implementation in ``layer_2_devtools.level_1_impl.level_1``."""
+"""Auto-generated package exports."""
 
-__all__: list[str] = []
+
+from .cli import main
+
+from .dump_level import main
+
+__all__ = [
+    "main",
+]

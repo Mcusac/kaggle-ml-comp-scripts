@@ -29,7 +29,7 @@ from layers.layer_1_competition.level_1_impl.level_rna3d.level_0 import (
 )
 from layers.layer_1_competition.level_0_infra.level_1.paths import contest_submission_path
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 @dataclass(frozen=True)
@@ -410,14 +410,14 @@ def make_submission(
 
     test_seqs = pd.read_csv(test_sequences_path, usecols=["target_id", "sequence"])
 
-    logger.info("RNA3D submission generation started")
+    _logger.info("RNA3D submission generation started")
     predictions = run_baseline_approx_predictions(
         data_root=data_root,
         config=config,
         sequences_df=test_seqs,
         max_targets=config.max_targets or 0,
     )
-    logger.info("   Test targets: %d", len(predictions))
+    _logger.info("   Test targets: %d", len(predictions))
 
     n_structures = int(config.n_structures)
     if predictions:
@@ -430,5 +430,5 @@ def make_submission(
         n_structures=n_structures,
         output_csv=output_csv,
     )
-    logger.info("Wrote submission: %s", out_path)
+    _logger.info("Wrote submission: %s", out_path)
     return out_path

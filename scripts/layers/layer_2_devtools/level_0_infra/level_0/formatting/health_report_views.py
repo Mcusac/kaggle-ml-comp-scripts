@@ -89,6 +89,115 @@ def _count(items: object) -> int:
     return len(items) if isinstance(items, list) else 0
 
 
+def _safe_int(x: object, default: int = 0) -> int:
+    try:
+        return int(x)  # type: ignore[arg-type]
+    except (TypeError, ValueError):
+        return default
+
+
+def lines_oversized_modules(
+    data: dict[str, Any],
+    *,
+    report_path: Path,
+    max_file_lines: int,
+    top: int,
+    include_suggestions: bool,
+) -> list[str]:
+    file_metrics = data.get("file_metrics", {}) if isinstance(data, dict) else {}
+    long_files = file_metrics.get("long_files", [])
+    long_functions = file_metrics.get("long_functions", [])
+    large_classes = file_metrics.get("large_classes", [])
+
+    if not isinstance(long_files, list):
+        long_files = []
+    if not isinstance(long_functions, list):
+        long_functions = []
+    if not isinstance(large_classes, list):
+        large_classes = []
+
+    oversized = [
+        f
+        for f in long_files
+        if isinstance(f, dict) and _safe_int(f.get("lines")) > max(0, int(max_file_lines))
+    ]
+
+    lines: list[str] = [
+        "=" * 80,
+        "OVERSIZED MODULES",
+        "=" * 80,
+        f"Report: {report_path}",
+        f"Threshold: max_file_lines={max_file_lines}",
+        f"Oversized modules: {len(oversized)}",
+        "",
+    ]
+
+    if not oversized:
+        lines.append("✅ No oversized modules detected.")
+        lines.append("")
+        return lines
+
+    def key_fn(x: dict[str, Any]) -> int:
+        return _safe_int(x.get("lines"))
+
+    show = sorted(oversized, key=key_fn, reverse=True)[: max(0, int(top))]
+    for i, row in enumerate(show, 1):
+        module = str(row.get("module") or "unknown")
+        loc = _safe_int(row.get("lines"))
+        over_by = max(0, loc - int(max_file_lines))
+        lines.append(f"{i:2}. {loc} lines (+{over_by})  {module}")
+
+        if not include_suggestions:
+            continue
+
+        # Conservative heuristics driven only by existing file_metrics.
+        hot_funcs = [
+            f
+            for f in long_functions
+            if isinstance(f, dict)
+            and str(f.get("module") or "") == module
+            and _safe_int(f.get("lines")) >= 80
+        ]
+        hot_funcs.sort(key=lambda x: _safe_int(x.get("lines")), reverse=True)
+
+        hot_classes = [
+            c
+            for c in large_classes
+            if isinstance(c, dict)
+            and str(c.get("module") or "") == module
+            and _safe_int(c.get("methods")) >= 10
+        ]
+        hot_classes.sort(key=lambda x: _safe_int(x.get("methods")), reverse=True)
+
+        suggestions: list[str] = []
+        if hot_funcs:
+            fn = str(hot_funcs[0].get("function") or "<?>")
+            fl = _safe_int(hot_funcs[0].get("lines"))
+            suggestions.append(f"Extract long function `{fn}` (~{fl} lines) into a submodule.")
+        if len(hot_funcs) >= 2:
+            fn2 = str(hot_funcs[1].get("function") or "<?>")
+            fl2 = _safe_int(hot_funcs[1].get("lines"))
+            suggestions.append(f"Split helper logic out of `{fn2}` (~{fl2} lines).")
+        if hot_classes:
+            cn = str(hot_classes[0].get("class") or "<?>")
+            m = _safe_int(hot_classes[0].get("methods"))
+            suggestions.append(f"Consider splitting class `{cn}` ({m} methods) into focused collaborators.")
+
+        if not suggestions:
+            suggestions.append(
+                "No obvious hotspots from file-metrics; split by responsibility into submodules."
+            )
+
+        for s in suggestions[:3]:
+            lines.append(f"    - Suggestion: {s}")
+
+    if len(oversized) > len(show):
+        lines.append("")
+        lines.append(f"... and {len(oversized) - len(show)} more")
+    lines.append("")
+    return lines
+
+
 def lines_health_compare(pre: dict[str, Any], post: dict[str, Any], *, pre_path: Path, post_path: Path) -> list[str]:
     pre_dead = pre.get("dead_code", {})
     post_dead = post.get("dead_code", {})

@@ -7,7 +7,7 @@ from typing import Tuple, Union
 
 from layers.layer_0_core.level_0 import get_nn_module_base_class, get_torch
 
-torch = get_torch()
+_torch = get_torch()
 _NNModule = get_nn_module_base_class()
 
 
@@ -32,8 +32,8 @@ class BaseVisionModel(_NNModule, ABC):
     @abstractmethod
     def forward(
         self,
-        x: Union[torch.Tensor, Tuple[torch.Tensor, torch.Tensor]]
-    ) -> torch.Tensor:
+        x: Union[_torch.Tensor, Tuple[_torch.Tensor, _torch.Tensor]]
+    ) -> _torch.Tensor:
         """
         Forward pass through the model.
 
@@ -67,19 +67,19 @@ class BaseVisionModel(_NNModule, ABC):
 
     def save(self, path: str) -> None:
         """Save model state dict to path."""
-        if torch is None:
+        if _torch is None:
             raise RuntimeError("PyTorch is required to save vision models.")
-        torch.save(self.state_dict(), path)
+        _torch.save(self.state_dict(), path)
 
     def load(self, path: str, device: str = 'cpu') -> None:
         """Load model state dict from path."""
-        if torch is None:
+        if _torch is None:
             raise RuntimeError("PyTorch is required to load vision models.")
-        state_dict = torch.load(path, map_location=device)
+        state_dict = _torch.load(path, map_location=device)
         self.load_state_dict(state_dict)
 
     def get_num_parameters(self) -> int:
         """Return total number of model parameters."""
-        if torch is None:
+        if _torch is None:
             return 0
         return sum(p.numel() for p in self.parameters())

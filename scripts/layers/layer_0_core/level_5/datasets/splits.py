@@ -9,7 +9,7 @@ from layers.layer_0_core.level_0 import ensure_dir, get_logger, is_kaggle
 from layers.layer_0_core.level_2 import get_train_test_split
 from layers.layer_0_core.level_4 import save_json
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def get_dataset_cache_dir() -> Path:
@@ -51,9 +51,9 @@ def save_dataset_splits(
     train_df.to_parquet(variant_dir / 'train.parquet', index=False)
     val_df.to_parquet(variant_dir / 'val.parquet', index=False)
 
-    logger.info("Saved dataset splits to %s", variant_dir)
-    logger.info("  Train: %s samples", len(train_df))
-    logger.info("  Val: %s samples", len(val_df))
+    _logger.info("Saved dataset splits to %s", variant_dir)
+    _logger.info("  Train: %s samples", len(train_df))
+    _logger.info("  Val: %s samples", len(val_df))
 
     if metadata:
         save_json(metadata, variant_dir / 'metadata.json')
@@ -81,12 +81,12 @@ def load_dataset_splits(cache_key: str) -> Optional[Tuple[pd.DataFrame, pd.DataF
     try:
         train_df = pd.read_parquet(train_path)
         val_df = pd.read_parquet(val_path)
-        logger.info("Loaded cached dataset splits from %s", variant_dir)
-        logger.info("  Train: %s samples", len(train_df))
-        logger.info("  Val: %s samples", len(val_df))
+        _logger.info("Loaded cached dataset splits from %s", variant_dir)
+        _logger.info("  Train: %s samples", len(train_df))
+        _logger.info("  Val: %s samples", len(val_df))
         return train_df, val_df
     except Exception as e:
-        logger.warning("Failed to load cached splits from %s: %s", variant_dir, e)
+        _logger.warning("Failed to load cached splits from %s: %s", variant_dir, e)
         return None
 
 

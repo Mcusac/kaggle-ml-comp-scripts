@@ -7,7 +7,7 @@ from PIL import Image
 from layers.layer_0_core.level_0 import get_logger, DataLoadError, DataProcessingError, ensure_dir, load_image_pil
 from layers.layer_0_core.level_3 import validate_path_is_file
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def load_image_raw(path: Union[str, Path]) -> Image.Image:
@@ -54,14 +54,14 @@ def load_image(
 
     try:
         image = load_image_pil(path_obj, convert_rgb=convert_rgb)
-        logger.debug(
+        _logger.debug(
             f"Loaded image: {path_obj} "
             f"(mode={image.mode}, size={image.size})"
         )
         return image
 
     except Exception as e:
-        logger.error(f"Failed to load image: {path_obj}", exc_info=True)
+        _logger.error(f"Failed to load image: {path_obj}", exc_info=True)
         raise DataLoadError(f"Failed to load image {path_obj}: {e}")
 
 
@@ -91,6 +91,6 @@ def save_image(
     try:
         ensure_dir(path.parent)
         image.save(path, format=format, **kwargs)
-        logger.debug(f"Saved image: {path}")
+        _logger.debug(f"Saved image: {path}")
     except Exception as e:
         raise DataProcessingError(f"Failed to save image {path}: {e}")

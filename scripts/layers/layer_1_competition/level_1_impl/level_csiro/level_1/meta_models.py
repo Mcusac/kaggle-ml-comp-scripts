@@ -9,7 +9,7 @@ from layers.layer_0_core.level_2 import get_ridge
 
 from layers.layer_1_competition.level_1_impl.level_csiro.level_0 import calc_metric
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _build_meta_features(
@@ -38,7 +38,7 @@ def _train_single_meta_model(
         f"Ensemble_{i+1}: {coef:.3f}"
         for i, coef in enumerate(meta_model.coef_)
     ])
-    logger.info(f"  Target {target_idx} weights -> {coef_str}")
+    _logger.info(f"  Target {target_idx} weights -> {coef_str}")
 
     return meta_model
 
@@ -57,7 +57,7 @@ def _calculate_meta_model_oof_score(
 
     oof_combined = np.clip(oof_combined, 0, None)
     oof_score, _ = calc_metric(oof_combined, all_targets, config=config)
-    logger.info(f"Hybrid Stacking OOF Score: {oof_score:.4f}")
+    _logger.info(f"Hybrid Stacking OOF Score: {oof_score:.4f}")
     return oof_score
 
 
@@ -68,7 +68,7 @@ def train_meta_models(
     meta_model_alpha: float
 ) -> tuple[dict, Optional[float]]:
     """Train meta-models (Ridge) per target on combined ensemble OOF predictions."""
-    logger.info("Training meta-models on combined ensemble predictions...")
+    _logger.info("Training meta-models on combined ensemble predictions...")
 
     n_targets = all_targets.shape[1] if all_targets is not None else len(config.primary_targets)
     meta_models = {}
@@ -81,15 +81,15 @@ def train_meta_models(
             meta_model = _train_single_meta_model(target_idx, X_meta, y_meta, meta_model_alpha)
             meta_models[target_idx] = meta_model
         else:
-            logger.warning(f"No training targets available for target {target_idx}, skipping meta-model training")
+            _logger.warning(f"No training targets available for target {target_idx}, skipping meta-model training")
 
-    logger.info(f"Trained {len(meta_models)} meta-models")
+    _logger.info(f"Trained {len(meta_models)} meta-models")
 
     oof_score = None
     if all_targets is not None and meta_models:
         oof_score = _calculate_meta_model_oof_score(ensemble_oof_preds, all_targets, meta_models, config)
     else:
-        logger.warning("Cannot calculate OOF score: targets or meta-models not available")
+        _logger.warning("Cannot calculate OOF score: targets or meta-models not available")
 
     return meta_models, oof_score
 
@@ -100,7 +100,7 @@ def generate_final_predictions(
     n_targets: int
 ) -> np.ndarray:
     """Generate final test predictions using meta-models."""
-    logger.info("Generating final test predictions...")
+    _logger.info("Generating final test predictions...")
     n_test = ensemble_test_preds[0].shape[0] if ensemble_test_preds else 0
     final_predictions = np.zeros((n_test, n_targets))
 
@@ -112,5 +112,5 @@ def generate_final_predictions(
         final_predictions[:, target_idx] = meta_model.predict(X_meta)
 
     final_predictions = np.clip(final_predictions, 0, None)
-    logger.info(f"Final predictions shape: {final_predictions.shape}")
+    _logger.info(f"Final predictions shape: {final_predictions.shape}")
     return final_predictions

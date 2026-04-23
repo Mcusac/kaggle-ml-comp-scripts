@@ -12,7 +12,7 @@ from layers.layer_0_core.level_3 import calculate_weighted_r2_from_arrays, prepa
 
 from .derived_targets import compute_derived_targets
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 # =====================================================

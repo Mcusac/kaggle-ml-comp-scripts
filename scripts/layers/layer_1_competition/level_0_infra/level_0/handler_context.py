@@ -21,7 +21,3 @@ def setup_handler_context(
     paths = builder.get_paths(contest_name)
     contest = {"paths": lambda: paths, "data_schema": lambda: data_schema}
     return contest_name, config, model_type, contest, data_schema, paths
-
-
-__all__ = ["setup_handler_context"]
-

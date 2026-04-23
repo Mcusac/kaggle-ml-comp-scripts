@@ -15,7 +15,7 @@ from layers.layer_0_core.level_3 import create_regression_model
 from layers.layer_1_competition.level_1_impl.level_csiro.level_0 import resolve_feature_filename
 from layers.layer_1_competition.level_1_impl.level_csiro.level_4 import extract_features_from_scratch
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def calculate_fold_score(
@@ -56,7 +56,7 @@ def train_single_fold(
     training_model_dir: Path,
 ) -> float:
     """Train regression model for a single fold and return score."""
-    logger.info("Training fold %s/%s", fold, n_folds - 1)
+    _logger.info("Training fold %s/%s", fold, n_folds - 1)
     fold_dir = training_model_dir / f"fold_{fold}"
     fold_dir.mkdir(parents=True, exist_ok=True)
 
@@ -77,7 +77,7 @@ def train_single_fold(
     val_predictions = regression_model.predict(val_features)
     fold_score = calculate_fold_score(val_predictions, val_targets, contest_config)
 
-    logger.info("Fold %s score: %.4f", fold, fold_score)
+    _logger.info("Fold %s score: %.4f", fold, fold_score)
 
     model_path = fold_dir / "regression_model.pkl"
     with open(model_path, "wb") as f:
@@ -121,7 +121,7 @@ def train_feature_extraction_model(
     cache_path = find_feature_cache(feature_filename)
 
     if cache_path and not extract_features:
-        logger.info("Loading features from cache: %s", cache_path)
+        _logger.info("Loading features from cache: %s", cache_path)
         all_features, all_targets, fold_assignments, cache_metadata = load_features(cache_path)
     else:
         all_features, all_targets, fold_assignments = extract_features_from_scratch(
@@ -151,12 +151,12 @@ def train_feature_extraction_model(
         all_scores.append(fold_score)
 
     cv_score = sum(all_scores) / len(all_scores)
-    logger.info("Average CV score: %.4f", cv_score)
+    _logger.info("Average CV score: %.4f", cv_score)
 
     best_fold = max(range(len(all_scores)), key=lambda i: all_scores[i])
     best_fold_score = all_scores[best_fold]
 
-    logger.info("Best fold: %s (score: %.4f)", best_fold, best_fold_score)
+    _logger.info("Best fold: %s (score: %.4f)", best_fold, best_fold_score)
 
     return {
         "variant_id": None,

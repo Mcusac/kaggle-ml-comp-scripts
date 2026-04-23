@@ -9,7 +9,7 @@ from layers.layer_0_core.level_5 import ExportPipeline
 
 from layers.layer_1_competition.level_0_infra.level_0 import setup_handler_context
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def make_handler(builder: Any) -> Callable[[argparse.Namespace], None]:
@@ -21,7 +21,7 @@ def make_handler(builder: Any) -> Callable[[argparse.Namespace], None]:
         export_dir = get_arg(args, "export_dir", "output/exports")
         export_pipeline = ExportPipeline(config=config, model_path=model_path, export_dir=export_dir)
         results = export_pipeline.run()
-        logger.info("Export complete: %s", results["success"])
+        _logger.info("Export complete: %s", results["success"])
 
     return _handle_export
 

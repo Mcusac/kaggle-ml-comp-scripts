@@ -9,7 +9,7 @@ from typing import Any, Dict, List
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_5 import load_and_validate_test_data
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def expand_predictions_to_submission_format(
@@ -55,6 +55,6 @@ def expand_predictions_to_submission_format(
     expected = len(unique) * len(contest_config.all_targets)
     if len(df) != expected:
         raise ValueError(f"Submission rows {len(df)} != expected {expected}")
-    logger.info(f"Expanded {len(unique)} images to {len(df)} submission rows")
+    _logger.info(f"Expanded {len(unique)} images to {len(df)} submission rows")
     return df
 

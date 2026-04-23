@@ -1,9 +1,14 @@
-"""Analysis package for model analysis."""
+"""Auto-generated package exports."""
 
-from .cv_analysis import find_best_fold_from_scores, analyze_cv_test_gap, analyze_fold_score_range
+
+from .cv_analysis import (
+    analyze_cv_test_gap,
+    analyze_fold_score_range,
+    find_best_fold_from_scores,
+)
 
 __all__ = [
-    "find_best_fold_from_scores",
     "analyze_cv_test_gap",
     "analyze_fold_score_range",
+    "find_best_fold_from_scores",
 ]

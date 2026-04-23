@@ -8,7 +8,7 @@ from typing import Any, Tuple
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def load_t5_rds(rds_path: Path, datatype: str, use_memmap: bool) -> Tuple[np.ndarray, np.ndarray]:
@@ -23,7 +23,7 @@ def load_t5_rds(rds_path: Path, datatype: str, use_memmap: bool) -> Tuple[np.nda
     Returns:
         (embeddings_array, ids_array)
     """
-    logger.info(f"Loading T5 {datatype} embeddings from .rds file: {rds_path}")
+    _logger.info(f"Loading T5 {datatype} embeddings from .rds file: {rds_path}")
 
     try:
         import pyreadr
@@ -65,10 +65,10 @@ def load_t5_rds(rds_path: Path, datatype: str, use_memmap: bool) -> Tuple[np.nda
     embeds = np.asarray(embeds, dtype=np.float32)
     ids = np.asarray(ids, dtype=str)
 
-    logger.info(f"Loaded T5 {datatype}: {embeds.shape} (dtype: {embeds.dtype}), IDs: {len(ids)}")
+    _logger.info(f"Loaded T5 {datatype}: {embeds.shape} (dtype: {embeds.dtype}), IDs: {len(ids)}")
 
     if use_memmap:
-        logger.info("Memory mapping not supported for .rds files, loaded full array")
+        _logger.info("Memory mapping not supported for .rds files, loaded full array")
 
     return embeds, ids
 
@@ -85,7 +85,7 @@ def load_t5_qs(qs_path: Path, datatype: str, use_memmap: bool) -> Tuple[np.ndarr
     Returns:
         (embeddings_array, ids_array)
     """
-    logger.info(f"Loading T5 {datatype} embeddings from .qs file: {qs_path}")
+    _logger.info(f"Loading T5 {datatype} embeddings from .qs file: {qs_path}")
 
     data = _load_qs_file_via_r(qs_path)
     data = _validate_and_convert_dataframe(data)
@@ -94,10 +94,10 @@ def load_t5_qs(qs_path: Path, datatype: str, use_memmap: bool) -> Tuple[np.ndarr
     embeds = np.asarray(embeds, dtype=np.float32)
     ids = np.asarray(ids, dtype=str)
 
-    logger.info(f"Loaded T5 {datatype}: {embeds.shape} (dtype: {embeds.dtype}), IDs: {len(ids)}")
+    _logger.info(f"Loaded T5 {datatype}: {embeds.shape} (dtype: {embeds.dtype}), IDs: {len(ids)}")
 
     if use_memmap:
-        logger.info("Memory mapping not supported for .qs files, loaded full array")
+        _logger.info("Memory mapping not supported for .qs files, loaded full array")
 
     return embeds, ids
 
@@ -115,7 +115,7 @@ def _load_qs_file_via_r(qs_path: Path) -> pd.DataFrame:
         r_data = ro.r('data')
 
         data = pandas2ri.rpy2py(r_data)
-        logger.info("Loaded using rpy2 + R qs package (converted to pandas DataFrame)")
+        _logger.info("Loaded using rpy2 + R qs package (converted to pandas DataFrame)")
         return data
     except ImportError:
         raise ImportError(

@@ -51,7 +51,7 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4.lm import (
     build_arc_lm_backend,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 Grid = list[list[int]]
 
@@ -111,15 +111,22 @@ def predict_attempts_for_llm_tta_dfs(
             config, str(task_id), int(test_index)
         )
 
+        if lm_probs is not None:
+            decode_branch = "cell_probs"
+        elif use_turbo_lm and lm_backend is not None:
+            decode_branch = "turbo_lm"
+        else:
+            decode_branch = "support_grids"
+
         predictions: list[CandidatePrediction] = []
         for i, spec in enumerate(specs):
             if budget.is_expired():
                 break
             aug_input = apply_augmentation(base_input, spec)
             ah, aw = llm_tta_grid_hw(aug_input)
-            if lm_probs is not None:
+            if decode_branch == "cell_probs":
                 decoded = decode_with_cell_probs(aug_input, lm_probs, ah, aw, config)
-            elif use_turbo_lm and lm_backend is not None:
+            elif decode_branch == "turbo_lm":
                 decoded = decode_with_turbo_lm(aug_input, lm_backend, config, budget)
             else:
                 decoded = decode_with_support_grids(
@@ -137,7 +144,7 @@ def predict_attempts_for_llm_tta_dfs(
                             )
                         )
                     except Exception as e:
-                        logger.warning("LM candidate scoring failed; using decode score only: %s", e)
+                        _logger.warning("LM candidate scoring failed; using decode score only: %s", e)
                 if infer_out:
                     shard.append(
                         {

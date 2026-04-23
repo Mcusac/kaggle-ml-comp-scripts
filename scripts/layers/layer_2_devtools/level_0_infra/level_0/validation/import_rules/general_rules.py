@@ -1,32 +1,36 @@
-"""General-stack import rule helpers for devtools scanners."""
+"""General-stack import rule helpers for devtools scanners.
 
-import re
+Single source of truth for `from level_N import` classification (tuples, stable kinds).
+Re-exported from ``level_0_infra.level_1.general_rules`` for backward compatibility.
+"""
 
-_LEVEL_RE = re.compile(r"^level_(\d+)$")
+from __future__ import annotations
+
+from ...constants.import_patterns import DEEP_LEVEL_RE, LEVEL_DIR_RE
 
 
 def has_deep_level_path(module_name: str) -> bool:
-    """True when import-from module is `level_N.something` (deep path)."""
-    if not module_name.startswith("level_"):
-        return False
-    return "." in module_name and bool(_LEVEL_RE.fullmatch(module_name.split(".", 1)[0]))
+    """True when import target is a deep path ``level_N.<submod>...`` (not a barrel)."""
+    return DEEP_LEVEL_RE.match(module_name) is not None
 
 
-def classify_general_import_from(module_name: str, current_level: int) -> str | None:
+def classify_general_import_from(
+    module_name: str, current_level: int
+) -> tuple[str, int] | None:
     """
-    Classify `from <module_name> import ...` for general stack logic files.
+    Classify ``from <module_name> import ...`` for general-stack *logic* files.
 
     Returns:
-      - "WRONG_LEVEL" when importing from same level (`level_current`)
-      - "UPWARD_VIOLATION" when importing from higher level (`level_X`, X > current)
-      - None otherwise (not a general level import, or lower-level import)
+        ``("WRONG_LEVEL", imported)`` for same-level barrel imports in logic,
+        ``("UPWARD", imported)`` for imports from a higher level than the file,
+        or ``None`` for allowed lower-level / non-``level_N`` top-level forms.
     """
-    match = _LEVEL_RE.fullmatch(module_name)
+    match = LEVEL_DIR_RE.fullmatch(module_name)
     if not match:
         return None
     imported_level = int(match.group(1))
     if imported_level == current_level:
-        return "WRONG_LEVEL"
+        return ("WRONG_LEVEL", imported_level)
     if imported_level > current_level:
-        return "UPWARD_VIOLATION"
+        return ("UPWARD", imported_level)
     return None

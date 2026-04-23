@@ -8,9 +8,9 @@ from typing import Any, Optional, Callable, List, Union, Tuple
 
 from layers.layer_0_core.level_0 import get_logger, get_torch
 
-torch = get_torch()
-_Dataset = torch.utils.data.Dataset if torch is not None else object
-logger = get_logger(__name__)
+_torch = get_torch()
+_Dataset = _torch.utils.data.Dataset if _torch is not None else object
+_logger = get_logger(__name__)
 
 
 class BaseImageDataset(_Dataset):
@@ -48,9 +48,9 @@ class BaseImageDataset(_Dataset):
             if missing_cols:
                 raise ValueError(f"Target columns not found in data: {missing_cols}")
 
-        logger.info(f"Initialized {self.__class__.__name__} with {len(self)} samples")
+        _logger.info(f"Initialized {self.__class__.__name__} with {len(self)} samples")
         if target_cols:
-            logger.info(f"  Target columns: {target_cols}")
+            _logger.info(f"  Target columns: {target_cols}")
 
     def __len__(self) -> int:
         return len(self.data)
@@ -72,7 +72,7 @@ class BaseImageDataset(_Dataset):
 
         if self.target_cols:
             targets = self.data.iloc[idx][self.target_cols].values.astype('float32')
-            targets = torch.tensor(targets)
+            targets = _torch.tensor(targets)
             return image, targets
 
         return image
@@ -100,7 +100,7 @@ class ImagePathDataset(_Dataset):
                 f"First few: {missing_paths[:5]}"
             )
 
-        logger.info(f"Initialized {self.__class__.__name__} with {len(self)} images")
+        _logger.info(f"Initialized {self.__class__.__name__} with {len(self)} images")
 
     def __len__(self) -> int:
         return len(self.image_paths)

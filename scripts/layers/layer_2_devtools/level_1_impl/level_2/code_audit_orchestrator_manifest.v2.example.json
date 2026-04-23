@@ -1,0 +1,138 @@
+{
+  "schema_version": "2",
+  "generated": "2026-01-15T12:00:00Z",
+  "generated_date": "2026-01-15",
+  "run_id": "2026-01-15T120000Z",
+  "scripts_root": "/path/to/kaggle-ml-comp-scripts/scripts",
+  "workspace": "/path/to/artifact_base",
+  "layers_root": "/path/to/kaggle-ml-comp-scripts/scripts/layers",
+  "queue_path": "/path/to/artifact_base/.cursor/audit-results/general/summaries/audit_orchestrator_runs/2026-01-15T120000Z/audit_queue.json",
+  "queue_stored": true,
+  "queue_summary": {
+    "target_count": 3,
+    "by_audit_scope": {
+      "core": 2,
+      "contest_tier": 1
+    }
+  },
+  "steps": {
+    "audit_targets": {
+      "status": "ok",
+      "errors": [],
+      "exit_code": 0,
+      "metrics": {
+        "target_count": 3
+      },
+      "artifacts": []
+    },
+    "precheck": {
+      "status": "ok",
+      "errors": [],
+      "exit_code": 0,
+      "metrics": {
+        "max_targets": null,
+        "target_ok": 3,
+        "target_error": 0,
+        "target_nonzero_exit": 0
+      },
+      "artifacts": [
+        {
+          "kind": "precheck_summary",
+          "scope": "core",
+          "level_name": "level_0",
+          "md_path": "/path/to/artifact_base/.cursor/audit-results/core/summaries/2026-01-15/precheck_level_0_2026-01-15.md",
+          "json_path": "/path/to/artifact_base/.cursor/audit-results/core/summaries/2026-01-15/precheck_level_0_2026-01-15.json"
+        }
+      ]
+    },
+    "dependency_validation": {
+      "status": "ok",
+      "errors": [],
+      "exit_code": 0,
+      "metrics": {
+        "violation_count": 0
+      },
+      "artifacts": [
+        {
+          "kind": "dependency_validation",
+          "scope": "general",
+          "md_path": "/path/to/artifact_base/.cursor/audit-results/general/audits/dependency_validation_2026-01-15.md",
+          "json_path": "/path/to/artifact_base/.cursor/audit-results/general/audits/dependency_validation_2026-01-15.json"
+        }
+      ]
+    },
+    "import_validation": {
+      "status": "ok",
+      "errors": [],
+      "exit_code": 0,
+      "metrics": {
+        "violation_count": 0,
+        "parse_error_count": 0
+      },
+      "artifacts": [
+        {
+          "kind": "verify_imports_scan",
+          "scope": "general",
+          "md_path": "/path/to/artifact_base/.cursor/audit-results/general/audits/verify_imports_scan_2026-01-15.md",
+          "json_path": "/path/to/artifact_base/.cursor/audit-results/general/audits/verify_imports_scan_2026-01-15.json"
+        }
+      ]
+    },
+    "circular_deps": {
+      "status": "ok",
+      "errors": [],
+      "exit_code": 0,
+      "metrics": {
+        "cycle_count": 0,
+        "parse_error_count": 0
+      },
+      "artifacts": [
+        {
+          "kind": "circular_deps_scan",
+          "scope": "general",
+          "md_path": "/path/to/artifact_base/.cursor/audit-results/general/audits/circular_deps_scan_2026-01-15.md",
+          "json_path": "/path/to/artifact_base/.cursor/audit-results/general/audits/circular_deps_scan_2026-01-15.json"
+        }
+      ]
+    },
+    "barrel_enforcement": {
+      "status": "ok",
+      "errors": [],
+      "exit_code": 0,
+      "metrics": {
+        "violation_count": 0,
+        "parse_error_count": 0
+      },
+      "artifacts": [
+        {
+          "kind": "barrel_enforcement_scan",
+          "scope": "general",
+          "md_path": "/path/to/artifact_base/.cursor/audit-results/general/audits/barrel_enforcement_scan_2026-01-15.md",
+          "json_path": "/path/to/artifact_base/.cursor/audit-results/general/audits/barrel_enforcement_scan_2026-01-15.json"
+        }
+      ]
+    },
+    "dead_symbols": {
+      "status": "ok",
+      "errors": [],
+      "exit_code": 0,
+      "metrics": {
+        "unreferenced_count": 0,
+        "unreachable_count": 0
+      },
+      "artifacts": [
+        {
+          "kind": "dead_symbol_detector_run",
+          "scope": "general",
+          "md_path": "/path/to/artifact_base/.cursor/audit-results/general/audits/dead_symbol_detector_run_2026-01-15.md",
+          "json_path": "/path/to/artifact_base/.cursor/audit-results/general/audits/dead_symbol_detector_run_2026-01-15.json"
+        }
+      ]
+    }
+  },
+  "aggregate": {
+    "overall_exit_code": 0,
+    "failed_steps": [],
+    "skipped_steps": []
+  }
+}

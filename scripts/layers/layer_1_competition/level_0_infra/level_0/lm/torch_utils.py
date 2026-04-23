@@ -6,7 +6,7 @@ from typing import Any
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def unsloth_available() -> bool:
@@ -28,7 +28,7 @@ def torch_dtype_from_config(torch: Any, dtype_str: str) -> Any:
         return torch.bfloat16
     if s in ("float32", "fp32"):
         return torch.float32
-    logger.warning("Unknown dtype=%r; using float16 for Unsloth load.", dtype_str)
+    _logger.warning("Unknown dtype=%r; using float16 for Unsloth load.", dtype_str)
     return torch.float16
 
 

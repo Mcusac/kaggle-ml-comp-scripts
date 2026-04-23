@@ -4,7 +4,7 @@ from typing import Dict, List, Any, Callable, Set
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 def execute_variants(
     variants: List[Any],
@@ -48,7 +48,7 @@ def execute_variants(
             save_checkpoint_fn()
 
         except Exception as e:
-            logger.warning(
+            _logger.warning(
                 "Variant %d failed: %s",
                 idx,
                 e,

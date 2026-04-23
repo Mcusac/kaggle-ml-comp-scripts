@@ -16,7 +16,7 @@ from layers.layer_1_competition.level_0_infra.level_1 import get_contest
 
 from layers.layer_1_competition.level_1_impl.level_csiro.level_0 import process_single_fold_for_e2e_ensemble, aggregate_train_csv
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _setup_end_to_end_ensemble(
@@ -95,12 +95,12 @@ def _generate_end_to_end_ensemble_oof_predictions(
     device = get_device('auto')
     weights = _get_ensemble_weights(model_paths, score_type)
 
-    logger.info(f"Generating OOF predictions for end-to-end ensemble with {len(model_paths)} models...")
+    _logger.info(f"Generating OOF predictions for end-to-end ensemble with {len(model_paths)} models...")
 
     for fold in range(n_folds):
-        logger.info(f"\n{'='*60}")
-        logger.info(f"Processing fold {fold + 1}/{n_folds}")
-        logger.info(f"{'='*60}")
+        _logger.info(f"\n{'='*60}")
+        _logger.info(f"Processing fold {fold + 1}/{n_folds}")
+        _logger.info(f"{'='*60}")
 
         val_data = get_fold_data(train_df_with_folds, fold=fold, train=False)
 
@@ -118,9 +118,9 @@ def _generate_end_to_end_ensemble_oof_predictions(
                 oof_predictions[val_indices] = ensemble_val_pred
                 test_predictions_accumulator += ensemble_test_pred
 
-                logger.info(f"  Stored OOF predictions for {len(val_data)} validation samples")
-                logger.info(f"  OOF predictions shape: {ensemble_val_pred.shape}")
-                logger.info(f"  Test predictions shape: {ensemble_test_pred.shape}")
+                _logger.info(f"  Stored OOF predictions for {len(val_data)} validation samples")
+                _logger.info(f"  OOF predictions shape: {ensemble_val_pred.shape}")
+                _logger.info(f"  Test predictions shape: {ensemble_test_pred.shape}")
 
         finally:
             if os.path.exists(val_csv_path):
@@ -128,9 +128,9 @@ def _generate_end_to_end_ensemble_oof_predictions(
 
     test_predictions = test_predictions_accumulator
 
-    logger.info(f"\nEnd-to-end ensemble OOF generation complete")
-    logger.info(f"  OOF predictions: {oof_predictions.shape}")
-    logger.info(f"  Test predictions: {test_predictions.shape}")
+    _logger.info(f"\nEnd-to-end ensemble OOF generation complete")
+    _logger.info(f"  OOF predictions: {oof_predictions.shape}")
+    _logger.info(f"  Test predictions: {test_predictions.shape}")
 
     return oof_predictions, test_predictions
 
@@ -147,9 +147,9 @@ def generate_end_to_end_ensemble_oof_predictions_batch(
     ensemble_oof_preds = []
     ensemble_test_preds = []
 
-    logger.info("Generating end-to-end ensemble-level OOF predictions...")
+    _logger.info("Generating end-to-end ensemble-level OOF predictions...")
     for idx, ensemble_config in enumerate(end_to_end_ensembles):
-        logger.info(f"Processing end-to-end ensemble {idx + 1}/{len(end_to_end_ensembles)}...")
+        _logger.info(f"Processing end-to-end ensemble {idx + 1}/{len(end_to_end_ensembles)}...")
         oof_pred, test_pred = _generate_end_to_end_ensemble_oof_predictions(
             ensemble_config=ensemble_config,
             train_csv_path=train_csv_path,
@@ -161,6 +161,6 @@ def generate_end_to_end_ensemble_oof_predictions_batch(
         )
         ensemble_oof_preds.append(oof_pred)
         ensemble_test_preds.append(test_pred)
-        logger.info(f"  End-to-end ensemble {idx + 1} OOF shape: {oof_pred.shape}, test shape: {test_pred.shape}")
+        _logger.info(f"  End-to-end ensemble {idx + 1} OOF shape: {oof_pred.shape}, test shape: {test_pred.shape}")
 
     return ensemble_oof_preds, ensemble_test_preds

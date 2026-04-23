@@ -10,10 +10,10 @@ from layers.layer_0_core.level_0 import ensure_dir, extract_batch_data, get_logg
 from layers.layer_0_core.level_1 import forward_with_amp, load_model_checkpoint, train_one_epoch
 from layers.layer_0_core.level_4 import calculate_metrics
 
-logger = get_logger(__name__)
-torch = get_torch()
-nn = torch.nn
-DataLoader = torch.utils.data.DataLoader
+_logger = get_logger(__name__)
+_torch = get_torch()
+_nn = _torch.nn
+_DataLoader = _torch.utils.data.DataLoader
 
 
 class VisionTrainer:
@@ -27,11 +27,11 @@ class VisionTrainer:
 
     def __init__(
         self,
-        model: nn.Module,
-        criterion: nn.Module,
-        optimizer: torch.optim.Optimizer,
-        device: torch.device,
-        scheduler: Optional[torch.optim.lr_scheduler._LRScheduler] = None,
+        model: _nn.Module,
+        criterion: _nn.Module,
+        optimizer: _torch.optim.Optimizer,
+        device: _torch.device,
+        scheduler: Optional[_torch.optim.lr_scheduler._LRScheduler] = None,
         use_mixed_precision: bool = False,
     ):
         """Initialize Vision Trainer."""
@@ -44,8 +44,8 @@ class VisionTrainer:
 
         self.scaler = None
         if self.use_mixed_precision:
-            self.scaler = torch.cuda.amp.GradScaler()
-            logger.info("✅ Mixed precision (FP16) training enabled")
+            self.scaler = _torch.cuda.amp.GradScaler()
+            _logger.info("✅ Mixed precision (FP16) training enabled")
 
         self.history: List[Dict] = []
         self.best_score = -float("inf")
@@ -64,7 +64,7 @@ class VisionTrainer:
 
         return process
 
-    def train_epoch(self, train_loader: DataLoader, epoch: int) -> float:
+    def train_epoch(self, train_loader: _DataLoader, epoch: int) -> float:
         """Train for one epoch."""
         self.model.train()
         return train_one_epoch(
@@ -76,10 +76,10 @@ class VisionTrainer:
             tqdm_desc=f"Epoch {epoch} [Train]",
         )
 
-    @torch.no_grad()
+    @_torch.no_grad()
     def validate(
         self,
-        val_loader: DataLoader,
+        val_loader: _DataLoader,
         epoch: int,
     ) -> Tuple[float, Optional[float]]:
         """Validate the model."""
@@ -120,8 +120,8 @@ class VisionTrainer:
 
     def fit(
         self,
-        train_loader: DataLoader,
-        val_loader: DataLoader,
+        train_loader: _DataLoader,
+        val_loader: _DataLoader,
         num_epochs: int,
         early_stopping_patience: Optional[int] = None,
         checkpoint_dir: Optional[str] = None,
@@ -138,7 +138,7 @@ class VisionTrainer:
             val_loss, val_metric = self.validate(val_loader, epoch)
 
             if self.scheduler:
-                if isinstance(self.scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
+                if isinstance(self.scheduler, _torch.optim.lr_scheduler.ReduceLROnPlateau):
                     metric_for_scheduler = val_metric if val_metric is not None else val_loss
                     self.scheduler.step(metric_for_scheduler)
                 else:
@@ -161,7 +161,7 @@ class VisionTrainer:
                 if val_metric is not None:
                     log_str += f", val_metric: {val_metric:.4f}"
                 log_str += f", lr: {current_lr:.2e}"
-                logger.info(log_str)
+                _logger.info(log_str)
 
             score = val_metric if val_metric is not None else -val_loss
 
@@ -174,17 +174,17 @@ class VisionTrainer:
                     best_checkpoint_path = checkpoint_path / "best_model.pth"
                     self.save_checkpoint(best_checkpoint_path)
                     if verbose:
-                        logger.info(f"✅ Saved best model (score: {score:.4f})")
+                        _logger.info(f"✅ Saved best model (score: {score:.4f})")
             else:
                 self.epochs_no_improve += 1
 
             if early_stopping_patience and self.epochs_no_improve >= early_stopping_patience:
-                logger.info(f"⚠️ Early stopping triggered after {epoch} epochs")
-                logger.info(f"  Best score: {self.best_score:.4f} at epoch {self.best_epoch}")
+                _logger.info(f"⚠️ Early stopping triggered after {epoch} epochs")
+                _logger.info(f"  Best score: {self.best_score:.4f} at epoch {self.best_epoch}")
                 break
 
-        logger.info("🎉 Training complete!")
-        logger.info(f"  Best score: {self.best_score:.4f} at epoch {self.best_epoch}")
+        _logger.info("🎉 Training complete!")
+        _logger.info(f"  Best score: {self.best_score:.4f} at epoch {self.best_epoch}")
 
         return {
             "history": self.history,
@@ -194,7 +194,7 @@ class VisionTrainer:
 
     def save_checkpoint(self, path) -> None:
         """Save model checkpoint."""
-        torch.save(
+        _torch.save(
             {
                 "model_state_dict": self.model.state_dict(),
                 "optimizer_state_dict": self.optimizer.state_dict(),
@@ -218,4 +218,4 @@ class VisionTrainer:
         self.best_score = checkpoint.get("best_score", -float("inf"))
         self.best_epoch = checkpoint.get("best_epoch", checkpoint.get("epoch", 0))
         self.history = checkpoint.get("history", [])
-        logger.info(f"  Best score: {self.best_score:.4f} at epoch {self.best_epoch}")
+        _logger.info(f"  Best score: {self.best_score:.4f} at epoch {self.best_epoch}")

@@ -1,9 +1,16 @@
-"""Training utilities."""
+"""Auto-generated package exports."""
+
 
 from .build_config import build_training_config
+
 from .epoch_history import create_history_entry
+
 from .extract_batch_data import extract_batch_data
-from .scheduler import get_scheduler_mode, step_scheduler
+
+from .scheduler import (
+    get_scheduler_mode,
+    step_scheduler,
+)
 
 __all__ = [
     "build_training_config",

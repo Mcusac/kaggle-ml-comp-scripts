@@ -17,7 +17,7 @@ from layers.layer_1_competition.level_1_impl.level_csiro.level_0 import (
     get_writable_metadata_dir,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def load_gridsearch_metadata(
@@ -74,7 +74,7 @@ def load_gridsearch_metadata(
             f"Please run regression grid search (Cell 1c) first."
         )
 
-    logger.info(f"Loaded {len(results)} results (merged from input and working directories)")
+    _logger.info(f"Loaded {len(results)} results (merged from input and working directories)")
     return results
 
 
@@ -103,7 +103,7 @@ def get_top_n_variants(
 
     top_results = sorted_results[:top_n]
 
-    logger.info(
+    _logger.info(
         f"Selected top {len(top_results)} {regression_model_type} variants "
         f"(from {len(valid_results)} valid)"
     )
@@ -148,7 +148,7 @@ def get_variant_info_from_model_id(
             f"This may indicate corrupted metadata."
         )
 
-    logger.info(
+    _logger.info(
         f"Looked up model_id '{model_id}' → variant_id {variant_id}, "
         f"feature_filename {feature_filename}, cv_score={cv_score}"
     )
@@ -166,22 +166,22 @@ def _resolve_auto_detected_models(
     cv_scores = []
     resolved_model_types = []
 
-    logger.info("Auto-detecting top models from grid search metadata...")
+    _logger.info("Auto-detecting top models from grid search metadata...")
     for model_type in model_types:
         if model_type not in model_versions:
-            logger.warning(f"No versions specified for {model_type}, skipping")
+            _logger.warning(f"No versions specified for {model_type}, skipping")
             continue
 
         versions = model_versions[model_type]
         if not versions:
-            logger.warning(f"Empty versions list for {model_type}, skipping")
+            _logger.warning(f"Empty versions list for {model_type}, skipping")
             continue
 
         top_variants = get_top_n_variants(model_type, max(versions))
 
         for idx in versions:
             if idx < 1 or idx > len(top_variants):
-                logger.warning(
+                _logger.warning(
                     f"Index {idx} out of range for {model_type} "
                     f"(have {len(top_variants)} variants), skipping"
                 )
@@ -191,14 +191,14 @@ def _resolve_auto_detected_models(
             variant_id = variant.get('variant_id')
 
             if not variant_id:
-                logger.warning(f"Variant at index {idx} has no variant_id, skipping")
+                _logger.warning(f"Variant at index {idx} has no variant_id, skipping")
                 continue
 
             model_path = Path(base_model_dir) / 'scikitlearn' / model_type / variant_id
             model_file = model_path / 'regression_model.pkl'
 
             if not model_file.exists():
-                logger.warning(f"Model not found: {model_file}, skipping")
+                _logger.warning(f"Model not found: {model_file}, skipping")
                 continue
 
             cv_score = variant.get('cv_score')
@@ -207,7 +207,7 @@ def _resolve_auto_detected_models(
             resolved_model_types.append(model_type)
 
             cv_score_str = f"{cv_score:.6f}" if cv_score is not None else 'N/A'
-            logger.info(
+            _logger.info(
                 f"Auto-detected {model_type} variant {idx}: {variant_id} "
                 f"(cv_score={cv_score_str})"
             )
@@ -225,19 +225,19 @@ def _resolve_explicit_models(
     cv_scores = []
     resolved_model_types = []
 
-    logger.info("Using explicit configuration (uploaded models by version)...")
+    _logger.info("Using explicit configuration (uploaded models by version)...")
 
     for model_type in model_types:
         if model_type not in model_versions:
-            logger.warning(f"No versions specified for {model_type}, skipping")
+            _logger.warning(f"No versions specified for {model_type}, skipping")
             continue
 
         versions = model_versions[model_type]
         if not versions:
-            logger.warning(f"Empty versions list for {model_type}, skipping")
+            _logger.warning(f"Empty versions list for {model_type}, skipping")
             continue
 
-        logger.info(f"  {model_type}: model versions {versions} from /kaggle/input/csiro-models/scikitlearn/{model_type}/")
+        _logger.info(f"  {model_type}: model versions {versions} from /kaggle/input/csiro-models/scikitlearn/{model_type}/")
 
         for version in versions:
             model_path = Path(base_model_dir) / 'scikitlearn' / model_type / str(version)
@@ -252,7 +252,7 @@ def _resolve_explicit_models(
                 )
 
             if not metadata_file.exists():
-                logger.warning(f"Metadata file not found: {metadata_file}, using default CV score")
+                _logger.warning(f"Metadata file not found: {metadata_file}, using default CV score")
                 cv_score = None
             else:
                 with open(metadata_file, 'r') as f:
@@ -264,7 +264,7 @@ def _resolve_explicit_models(
             resolved_model_types.append(model_type)
 
             cv_score_str = f"{cv_score:.6f}" if cv_score is not None else 'N/A'
-            logger.info(
+            _logger.info(
                 f"  Resolved {model_type} version {version}: {model_path} "
                 f"(cv_score={cv_score_str})"
             )
@@ -302,7 +302,7 @@ def resolve_model_paths_from_config(
             "Please check model_types and model_versions."
         )
 
-    logger.info(f"Resolved {len(model_paths)} model paths for ensemble")
+    _logger.info(f"Resolved {len(model_paths)} model paths for ensemble")
     return model_paths, cv_scores, resolved_model_types
 
 
@@ -326,7 +326,7 @@ def validate_model_paths(
 
         metadata_file = model_path_obj / 'model_metadata.json'
         if not metadata_file.exists():
-            logger.warning(f"Metadata file not found: {metadata_file}")
+            _logger.warning(f"Metadata file not found: {metadata_file}")
             continue
 
         if require_same_feature_model:
@@ -345,4 +345,4 @@ def validate_model_paths(
                 f"All models in ensemble must use the same feature extraction setup."
             )
 
-    logger.info(f"Validated {len(model_paths)} model paths")
+    _logger.info(f"Validated {len(model_paths)} model paths")

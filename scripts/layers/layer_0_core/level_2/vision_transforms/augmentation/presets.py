@@ -7,7 +7,7 @@ from typing import List, Any, Optional, Literal
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_1 import get_geometric_transform, get_color_jitter_transform, get_blur_transform
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def get_light_augmentation() -> List[Any]:
@@ -125,8 +125,8 @@ def build_augmentation_transforms(
 
     if additional_transforms:
         transform_list.extend(additional_transforms)
-        logger.debug(f"Added {len(additional_transforms)} additional transforms to {preset} preset")
+        _logger.debug(f"Added {len(additional_transforms)} additional transforms to {preset} preset")
 
-    logger.debug(f"Built augmentation pipeline with {len(transform_list)} transforms (preset: {preset})")
+    _logger.debug(f"Built augmentation pipeline with {len(transform_list)} transforms (preset: {preset})")
 
     return transform_list

@@ -10,7 +10,7 @@ from typing import Callable, Optional, Tuple
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class TsvSubmissionFormatter:
@@ -70,7 +70,7 @@ class TsvSubmissionFormatter:
                     text=True,
                     check=True,
                 )
-            logger.info(f"Sorted using system sort: {output_path}")
+            _logger.info(f"Sorted using system sort: {output_path}")
             return True
         except (subprocess.CalledProcessError, FileNotFoundError, OSError):
             return False
@@ -88,7 +88,7 @@ class TsvSubmissionFormatter:
             return
         chunk_files = self._read_and_sort_chunks(input_path, chunk_size)
         self._merge_sorted_chunks(chunk_files, output_path)
-        logger.info(f"External sort complete: {output_path}")
+        _logger.info(f"External sort complete: {output_path}")
 
     def _read_and_sort_chunks(
         self, input_path: Path, chunk_size: int
@@ -194,5 +194,5 @@ class TsvSubmissionFormatter:
                 for score, term in sorted(preds, reverse=True):
                     out.write(f"{id_val}\t{term}\t{score:.6f}\n")
                     final_count += 1
-        logger.info(f"Enforced limit: {final_count:,} predictions")
+        _logger.info(f"Enforced limit: {final_count:,} predictions")
         return str(output_path)

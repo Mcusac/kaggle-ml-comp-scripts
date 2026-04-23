@@ -22,7 +22,7 @@ from layers.layer_1_competition.level_1_impl.level_csiro.level_1 import (
     load_training_features,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def stacking_pipeline(
@@ -58,20 +58,20 @@ def stacking_pipeline(
     meta_model_alpha = stacking_config.get('meta_model_alpha', 10.0)
     n_folds = stacking_config.get('n_folds', 5)
 
-    logger.info("=" * 60)
-    logger.info("Stacking Pipeline")
-    logger.info("=" * 60)
-    logger.info(f"  Base models: {len(model_paths)}")
-    logger.info(f"  Meta-model alpha: {meta_model_alpha}")
-    logger.info(f"  CV folds: {n_folds}")
+    _logger.info("=" * 60)
+    _logger.info("Stacking Pipeline")
+    _logger.info("=" * 60)
+    _logger.info(f"  Base models: {len(model_paths)}")
+    _logger.info(f"  Meta-model alpha: {meta_model_alpha}")
+    _logger.info(f"  CV folds: {n_folds}")
 
     test_csv_path = Path(data_root) / test_filename
     if not test_csv_path.exists():
         raise FileNotFoundError(f"Test CSV not found: {test_csv_path}")
 
-    logger.info("Loading model metadata...")
+    _logger.info("Loading model metadata...")
     model_configs, feature_extraction_model_name = load_model_metadata(model_paths)
-    logger.info(f"Feature extraction model: {feature_extraction_model_name}")
+    _logger.info(f"Feature extraction model: {feature_extraction_model_name}")
 
     all_features, all_targets, fold_assignments, cache_metadata = load_training_features(
         model_configs, feature_extraction_model_name
@@ -92,7 +92,7 @@ def stacking_pipeline(
         n_folds, meta_model_alpha, config
     )
 
-    logger.info("Expanding predictions to submission format...")
+    _logger.info("Expanding predictions to submission format...")
     submission_df = expand_predictions_to_submission_format(
         predictions=final_predictions,
         test_csv_path=str(test_csv_path),
@@ -104,11 +104,11 @@ def stacking_pipeline(
     output_path = str(paths.get_output_dir() / 'submission.csv')
     save_submission_csv(submission_df, output_path=output_path)
 
-    logger.info("=" * 60)
-    logger.info("✅ Stacking Pipeline Complete")
-    logger.info("=" * 60)
-    logger.info(f"  Base models: {len(model_paths)}")
-    logger.info(f"  OOF score: {oof_score:.4f}")
-    logger.info(f"  Output: {output_path}")
+    _logger.info("=" * 60)
+    _logger.info("✅ Stacking Pipeline Complete")
+    _logger.info("=" * 60)
+    _logger.info(f"  Base models: {len(model_paths)}")
+    _logger.info(f"  OOF score: {oof_score:.4f}")
+    _logger.info(f"  Output: {output_path}")
 
     return submission_df

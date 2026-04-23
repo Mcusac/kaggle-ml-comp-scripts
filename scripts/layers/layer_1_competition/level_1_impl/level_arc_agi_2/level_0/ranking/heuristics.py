@@ -9,7 +9,7 @@ from typing import Any, Mapping
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 DEFAULT_SUBMIT_HEURISTIC = "copy_input"
 
@@ -56,7 +56,7 @@ def predict_attempts_for_heuristic(
     if h == "copy_input":
         a1 = deepcopy(input_grid)
         return a1, _build_blank_grid_like(input_grid)
-    logger.warning("Unknown heuristic %r; falling back to %s", h, DEFAULT_SUBMIT_HEURISTIC)
+    _logger.warning("Unknown heuristic %r; falling back to %s", h, DEFAULT_SUBMIT_HEURISTIC)
     return predict_attempts_for_heuristic(input_grid, DEFAULT_SUBMIT_HEURISTIC)
 
 

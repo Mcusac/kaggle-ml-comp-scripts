@@ -4,8 +4,8 @@ import gc
 
 from layers.layer_0_core.level_0 import get_logger, get_torch
 
-logger = get_logger(__name__)
-torch = get_torch()
+_logger = get_logger(__name__)
+_torch = get_torch()
 
 
 def cleanup_gpu_memory() -> None:
@@ -20,15 +20,15 @@ def cleanup_gpu_memory() -> None:
     - Should be called after each model training/inference
     - Clears CUDA cache and synchronizes before garbage collection
     """
-    if torch is None or not torch.cuda.is_available():
+    if _torch is None or not _torch.cuda.is_available():
         gc.collect()
         return
 
     try:
-        torch.cuda.empty_cache()
-        torch.cuda.synchronize()
+        _torch.cuda.empty_cache()
+        _torch.cuda.synchronize()
         gc.collect()
-        torch.cuda.empty_cache()
+        _torch.cuda.empty_cache()
     except Exception:
         gc.collect()
 
@@ -40,12 +40,12 @@ def perform_aggressive_cleanup() -> None:
     Includes resetting memory statistics and multiple cleanup passes
     for thorough memory release, useful for OOM recovery.
     """
-    if torch is None or not torch.cuda.is_available():
+    if _torch is None or not _torch.cuda.is_available():
         return
     
     try:
         # Reset peak memory statistics to help allocator release memory
-        torch.cuda.reset_peak_memory_stats()
+        _torch.cuda.reset_peak_memory_stats()
     except RuntimeError as e:
         # CUDA memory stats operations may fail if device is unavailable or in invalid state
         raise RuntimeError("Could not reset peak memory stats:") from e
@@ -53,20 +53,20 @@ def perform_aggressive_cleanup() -> None:
     # Additional aggressive cleanup passes (more passes for OOM recovery)
     for _ in range(5):
         gc.collect()
-        if torch is not None:
+        if _torch is not None:
             try:
-                torch.cuda.empty_cache()
-                torch.cuda.synchronize()
+                _torch.cuda.empty_cache()
+                _torch.cuda.synchronize()
             except RuntimeError:
                 # CUDA operations may fail if device is unavailable or in invalid state
                 pass
     
     # Try to collect any remaining CUDA tensors
-    if torch is not None:
+    if _torch is not None:
         try:
             # Force collection of any remaining CUDA objects
             gc.collect()
-            torch.cuda.empty_cache()
+            _torch.cuda.empty_cache()
         except RuntimeError:
             # CUDA operations may fail if device is unavailable or in invalid state
             pass

@@ -11,14 +11,11 @@ from layers.layer_0_core.level_1 import TabularDataset, get_device
 from layers.layer_0_core.level_2 import run_train_epoch, run_validate_epoch, validate_array
 from layers.layer_0_core.level_5 import BaseTabularModel, SparseTabularDataset
 
-logger = get_logger(__name__)
-
-torch = get_torch()
-if torch is None:
-    raise ImportError("torch is required for mlp_model")
-nn = torch.nn
-optim = torch.optim
-DataLoader = torch.utils.data.DataLoader
+_logger = get_logger(__name__)
+_torch = get_torch()
+_nn = _torch.nn
+_optim = _torch.optim
+_DataLoader = _torch.utils.data.DataLoader
 
 
 def _create_training_datasets(
@@ -42,11 +39,11 @@ def _create_training_datasets(
     else:
         train_dataset = TabularDataset(X_train, y_train)
         val_dataset = TabularDataset(X_val, y_val)
-        criterion = nn.BCEWithLogitsLoss()
+        criterion = _nn.BCEWithLogitsLoss()
     return train_dataset, val_dataset, criterion
 
 
-class _MLPNetwork(nn.Module):
+class _MLPNetwork(_nn.Module):
     """Multi-Layer Perceptron network architecture."""
 
     def __init__(
@@ -63,14 +60,14 @@ class _MLPNetwork(nn.Module):
         layers = []
         prev_dim = input_dim
         for hidden_dim in hidden_dims:
-            layers.append(nn.Linear(prev_dim, hidden_dim))
+            layers.append(_nn.Linear(prev_dim, hidden_dim))
             if use_batch_norm:
-                layers.append(nn.BatchNorm1d(hidden_dim))
-            layers.append(nn.ReLU())
-            layers.append(nn.Dropout(dropout_rate))
+                layers.append(_nn.BatchNorm1d(hidden_dim))
+            layers.append(_nn.ReLU())
+            layers.append(_nn.Dropout(dropout_rate))
             prev_dim = hidden_dim
-        layers.append(nn.Linear(prev_dim, output_dim))
-        self.network = nn.Sequential(*layers)
+        layers.append(_nn.Linear(prev_dim, output_dim))
+        self.network = _nn.Sequential(*layers)
 
     def forward(self, x):
         return self.network(x)
@@ -134,15 +131,15 @@ class MLPModel(BaseTabularModel):
     ) -> "MLPModel":
         """Train the MLP model."""
         del kwargs
-        logger.info("Training MLP model...")
-        logger.info("  Input shape: %s, Target shape: %s", X.shape, y.shape)
-        logger.info("  Device: %s", self.device)
+        _logger.info("Training MLP model...")
+        _logger.info("  Input shape: %s, Target shape: %s", X.shape, y.shape)
+        _logger.info("  Device: %s", self.device)
         validate_array(X, expected_shape=(None, self.input_dim), name="X")
         validate_array(y, expected_shape=(None, self.output_dim), name="y")
-        self.optimizer = optim.Adam(
+        self.optimizer = _optim.Adam(
             self.model.parameters(), lr=self.learning_rate
         )
-        self.criterion = nn.BCEWithLogitsLoss()
+        self.criterion = _nn.BCEWithLogitsLoss()
         n_train = int(len(X) * (1 - validation_split))
         X_train, X_val = X[:n_train], X[n_train:]
         y_train, y_val = y[:n_train], y[n_train:]
@@ -150,10 +147,10 @@ class MLPModel(BaseTabularModel):
             X_train, y_train, X_val, y_val, self.output_dim,
             sparse_loss_class=self.sparse_loss_class,
         )
-        train_loader = DataLoader(
+        train_loader = _DataLoader(
             train_dataset, batch_size=self.batch_size, shuffle=True
         )
-        val_loader = DataLoader(
+        val_loader = _DataLoader(
             val_dataset, batch_size=self.batch_size, shuffle=False
         )
         for epoch in range(self.num_epochs):
@@ -165,12 +162,12 @@ class MLPModel(BaseTabularModel):
                 self.model, val_loader, self.criterion, self.device,
             )
             if (epoch + 1) % max(1, self.num_epochs // 10) == 0:
-                logger.info(
+                _logger.info(
                     "  Epoch %s/%s - Train Loss: %.4f, Val Loss: %.4f",
                     epoch + 1, self.num_epochs, avg_train_loss, avg_val_loss,
                 )
         self.is_fitted = True
-        logger.info("MLP training complete")
+        _logger.info("MLP training complete")
         return self
 
     def predict(
@@ -189,15 +186,15 @@ class MLPModel(BaseTabularModel):
             raise ValueError("Model must be fitted before prediction")
         self.model.eval()
         dataset = TabularDataset(X)
-        dataloader = DataLoader(
+        dataloader = _DataLoader(
             dataset, batch_size=self.batch_size, shuffle=False
         )
         all_probs = []
-        with torch.no_grad():
+        with _torch.no_grad():
             for batch_X, _ in dataloader:
                 batch_X = batch_X.to(self.device)
                 logits = self.model(batch_X)
-                probs = torch.sigmoid(logits)
+                probs = _torch.sigmoid(logits)
                 all_probs.append(probs.cpu().numpy())
         return np.concatenate(all_probs, axis=0)
 
@@ -205,7 +202,7 @@ class MLPModel(BaseTabularModel):
         """Save model to disk."""
         path = Path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
-        torch.save(
+        _torch.save(
             {
                 "model_state_dict": self.model.state_dict(),
                 "input_dim": self.input_dim,
@@ -221,14 +218,14 @@ class MLPModel(BaseTabularModel):
             },
             path,
         )
-        logger.info("Saved MLP model to %s", path)
+        _logger.info("Saved MLP model to %s", path)
 
     def load(self, path: str) -> "MLPModel":
         """Load model from disk."""
         path = Path(path)
         if not path.exists():
             raise FileNotFoundError(f"Model file not found: {path}")
-        checkpoint = torch.load(path, map_location=self.device)
+        checkpoint = _torch.load(path, map_location=self.device)
         self.input_dim = checkpoint["input_dim"]
         self.output_dim = checkpoint["output_dim"]
         self.hidden_dims = checkpoint["hidden_dims"]
@@ -247,5 +244,5 @@ class MLPModel(BaseTabularModel):
             use_batch_norm=self.use_batch_norm,
         ).to(self.device)
         self.model.load_state_dict(checkpoint["model_state_dict"])
-        logger.info("Loaded MLP model from %s", path)
+        _logger.info("Loaded MLP model from %s", path)
         return self

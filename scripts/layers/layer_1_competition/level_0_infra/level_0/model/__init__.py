@@ -4,13 +4,9 @@
 from .embeddings import (
     load_embedding_data,
     load_structured_features,
-    logger,
 )
 
-from .feature_catalog import (
-    logger,
-    register_features,
-)
+from .feature_catalog import register_features
 
 from .model_constants import (
     MODEL_ID_MAP,
@@ -27,7 +23,6 @@ __all__ = [
     "get_pretrained_weights_path",
     "load_embedding_data",
     "load_structured_features",
-    "logger",
     "register_features",
     "register_model_id_map",
 ]

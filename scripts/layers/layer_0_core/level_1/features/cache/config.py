@@ -9,7 +9,7 @@ from typing import Any, Callable, Dict, Optional, Tuple
 
 from layers.layer_0_core.level_0 import get_logger, is_kaggle
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 _feature_cache_path_provider: Optional[Callable[[], Any]] = None
 _model_id_map: Optional[Dict[str, str]] = None

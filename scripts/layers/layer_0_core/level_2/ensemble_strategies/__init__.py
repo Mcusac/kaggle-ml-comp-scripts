@@ -1,39 +1,32 @@
-"""Ensemble strategy implementations.
+"""Auto-generated package exports."""
 
-This sub-package contains different strategies for combining predictions
-from multiple base models:
-
-- Averaging strategies: Simple, Weighted, Ranked, Percentile
-- Target-specific: Use different models for different targets
-- Per-target weighted: Different weights for each target
-
-All strategies implement the EnsemblingMethod interface.
-"""
 
 from .averaging import (
-    model_rank_weights,
-    simple_average,
-    weighted_average,
-    value_rank_average,
-    value_percentile_average,
-    power_average,
     geometric_mean,
     max_ensemble,
     merge_submissions,
+    model_rank_weights,
+    power_average,
+    simple_average,
+    value_percentile_average,
+    value_rank_average,
+    weighted_average,
 )
+
 from .result_handler_common import log_pipeline_completion
+
 from .weight_matrix_builder import build_weight_matrix
 
 __all__ = [
-    'model_rank_weights',
-    'simple_average',
-    'weighted_average',
-    'value_rank_average',    
-    'value_percentile_average',
-    'power_average',
-    'geometric_mean',    
-    'max_ensemble',
-    'merge_submissions',
-    'log_pipeline_completion',
-    'build_weight_matrix'
+    "build_weight_matrix",
+    "geometric_mean",
+    "log_pipeline_completion",
+    "max_ensemble",
+    "merge_submissions",
+    "model_rank_weights",
+    "power_average",
+    "simple_average",
+    "value_percentile_average",
+    "value_rank_average",
+    "weighted_average",
 ]

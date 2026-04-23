@@ -1,4 +1,5 @@
-"""CAFA level_4: per-ontology training workflow."""
+"""Auto-generated package exports."""
+
 
 from .per_ontology_training import PerOntologyTrainWorkflow
 

@@ -7,7 +7,7 @@ from layers.layer_0_core.level_5 import BaseModelTrainer
 
 from layers.layer_1_competition.level_0_infra.level_3 import FeatureExtractionTrainer
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def create_trainer(
@@ -27,9 +27,9 @@ def create_trainer(
     if get_config_value(config, "model.feature_extraction_mode", default=False):
         num_primary_targets = get_config_value(config, "num_primary_targets", default=None)
         if regression_only:
-            logger.info("Creating FeatureExtractionTrainer (regression-only mode: features already extracted)")
+            _logger.info("Creating FeatureExtractionTrainer (regression-only mode: features already extracted)")
         else:
-            logger.info("Creating FeatureExtractionTrainer (two-stage: feature extraction + regression)")
+            _logger.info("Creating FeatureExtractionTrainer (two-stage: feature extraction + regression)")
         return FeatureExtractionTrainer(
             config,
             device,
@@ -40,5 +40,5 @@ def create_trainer(
             num_primary_targets=num_primary_targets,
         )
     else:
-        logger.info("Creating BaseModelTrainer (end-to-end training)")
+        _logger.info("Creating BaseModelTrainer (end-to-end training)")
         return BaseModelTrainer(config, device, model=model, metric_calculator=metric_calculator)

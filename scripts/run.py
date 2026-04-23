@@ -21,7 +21,7 @@ from level_1 import setup_framework_subparsers
 from level_0 import dispatch_command, get_logger
 from layers.layer_1_competition.level_0_infra.level_1 import get_command_handlers
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 # CRITICAL: Set PyTorch CUDA allocator config BEFORE importing PyTorch
 # This must be done before any PyTorch imports to take effect
@@ -133,7 +133,7 @@ def main() -> int:
         )
         return 0
     except Exception as e:
-        logger.error(f"Command '{args.command}' failed: {e}", exc_info=True)
+        _logger.error(f"Command '{args.command}' failed: {e}", exc_info=True)
         return 1
 
 

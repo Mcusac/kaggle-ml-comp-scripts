@@ -10,10 +10,10 @@ from layers.layer_0_core.level_0 import get_logger, get_torch
 from layers.layer_0_core.level_1 import forward_with_amp
 from layers.layer_0_core.level_2 import TTAVariant, build_tta_transforms
 
-torch = get_torch()
-nn = torch.nn
-DataLoader = torch.utils.data.DataLoader
-logger = get_logger(__name__)
+_torch = get_torch()
+_nn = _torch.nn
+_DataLoader = _torch.utils.data.DataLoader
+_logger = get_logger(__name__)
 
 
 class TTAPredictor:
@@ -26,8 +26,8 @@ class TTAPredictor:
 
     def __init__(
         self,
-        model: nn.Module,
-        device: torch.device,
+        model: _nn.Module,
+        device: _torch.device,
         image_size: int = 224,
         tta_variants: Optional[List[Union[TTAVariant, str]]] = None,
         use_mixed_precision: bool = False,
@@ -52,15 +52,15 @@ class TTAPredictor:
             variants=tta_variants,
         )
 
-        logger.info(f"TTA Predictor initialized with {len(self.tta_transforms)} variants")
+        _logger.info(f"TTA Predictor initialized with {len(self.tta_transforms)} variants")
 
         if self.use_mixed_precision:
-            logger.info("Mixed precision (FP16) inference enabled")
+            _logger.info("Mixed precision (FP16) inference enabled")
 
-    @torch.no_grad()
+    @_torch.no_grad()
     def predict(
         self,
-        dataloader: DataLoader,
+        dataloader: _DataLoader,
         verbose: bool = True,
     ) -> np.ndarray:
         """
@@ -99,14 +99,14 @@ class TTAPredictor:
 
         predictions = np.concatenate(all_preds, axis=0)
 
-        logger.info(f"Generated TTA predictions for {len(predictions)} samples")
-        logger.info(f"  Averaged across {len(self.tta_transforms)} TTA variants")
+        _logger.info(f"Generated TTA predictions for {len(predictions)} samples")
+        _logger.info(f"  Averaged across {len(self.tta_transforms)} TTA variants")
 
         return predictions
 
     def predict_single_image(
         self,
-        image: torch.Tensor,
+        image: _torch.Tensor,
         pil_image: Optional[Image.Image] = None,
     ) -> np.ndarray:
         """

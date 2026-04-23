@@ -7,10 +7,10 @@ from layers.layer_0_core.level_0 import (
     get_vision_module_and_tensor_types,
 )
 
-torch = get_torch()
+_torch = get_torch()
 _NNModule = get_nn_module_base_class()
 _, TensorT = get_vision_module_and_tensor_types()
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class AddGaussianNoise(_NNModule):
@@ -28,12 +28,12 @@ class AddGaussianNoise(_NNModule):
         self.p = p
 
     def forward(self, tensor: TensorT) -> TensorT:
-        if torch is None:
+        if _torch is None:
             raise RuntimeError("PyTorch is required for AddGaussianNoise.")
-        if self.p < 1.0 and torch.rand(1, device=tensor.device).item() >= self.p:
+        if self.p < 1.0 and _torch.rand(1, device=tensor.device).item() >= self.p:
             return tensor
-        noise = torch.randn_like(tensor) * self.std + self.mean
-        return torch.clamp(tensor + noise, 0.0, 1.0)
+        noise = _torch.randn_like(tensor) * self.std + self.mean
+        return _torch.clamp(tensor + noise, 0.0, 1.0)
 
     def __repr__(self):
         return f"{self.__class__.__name__}(mean={self.mean}, std={self.std}, p={self.p})"

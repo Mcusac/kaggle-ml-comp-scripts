@@ -11,7 +11,7 @@ from layers.layer_1_competition.level_0_infra.level_0 import (
 )
 from layers.layer_1_competition.level_0_infra.level_3 import LmBackend, LmBackendConfig
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def prepare_llm_tta_backend(
@@ -58,7 +58,7 @@ def restore_adapter_safely(lm_backend: Any) -> None:
     try:
         lm_backend.restore_base_adapter_after_task()
     except Exception as e:
-        logger.warning("⚠️ restore_base_adapter_after_task failed (task-scoped cleanup): %s", e)
+        _logger.warning("⚠️ restore_base_adapter_after_task failed (task-scoped cleanup): %s", e)
 
 
 __all__ = [

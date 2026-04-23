@@ -166,7 +166,7 @@ def run_code_audit_pipeline(config: dict[str, Any]) -> dict[str, Any]:
         ``<workspace>/.cursor/audit-results/general/summaries/machine_runs/<run_id>/``.
         ``write_queue_json`` (default True): write ``audit_queue.json`` beside manifest.
         ``run_precheck`` (default True), ``run_general_stack_scan`` (default True),
-        ``run_csiro_scan`` (default True).
+        ``run_csiro_scan`` (default True), ``run_package_boundary_validation`` (default False).
         ``precheck_strict`` (bool): ``strict`` on precheck.
         ``max_targets`` (optional int): cap precheck iterations (testing/CI).
         ``fail_on_skipped`` (bool): if True, any pipeline step with ``status: "skipped"``
@@ -188,6 +188,8 @@ def run_code_audit_pipeline(config: dict[str, Any]) -> dict[str, Any]:
     run_precheck = bool(config.get("run_precheck", True))
     run_general = bool(config.get("run_general_stack_scan", True))
     run_csiro = bool(config.get("run_csiro_scan", True))
+    run_oversized = bool(config.get("run_oversized_module_scan", True))
+    run_pkg_boundary = bool(config.get("run_package_boundary_validation", False))
     precheck_strict = bool(config.get("precheck_strict", False))
     write_queue = bool(config.get("write_queue_json", True))
     max_targets = config.get("max_targets")
@@ -197,7 +199,7 @@ def run_code_audit_pipeline(config: dict[str, Any]) -> dict[str, Any]:
     layers_root = Path(config["layers_root"]).resolve() if config.get("layers_root") else None
     workspace_root = Path(config["workspace_root"]).resolve() if config.get("workspace_root") else None
 
-    need_heavy = run_precheck or run_general or run_csiro
+    need_heavy = run_precheck or run_general or run_csiro or run_oversized or run_pkg_boundary
     api: Any = _get_api_audit() if need_heavy else None
 
     try:
@@ -310,6 +312,37 @@ def run_code_audit_pipeline(config: dict[str, Any]) -> dict[str, Any]:
     else:
         steps["general_stack_scan"] = {"status": "skipped", "reason": "run_general_stack_scan false"}
 
+    if run_oversized:
+        assert api is not None
+        oenv = api.run_oversized_module_scan_with_artifacts(
+            {
+                "scripts_dir": scripts_root,
+                "root": scripts_root,
+                "generated": generated,
+                "write_json": True,
+                "workspace_root": workspace,
+            }
+        )
+        if oenv["status"] != "ok":
+            steps["oversized_module_scan"] = {"status": "error", "errors": oenv["errors"]}
+            failed_steps.append("oversized_module_scan")
+        else:
+            od = oenv["data"]
+            steps["oversized_module_scan"] = {
+                "status": "ok",
+                "md_path": od.get("md_path"),
+                "json_path": od.get("json_path"),
+                "summary_line": od.get("summary_line"),
+                "exit_code": int(od.get("exit_code", 0)),
+                "oversized_count": int(od.get("oversized_count", 0)),
+                "max_file_lines": int(od.get("max_file_lines", 0)),
+            }
+    else:
+        steps["oversized_module_scan"] = {
+            "status": "skipped",
+            "reason": "run_oversized_module_scan false",
+        }
+
     csiro_root = (
         scripts_root / "layers" / "layer_1_competition" / "level_1_impl" / "level_csiro"
     ).resolve()
@@ -349,8 +382,42 @@ def run_code_audit_pipeline(config: dict[str, Any]) -> dict[str, Any]:
     else:
         steps["csiro_scan"] = {"status": "skipped", "reason": "run_csiro_scan false"}
 
+    if run_pkg_boundary:
+        assert api is not None
+        penv = api.run_package_boundary_validation_with_artifacts(
+            {
+                "scripts_root": scripts_root,
+                "workspace_root": workspace,
+                "scope_root": None,
+                "generated": generated,
+                "include_dev": True,
+            }
+        )
+        if penv["status"] != "ok":
+            steps["package_boundary_validation"] = {"status": "error", "errors": penv["errors"]}
+            failed_steps.append("package_boundary_validation")
+        else:
+            pd = penv["data"]
+            steps["package_boundary_validation"] = {
+                "status": "ok",
+                "md_path": pd.get("md_path"),
+                "json_path": pd.get("json_path"),
+                "summary_line": pd.get("summary_line"),
+            }
+    else:
+        steps["package_boundary_validation"] = {
+            "status": "skipped",
+            "reason": "run_package_boundary_validation false",
+        }
+
     if fail_on_skipped:
-        for key in ("precheck", "general_stack_scan", "csiro_scan"):
+        for key in (
+            "precheck",
+            "general_stack_scan",
+            "oversized_module_scan",
+            "csiro_scan",
+            "package_boundary_validation",
+        ):
             st = steps.get(key, {})
             if st.get("status") == "skipped":
                 reason = st.get("reason", "")

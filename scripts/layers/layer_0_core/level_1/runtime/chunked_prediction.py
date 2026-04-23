@@ -7,7 +7,7 @@ from typing import Callable, List, Optional
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _dispatch_predict(model, X: np.ndarray) -> np.ndarray:
@@ -43,7 +43,7 @@ def predict_in_chunks(
     total_batches = (n_samples + batch_size - 1) // batch_size
     predictions_list = []
 
-    logger.info(
+    _logger.info(
         f"Making predictions in chunks "
         f"(batch_size={batch_size:,}, total_samples={n_samples:,})..."
     )
@@ -54,13 +54,13 @@ def predict_in_chunks(
         predictions_list.append(batch_preds)
 
         if batch_num % progress_interval == 0 or batch_num == total_batches:
-            logger.info(
+            _logger.info(
                 f"  Processed {min(i + batch_size, n_samples):,}/{n_samples:,} samples "
                 f"({batch_num}/{total_batches} batches)"
             )
 
     predictions = np.vstack(predictions_list)
-    logger.info(f"✓ Completed predictions: shape {predictions.shape}")
+    _logger.info(f"✓ Completed predictions: shape {predictions.shape}")
     return predictions
 
 
@@ -111,7 +111,7 @@ def predict_proteins_in_chunks(
     n_proteins = len(protein_ids)
     total_batches = (n_proteins + batch_size - 1) // batch_size
 
-    logger.info(
+    _logger.info(
         f"Making protein-level predictions in chunks "
         f"(batch_size={batch_size:,}, total_proteins={n_proteins:,})..."
     )
@@ -121,7 +121,7 @@ def predict_proteins_in_chunks(
 
     if output_file:
         output_handle = open(output_file, 'w')
-        logger.info(f"Writing predictions incrementally to {output_file}")
+        _logger.info(f"Writing predictions incrementally to {output_file}")
 
     try:
         for batch_idx in range(0, n_proteins, batch_size):
@@ -144,20 +144,20 @@ def predict_proteins_in_chunks(
             del batch_features
 
             if batch_num % progress_interval == 0 or batch_num == total_batches:
-                logger.info(
+                _logger.info(
                     f"  Processed "
                     f"{min(batch_idx + batch_size, n_proteins):,}/{n_proteins:,} proteins "
                     f"({batch_num}/{total_batches} batches)"
                 )
 
         if output_handle:
-            logger.info(
+            _logger.info(
                 f"✓ Completed predictions: {n_proteins:,} proteins written to {output_file}"
             )
             return None
 
         predictions = np.vstack(all_predictions)
-        logger.info(f"✓ Completed predictions: shape {predictions.shape}")
+        _logger.info(f"✓ Completed predictions: shape {predictions.shape}")
         return predictions
 
     finally:

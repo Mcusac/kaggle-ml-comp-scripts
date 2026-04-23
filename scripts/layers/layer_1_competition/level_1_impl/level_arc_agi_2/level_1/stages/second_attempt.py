@@ -8,7 +8,7 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     predict_attempts_from_chosen_params,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def second_attempt_grid(
@@ -22,7 +22,7 @@ def second_attempt_grid(
 ) -> list[list[int]]:
     s = str(strategy or "").lower()
     if s == "ensemble":
-        logger.warning(
+        _logger.warning(
             "ensemble strategy is not implemented (Run 12 removed the broken "
             "heuristic ranker cascade); falling back to single"
         )

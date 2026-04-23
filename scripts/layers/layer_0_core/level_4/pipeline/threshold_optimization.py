@@ -12,7 +12,7 @@ from layers.layer_0_core.level_3 import (
     calculate_recall,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def optimize_threshold(
@@ -54,6 +54,6 @@ def optimize_threshold(
     )
     
     optimal_threshold = result.x
-    logger.info(f"Optimal threshold ({metric}): {optimal_threshold:.4f}")
+    _logger.info(f"Optimal threshold ({metric}): {optimal_threshold:.4f}")
     
     return optimal_threshold

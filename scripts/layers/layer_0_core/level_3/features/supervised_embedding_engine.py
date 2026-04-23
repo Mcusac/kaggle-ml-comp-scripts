@@ -12,7 +12,7 @@ from layers.layer_0_core.level_2 import (
     get_standard_scaler,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class SupervisedEmbeddingEngine:
@@ -72,7 +72,7 @@ class SupervisedEmbeddingEngine:
         self.pls_fitted_ = False
         self.semantic_fitted_ = False
 
-        logger.info(f"SupervisedEmbeddingEngine initialized: PCA={n_pca}, PLS={n_pls}, GMM={n_gmm}")
+        _logger.info(f"SupervisedEmbeddingEngine initialized: PCA={n_pca}, PLS={n_pls}, GMM={n_gmm}")
 
     def fit(
         self,
@@ -97,14 +97,14 @@ class SupervisedEmbeddingEngine:
         if y is not None:
             self.pls.fit(X_scaled, y)
             self.pls_fitted_ = True
-            logger.info("PLS regression fitted with target information")
+            _logger.info("PLS regression fitted with target information")
         else:
-            logger.info("No targets provided; PLS will be skipped in transform")
+            _logger.info("No targets provided; PLS will be skipped in transform")
 
         if X_semantic is not None:
             self.semantic_scaler.fit(X_semantic)
             self.semantic_fitted_ = True
-            logger.info("Semantic scaler fitted")
+            _logger.info("Semantic scaler fitted")
 
         return self
 
@@ -143,7 +143,7 @@ class SupervisedEmbeddingEngine:
             features.append(self.semantic_scaler.transform(X_semantic))
 
         engineered = np.hstack(features)
-        logger.debug(f"Transformed: input {X.shape} → output {engineered.shape}")
+        _logger.debug(f"Transformed: input {X.shape} → output {engineered.shape}")
         return engineered
 
     def fit_transform(

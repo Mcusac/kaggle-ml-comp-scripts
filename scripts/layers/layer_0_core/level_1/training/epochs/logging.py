@@ -7,7 +7,7 @@ from typing import Optional
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def log_epoch_progress(
@@ -48,7 +48,7 @@ def log_epoch_progress(
 
     parts.append(f"LR: {current_lr:.6f}")
 
-    logger.info(", ".join(parts))
+    _logger.info(", ".join(parts))
 
 
 def log_epoch_progress_with_metric(

@@ -9,10 +9,10 @@ from typing import Literal, Optional
 
 from layers.layer_0_core.level_0 import get_torch
 
-torch = get_torch()
-nn = torch.nn if torch is not None else None
-F = torch.nn.functional if torch is not None else None
-_BaseLoss = nn.Module if nn is not None else object
+_torch = get_torch()
+_nn = _torch.nn if _torch is not None else None
+F = _nn.functional if _nn is not None else None
+_BaseLoss = _nn.Module if _nn is not None else object
 
 # =====================================================
 # Type Definitions
@@ -44,9 +44,9 @@ class BaseLoss(_BaseLoss, ABC):
     @abstractmethod
     def forward(
         self,
-        inputs: torch.Tensor,
-        targets: torch.Tensor,
-    ) -> torch.Tensor:
+        inputs: _torch.Tensor,
+        targets: _torch.Tensor,
+    ) -> _torch.Tensor:
         """Compute loss. Subclasses must implement."""
         ...
 
@@ -81,9 +81,9 @@ class FocalLoss(BaseLoss):
 
     def forward(
         self,
-        inputs: torch.Tensor,
-        targets: torch.Tensor
-    ) -> torch.Tensor:
+        inputs: _torch.Tensor,
+        targets: _torch.Tensor
+    ) -> _torch.Tensor:
         """
         Calculate focal loss.
 
@@ -100,10 +100,10 @@ class FocalLoss(BaseLoss):
         )
 
         # Calculate probabilities
-        probs = torch.sigmoid(inputs)
+        probs = _torch.sigmoid(inputs)
 
         # Calculate pt (probability of true class)
-        pt = torch.where(targets == 1, probs, 1 - probs)
+        pt = _torch.where(targets == 1, probs, 1 - probs)
 
         # Calculate focal term: (1 - pt)^gamma
         focal_term = (1 - pt) ** self.gamma
@@ -113,10 +113,10 @@ class FocalLoss(BaseLoss):
 
         # Apply alpha weighting if specified
         if self.alpha is not None:
-            alpha_t = torch.where(
+            alpha_t = _torch.where(
                 targets == 1,
-                torch.tensor(self.alpha, device=targets.device),
-                torch.tensor(1 - self.alpha, device=targets.device)
+                _torch.tensor(self.alpha, device=targets.device),
+                _torch.tensor(1 - self.alpha, device=targets.device)
             )
             loss = alpha_t * loss
 
@@ -138,7 +138,7 @@ class WeightedBCELoss(BaseLoss):
 
     def __init__(
         self,
-        weights: Optional[torch.Tensor] = None,
+        weights: Optional[_torch.Tensor] = None,
         reduction: str = "mean"
     ):
         """
@@ -156,9 +156,9 @@ class WeightedBCELoss(BaseLoss):
 
     def forward(
         self,
-        inputs: torch.Tensor,
-        targets: torch.Tensor
-    ) -> torch.Tensor:
+        inputs: _torch.Tensor,
+        targets: _torch.Tensor
+    ) -> _torch.Tensor:
         """
         Calculate weighted BCE loss.
 
@@ -200,7 +200,7 @@ class SparseBCEWithLogitsLoss(BaseLoss):
     More memory-efficient for cases with many classes but few positive labels.
     """
 
-    def __init__(self, pos_weight: Optional[torch.Tensor] = None, reduction: str = "mean"):
+    def __init__(self, pos_weight: Optional[_torch.Tensor] = None, reduction: str = "mean"):
         """
         Initialize Sparse BCE Loss.
 
@@ -214,9 +214,9 @@ class SparseBCEWithLogitsLoss(BaseLoss):
 
     def forward(
         self,
-        inputs: torch.Tensor,
-        targets: torch.Tensor
-    ) -> torch.Tensor:
+        inputs: _torch.Tensor,
+        targets: _torch.Tensor
+    ) -> _torch.Tensor:
         """
         Calculate sparse BCE loss.
 
@@ -266,9 +266,9 @@ class LabelSmoothingBCEWithLogitsLoss(BaseLoss):
 
     def forward(
         self,
-        inputs: torch.Tensor,
-        targets: torch.Tensor
-    ) -> torch.Tensor:
+        inputs: _torch.Tensor,
+        targets: _torch.Tensor
+    ) -> _torch.Tensor:
         """
         Calculate label smoothed BCE loss.
 

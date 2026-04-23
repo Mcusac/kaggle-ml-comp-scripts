@@ -22,7 +22,6 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_0 import (
     apply_augmentation,
     build_cell_probs_from_support_grids,
     collect_llm_tta_support_grids,
-    decode_tokens_to_grids,
 )
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_1 import (
     ArcQwenGridChatFormatter,
@@ -37,13 +36,8 @@ def decode_with_cell_probs(
     config: LlmTtaDfsConfig,
 ) -> list[Any]:
     """Cell-probs surrogate decode (no tokenizer; uses fixed 10-class per-cell probs)."""
-    probs = lm_probs
-    decoded = decode_tokens_to_grids(
-        input_grid=aug_input,
-        token_probs_provider=lambda _prefix: {
-            i: probs[min(len(_prefix) // max(1, aw), ah - 1)][len(_prefix) % max(1, aw)][i]
-            for i in range(10)
-        },
+    decoded = decode_grid_candidates(
+        lm_probs,
         beam_width=int(config.beam_width or 1),
         max_candidates=int(config.max_candidates or 1),
         max_neg_log_score=float(config.max_neg_log_score or 120.0),
@@ -61,14 +55,7 @@ def decode_with_turbo_lm(
     """Turbo LM DFS beams via the chat-formatted prompt + tokenizer."""
     tok = lm_backend.get_tokenizer()
     fmt = ArcQwenGridChatFormatter(tokenizer=tok)
-    prompt = fmt.fmt_query_from_input_grid(aug_input)
-    raw_ids = tok.encode(prompt, add_special_tokens=False)
-    if hasattr(raw_ids, "tolist"):
-        prefix_ids = [int(x) for x in raw_ids.tolist()]
-    elif isinstance(raw_ids, list):
-        prefix_ids = [int(x) for x in raw_ids]
-    else:
-        prefix_ids = [int(x) for x in list(raw_ids)]
+    prefix_ids = fmt.encode_query_prefix_token_ids(aug_input)
     max_nt = (
         int(config.turbo_max_new_tokens)
         if config.turbo_max_new_tokens is not None

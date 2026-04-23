@@ -26,8 +26,14 @@ def set_peft_model_state_dict(
     return fn(model, state_dict, adapter_name=adapter_name)
 
 
-__all__ = [
-    "get_peft_model_state_dict",
-    "peft_module",
-    "set_peft_model_state_dict",
-]
+def restore_peft_adapter_state_dict(
+    model: Any,
+    state_dict: dict[str, Any],
+    *,
+    adapter_name: str = "default",
+) -> Any:
+    restore = {
+        k: v.to(model.device) if hasattr(v, "to") else v
+        for k, v in state_dict.items()
+    }
+    return set_peft_model_state_dict(model, restore, adapter_name=adapter_name)

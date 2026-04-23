@@ -11,7 +11,7 @@ from layers.layer_1_competition.level_0_infra.level_0.registry import NamedRegis
 
 from layers.layer_1_competition.level_1_impl.level_rna3d.level_1 import build_templates, group_labels_to_coords
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 TrainerFn = Callable[[str, str], None]
 REGISTRY = NamedRegistry[TrainerFn](registry_name="RNA3DTrainerRegistry", key_label="Model")
@@ -46,8 +46,8 @@ def _train_baseline_approx(data_root: str, output_dir: str) -> None:
         artifact_path,
     )
 
-    logger.info(f"Saved baseline_approx template bank: {artifact_path}")
-    logger.info(f"  Templates: {len(templates)}")
+    _logger.info(f"Saved baseline_approx template bank: {artifact_path}")
+    _logger.info(f"  Templates: {len(templates)}")
 
 REGISTRY.set("baseline_approx", _train_baseline_approx)
 

@@ -9,7 +9,7 @@ from layers.layer_0_core.level_0 import get_logger, is_kaggle
 from layers.layer_0_core.level_1 import get_default_submission_csv_path
 from layers.layer_0_core.level_4 import save_csv
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def save_submission_csv(
@@ -28,7 +28,7 @@ def save_submission_csv(
         kaggle_path = get_default_submission_csv_path(purpose="output")
         if Path(out).resolve() != kaggle_path.resolve():
             save_csv(submission_df, str(kaggle_path), index=False)
-            logger.info(f"Also wrote {kaggle_path}")
+            _logger.info(f"Also wrote {kaggle_path}")
 
     return str(out)
 

@@ -7,8 +7,8 @@ from layers.layer_1_competition.level_0_infra.level_3 import (
     LmBackend,
     LmBackendConfig,
     MockLmBackend,
+    TransformersLmBackend,
 )
-from layers.layer_1_competition.level_0_infra.level_3.lm_backend.backend_transformers import TransformersLmBackend
 from layers.layer_1_competition.level_0_infra.level_4.lm_backends.backend_unsloth import UnslothLmBackend
 
 from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4 import (
@@ -16,7 +16,7 @@ from layers.layer_1_competition.level_1_impl.level_arc_agi_2.level_4 import (
     run_unsloth_task_adaptation,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 ArcLmBackend = LmBackend
 ArcLmBackendConfig = LmBackendConfig
@@ -35,7 +35,7 @@ def build_arc_lm_backend(config: ArcLmBackendConfig) -> ArcLmBackend:
 
     mode = str(config.backend or "auto").strip().lower()
     if mode not in ("auto", "unsloth", "transformers"):
-        logger.warning("Unknown backend=%r; using auto.", mode)
+        _logger.warning("Unknown backend=%r; using auto.", mode)
         mode = "auto"
 
     if mode == "unsloth":
@@ -51,13 +51,13 @@ def build_arc_lm_backend(config: ArcLmBackendConfig) -> ArcLmBackend:
         return tf_backend
 
     if unsloth_available():
-        logger.info("✅ LM backend: Unsloth (FastLanguageModel) for model_path=%s", path)
+        _logger.info("✅ LM backend: Unsloth (FastLanguageModel) for model_path=%s", path)
         return UnslothLmBackend(config, torch_hooks=hooks, task_adaptation=run_unsloth_task_adaptation)
 
     tf_backend = TransformersLmBackend(config, torch_hooks=hooks)
     if tf_backend.is_available():
-        logger.info("ℹ️ LM backend: transformers (Unsloth not available) for model_path=%s", path)
+        _logger.info("ℹ️ LM backend: transformers (Unsloth not available) for model_path=%s", path)
         return tf_backend
 
-    logger.warning("Falling back to mock LM backend because neither Unsloth nor transformers is usable.")
+    _logger.warning("Falling back to mock LM backend because neither Unsloth nor transformers is usable.")
     return MockLmBackend(config)

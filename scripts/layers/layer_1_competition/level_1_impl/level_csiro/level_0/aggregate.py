@@ -9,7 +9,7 @@ from layers.layer_0_core.level_0 import get_logger
 
 from layers.layer_1_competition.level_0_infra.level_1 import get_contest
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 def aggregate_train_csv(
     train_csv_path: Union[str, Path],
@@ -35,7 +35,7 @@ def aggregate_train_csv(
     if not train_csv_path.exists():
         raise FileNotFoundError(f"Train CSV not found: {train_csv_path}")
     
-    logger.info(f"Loading train.csv from {train_csv_path}")
+    _logger.info(f"Loading train.csv from {train_csv_path}")
     train_df = pd.read_csv(train_csv_path)
     
     # Get contest data schema
@@ -61,7 +61,7 @@ def aggregate_train_csv(
     target_name_col = data_schema.target_name_column
     if target_name_col in train_df.columns:
         if not (train_df['sample_id_suffix'] == train_df[target_name_col]).all():
-            logger.warning("Some sample_id suffixes don't match target_name")
+            _logger.warning("Some sample_id suffixes don't match target_name")
     
     # Get metadata columns from contest schema
     metadata_cols = data_schema.metadata_columns
@@ -71,7 +71,7 @@ def aggregate_train_csv(
     ]
     
     # Aggregate: pivot target values into columns
-    logger.info("Aggregating data...")
+    _logger.info("Aggregating data...")
     target_name_col = data_schema.target_name_column
     target_value_col = data_schema.target_value_column
     
@@ -97,13 +97,13 @@ def aggregate_train_csv(
     final_cols = [c for c in final_cols if c in agg_train_df.columns]
     agg_train_df = agg_train_df[final_cols]
     
-    logger.info(f"Aggregated to {len(agg_train_df)} images (from {len(train_df)} rows)")
+    _logger.info(f"Aggregated to {len(agg_train_df)} images (from {len(train_df)} rows)")
     
     # Save if output path provided
     if output_path:
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         agg_train_df.to_csv(output_path, index=False)
-        logger.info(f"Saved aggregated CSV to {output_path}")
+        _logger.info(f"Saved aggregated CSV to {output_path}")
     
     return agg_train_df

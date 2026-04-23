@@ -30,7 +30,7 @@ from layers.layer_1_competition.level_1_impl.level_csiro.level_3 import save_reg
 from layers.layer_1_competition.level_1_impl.level_csiro.level_4 import setup_feature_extraction_mode
 from layers.layer_1_competition.level_1_impl.level_csiro.level_5 import train_feature_extraction_model
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def train_and_export_pipeline(
@@ -88,14 +88,14 @@ def train_and_export_pipeline(
     if export_dir is None:
         export_dir = str(resolve_environment_path("best_model", purpose="output"))
 
-    logger.info("=" * 60)
-    logger.info("TRAIN AND EXPORT PIPELINE")
-    logger.info("=" * 60)
-    logger.info("Data root: %s", data_root)
-    logger.info("Dataset type: %s", dataset_type)
-    logger.info("Mode: %s", "Export only" if export_only else "Train then export")
-    logger.info("Feature extraction mode: %s", feature_extraction_mode)
-    logger.info("Export directory: %s", export_dir)
+    _logger.info("=" * 60)
+    _logger.info("TRAIN AND EXPORT PIPELINE")
+    _logger.info("=" * 60)
+    _logger.info("Data root: %s", data_root)
+    _logger.info("Dataset type: %s", dataset_type)
+    _logger.info("Mode: %s", "Export only" if export_only else "Train then export")
+    _logger.info("Feature extraction mode: %s", feature_extraction_mode)
+    _logger.info("Export directory: %s", export_dir)
 
     if export_only:
         handle_export_only_mode(
@@ -105,9 +105,9 @@ def train_and_export_pipeline(
         return
 
     if fresh_train:
-        logger.info("Train mode: Training fresh model (fresh_train=True)")
+        _logger.info("Train mode: Training fresh model (fresh_train=True)")
     else:
-        logger.info("Train mode: Resuming from checkpoints (fresh_train=False)")
+        _logger.info("Train mode: Resuming from checkpoints (fresh_train=False)")
 
     training_model_dir = resolve_environment_path("best_model_training", purpose="output")
     training_model_dir.mkdir(parents=True, exist_ok=True)
@@ -121,8 +121,8 @@ def train_and_export_pipeline(
             regression_model_variant_id, data_manipulation_combo,
         )
 
-    logger.info("Starting training...")
-    logger.info("Regression hyperparameters: %s", regression_model_hyperparameters)
+    _logger.info("Starting training...")
+    _logger.info("Regression hyperparameters: %s", regression_model_hyperparameters)
 
     if feature_extraction_mode:
         export_variant_info = train_feature_extraction_model(

@@ -1,5 +1,8 @@
-"""Train-then-predict workflow."""
+"""Auto-generated package exports."""
+
 
 from .workflow import TrainPredictWorkflow
 
-__all__ = ["TrainPredictWorkflow"]
+__all__ = [
+    "TrainPredictWorkflow",
+]

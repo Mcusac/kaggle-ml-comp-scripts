@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Level 7 provides grid search results detection, variant result builders, hyperparameter grid search base, dataset variant execution, and factory functions for tabular models and ensembling methods.
+Level 7 provides variant result builders, hyperparameter grid search base, dataset variant execution, and factory functions for tabular models and ensembling methods. Grid-search results detection and cleanup orchestration live in `level_6.grid_search`.
 
 ## Contents
 
@@ -15,16 +15,11 @@ Level 7 provides grid search results detection, variant result builders, hyperpa
 
 | Name | Description |
 |------|-------------|
-| `calculate_focused_grid_size` | Calculate focused grid size before running search |
-| `auto_detect_grid_search_results` | Auto-detect grid search results files |
-| `get_completed_count` | Count completed variants from results file |
 | `build_success_result` | Build success variant result dict |
 | `build_error_result` | Build error variant result dict |
 | `create_ensembling_method` | Factory: create ensembling method by name |
 | `HyperparameterGridSearchBase` | Base class for hyperparameter grid searches |
 | `run_single_variant` | Run training for a single dataset variant |
-| `run_variant_cleanup` | Per-variant checkpoint cleanup after a variant |
-| `run_final_cleanup` | Final cleanup after grid search |
 | `create_tabular_model` | Factory: create tabular model by type |
 
 ## Dependencies
@@ -44,8 +39,8 @@ from layers.layer_0_core.level_7 import (
     HyperparameterGridSearchBase,
     run_single_variant,
     build_success_result,
-    auto_detect_grid_search_results,
 )
+from layers.layer_0_core.level_6.grid_search import auto_detect_grid_search_results
 
 # Create tabular model by type
 model = create_tabular_model("ridge", input_dim=100, output_dim=1)

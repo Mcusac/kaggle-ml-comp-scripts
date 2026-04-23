@@ -5,7 +5,6 @@ from .grid_cnn import (
     DEFAULT_BATCH,
     DEFAULT_EPOCHS,
     DEFAULT_LR,
-    logger,
     run_grid_cnn_training,
 )
 
@@ -19,7 +18,6 @@ __all__ = [
     "DEFAULT_EPOCHS",
     "DEFAULT_LR",
     "Grid",
-    "logger",
     "run_grid_cnn_training",
     "train_trim_task_train_pairs_to_token_budget",
 ]

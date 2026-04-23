@@ -13,11 +13,11 @@ from layers.layer_1_competition.level_0_infra.level_5 import (
     expand_predictions_to_submission_format,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _load_regression_model_from_path(regression_model_path: str) -> Any:
-    logger.info("Loading regression model...")
+    _logger.info("Loading regression model...")
     return load_pickle(regression_model_path)
 
 
@@ -47,12 +47,12 @@ def create_regression_submission(
         feature_extraction_model_name=feature_extraction_model_name,
     )
 
-    logger.info("Making predictions...")
+    _logger.info("Making predictions...")
     predictions = regression_model.predict(features)
     if isinstance(predictions, np.ndarray) and predictions.ndim == 1:
         predictions = predictions.reshape(-1, 1)
 
-    logger.info("Expanding predictions to submission format...")
+    _logger.info("Expanding predictions to submission format...")
     submission_df = expand_predictions_to_submission_format(
         predictions,
         test_csv_path,
@@ -61,7 +61,7 @@ def create_regression_submission(
         post_processor=post_processor,
     )
 
-    logger.info(f"Saving submission to {output_path}...")
+    _logger.info(f"Saving submission to {output_path}...")
     save_submission_csv(submission_df, output_path)
-    logger.info("✅ Regression submission created successfully!")
+    _logger.info("✅ Regression submission created successfully!")
 

@@ -8,7 +8,7 @@ from typing import Union
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 # Valid enhancement methods
 _VALID_METHODS = {'histogram_equalization', 'clahe'}

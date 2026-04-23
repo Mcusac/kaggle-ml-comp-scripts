@@ -2,7 +2,7 @@
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def log_variant_header(
@@ -18,7 +18,7 @@ def log_variant_header(
         total_variants: Total number of variants in this search.
         variant_info: Human-readable description of the variant being run.
     """
-    logger.info("=" * 60)
-    logger.info("Variant %d/%d", variant_index + 1, total_variants)
-    logger.info("%s", variant_info)
-    logger.info("=" * 60)
+    _logger.info("=" * 60)
+    _logger.info("Variant %d/%d", variant_index + 1, total_variants)
+    _logger.info("%s", variant_info)
+    _logger.info("=" * 60)

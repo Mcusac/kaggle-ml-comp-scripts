@@ -4,7 +4,7 @@ from typing import Any, Mapping
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def format_config_section(
@@ -44,7 +44,7 @@ def log_config_section(title: str, config: Mapping[str, Any]) -> None:
         config: Dictionary of configuration key-value pairs to display
                 None values are skipped
     """
-    logger.info(format_config_section(title, config))
+    _logger.info(format_config_section(title, config))
 
 
 def print_config_section(title: str, config: Mapping[str, Any], width: int = 60) -> None:

@@ -1,4 +1,5 @@
-"""End-to-end hyperparameter grid search. Requires contest_context from contest layer."""
+"""Auto-generated package exports."""
+
 
 from .pipeline import (
     EndToEndGridSearch,

@@ -6,7 +6,7 @@ from typing import Dict, Any, Optional, List
 from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_4 import load_json
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class JSONConfigLoader:
@@ -34,7 +34,7 @@ class JSONConfigLoader:
         if not path.exists():
             raise FileNotFoundError(f"Config file not found: {path}")
 
-        logger.info("Loading config: %s", path)
+        _logger.info("Loading config: %s", path)
 
         data = load_json(path)
 

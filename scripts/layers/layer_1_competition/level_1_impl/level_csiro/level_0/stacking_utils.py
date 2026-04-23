@@ -15,7 +15,7 @@ from layers.layer_0_core.level_7 import create_ensembling_method
 
 from layers.layer_1_competition.level_0_infra.level_1 import create_feature_extraction_model
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def _run_inference(model: Any, dataloader: Any, device: Any) -> np.ndarray:
@@ -45,7 +45,7 @@ def load_and_run_model_inference(
     """Load a single model and run inference on validation and test sets."""
     checkpoint_path = model_path / 'best_model.pth'
     if not checkpoint_path.exists():
-        logger.warning(f"Checkpoint not found: {checkpoint_path}, skipping")
+        _logger.warning(f"Checkpoint not found: {checkpoint_path}, skipping")
         return None, None
 
     # Load model metadata
@@ -124,7 +124,7 @@ def process_fold_predictions(
 ) -> Tuple[np.ndarray, np.ndarray]:
     """Combine fold predictions using ensemble method."""
     if not all_val_predictions or not all_test_predictions:
-        logger.warning(f"No valid predictions for fold {fold}, skipping")
+        _logger.warning(f"No valid predictions for fold {fold}, skipping")
         return None, None
 
     ensembling_method = create_ensembling_method(method)
@@ -176,11 +176,11 @@ def process_single_fold_for_e2e_ensemble(
     val_data = get_fold_data(train_df_with_folds, fold=fold, train=False)
     train_data = get_fold_data(train_df_with_folds, fold=fold, train=True)
 
-    logger.info(f"  Train samples: {len(train_data)}")
-    logger.info(f"  Val samples: {len(val_data)}")
+    _logger.info(f"  Train samples: {len(train_data)}")
+    _logger.info(f"  Val samples: {len(val_data)}")
 
     if len(val_data) == 0:
-        logger.warning(f"  No validation data for fold {fold}, skipping")
+        _logger.warning(f"  No validation data for fold {fold}, skipping")
         return None, None, pd.Index([])
 
     # Load all models and run inference

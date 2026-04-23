@@ -1,18 +1,22 @@
-"""Dependency validation: scan imports and classify layering violations.
+"""Dependency validation: scan imports and classify devtools layering violations.
 
 Lives under ``level_1_impl.level_1`` because it composes multiple ``level_0_infra.level_0``
 utilities (AST import resolution, workspace discovery) into a workflow; impl sits above infra.
 """
 
-import ast
 import json
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
 from typing import Any
 
-from layers.layer_2_devtools.level_0_infra.level_0.parse.ast.ast_utils import resolve_relative_import
 from layers.layer_2_devtools.level_0_infra.level_0.path.workspace import find_workspace_root
+from layers.layer_2_devtools.level_1_impl.level_1.composed.import_scan_ops import (
+    build_module_map as _build_module_map,
+    collect_py_files as _collect_py_files,
+    extract_imports as _extract_imports,
+    module_name as _module_name,
+)
 
 
 @dataclass(frozen=True)
@@ -43,31 +47,31 @@ def run_dependency_validation_workflow(
     search_roots = [root / "layers" / "layer_2_devtools"]
     if include_dev:
         search_roots.append(root / "dev")
-    files = _collect_py_files(search_roots)
-    module_map = _build_module_map(root, files)
+    files = _collect_py_files(roots=search_roots)
+    module_map = _build_module_map(scripts_root=root, files=files)
 
     edges: list[DependencyEdge] = []
     for file_path in files:
         source_bucket = _bucket_for_file(file_path, root)
-        source_module = _module_name(root, file_path)
-        imports = _extract_imports(file_path, source_module)
-        for import_text, target_module in imports:
-            target_file = module_map.get(target_module)
-            target_bucket = _bucket_for_module(target_module)
+        source_module = _module_name(scripts_root=root, file_path=file_path)
+        imports = _extract_imports(file_path=file_path, current_module=source_module)
+        for imp in imports:
+            target_file = module_map.get(imp.target_module)
+            target_bucket = _bucket_for_module(imp.target_module)
             violation_type = _classify_violation(
                 source_bucket=source_bucket,
                 target_bucket=target_bucket,
-                target_module=target_module,
+                target_module=imp.target_module,
             )
-            safe = _is_safe_autofix_candidate(file_path, import_text)
+            safe = _is_safe_autofix_candidate(file_path, imp.import_text)
             fix_status = "todo_unsafe_autofix" if violation_type and not safe else "none"
             notes = "barrel_or_export_pattern" if violation_type and not safe else None
             edges.append(
                 DependencyEdge(
                     source_file=_rel(workspace, file_path),
                     source_bucket=source_bucket,
-                    import_text=import_text,
-                    target_module=target_module,
+                    import_text=imp.import_text,
+                    target_module=imp.target_module,
                     target_file=_rel(workspace, target_file) if target_file else None,
                     target_bucket=target_bucket,
                     violation_type=violation_type,
@@ -135,69 +139,8 @@ def write_dependency_report_artifacts(
     return json_path, md_path
 
 
-def _is_under_impl_tests(path: Path) -> bool:
-    parts = path.parts
-    if any(
-        parts[i] == "level_1_impl" and parts[i + 1] == "tests"
-        for i in range(len(parts) - 1)
-    ):
-        return True
-    return any(
-        parts[i] == "impl" and parts[i + 1] == "tests" for i in range(len(parts) - 1)
-    )
-
-
-def _collect_py_files(roots: list[Path]) -> list[Path]:
-    files: list[Path] = []
-    for root in roots:
-        if not root.is_dir():
-            continue
-        for path in root.rglob("*.py"):
-            if "__pycache__" in path.parts:
-                continue
-            if _is_under_impl_tests(path):
-                continue
-            files.append(path.resolve())
-    return sorted(files)
-
-
-def _module_name(scripts_root: Path, file_path: Path) -> str:
-    rel = file_path.resolve().relative_to(scripts_root.resolve())
-    parts = list(rel.parts)
-    parts[-1] = parts[-1].removesuffix(".py")
-    if parts[-1] == "__init__":
-        parts = parts[:-1]
-    return ".".join(parts)
-
-
-def _build_module_map(scripts_root: Path, files: list[Path]) -> dict[str, Path]:
-    out: dict[str, Path] = {}
-    for file_path in files:
-        out[_module_name(scripts_root, file_path)] = file_path
-    return out
-
-
-def _extract_imports(file_path: Path, current_module: str) -> list[tuple[str, str]]:
-    source = file_path.read_text(encoding="utf-8")
-    tree = ast.parse(source, filename=str(file_path))
-    imports: list[tuple[str, str]] = []
-    current_pkg = current_module.rsplit(".", 1)[0] if "." in current_module else ""
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Import):
-            for alias in node.names:
-                imports.append((f"import {alias.name}", alias.name))
-        elif isinstance(node, ast.ImportFrom):
-            if node.level and node.level > 0:
-                resolved = resolve_relative_import(node.level, current_pkg, node.module)
-            else:
-                resolved = node.module
-            if resolved:
-                imports.append((f"from {'.' * node.level}{node.module or ''} import ...", resolved))
-    return imports
-
-
 def _bucket_for_file(file_path: Path, scripts_root: Path) -> str:
-    return _bucket_for_module(_module_name(scripts_root, file_path))
+    return _bucket_for_module(_module_name(scripts_root=scripts_root, file_path=file_path))
 
 
 def _bucket_for_module(module: str) -> str:

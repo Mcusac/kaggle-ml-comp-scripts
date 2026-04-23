@@ -1,6 +1,11 @@
-"""Data structures: config loaders, model registries, tabular models, and datasets."""
+"""Auto-generated aggregation exports."""
 
-from . import base, tabular
+
+from . import (
+    base,
+    tabular,
+)
+
 from .base import *
 from .tabular import *
 

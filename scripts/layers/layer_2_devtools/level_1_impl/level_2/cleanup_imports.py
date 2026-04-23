@@ -54,12 +54,38 @@ def main() -> int:
         action="store_true",
         help="Show what would be removed without actually modifying files",
     )
+    parser.add_argument(
+        "--no-organize-imports",
+        action="store_true",
+        help="Skip deterministic top-of-file import organization after cleanup",
+    )
+    parser.add_argument(
+        "--format",
+        action="store_true",
+        help="Run an external formatter after edits (off by default)",
+    )
+    parser.add_argument(
+        "--format-tool",
+        choices=["ruff", "black"],
+        default="ruff",
+        help="External formatter to run when --format is enabled",
+    )
+    parser.add_argument(
+        "--format-args",
+        action="append",
+        default=[],
+        help="Extra args for the formatter (repeatable). Example: --format-args --line-length=88",
+    )
     args = parser.parse_args()
     env = run_unused_import_cleanup_cli_api(
         {
             "report": args.report,
             "root": args.root,
             "dry_run": args.dry_run,
+            "organize_imports": (not bool(args.no_organize_imports)),
+            "format_after": bool(args.format),
+            "format_tool": args.format_tool,
+            "format_args": list(args.format_args or []),
         }
     )
     if env["status"] != "ok":

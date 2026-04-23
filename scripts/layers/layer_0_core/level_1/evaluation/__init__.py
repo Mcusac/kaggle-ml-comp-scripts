@@ -1,35 +1,40 @@
-"""Evaluation package for metrics and losses."""
+"""Auto-generated package exports."""
+
 
 from .loss_types import (
-    LossType,
     BaseLoss,
+    F,
     FocalLoss,
-    WeightedBCELoss,
-    SparseBCEWithLogitsLoss,
     LabelSmoothingBCEWithLogitsLoss,
+    LossType,
+    SparseBCEWithLogitsLoss,
+    WeightedBCELoss,
 )
+
 from .metric_registry import (
     MetricRegistry,
-    register_metric,
     get_metric,
     list_metrics,
+    register_metric,
 )
+
 from .results_analysis import (
     calculate_fold_statistics,
     generate_cv_test_gap_warnings,
 )
 
 __all__ = [
-    "LossType",
     "BaseLoss",
+    "F",
     "FocalLoss",
-    "WeightedBCELoss",
-    "SparseBCEWithLogitsLoss",
     "LabelSmoothingBCEWithLogitsLoss",
+    "LossType",
     "MetricRegistry",
-    "register_metric",
-    "get_metric",
-    "list_metrics",
+    "SparseBCEWithLogitsLoss",
+    "WeightedBCELoss",
     "calculate_fold_statistics",
     "generate_cv_test_gap_warnings",
+    "get_metric",
+    "list_metrics",
+    "register_metric",
 ]

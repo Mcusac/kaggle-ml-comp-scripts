@@ -1,15 +1,19 @@
-"""Tabular model implementations wrapping sklearn and boosting classifiers.
+"""Auto-generated package exports."""
 
-Import from layers.layer_0_core.level_6:
-  from layers.layer_0_core.level_6 import LogisticRegressionModel, RidgeModel, XGBoostModel, LightGBMModel
-"""
 
-from .linear import LogisticRegressionModel, RidgeModel
-from .tree import XGBoostModel, LightGBMModel
+from .linear import (
+    LogisticRegressionModel,
+    RidgeModel,
+)
+
+from .tree import (
+    LightGBMModel,
+    XGBoostModel,
+)
 
 __all__ = [
+    "LightGBMModel",
     "LogisticRegressionModel",
     "RidgeModel",
     "XGBoostModel",
-    "LightGBMModel",
 ]

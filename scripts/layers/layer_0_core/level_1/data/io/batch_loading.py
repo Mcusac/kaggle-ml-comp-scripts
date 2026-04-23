@@ -6,11 +6,11 @@ from tqdm import tqdm
 
 from layers.layer_0_core.level_0 import get_logger
 
-logger = get_logger(__name__)
-T = TypeVar("T")
+_logger = get_logger(__name__)
+_T = TypeVar("_T")
 
 
-class BatchLoader(Protocol[T]):
+class BatchLoader(Protocol[_T]):
     """
     Protocol for batch loaders: callable that loads multiple items from paths.
     Implementations can wrap load_batch with a specific loader (e.g. load_csv_batch).
@@ -23,19 +23,19 @@ class BatchLoader(Protocol[T]):
         desc: str = "Loading",
         show_progress: bool = False,
         **kwargs: object,
-    ) -> List[T]:
+    ) -> List[_T]:
         ...
 
 
 def load_batch(
     paths: Iterable[Union[str, Path]],
-    loader: Callable[[Union[str, Path]], T],
+    loader: Callable[[Union[str, Path]], _T],
     *,
     desc: str = "Loading",
     show_progress: bool = False,
     item_name: str = "items",
     raise_on_error: bool = True,
-) -> List[T]:
+) -> List[_T]:
     """
     Load multiple items by applying a loader to each path.
 
@@ -59,16 +59,16 @@ def load_batch(
         try:
             iterator = tqdm(paths_list, desc=desc)
         except ImportError:
-            logger.debug("tqdm not available; progress disabled")
+            _logger.debug("tqdm not available; progress disabled")
 
-    results: List[T] = []
+    results: List[_T] = []
     for path in iterator:
         try:
             results.append(loader(path))
         except Exception as e:
             if raise_on_error:
                 raise
-            logger.warning("Skipping %s: %s", path, e)
+            _logger.warning("Skipping %s: %s", path, e)
 
-    logger.info("Loaded %s %s", len(results), item_name)
+    _logger.info("Loaded %s %s", len(results), item_name)
     return results

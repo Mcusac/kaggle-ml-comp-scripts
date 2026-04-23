@@ -6,7 +6,7 @@ from layers.layer_0_core.level_0 import get_logger
 from layers.layer_0_core.level_2 import get_logistic_regression, get_ridge_classifier
 from layers.layer_0_core.level_5 import BaseTabularModel
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class LogisticRegressionModel(BaseTabularModel):

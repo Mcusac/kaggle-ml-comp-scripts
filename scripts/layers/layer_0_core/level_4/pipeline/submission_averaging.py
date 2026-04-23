@@ -19,7 +19,7 @@ from layers.layer_0_core.level_2 import (
     weighted_average,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class SubmissionAveragingWorkflow(BasePipeline):
@@ -64,32 +64,32 @@ class SubmissionAveragingWorkflow(BasePipeline):
     
     def setup(self) -> None:
         """Setup workflow: validate submission files."""
-        logger.info("🔧 Setting up submission averaging workflow...")
+        _logger.info("🔧 Setting up submission averaging workflow...")
         
         if not self.submission_files:
             raise ValueError("submission_files cannot be empty")
         
         # Validate submission files
-        logger.info(f"Validating {len(self.submission_files)} submission files...")
+        _logger.info(f"Validating {len(self.submission_files)} submission files...")
         for i, filepath in enumerate(self.submission_files, 1):
             filepath = Path(filepath)
-            logger.info(f"Validating [{i}/{len(self.submission_files)}]: {filepath.name}")
+            _logger.info(f"Validating [{i}/{len(self.submission_files)}]: {filepath.name}")
             
             is_valid, issues = validate_submission_format(filepath)
             
             if is_valid:
-                logger.info("      ✓ Valid")
+                _logger.info("      ✓ Valid")
                 self.valid_files.append(str(filepath))
             else:
-                logger.error("      ❌ Invalid submission file:")
+                _logger.error("      ❌ Invalid submission file:")
                 for issue in issues:
-                    logger.error(f"         - {issue}")
+                    _logger.error(f"         - {issue}")
         
         if not self.valid_files:
             raise ValueError("No valid submission files found")
         
         if len(self.valid_files) < len(self.submission_files):
-            logger.warning(f"Using {len(self.valid_files)}/{len(self.submission_files)} valid files")
+            _logger.warning(f"Using {len(self.valid_files)}/{len(self.submission_files)} valid files")
         
         # Set output path if not provided
         if self.output_path is None:
@@ -98,7 +98,7 @@ class SubmissionAveragingWorkflow(BasePipeline):
             ensure_dir(output_dir)
             self.output_path = str(output_dir / f'submission_{self.ensemble_method}.tsv')
         
-        logger.info("✅ Submission averaging workflow setup complete")
+        _logger.info("✅ Submission averaging workflow setup complete")
     
     def execute(self) -> Dict[str, Any]:
         """
@@ -111,20 +111,20 @@ class SubmissionAveragingWorkflow(BasePipeline):
             - 'method': str
             - 'num_files': int
         """
-        logger.info("🚀 Starting submission averaging workflow...")
+        _logger.info("🚀 Starting submission averaging workflow...")
         start_time = time.time()
         
         if len(self.valid_files) == 1:
-            logger.warning("Only one submission file provided, copying as-is")
+            _logger.warning("Only one submission file provided, copying as-is")
             shutil.copy(self.valid_files[0], self.output_path)
             self.final_path = self.output_path
         else:
             # Load and ensemble submissions
-            logger.info(f"Ensembling {len(self.valid_files)} submissions using method: {self.ensemble_method}")
+            _logger.info(f"Ensembling {len(self.valid_files)} submissions using method: {self.ensemble_method}")
 
             predictions_list = []
             for filepath in self.valid_files:
-                logger.info(f"Loading: {Path(filepath).name}")
+                _logger.info(f"Loading: {Path(filepath).name}")
                 preds = self._load_submission_file(filepath)
                 predictions_list.append(preds)
             
@@ -136,9 +136,9 @@ class SubmissionAveragingWorkflow(BasePipeline):
             self.final_path = self.output_path
         
         total_time = time.time() - start_time
-        logger.info("✅ Submission averaging workflow complete!")
-        logger.info(f"Total time: {total_time:.1f}s")
-        logger.info(f"Final submission: {self.final_path}")
+        _logger.info("✅ Submission averaging workflow complete!")
+        _logger.info(f"Total time: {total_time:.1f}s")
+        _logger.info(f"Final submission: {self.final_path}")
         
         return {
             'success': True,
@@ -278,8 +278,8 @@ class SubmissionAveragingWorkflow(BasePipeline):
                 score = predictions[(protein_id, term)]
                 f.write(f"{protein_id}\t{term}\t{score:.6f}\n")
         
-        logger.info(f"✓ Saved ensembled submission: {output_path}")
-        logger.info(f"  Total predictions: {len(predictions):,}")
+        _logger.info(f"✓ Saved ensembled submission: {output_path}")
+        _logger.info(f"  Total predictions: {len(predictions):,}")
     
     def cleanup(self) -> None:
         """Cleanup workflow resources."""

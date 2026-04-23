@@ -6,7 +6,6 @@ from .trainer_registry import (
     TrainerFn,
     get_trainer,
     list_available_models,
-    logger,
 )
 
 __all__ = [
@@ -14,5 +13,4 @@ __all__ = [
     "TrainerFn",
     "get_trainer",
     "list_available_models",
-    "logger",
 ]

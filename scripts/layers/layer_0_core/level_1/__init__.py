@@ -1,6 +1,21 @@
-"""Level 1: Framework utilities. Depends only on level_0."""
+"""Auto-generated aggregation exports."""
 
-from . import cli, data, evaluation, features, grid_search, guards, io, ontology, pipelines, protein, runtime, search, training
+
+from . import (
+    cli,
+    data,
+    evaluation,
+    features,
+    grid_search,
+    guards,
+    io,
+    ontology,
+    pipelines,
+    protein,
+    runtime,
+    search,
+    training,
+)
 
 from .cli import *
 from .data import *
@@ -22,8 +37,8 @@ __all__ = (
     + list(evaluation.__all__)
     + list(features.__all__)
     + list(grid_search.__all__)
-    + list(io.__all__)
     + list(guards.__all__)
+    + list(io.__all__)
     + list(ontology.__all__)
     + list(pipelines.__all__)
     + list(protein.__all__)

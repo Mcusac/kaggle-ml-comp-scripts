@@ -5,7 +5,7 @@ import time
 
 from layers.layer_0_core.level_0 import get_torch
 
-torch = get_torch()
+_torch = get_torch()
 
 
 def make_local_worker(worker_fn, *, worker_sentinel_prefix: str = "/kaggle/worker"):
@@ -18,7 +18,7 @@ def make_local_worker(worker_fn, *, worker_sentinel_prefix: str = "/kaggle/worke
     def local_worker(rank, queue, end_time):
         os.environ["CUDA_VISIBLE_DEVICES"] = str(rank)
 
-        torch.set_default_device("cpu")
+        _torch.set_default_device("cpu")
 
         if rank > 0:
             while not os.path.exists(f"{worker_sentinel_prefix}{rank - 1}"):

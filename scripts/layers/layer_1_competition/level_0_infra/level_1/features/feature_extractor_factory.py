@@ -8,10 +8,10 @@ from layers.layer_0_core.level_4 import create_vision_model, SigLIPFeatureExtrac
 
 from layers.layer_1_competition.level_0_infra.level_0 import get_pretrained_weights_path
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
-torch = get_torch()
-nn = torch.nn
+_torch = get_torch()
+_nn = _torch.nn
 
 # Optional: set via set_pretrained_weights_resolver() by contest/orchestration for SigLIP.
 _pretrained_weights_resolver: Optional[Callable[[str], str]] = None
@@ -26,10 +26,10 @@ def set_pretrained_weights_resolver(resolver: Optional[Callable[[str], str]]) ->
 def create_feature_extraction_model(
     model_name: str,
     num_primary_targets: int,
-    device: torch.device,
+    device: _torch.device,
     image_size: Optional[Tuple[int, int]] = None,
     pretrained: bool = True
-) -> nn.Module:
+) -> _nn.Module:
     """
     Create feature extraction model, handling all model types (SigLIP, DINOv2, timm).
 
@@ -66,7 +66,7 @@ def create_feature_extraction_model(
             device=device
         )
         model = SigLIPFeatureExtractorAdapter(siglip_extractor)
-        logger.info(f"Created SigLIP feature extraction model: {model_name}")
+        _logger.info(f"Created SigLIP feature extraction model: {model_name}")
         return model
     else:
         model = create_vision_model(
@@ -75,5 +75,5 @@ def create_feature_extraction_model(
             pretrained=pretrained,
             input_size=image_size,
         )
-        logger.info(f"Created vision feature extraction model: {model_name}")
+        _logger.info(f"Created vision feature extraction model: {model_name}")
         return model

@@ -66,6 +66,15 @@ class ArcQwenGridChatFormatter:
         tok = self.tokenizer.encode(self.fmt_reply_from_output_grid(max_grid))
         return len(tok) + 1
 
+    def encode_query_prefix_token_ids(self, input_grid: Grid) -> list[int]:
+        prompt = self.fmt_query_from_input_grid(input_grid)
+        raw_ids = self.tokenizer.encode(prompt, add_special_tokens=False)
+        if hasattr(raw_ids, "tolist"):
+            return [int(x) for x in raw_ids.tolist()]
+        if isinstance(raw_ids, list):
+            return [int(x) for x in raw_ids]
+        return [int(x) for x in list(raw_ids)]
+
     def decode_tokens_to_grid(self, tokens: list[int], *, limit_rows: int = MAX_ARC_GRID_DIM) -> Grid | None:
         if len(tokens) < 2:
             return None

@@ -8,7 +8,7 @@ from layers.layer_1_competition.level_1_impl.level_csiro.level_3.variant_selecti
     save_regression_gridsearch_result,
 )
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 def save_regression_training_result(
@@ -37,9 +37,9 @@ def save_regression_training_result(
                 or {}
             ),
         )
-        logger.info("Saved training result to gridsearch_metadata.json")
+        _logger.info("Saved training result to gridsearch_metadata.json")
     except Exception as e:
-        logger.warning(
+        _logger.warning(
             "Failed to save training result to gridsearch_metadata.json: %s. "
             "Training completed successfully, but metadata was not updated.",
             e,
