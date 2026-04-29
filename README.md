@@ -1,5 +1,6 @@
-# ML Competition Framework
+# DEPRECATED: Moved to python-package (ScriptCraft)
 
+# ML Competition Framework
 A unified, reusable machine learning competition framework supporting both computer vision and tabular tasks.
 
 ## Features
